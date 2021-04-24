@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import React from 'react'
 
 export default function Layout({
   children,
@@ -6,12 +6,12 @@ export default function Layout({
   children: React.ReactNode
 }) {
   return (
-    <Fragment>
-      <header></header>
+    <>
+      <header />
       <main>
-          {children}
+        {children}
       </main>
-      <footer></footer>
-    </Fragment>
+      <footer />
+    </>
   )
 }

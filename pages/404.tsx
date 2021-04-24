@@ -1,4 +1,4 @@
-import Layout from "../src/layouts/default";
+import Layout from '../src/layouts/default'
 
 export default function Page404() {
   return (
