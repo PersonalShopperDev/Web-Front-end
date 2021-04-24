@@ -1,16 +1,10 @@
 import React from 'react'
 
-export default function Layout({
-  children,
-} : {
-  children: React.ReactNode
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <header />
-      <main>
-        {children}
-      </main>
+      <main>{children}</main>
       <footer />
     </>
   )

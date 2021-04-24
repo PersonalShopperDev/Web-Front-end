@@ -11,6 +11,6 @@ export default function App({ Component, pageProps }: AppProps) {
   )
 }
 
-export function getModalContainer() : HTMLElement {
+export function getModalContainer(): HTMLElement {
   return document.getElementById(modalContainerID)
 }
