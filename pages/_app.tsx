@@ -1,13 +1,14 @@
 import { AppProps } from 'next/app'
+import AuthProvider from '../src/providers/authProvider'
 
 const modalContainerID = 'modalContainer'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <AuthProvider>
       <Component {...pageProps} />
       <div id={modalContainerID} />
-    </>
+    </AuthProvider>
   )
 }
 
