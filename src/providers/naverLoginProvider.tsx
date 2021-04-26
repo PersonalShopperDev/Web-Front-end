@@ -1,6 +1,5 @@
-import { useRouter } from 'next/dist/client/router'
+import { NextRouter } from 'next/dist/client/router'
 import React, { createContext, useContext, useEffect } from 'react'
-import { useAuth } from './authProvider'
 
 declare global {
   // eslint-disable-next-line no-unused-vars
@@ -9,20 +8,22 @@ declare global {
   }
 }
 
-interface naverLoginContext {
+interface NaverLoginProps {
   // eslint-disable-next-line no-undef
   LoginButton: () => JSX.Element
 }
 
-const NaverLoginContext = createContext<naverLoginContext>(null)
+const NaverLoginContext = createContext<NaverLoginProps>(null)
 export const useNaverLogin = () => useContext(NaverLoginContext)
 
 export default function NaverLoginProvider({
   children,
 }: {
   children: React.ReactNode
-}) {
-  const callbackUrl = '/login/naver/callback'
+}) { 
+  const provider = 'naver'
+
+  const callbackUrl = `/login/${provider}/callback` 
 
   useEffect(() => {
     const { naver } = window
@@ -41,7 +42,7 @@ export default function NaverLoginProvider({
   }, [])
 
   const value = {
-    LoginButton,
+    LoginButton : () => <div id="naverIdLogin" />,
   }
   
   return (
@@ -51,20 +52,4 @@ export default function NaverLoginProvider({
   )
 }
 
-export const useCallbackProcess = () => {
-  const router = useRouter()
-  const { setUser } = useAuth()
-
-  const getToken = () => router.asPath.split('=')[1].split('&')[0]
-
-  useEffect(() => {
-    setUser({
-      provider: 'naver',
-      token: getToken(),
-    })
-  }, [])
-}
-
-function LoginButton() {
-  return <div id="naverIdLogin" />
-}
+export const processToken = (router : NextRouter) : string => router.asPath.split('=')[1].split('&')[0]

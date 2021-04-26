@@ -1,13 +1,13 @@
 import { useRouter } from 'next/dist/client/router'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
-interface authContext {
+interface AuthProps {
   user: any
-  setUser: React.Dispatch<any>
+  authenticate: (provider: string, token: string) => void
   signOut: () => void
 }
 
-const AuthContext = createContext<authContext>(null)
+const AuthContext = createContext<AuthProps>(null)
 
 export const useAuth = () => useContext(AuthContext)
 
@@ -20,14 +20,15 @@ export default function AuthProvider({
 
   const [user, setUser] = useState<any>(null)
 
+  const authenticate = (provider: string, token: string) => {
+    setUser({
+      provider,
+      token,
+    })
+  }
+
   const signOut = () => {
-    switch (user.provider) {
-      case 'naver':
-        setUser(null)
-        break
-      default:
-        break
-    }
+    setUser(null)
   }
 
   useEffect(() => {
@@ -38,11 +39,11 @@ export default function AuthProvider({
 
   const value = {
     user,
-    setUser,
+    authenticate,
     signOut,
   }
 
   return <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
+    {children}
+  </AuthContext.Provider>
 }
