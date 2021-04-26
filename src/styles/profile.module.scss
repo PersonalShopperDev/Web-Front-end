@@ -1,0 +1,71 @@
+.main {
+    flex-direction: row;
+    display: flex;
+}
+.container {
+    width: 375px;
+    height: 100vh;
+}
+.profile {
+    height: 302px;
+    background-color: rgb(237,100,50);
+    padding: 2rem 1rem;
+}
+.profile .header {
+    flex-direction: row;
+    justify-content: space-between;
+    display: flex;
+}
+.profile .name {
+    flex-direction: row;
+    display: flex;
+    font-size: 2rem;
+    font-weight: bold;
+    align-items: center;
+    padding-top: 2rem;
+}
+.profile .category {
+    flex-direction: row;
+    display: flex;
+}
+.styleBox {
+    padding: 0.1rem 0.5rem;
+    background-color: white;
+    border-radius: 1rem;
+    font-size: 0.1rem;
+    margin-top: 1rem;
+    margin-right: 1rem;
+}
+.image {
+    border-radius: 200px;
+}
+.infoContainer {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+.infoContainer .text {
+    font-size: 0.75rem;
+    color: rgb(61,61,61);
+}
+.infoContainer .division {
+    border-bottom: 0.1rem solid #dcdcdc;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+}
+.scrollBox {
+    overflow: scroll;
+    height: 23rem;
+}
+.scrollBox::-webkit-scrollbar {
+    display: none;
+}
+.clothImage {
+    border-radius: 1rem;
+    padding: 0.25rem !important;
+}
+.largeImage {
+    align-items: center;
+    display: flex;
+    width: 50vw;
+    justify-content: center;
+}
