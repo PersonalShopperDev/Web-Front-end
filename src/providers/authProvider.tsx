@@ -2,8 +2,13 @@ import { useRouter } from 'next/dist/client/router'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import getApiUrl from '../lib/api'
 
+interface User { 
+  accessToken : string, 
+  refreshToken : string
+}
+
 interface AuthProps {
-  user: any
+  user: User
   authenticate: (provider: string, token: string) => void
   signOut: () => void
 }
@@ -19,7 +24,7 @@ export default function AuthProvider({
 }) {
   const router = useRouter()
 
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User>(null)
 
   const authenticate = async (provider: string, token: string) => {
     const payload : any = {
@@ -40,8 +45,11 @@ export default function AuthProvider({
       }
       return res.json()
     })
-    .then((json) => {
-      console.log(json)
+    .then(({ accessToken, refreshToken }) => {
+      setUser({
+        accessToken,
+        refreshToken, 
+      })
     })
     .catch((error) => {
       console.log(error)

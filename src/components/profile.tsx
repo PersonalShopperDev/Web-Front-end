@@ -16,7 +16,7 @@ export default function Profile() {
 
   return (
     <>
-      <p>{user.token}</p>
+      <p>{user.accessToken}</p>
       <button type="submit" onClick={signOut}>
         Sign Out
       </button>
