@@ -2,8 +2,8 @@ import { useRouter } from 'next/dist/client/router'
 import { useEffect } from 'react'
 import Layout from '../../../src/layouts/default'
 import { useAuth } from '../../../src/providers/authProvider'
-import { tokenProcessor as processNaverToken } from '../../../src/providers/naverLoginProvider'
-import { tokenProcessor as processKaKaoToken } from '../../../src/providers/kakaoLoginProvider'
+import { processToken as processNaverToken } from '../../../src/providers/naverLoginProvider'
+import { processToken as processKaKaoToken } from '../../../src/providers/kakaoLoginProvider'
 
 export default function Page() {
   const router = useRouter()

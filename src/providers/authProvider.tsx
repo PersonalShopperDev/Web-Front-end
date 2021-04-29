@@ -1,5 +1,6 @@
 import { useRouter } from 'next/dist/client/router'
 import React, { createContext, useContext, useEffect, useState } from 'react'
+import getApiUrl from '../lib/api'
 
 interface AuthProps {
   user: any
@@ -20,10 +21,30 @@ export default function AuthProvider({
 
   const [user, setUser] = useState<any>(null)
 
-  const authenticate = (provider: string, token: string) => {
-    setUser({
-      provider,
-      token,
+  const authenticate = async (provider: string, token: string) => {
+    const payload : any = {
+        resource : provider,
+        code  : token
+    }
+    await fetch(getApiUrl('auth/login'), {
+      body : JSON.stringify(payload),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST'
+    })
+    .then(async (res) => {
+      console.log(res)
+      if (!res.ok) {
+        throw Error((await res.text()))
+      }
+      return res.json()
+    })
+    .then((json) => {
+      console.log(json)
+    })
+    .catch((error) => {
+      console.log(error)
     })
   }
 
