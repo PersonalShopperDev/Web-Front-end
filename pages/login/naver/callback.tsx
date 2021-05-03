@@ -1,5 +1,5 @@
-import Layout from '../../../src/layouts/default'
-import { useCallbackProcess } from '../../../src/providers/naverLoginProvider'
+import Layout from 'layouts/default'
+import { useCallbackProcess } from 'providers/naverLoginProvider'
 
 export default function Page() {
   useCallbackProcess()

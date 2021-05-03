@@ -1,5 +1,6 @@
 import { AppProps } from 'next/app'
-import AuthProvider from '../src/providers/authProvider'
+import AuthProvider from 'providers/authProvider'
+import 'sass/global.scss'
 
 const modalContainerID = 'modalContainer'
 

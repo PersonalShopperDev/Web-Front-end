@@ -1,5 +1,5 @@
-import Profile from '../src/components/profile'
-import Layout from '../src/layouts/default'
+import Layout from 'layouts/default'
+import Profile from 'components/profile'
 
 export default function Home() {
   return (

@@ -1,6 +1,6 @@
-import LoginForm from '../../src/components/loginForm'
-import Layout from '../../src/layouts/default'
-import NaverLoginProvider from '../../src/providers/naverLoginProvider'
+import LoginForm from 'components/loginForm'
+import Layout from 'layouts/default'
+import NaverLoginProvider from 'providers/naverLoginProvider'
 
 export default function Page() {
   return (
