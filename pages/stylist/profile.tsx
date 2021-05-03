@@ -1,4 +1,4 @@
-import styles from '../../src/styles/profile.module.scss';
+import styles from '../../sass/listup.module.scss';
 import Image from 'next/image';
 import Link from 'next/link'
 import { withRouter } from 'next/router';

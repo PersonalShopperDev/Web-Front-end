@@ -1,17 +1,25 @@
 import { Fragment } from 'react'
 
 export default function Layout({
-  children,
+  Header,
+  Main,
+  Navigation,
 } : {
-  children: React.ReactNode
+  Header? : React.ReactNode,
+  Main : React.ReactNode,
+  Navigation? : React.ReactNode,
 }) {
   return (
     <Fragment>
-      <header></header>
+      <header>
+        {Header}
+      </header>
       <main>
-          {children}
+        {Main}
       </main>
-      <footer></footer>
+      <nav>
+        {Navigation}
+      </nav>
     </Fragment>
   )
 }

@@ -1,4 +1,4 @@
-import '../src/styles/global.scss'
+import '../sass/global.scss'
 import { AppProps } from 'next/app'
 import { Fragment } from 'react'
 
