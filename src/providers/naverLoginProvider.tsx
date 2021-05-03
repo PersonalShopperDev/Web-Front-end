@@ -10,7 +10,6 @@ declare global {
 }
 
 interface naverLoginContext {
-  // eslint-disable-next-line no-undef
   LoginButton: () => JSX.Element
 }
 
