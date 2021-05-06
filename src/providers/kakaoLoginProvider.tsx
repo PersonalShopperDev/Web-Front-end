@@ -1,5 +1,5 @@
-import { NextRouter } from 'next/dist/client/router'
-import React, { createContext, useContext, useEffect } from 'react'
+import React, { createContext, useContext } from 'react'
+import { useAuth } from './authProvider'
 
 declare global {
   // eslint-disable-next-line no-unused-vars
@@ -21,23 +21,22 @@ export default function KaKaoLoginProvider({
 }: {
   children: React.ReactNode
 }) {
-  const provider = 'kakao'
-
-  const callbackUrl = `/login/${provider}/callback`
+  const { authenticate } = useAuth()
 
   const loginHandler = () => {
-    window.Kakao.Auth.authorize({
-      redirectUri: `${window.location.origin}${callbackUrl}`,
+    const { Kakao } = window
+    if (!Kakao.isInitialized()) {
+      Kakao.init(process.env.KAKAO_CLIENT_ID)
+    } 
+    Kakao.Auth.login({
+      success: (auth : any) => {
+        authenticate('kakao', auth.access_token)
+      },
+      fail: (err : any) => {
+        console.log(err)
+      }
     })
   }
-
-  useEffect(() => {
-    const { Kakao } = window
-    if (Kakao.isInitialized()) {
-      return
-    } 
-    Kakao.init(process.env.KAKAO_CLIENT_ID)
-  }, [])
 
   const value = {
     LoginButton : () => <button type='submit' onClick={loginHandler}>카카오 로그인</button> ,
@@ -49,5 +48,3 @@ export default function KaKaoLoginProvider({
     </KakaoLoginContext.Provider>
   )
 }
-
-export const processToken = (router : NextRouter) : string => router.query.code as string

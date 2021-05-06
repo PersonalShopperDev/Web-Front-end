@@ -29,7 +29,7 @@ export default function AuthProvider({
   const authenticate = async (provider: string, token: string) => {
     const payload : any = {
         resource : provider,
-        code  : token
+        token
     }
     await fetch(getApiUrl('auth/login'), {
       body : JSON.stringify(payload),
