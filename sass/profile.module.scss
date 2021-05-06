@@ -1,0 +1,90 @@
+.header {
+    flex-direction: row;
+    justify-content: space-between;
+    display: flex;
+}
+
+.name {
+    flex-direction: row;
+    display: flex;
+    font-size: 2.8125rem;
+    font-weight: 700;
+    align-items: center;
+    padding-top: 1.75rem;
+    line-height: 3.375rem;
+}
+
+.name div:last-child {
+    margin-left: 2rem;
+}
+
+.category {
+    flex-direction: row;
+    display: flex;
+}
+
+.styleBox {
+    padding: 0.25rem 0.5rem;
+    font-weight: 500;
+    background-color: white;
+    border-radius: 1rem;
+    font-size: 0.5625rem;
+    margin-top: 2rem;
+    margin-right: 0.5rem;
+}
+
+.image {
+    border-radius: 125px;
+}
+
+.infoContainer {
+    padding-left: 1.3125rem;
+    padding-right: 1.3125rem;
+}
+
+.infoContainer .text {
+    font-size: 0.75rem;
+    color: rgb(61,61,61);
+    font-weight: 500;
+}
+
+.infoContainer .division {
+    border-bottom: 0.0625rem solid #dcdcdc;
+    padding-bottom: 1.3125rem;
+    padding-top: 1.3125rem;
+    font-weight: 300;
+    font-size: 1rem;
+}
+
+.infoContainer .division .name {
+    font-weight: 700;
+    font-size: 1.875rem;
+    margin-right: 0.5rem;
+    display: inline;
+}
+
+.scrollBox {
+    overflow: scroll;
+    height: 23rem;
+}
+
+.scrollBox::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollBox .division {
+    font-weight: 500;
+    font-size: 0.75rem;
+    color: rgb(61,61,61);
+}
+
+.scrollBox .division .title {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #000000;
+}
+
+.clothImage {
+    border-radius: 1rem;
+    padding: 0.25rem !important;
+}
