@@ -1,12 +1,12 @@
 import Layout from "../src/layouts/default";
 import Navigation from '../src/components/navigation';
-import StyleistView from "../src/templates/stylelistView";
+import StylistListView from "../src/templates/stylistListView";
 
 export default function Home() {
   return (
     <Layout
       Main={
-        <StyleistView />
+        <StylistListView />
       }
       Navigation={
         <Navigation />
