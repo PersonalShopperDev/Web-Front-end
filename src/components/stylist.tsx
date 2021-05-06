@@ -2,7 +2,7 @@ import Link from 'next/link'
 import styles from '../../sass/listup.module.scss'
 import Image from 'next/image';
 
-export default function Stylist ({ info } : { info : StyleListInfo }) {
+export default function Stylist ({ info } : { info : StylistInfo }) {
   return (
       <Link href={{pathname: "/stylist/profile", query: {stylist: JSON.stringify(info)}}} >
         <div className={styles.stylistBox}>
@@ -17,7 +17,7 @@ export default function Stylist ({ info } : { info : StyleListInfo }) {
   )
 }
 
-export interface StyleListInfo {
+export interface StylistInfo {
   profileImg: string, 
   name: string,
   grade: number,

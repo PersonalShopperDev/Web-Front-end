@@ -1,24 +1,26 @@
 import { useState } from "react"; 
-import styles from '../../sass/templates/stylelistView.module.scss'
-import Header from '../components/stylelistViewHeader'
-import Stylist, { StyleListInfo } from '../components/stylist'
+import styles from '../../sass/templates/stylistListView.module.scss'
+import Header from '../components/stylistListViewHeader'
+import Stylist, { StylistInfo } from '../components/stylist'
 
-export default function StylelistView() {
+export default function StylistListView() {
     const [isRanking, setIsRanking] = useState(false);
 
     return (
-        <section className={styles.main}>
+        <section className={styles.container}>
             <Header isRanking={isRanking} setIsRanking={setIsRanking}/>
+            <div className={styles.stylist}>
             {
                 !isRanking 
                     ? person.map((item, index) => <Stylist key={index} info={item}/> ) 
                     : null
             }
+            </div>
         </section>
     )
 }
 
-const person: StyleListInfo[] = [{
+const person: StylistInfo[] = [{
     profileImg: '/images/blackSooooo/blackSooooo.jpeg',
     name: '흑수',
     grade: 4.3,
@@ -46,4 +48,5 @@ const person: StyleListInfo[] = [{
     style: ['Monotone', 'Vintage', 'American'],
     introduction: '안녕하세요 전 혁우에요. 느낌 아니까.',
     photoList: ['/images/d.on.gh/1.jpeg','/images/d.on.gh/2.jpeg','/images/d.on.gh/3.jpeg','/images/d.on.gh/4.jpeg']
-}];
+},
+];
