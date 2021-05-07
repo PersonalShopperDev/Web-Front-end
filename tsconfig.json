@@ -24,7 +24,8 @@
       "lib/*": ["src/lib/*"],
       "providers/*": ["src/providers/*"],
       "components/*": ["src/components/*"],
-      "layouts/*": ["src/layouts/*"]
+      "widget/*": ["src/widget/*"],
+      "layouts/*": ["src/layouts/*"],
     }
   },
   "include": [
