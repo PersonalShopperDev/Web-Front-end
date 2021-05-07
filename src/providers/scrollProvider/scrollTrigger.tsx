@@ -5,8 +5,8 @@ import { useScroll } from './index'
 type State = 'before' | 'in' | 'after'
 
 interface Props {
-  children: React.ReactNode
-  transform: {
+  children?: React.ReactNode
+  transform?: {
     from: string
     to: string
     outro?: string
@@ -14,6 +14,10 @@ interface Props {
   defaultStyle?: string
   transition?: string
   className?: string
+  inClassName? : string
+  outClassName? : string
+  inCallback?: () => void
+  outCallback?: () => void
 }
 
 /**
@@ -26,6 +30,10 @@ export default function ScrollTrigger({
   transition,
   defaultStyle,
   className,
+  inClassName,
+  outClassName,
+  inCallback,
+  outCallback,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>()
 
@@ -35,12 +43,10 @@ export default function ScrollTrigger({
 
   const size = useWindowSize()
 
-  const { from, to, outro } = transform
-
   const setCondition = () => {
     const calculate = (): State => {
       const clientRect = containerRef.current.getBoundingClientRect()
-      if (clientRect.top < 0) {
+      if (clientRect.top < -0.5 * clientRect.height) {
         return 'after'
       }
       if (size.height < clientRect.top) {
@@ -51,30 +57,64 @@ export default function ScrollTrigger({
     setState(calculate())
   }
 
+  const getClassName = () : string => {
+    switch (state) {
+      case 'in':
+        return `${className} ${inClassName}`
+      case 'after':
+        return `${className} ${outClassName}`
+      default:
+        return className
+    }
+  }
+
+  const getTransform = (): string => {
+    if (!transform) {
+      return null
+    }
+    const { from, to, outro } = transform
+    switch (state) {
+      case 'before':
+        return from
+      case 'after':
+        return outro || to
+      default:
+        return to
+    }
+  }
+
+  const notify = () => {
+    switch (state) {
+      case 'before':
+        return null
+      case 'after':
+        return outCallback?.call(null)
+      default:
+        return inCallback?.call(null)
+    }
+  }
+
   useEffect(() => {
     attachScrollCallback(setCondition)
     return () => detachScrollCallback(setCondition)
   }, [])
 
   useEffect(() => {
-    const getStyleByCSS = (): string => {
-      switch (state) {
-        case 'before':
-          return from
-        case 'after':
-          return outro || to
-        default:
-          return to
-      }
-    }
-    containerRef.current.style.cssText = `transition: ${transition}; ${defaultStyle} ${getStyleByCSS()}`
+    notify()
+    containerRef.current.style.cssText = `transition: ${transition}; ${defaultStyle} ${getTransform()}`
   }, [state])
 
-  return <div ref={containerRef} className={className}>{children}</div>
+  return <div ref={containerRef} className={getClassName()}>{children}</div>
 }
 
 ScrollTrigger.defaultProps = {
+  children: null,
   transition: 'all 1s',
   defaultStyle: '',
   className: null,
+  inClassName: null,
+  outClassName: null,
+  inCallback: null,
+  outCallback: null,
+  transform: null,
 }

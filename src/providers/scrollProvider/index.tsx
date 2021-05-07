@@ -13,6 +13,7 @@ type scrollCallback = () => void
 interface ScrollProviderProps {
   attachScrollCallback : (callback : scrollCallback) => void
   detachScrollCallback : (callback : scrollCallback) => void
+  getScrollY : () => number
 }
 
 const ScrollContext = createContext<ScrollProviderProps>(null)
@@ -50,6 +51,8 @@ export default function ScrollProvider({
     })
   }
 
+  const getScrollY = () : number => data.result
+
   const setBodyHeight = () : void => {
     document.body.style.height = `${
       containerRef.current.getBoundingClientRect().height * 0.5
@@ -57,7 +60,7 @@ export default function ScrollProvider({
   }
 
   const smoothScroll = useCallback(() => {
-    requestAnimationFrame(() => smoothScroll())
+    requestAnimationFrame(smoothScroll)
     data.curr = window.scrollY
     data.prev += (data.curr - data.prev) * data.ease
     data.result = Math.round(data.prev * 100) / 100
@@ -68,7 +71,7 @@ export default function ScrollProvider({
   }, [data])
 
   useEffect(() => {
-    requestAnimationFrame(() => smoothScroll())
+    requestAnimationFrame(smoothScroll)
   }, [])
 
   useEffect(() => {
@@ -78,6 +81,7 @@ export default function ScrollProvider({
   const value = {
     attachScrollCallback,
     detachScrollCallback,
+    getScrollY,
   }
 
   return (
