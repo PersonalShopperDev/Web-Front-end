@@ -96,12 +96,144 @@
 
 .section2 {
     @include section();
-    background-color: brown;
+
+    .video {
+        position: absolute;
+    }
+
+    .stage {
+        position: absolute;
+        width : 100%;
+        height: 100%;
+        background-color: white;
+        perspective: 1000px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        mix-blend-mode:color-dodge;
+    }
+
+    .carousel {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform-style: preserve-3d;
+    }
+
+    .panel {
+        position: absolute;
+        width: 450px;
+        height: 380px;
+    }
+
+    .content {
+        width : 100%;
+        height: 100%;
+        background-color: rgba(black, 1);
+    }
+
+    @for $i from 0 to 6 {
+        .panel:nth-child(#{$i + 1}) {
+            transform: rotateY(calc(#{$i} * 60deg)) translateZ(800px)
+        }
+    }
+
+    .message {
+        color : black;
+        font-size: 8rem;
+        line-height: 1.5;
+        white-space: nowrap;
+    }
+
+    .messageWrapper {
+        position: absolute;
+        top : 190px;
+        right : 2rem;
+        overflow: hidden;
+    }
 }
+
 .section3 {
     @include section();
-    background-color: sandybrown;
+    height : unset;
+    padding : 2rem 0 6rem 0;
+    background-color: black;
+
+    .labelWrapper {
+        overflow: hidden;
+    }
+
+    .label {
+        color : white;
+        font-size: 3rem;
+        padding : 2rem;
+        line-height: 1;
+    }
+
+    .row {
+        display: flex;
+    }
+
+    .figure {
+        position: relative;
+        width : 400px;
+        padding : 2rem;
+        .image {
+            overflow: hidden;
+            >div {
+                transition : transform 1s;
+                &:hover {
+                    transform: scale(1.1, 1.1)
+                }
+            }
+        }
+
+        .curtain {
+            position: absolute;
+            top : 0px;
+            left : 0px;
+            height: 100%;
+            width : 100%;
+            background-color: black;
+            transform: scale(1, 1);
+            transform-origin: left;
+            transition: transform .5s;
+            transition-timing-function: ease-in;
+            &.active {
+                transform: scale(0, 1);
+            }
+            &.transition {
+                transition-timing-function: ease-out;
+                transform-origin: right;
+                transform: scale(1, 1);
+            }
+        }
+    }
+
+    .figure:nth-child(n + 4) {
+        width: 1px;
+        padding : 0;
+        .curtain.active {
+            transform: scale(1, 1);
+        }
+    }
 }
+
+@keyframes curtainSlideLeft {
+    0% {
+        transform-origin: right;
+        transform: scale(0, 1)
+    }
+    50% {
+        transform-origin: left;
+        transform: scale(1, 1)
+    }
+    100% {
+        transform-origin: left;
+        transform: scale(0, 1)
+    }
+}
+
 .section4 {
     @include section();
     background-color: honeydew;
