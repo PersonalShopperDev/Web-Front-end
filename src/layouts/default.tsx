@@ -1,25 +1,30 @@
-import { Fragment } from 'react'
+import React from 'react'
 
-export default function Layout({
+export default function Layout({ 
+  children,
   Header,
-  Main,
-  Navigation,
-} : {
-  Header? : React.ReactNode,
-  Main : React.ReactNode,
-  Navigation? : React.ReactNode,
+  Navigation, 
+}: { 
+  children: React.ReactNode,
+  Header?: React.ReactNode,
+  Navigation?: React.ReactNode,
 }) {
   return (
-    <Fragment>
+    <>
       <header>
-        {Header}
+        { Header }
       </header>
       <main>
-        {Main}
+        { children }
       </main>
       <nav>
-        {Navigation}
+        { Navigation }
       </nav>
-    </Fragment>
+    </>
   )
+}
+
+Layout.defaultProps = {
+  Header: null,
+  Navigation: null
 }

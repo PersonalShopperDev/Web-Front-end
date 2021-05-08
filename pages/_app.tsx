@@ -1,18 +1,18 @@
-import '../sass/global.scss'
 import { AppProps } from 'next/app'
-import { Fragment } from 'react'
+import AuthProvider from 'providers/authProvider'
+import 'sass/global.scss'
 
 const modalContainerID = 'modalContainer'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <Fragment>
+    <AuthProvider>
       <Component {...pageProps} />
-      <div id={modalContainerID}></div>
-    </Fragment>
+      <div id={modalContainerID} />
+    </AuthProvider>
   )
 }
 
-export function getModalContainer() : HTMLElement {
+export function getModalContainer(): HTMLElement {
   return document.getElementById(modalContainerID)
 }
