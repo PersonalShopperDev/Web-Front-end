@@ -118,23 +118,29 @@
         justify-content: center;
         align-items: center;
         transform-style: preserve-3d;
+        will-change: transform;
     }
 
     .panel {
         position: absolute;
         width: 450px;
         height: 380px;
+        will-change: transform;
     }
 
     .content {
         width : 100%;
         height: 100%;
         background-color: rgba(black, 1);
+        will-change: transform;
     }
 
     @for $i from 0 to 6 {
         .panel:nth-child(#{$i + 1}) {
-            transform: rotateY(calc(#{$i} * 60deg)) translateZ(800px)
+            transform: rotateY(calc(#{$i} * 60deg)) translateZ(800px);
+            .content {
+                animation: updown 4s infinite calc(#{$i} * .6s);
+            }
         }
     }
 
@@ -150,6 +156,21 @@
         top : 190px;
         right : 2rem;
         overflow: hidden;
+    }
+}
+
+@keyframes updown {
+    0% {
+        transition-timing-function: ease;
+        transform: translateY(0%)
+    }
+    50% {
+        transition-timing-function: ease-in;
+        transform: translateY(5%)
+    }
+    100% {
+        transition-timing-function: ease-out;
+        transform: translateY(0%)
     }
 }
 
@@ -195,6 +216,7 @@
             height: 100%;
             width : 100%;
             background-color: black;
+            will-change: transform;
             transform: scale(1, 1);
             transform-origin: left;
             transition: transform .5s;

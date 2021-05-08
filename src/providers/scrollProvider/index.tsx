@@ -55,7 +55,7 @@ export default function ScrollProvider({
 
   const setBodyHeight = () : void => {
     document.body.style.height = `${
-      containerRef.current.getBoundingClientRect().height * 0.5
+      containerRef.current.getBoundingClientRect().height
     }px`
   }
 
