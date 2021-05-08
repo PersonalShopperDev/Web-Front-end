@@ -1,10 +1,16 @@
-import Layout from 'layouts/default'
-import Profile from 'components/profile'
+import Layout from "../src/layouts/default";
+import Navigation from '../src/components/navigation';
+import StylistListView from "../src/templates/stylistListView";
 
 export default function Home() {
   return (
-    <Layout>
-      <Profile />
-    </Layout>
+    <Layout
+      Main={
+        <StylistListView />
+      }
+      Navigation={
+        <Navigation />
+      }
+    />
   )
 }
