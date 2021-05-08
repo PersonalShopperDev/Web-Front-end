@@ -12,11 +12,11 @@ export default function StylistDetail({ info } : { info : StylistInfo }) {
             <span className={styles.name}>{info.name}</span>Stylist
             <div className={styles.text}>
               <Image src="/images/icons/company.png" width="12.02" height="12.07"/>
-              &nbsp;&nbsp;&nbsp;{company}
+              <span>{company}</span>
             </div>
             <div className={styles.text}>
               <Image src="/images/icons/career.png" width="12" height="12"/>
-              &nbsp;&nbsp;&nbsp;{career}
+              <span>{career}</span>
             </div>
           </div>
           <div className={styles.scrollBox}>
