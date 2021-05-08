@@ -65,6 +65,14 @@
     border-top: 1px solid #c4c4c4;
 }
 
+.footer .option {
+    display: table;
+}
+
+.footer .option > span {
+    display: table-footer-group
+}
+
 .footer .stylist {
     color: #000000
 }
@@ -82,8 +90,7 @@
     padding-left: 1.125rem;
     margin-bottom: 1.3123rem;
 }
-
-.stylistBox div:last-child {
+.stylistBox > div:last-child {
     margin-left: 1.125rem;
 }
 
