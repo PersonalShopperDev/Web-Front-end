@@ -1,7 +1,8 @@
+import { Dispatch, SetStateAction } from "react";
 import styles from '../../sass/listup.module.scss'
 import Image from 'next/image';
 
-export default function Header({isRanking, setIsRanking}) {
+export default function Header({isRanking, setIsRanking} : {isRanking: boolean, setIsRanking: Dispatch<SetStateAction<boolean>>}) {
     return (
         <div className={styles.header}>
             <div>
