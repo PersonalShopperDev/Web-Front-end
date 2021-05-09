@@ -1,5 +1,7 @@
 import { useRouter } from 'next/dist/client/router'
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, {
+  createContext, useContext, useEffect, useState,
+} from 'react'
 
 interface authContext {
   user: any
@@ -42,7 +44,5 @@ export default function AuthProvider({
     signOut,
   }
 
-  return <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

@@ -1,0 +1,13 @@
+@use '../lib/image.scss' as image;
+
+.imageByWidth {
+    @include image.byWidth();
+}
+
+.imageByHeight {
+    @include image.byHeight();
+}
+
+.imageDefault {
+    position: relative;
+}

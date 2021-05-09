@@ -26,6 +26,9 @@ module.exports = {
     'linebreak-style': 0,
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
+    'no-plusplus': ['error', {
+      allowForLoopAfterthoughts: true,
+    }],
     'react/jsx-filename-extension': [1, {
       extensions: ['.tsx'],
     }],

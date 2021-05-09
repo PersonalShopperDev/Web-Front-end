@@ -1,0 +1,32 @@
+@mixin image {
+    position: relative;
+    >div{
+        position: unset !important;
+        >img {
+            object-fit: contain;
+            position: relative !important;
+        }
+    }
+}
+
+@mixin byWidth {
+    @include image();
+    >div{
+        width: inherit;
+        >img {
+            width: inherit !important;
+            height: auto !important;
+        }
+    }
+}
+
+@mixin byHeight {
+    @include image();
+    >div{
+        height: inherit;
+        >img {
+            width: auto !important;
+            height: inherit !important;
+        }
+    }
+}

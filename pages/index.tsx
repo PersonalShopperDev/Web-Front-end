@@ -1,24 +1,12 @@
-import { useState } from 'react';
-import Layout from "src/layouts/default";
-import Navigation from 'src/components/navigation';
-import Modal from 'src/components/modal';
-import styles from 'sass/modal.module.scss';
+import Layout from 'layouts/default'
+import dynamic from 'next/dynamic'
 
 export default function Home() {
-  const [showModal, setShowModal] = useState(false);
+  const Landing = dynamic(() => import('templates/landing'))
+
   return (
-    <Layout
-      Header={
-        <Navigation />
-      }
-      children={
-        <div className={styles.background}>
-          <button onClick={() => setShowModal(!showModal)}>
-            Click here
-          </button>
-          <Modal showModal={showModal} setShowModal={setShowModal}/>
-        </div>
-      }
-    />
+    <Layout>
+      <Landing />
+    </Layout>
   )
 }

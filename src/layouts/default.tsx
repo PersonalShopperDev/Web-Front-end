@@ -1,10 +1,10 @@
 import React from 'react'
 
-export default function Layout({ 
+export default function Layout({
   children,
   Header,
-  Navigation, 
-}: { 
+  Navigation,
+}: {
   children: React.ReactNode,
   Header?: React.ReactNode,
   Navigation?: React.ReactNode,
@@ -26,5 +26,5 @@ export default function Layout({
 
 Layout.defaultProps = {
   Header: null,
-  Navigation: null
+  Navigation: null,
 }

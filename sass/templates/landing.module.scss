@@ -1,0 +1,324 @@
+@mixin section {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width : 100%;
+    height: 1080px;
+    overflow: hidden;
+}
+
+.section0 {
+    @include section();
+    background-color: black;
+    color : white;
+    .video {
+        position: absolute;
+    }
+    
+    .content {
+        position: absolute;
+        width : 100%;
+        height: 100%;
+        background-color: rgba(black, .7);
+        color : white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 9rem;
+    }
+
+    .title {
+        text-align: center;
+        font-size: 6rem;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    .description {
+        max-width: 768px;
+        min-width: 300px;
+        padding : 1rem;
+        text-align: center;
+        font-size: 1.2rem;
+    }
+
+    .learnMore {
+        color : inherit;
+        font : inherit;
+        padding : 1rem 2rem;
+        margin : 2rem;
+        border: solid 1px white;
+    }
+}
+
+.section1 {
+    @include section();
+    color : white;
+    background-color: black;
+
+    .nameWrapper {
+        overflow: hidden;
+        margin: 1rem;
+        .name {
+            font-size: 2rem;
+        }
+    }
+
+    .description {
+        width : 400px;
+        transform: translateX(100px);
+    }
+
+    @mixin square {
+        border: solid 1px rgba(white, .5);
+    }
+
+    .squareWrapper {
+        position: absolute;
+    }
+
+    .squareLeft {
+        @include square();
+        width : 252px;
+        height: 252px;
+    }
+    
+    .squareRight {
+        @include square();
+        width : 512px;
+        height: 512px;
+    }
+    
+}
+
+.section2 {
+    @include section();
+
+    .video {
+        position: absolute;
+    }
+
+    .stage {
+        position: absolute;
+        width : 100%;
+        height: 100%;
+        background-color: white;
+        perspective: 1000px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        mix-blend-mode:color-dodge;
+    }
+
+    .carousel {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform-style: preserve-3d;
+        will-change: transform;
+    }
+
+    .panel {
+        position: absolute;
+        width: 450px;
+        height: 380px;
+        will-change: transform;
+    }
+
+    .content {
+        width : 100%;
+        height: 100%;
+        background-color: rgba(black, 1);
+        will-change: transform;
+    }
+
+    @for $i from 0 to 6 {
+        .panel:nth-child(#{$i + 1}) {
+            transform: rotateY(calc(#{$i} * 60deg)) translateZ(800px);
+            .content {
+                animation: updown 4s infinite calc(#{$i} * .6s);
+            }
+        }
+    }
+
+    .message {
+        color : black;
+        font-size: 8rem;
+        line-height: 1.5;
+        white-space: nowrap;
+    }
+
+    .messageWrapper {
+        position: absolute;
+        top : 190px;
+        right : 2rem;
+        overflow: hidden;
+    }
+}
+
+@keyframes updown {
+    0% {
+        transition-timing-function: ease;
+        transform: translateY(0%)
+    }
+    50% {
+        transition-timing-function: ease-in;
+        transform: translateY(5%)
+    }
+    100% {
+        transition-timing-function: ease-out;
+        transform: translateY(0%)
+    }
+}
+
+.section3 {
+    @include section();
+    height : unset;
+    padding : 2rem 0 6rem 0;
+    background-color: black;
+
+    .labelWrapper {
+        overflow: hidden;
+    }
+
+    .label {
+        color : white;
+        font-size: 3rem;
+        padding : 2rem;
+        line-height: 1;
+    }
+
+    .row {
+        display: flex;
+    }
+
+    .figure {
+        position: relative;
+        width : 400px;
+        padding : 2rem;
+        .image {
+            overflow: hidden;
+            >div {
+                transition : transform 1s;
+                &:hover {
+                    transform: scale(1.1, 1.1)
+                }
+            }
+        }
+
+        .curtain {
+            position: absolute;
+            top : 0px;
+            left : 0px;
+            height: 100%;
+            width : 100%;
+            background-color: black;
+            will-change: transform;
+            transform: scale(1, 1);
+            transform-origin: left;
+            transition: transform .5s;
+            transition-timing-function: ease-in;
+            &.active {
+                transform: scale(0, 1);
+            }
+            &.transition {
+                transition-timing-function: ease-out;
+                transform-origin: right;
+                transform: scale(1, 1);
+            }
+        }
+    }
+
+    .figure:nth-child(n + 4) {
+        width: 1px;
+        padding : 0;
+        .curtain.active {
+            transform: scale(1, 1);
+        }
+    }
+}
+
+@keyframes curtainSlideLeft {
+    0% {
+        transform-origin: right;
+        transform: scale(0, 1)
+    }
+    50% {
+        transform-origin: left;
+        transform: scale(1, 1)
+    }
+    100% {
+        transform-origin: left;
+        transform: scale(0, 1)
+    }
+}
+
+.section4 {
+    @include section();
+    background-color: darkred;
+    
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        perspective: 10000px;
+        * {
+            transform-style: preserve-3d;
+        }
+    }
+
+    .panel {
+        position: absolute;
+        width : 400px;
+        height: 500px;
+        transform-origin: bottom;
+        transition: transform .5s;
+    }
+
+    .contentWrapper {
+        cursor: pointer;
+        width : 100%;
+        height: 100%;
+        background-color: aliceblue;
+        transition: transform .5s;
+        font-family: inherit;
+        &:hover {
+            transform: scale(1.02);
+        }
+    }
+    .content {
+        color: black;
+        text-align: center;
+        transition: transform .5s;
+        .title {
+            padding: 1rem 0;
+            font-size: 3rem;
+            line-height: 1.5;
+            transform: translateZ(30px);
+        }
+        .key {
+            font-size: 2rem;
+        }
+        .description {
+            zoom: 2;
+            transform-origin: top;
+            font-size: 1rem;
+            transform: scale(.5) translateZ(10px);
+        }
+        &:hover {
+            transform: translateZ(10px);
+        }
+    }
+}
+
+.section5 {
+    height: 128px;
+    color : white;
+    background-color: rgb(12, 12, 12);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
