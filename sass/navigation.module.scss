@@ -1,0 +1,80 @@
+.navContainer {
+    background-color: #ff5917;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: {
+        left: 3rem;
+        right: 7rem;
+    }
+}
+
+.navContainer .title {
+    font-weight: 700;
+    font-size: 2rem;
+}
+
+.navContainer .menu {
+    font-weight: 500;
+    font-size: 1rem;
+    margin-right: 1.5rem;
+    padding: 0.5rem;
+}
+
+.navContainer .menu:hover {
+    color:linen;
+}
+
+.navContainer .menuIcon {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .navContainer {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .menuContainer {
+        position: fixed;
+        height: 100%;
+        width: 30%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 1.5rem;
+        position: absolute;
+        right: -30%;
+        background-color: white;
+        transition: all .35s;
+    }
+    
+    .menuContainer_active {
+        position: fixed;
+        height: 100%;
+        width: 30%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 1.5rem;
+        position: absolute;
+        right: 0;
+        background-color: white;
+        padding-top: 3rem;
+        transition: all .35s;
+    }
+    .menuContainer_active .menu {
+        font-size: 1rem;
+        margin-top: 1.5rem;
+        width: 100%;
+        margin-left: 1.5rem;
+        text-align: center;
+    }
+
+    .navContainer .menuIcon {
+        display: block;
+        position: absolute;
+        right: 1rem;
+        padding: 1rem;
+    }
+}

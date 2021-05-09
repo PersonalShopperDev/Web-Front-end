@@ -1,3 +1,28 @@
+import { useState } from 'react';
+import styles from 'sass/navigation.module.scss';
+import Image from 'next/image';
+
+export default function Navigation () {
+    const title: string = 'Personal Shopper';
+    const menu: string [] = ['유빈', '현수', '진수', '호연', '세현'];
+    const [menuToggle, setMenuToggle] = useState(false);
+
+    return (
+        <div className={styles.navContainer}>
+            <span className={styles.title}>{title}</span>
+            <div className={menuToggle ? styles.menuContainer_active : styles.menuContainer}>{menu.map(item => <span className={styles.menu} key={item}>{item}</span>)}</div>
+            <button className={styles.menuIcon} onClick={() => setMenuToggle(!menuToggle)}>
+                {
+                    menuToggle ? <Image src="/images/icons/Back.png" width="17" height="34"/> 
+                            : <Image src="/images/icons/menu.png" width="35" height="26"/>
+                }
+            </button>
+        </div>
+    )
+}
+
+
+/*
 import styles from '../../sass/listup.module.scss'
 import Image from 'next/image';
 
@@ -49,3 +74,4 @@ const nav: Navigation[] = [{
     height: 20,
     path: '/images/icons/mypage.png'
 },];
+*/
