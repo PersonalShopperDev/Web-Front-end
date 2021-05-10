@@ -1,9 +1,9 @@
-import { useKaKaoLogin } from '../providers/kakaoLoginProvider'
-import { useNaverLogin } from '../providers/naverLoginProvider'
+import { useKaKaoAuth } from '../providers/authProvider/kakaoAuthProvider'
+import { useNaverAuth } from '../providers/authProvider/naverAuthProvider'
 
 export default function LoginForm() {
-  const { LoginButton: NaverLoginButton } = useNaverLogin()
-  const { LoginButton: KaKaoLoginButton } = useKaKaoLogin()
+  const { LoginButton: NaverLoginButton } = useNaverAuth()
+  const { LoginButton: KaKaoLoginButton } = useKaKaoAuth()
 
   return (
     <>

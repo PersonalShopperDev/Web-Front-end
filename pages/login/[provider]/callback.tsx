@@ -1,15 +1,15 @@
 import { useRouter } from 'next/dist/client/router'
 import { useEffect } from 'react'
-import Layout from '../../../src/layouts/default'
-import { useAuth } from '../../../src/providers/authProvider'
-import { processToken as processNaverToken } from '../../../src/providers/naverLoginProvider'
+import Layout from 'layouts/default'
+import { useAuth } from 'providers/authProvider'
+import { processToken as processNaverToken } from 'providers/authProvider/naverAuthProvider'
 
 export default function Page() {
   const router = useRouter()
   const { authenticate } = useAuth()
 
-  const getToken = () : string => {
-    switch(router.query.provider) {
+  const getToken = (): string => {
+    switch (router.query.provider) {
       case 'naver':
         return processNaverToken(router)
       default:
@@ -24,8 +24,10 @@ export default function Page() {
     }
     authenticate(provider as string, getToken())
   }, [router])
-  
-  return <Layout>
-    <p>processing ...</p>
-  </Layout>
+
+  return (
+    <Layout>
+      <p>processing ...</p>
+    </Layout>
+  )
 }

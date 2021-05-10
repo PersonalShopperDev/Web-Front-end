@@ -1,5 +1,6 @@
 import { NextRouter } from 'next/dist/client/router'
 import React, { createContext, useContext, useEffect } from 'react'
+import { ThridPartyAuthProps } from '.'
 
 declare global {
   // eslint-disable-next-line no-unused-vars
@@ -8,22 +9,19 @@ declare global {
   }
 }
 
-interface NaverLoginProps {
-  // eslint-disable-next-line no-undef
-  LoginButton: () => JSX.Element
-}
+interface NaverAuthProps extends ThridPartyAuthProps { }
 
-const NaverLoginContext = createContext<NaverLoginProps>(null)
-export const useNaverLogin = () => useContext(NaverLoginContext)
+const NaverAuthContext = createContext<NaverAuthProps>(null)
+export const useNaverAuth = () => useContext(NaverAuthContext)
 
-export default function NaverLoginProvider({
+export default function NaverAuthProvider({
   children,
 }: {
   children: React.ReactNode
-}) { 
+}) {
   const provider = 'naver'
 
-  const callbackUrl = `/login/${provider}/callback` 
+  const callbackUrl = `/login/${provider}/callback`
 
   useEffect(() => {
     const { naver } = window
@@ -42,13 +40,13 @@ export default function NaverLoginProvider({
   }, [])
 
   const value = {
-    LoginButton : () => <div id="naverIdLogin" />,
+    LoginButton: () => <div id="naverIdLogin" />,
   }
-  
+
   return (
-    <NaverLoginContext.Provider value={value}>
+    <NaverAuthContext.Provider value={value}>
       {children}
-    </NaverLoginContext.Provider>
+    </NaverAuthContext.Provider>
   )
 }
 
