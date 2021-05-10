@@ -3,6 +3,35 @@
 
 <br>
 
+## Naming Convention
+### Javscript & Typescript
+|Name|Convention|
+|---|---|
+|file|kebab-case|
+|function|camelCase|
+|variable|camelCase|
+|constant|UPPER_SNAKE_CASE|
+|interface|PascalCase|
+|class|PascalCase|
+|component|PascalCase|
+|type|PascalCase|
+|enum|Don't use it. Use string union|
+
+<br>
+
+### Sass
+
+|Name|Convention|
+|---|---|
+|local variable|kebab-case|
+|Global variable|G-kebab-case|
+|keyframes|kebab-case|
+|selector|camelCase|
+|mixin|camelCase|
+|function|camelCase|
+
+<br>
+
 ## Directory Structure
 ### /pages
 + Import Layout, and inject into it components like header, navigation, and templates or something.
@@ -17,8 +46,6 @@
 + ### /layouts
     + The skeleton of a page. 
     + It defines relationship among header, main, footer, or nav.
-+ ### /lib
-    + Write utility functions like fetcher, date convert, and whatever.
 + ### /providers
     + Write Context API(React).
     + It is for dealing with Global data like an authentication.
@@ -29,3 +56,5 @@
 ### /sass
 + Write CSS.
 + Maybe you can make another /components, /layout, /providers under this directory just like /src.
+### /lib
++ Write utility functions like fetcher, date convert, and whatever.
