@@ -20,11 +20,12 @@
     "baseUrl": ".",
     "paths": {
       "sass/*": ["sass/*"],
+      "lib/*": ["lib/*"],
       "templates/*": ["src/templates/*"],
-      "lib/*": ["src/lib/*"],
       "providers/*": ["src/providers/*"],
       "components/*": ["src/components/*"],
-      "layouts/*": ["src/layouts/*"]
+      "layouts/*": ["src/layouts/*"],
+      "widgets/*": ["src/widgets/*"],
     }
   },
   "include": [

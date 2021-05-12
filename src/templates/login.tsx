@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { useAuth } from '../providers/authProvider'
+import { useAuth } from 'providers/authProvider'
 
 export default function Login() {
   const { user, signOut } = useAuth()
