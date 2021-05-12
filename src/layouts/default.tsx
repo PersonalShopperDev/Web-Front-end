@@ -1,11 +1,24 @@
 import React from 'react'
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({
+  children,
+  Header,
+  Navigation,
+}: {
+  children: React.ReactNode
+  Header?: React.ReactNode
+  Navigation?: React.ReactNode
+}) {
   return (
     <>
-      <header />
+      <header>{Header}</header>
       <main>{children}</main>
-      <footer />
+      <nav>{Navigation}</nav>
     </>
   )
+}
+
+Layout.defaultProps = {
+  Header: null,
+  Navigation: null,
 }

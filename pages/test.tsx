@@ -4,7 +4,7 @@ import Layout from 'layouts/default'
 export default function Home() {
   return (
     <Layout>
-      <h1>Personal Shopper</h1>
+      <p>this is the test Page</p>
       <Login />
     </Layout>
   )
