@@ -1,4 +1,4 @@
-import { useRef, Dispatch, SetStateAction, useEffect } from 'react';
+import { useRef, Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styles from 'sass/modal.module.scss';
 
 export default function Modal ({
@@ -19,17 +19,35 @@ export default function Modal ({
             setShowModal(false);
         }
     }
+
+    const [fixedHeight, setFixedHeight] = useState(0)
+
     useEffect(() => {
         if(showModal){
+            setFixedHeight(document.documentElement.scrollTop);
+            document.body.style.top = `${-1*document.documentElement.scrollTop}px`;
             document.body.style.position = "fixed";
         }else{
             document.body.style.position = "relative";
+            document.body.style.top = '0';
+            window.scrollTo({top:fixedHeight})
         }
     }, [showModal]);
+
+    const scrollEventListner = () => {
+        console.log('scrollY: ' + window.scrollY);
+        console.log('scrollTop: ' + document.documentElement.scrollTop)
+    };
+
+    useEffect(() => {
+      document.addEventListener('scroll', scrollEventListner);
+      return  () => document.removeEventListener('scroll', scrollEventListner);
+    }, []);
+
     return (
         <>
             {showModal ? 
-            <div className={styles.modalBackground} ref={modalRef} onClick={closeModal}>
+            <div className={styles.modalBackground} ref={modalRef} onClick={closeModal} id="modal">
                 <div className={styles.modalContainer}>
                     <span>{title}</span>
                     <span>{content}</span>
