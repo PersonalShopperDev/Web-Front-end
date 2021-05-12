@@ -1,3 +1,7 @@
+.hideNav {
+    top: -100%;
+}
+
 .navContainer {
     background-color: #ff5917;
     display: flex;
@@ -7,6 +11,9 @@
         left: 3rem;
         right: 7rem;
     }
+    position: fixed;
+    width: 100%;
+    z-index: 1;
 }
 
 .navContainer .title {
@@ -34,6 +41,9 @@
     .navContainer {
         display: flex;
         flex-direction: column;
+        position: fixed;
+        width: 100%;
+        z-index: 1;
     }
 
     .menuContainer {
@@ -44,7 +54,6 @@
         flex-direction: column;
         align-items: center;
         padding-top: 1.5rem;
-        position: absolute;
         right: -30%;
         background-color: white;
         transition: all .35s;
@@ -59,13 +68,14 @@
         flex-direction: column;
         align-items: center;
         padding-top: 1.5rem;
-        position: absolute;
         right: 0;
         background-color: white;
         padding-top: 3rem;
         transition: all .35s;
         z-index: 1;
+        top: 0;
     }
+
     .menuContainer_active .menu {
         font-size: 1rem;
         margin-top: 1.5rem;
@@ -76,9 +86,10 @@
 
     .navContainer .menuIcon {
         display: block;
-        position: absolute;
+        position: fixed;
         right: 1rem;
         padding: 1rem;
         z-index: 2;
+        top: 0;
     }
 }
