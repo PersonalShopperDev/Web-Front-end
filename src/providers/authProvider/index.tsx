@@ -2,7 +2,7 @@ import { useRouter } from 'next/dist/client/router'
 import React, {
   createContext, useContext, useEffect, useState,
 } from 'react'
-import Api, { getApiUrl } from '../../lib/api'
+import Api, { getApiUrl } from '../../../lib/api'
 
 interface User {
   accessToken: string
