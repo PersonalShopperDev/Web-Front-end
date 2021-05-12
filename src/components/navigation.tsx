@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from 'sass/navigation.module.scss'
 import Image from 'next/image'
 
@@ -7,14 +7,21 @@ export default function Navigation() {
   const menu: string[] = ['유빈', '현수', '진수', '호연', '세현']
   const [menuToggle, setMenuToggle] = useState(false)
 
+  const scrollEventListner = () => {
+    document.documentElement.scrollTop === 0 ? 
+      document.getElementById('nav').classList.remove(styles.hideNav) 
+    : document.getElementById('nav').classList.add(styles.hideNav)
+  };
+
+  useEffect(() => {
+    document.addEventListener('scroll', scrollEventListner);
+    return  () => document.removeEventListener('scroll', scrollEventListner);
+  }, []);
+
   return (
-    <div className={styles.navContainer}>
+    <div className={styles.navContainer} id="nav">
       <span className={styles.title}>{title}</span>
-      <div
-        className={
-          menuToggle ? styles.menuContainer_active : styles.menuContainer
-        }
-      >
+      <div className={ menuToggle ? styles.menuContainer_active : styles.menuContainer } id="menu">
         {menu.map((item) => (
           <span className={styles.menu} key={item}>
             {item}
@@ -24,7 +31,7 @@ export default function Navigation() {
       <button
         type="button"
         className={styles.menuIcon}
-        onClick={() => setMenuToggle(!menuToggle)}
+        onClick={() => setMenuToggle(prev => !prev)}
       >
         {menuToggle ? (
           <Image src="/images/icons/Back.png" width="17" height="34" />
