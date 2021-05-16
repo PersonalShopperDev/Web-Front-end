@@ -3,27 +3,46 @@ import { useEffect, useState } from 'react'
 import styles from 'sass/templates/landing.module.scss'
 import ConstraintImage from 'widget/constraintImage'
 
-let from = 0
-
 export default function Section3() {
   let key = 0
   let interval : any
-
   const [active, setActive] = useState(false)
   const [transition, triggerTransition] = useState(0)
-
+  const [skip, setSkip] = useState(0)
+  const [from, setFrom] = useState(0)
   const transit = () => {
     triggerTransition(1)
     const offTransition = () => {
-      from += 3
+      if (document.documentElement.scrollWidth > 1096) {
+        setFrom((prev) => prev + 3)
+      } else if (document.documentElement.scrollWidth > 768) {
+        setFrom((prev) => prev + 2)
+      } else {
+        setFrom((prev) => prev + 1)
+      }
       triggerTransition(0)
     }
     setTimeout(offTransition, 500)
   }
-
+  const selectImageNum = () => {
+    if (document.documentElement.scrollWidth > 1096) {
+      setSkip(3)
+    } else if (document.documentElement.scrollWidth > 768) {
+      setSkip(2)
+    } else {
+      setSkip(1)
+    }
+  }
+  const handleResize = () => {
+    clearInterval(interval)
+    selectImageNum()
+    interval = setInterval(transit, 5000)
+  }
   useEffect(() => {
-    interval = setInterval(transit, 3000)
-    return () => clearInterval(interval)
+    selectImageNum()
+    interval = setInterval(transit, 5000)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   return (
@@ -47,12 +66,12 @@ export default function Section3() {
           setActive(false)
         }}
       >
-        {[...Array(6)].map(() => {
+        {[...Array(skip)].map(() => {
           key += 1
           return (
             <Figure
               key={key}
-              src={`/images/snaps/${(from + key - 1) % 12}.jpg`}
+              src={`/images/snaps/${(from + key - 1) % 13}.jpg`}
               active={active}
               transition={transition}
             />
