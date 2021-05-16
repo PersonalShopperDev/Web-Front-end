@@ -204,7 +204,7 @@
             >div {
                 transition : transform 1s;
                 &:hover {
-                    transform: scale(1.1, 1.1)
+                    transform: rotateY(180deg)
                 }
             }
         }
@@ -222,7 +222,7 @@
             transition: transform .5s;
             transition-timing-function: ease-in;
             &.active {
-                transform: scale(0, 1);
+                transform: scale(1, 0);
             }
             &.transition {
                 transition-timing-function: ease-out;
