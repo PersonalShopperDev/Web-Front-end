@@ -1,25 +1,25 @@
-import Layout from 'layouts/default'
-import { GetServerSideProps } from 'next'
+import { NextPageContext } from 'next'
 
-export default function Error({ statusCode } : { statusCode : number }) {
+export default function Error({ statusCode } : { statusCode: number}) {
   return (
-    <Layout>
-      <p>
-        {
-          statusCode
-            ? `An error ${statusCode} occured on server`
-            : 'An error occured on client'
-        }
-      </p>
-    </Layout>
+    <p>
+      {statusCode
+        ? `An error ${statusCode} occurred on server`
+        : 'An error occurred on client'}
+    </p>
   )
 }
 
-export const getServerSideProps : GetServerSideProps = async ({ res }) => {
-  const statusCode = res ? res.statusCode : 404
-  return {
-    props: {
-      statusCode,
-    },
+Error.getInitialProps = ({ res, err }: NextPageContext) => {
+  const getStatusCode = () => {
+    if (res) {
+      return res.statusCode
+    }
+    if (err) {
+      return err.statusCode
+    }
+    return 404
   }
+  const statusCode = getStatusCode()
+  return { statusCode }
 }
