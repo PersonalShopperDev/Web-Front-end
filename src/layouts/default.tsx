@@ -1,24 +1,25 @@
 import React from 'react'
+import styles from 'sass/layouts/default.module.scss'
 
 export default function Layout({
   children,
-  Header,
-  Navigation,
+  header,
+  bottom,
 }: {
   children: React.ReactNode
-  Header?: React.ReactNode
-  Navigation?: React.ReactNode
+  header?: React.ReactNode
+  bottom?: React.ReactNode
 }) {
   return (
     <>
-      <header>{Header}</header>
-      <main>{children}</main>
-      <nav>{Navigation}</nav>
+      {header && <header className={styles.header}>{header}</header>}
+      <main className={styles.main}>{children}</main>
+      {bottom && <section className={styles.bottom}>{bottom}</section>}
     </>
   )
 }
 
 Layout.defaultProps = {
-  Header: null,
-  Navigation: null,
+  header: null,
+  bottom: null,
 }

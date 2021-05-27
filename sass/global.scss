@@ -1,17 +1,15 @@
+@use './lib/variables.scss' as variables;
+@use './lib/colors.scss' as colors;
+
 * {
   margin : 0;
   padding : 0;
   box-sizing: border-box;
 }
 
-html {
-  width: 100%;
-  height: 100%;
-}
 body {
-  position: relative;
-  width: 100%;
-  height: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 article, aside, details, figcaption, figure,
@@ -88,4 +86,13 @@ input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+#__next {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: variables.$width-default;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
