@@ -36,6 +36,8 @@ export default function AuthProvider({
   const ACCESS_TOKEN = 'accessToken'
   const REFRESH_TOKEN = 'refreshToken'
 
+  const silentRefreshInterval = 1000 * 60 * 29
+
   const authenticate = async (provider: string, token: string) : Promise<void> => {
     const payload: any = {
       resource: provider,
@@ -79,7 +81,7 @@ export default function AuthProvider({
       accessToken,
       refreshToken,
     })
-    setTimeout(silentRefresh, 1000 * 60 * 29)
+    setTimeout(silentRefresh, silentRefreshInterval)
     setPending(false)
   }
 
