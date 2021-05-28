@@ -1,10 +1,15 @@
 @use './lib/variables.scss' as variables;
 @use './lib/colors.scss' as colors;
+@import './lib/fonts.scss';
 
 * {
   margin : 0;
   padding : 0;
   box-sizing: border-box;
+}
+
+html {
+  font-family: 'Montserrat', 'Noto Sans KR';
 }
 
 body {
