@@ -1,0 +1,14 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 57px;
+}
+
+.title {
+    font-size: 18px;
+}
+
+.landings, .actions {
+    display: flex;
+}
