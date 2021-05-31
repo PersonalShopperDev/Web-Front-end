@@ -21,7 +21,7 @@ export default function Icon({
       style={{
         width: size,
         height: size,
-        backgroundImage: `url(icons/${src})`,
+        backgroundImage: `url(/icons/${src})`,
       }}
     />
   )
