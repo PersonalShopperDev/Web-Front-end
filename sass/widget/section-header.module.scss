@@ -1,0 +1,16 @@
+@use '../lib/colors.scss' as colors;
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.title {
+    font-size: 18px;
+}
+
+.more {
+    font-size: 10px;
+    color: colors.$primary-600;
+}
