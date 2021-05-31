@@ -99,5 +99,7 @@ input[type="number"]::-webkit-inner-spin-button {
   flex-direction: column;
   width: variables.$width-default;
   min-height: 100vh;
+  color: colors.$primary-700;
+  background-color: colors.$background;
   overflow-x: hidden;
 }
