@@ -1,0 +1,23 @@
+.navContainer {
+    height: 75px;
+    border-top: 1px solid #c4c4c4;
+    margin: auto;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    text-align: center;
+}
+
+.option {
+    display: table;
+    
+}
+
+.option > span {
+    display: table-footer-group
+}
+
+.optionText {
+    font-size: 10px;
+    color: #c4c4c4
+}
