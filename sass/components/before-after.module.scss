@@ -1,0 +1,69 @@
+@use '../lib/colors.scss' as colors;
+@import '../lib/no-drag.scss';
+
+@mixin padding {
+    padding: 0 17px;
+}
+
+.container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-top: 32px;
+}
+
+.header {
+    @include padding();
+}
+
+.articleContainer {
+    display: flex;
+    margin-top: 20px;
+}
+
+.article {
+    flex-shrink: 0;
+    width: 100%;
+}
+
+.photozone {
+    display: flex;
+    width: 100%;
+    height: 384px;
+    @include padding();
+}
+
+.figure {
+    @include noDrag();
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    &.before {
+      background-color: #f8f8f8;
+    }
+    &.after {
+      background-color: colors.$accent;
+    }
+}
+
+.figcaption {
+    position: absolute;
+    top: 28px;
+    font-size: 12px;
+}
+
+.caption {
+    margin-top: 12px;
+    font-size: 16px;
+    @include padding();
+}
+
+.description {
+    margin-top: 4px;
+    font-size: 10px;
+    color: colors.$primary-400;
+}
