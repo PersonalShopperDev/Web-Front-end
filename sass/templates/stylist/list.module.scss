@@ -1,0 +1,21 @@
+.listContainer {
+    align-self: center;
+    overflow: auto;
+    height: 100%;
+}
+
+.listContainer::-webkit-scrollbar {
+    display: none;
+}
+
+.filter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+}
+.filterText{
+    font-size: 11px;
+    margin-right: 3px;
+}

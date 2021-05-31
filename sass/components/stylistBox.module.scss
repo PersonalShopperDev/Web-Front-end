@@ -1,0 +1,54 @@
+.stylistBox {
+    width: 341px;
+    height: 128px;
+    border-radius: 9px;
+    box-shadow: 0 0 13px 0 rgba(0,0,0,0.11);
+    margin-bottom: 14px;
+    display: flex;
+    flex-direction: row;
+    font-size: 11px;
+    padding-left: 20.22px;
+    padding-top: 18px;
+    padding-bottom: 18px;
+}
+
+.profileImg {
+    border-radius: 8px;
+}
+
+.infoBox {
+    display: flex;
+    flex-direction: column;
+    padding-left: 18px;
+    width: 100%;
+}
+
+.name {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 20.43px;
+    margin-right: 5px;
+}
+
+.stylistText {
+    font-weight: 500;
+}
+
+.indicatorText {
+    font-weight: 600;
+    color: #444444;
+    margin-top: 10px;
+    margin-bottom: 16px;
+}
+.indicatorText > span {
+    margin-left: 7.08px;
+    margin-right: 7.08px;
+}
+.style {
+    border: 1px solid #c4c4c4;
+    padding: 0.25rem 0.5625rem;
+    border-radius: 0.9375rem;
+    font-size: 0.5625rem;
+    margin-right: 0.375rem;
+    display: inline-block;
+}
