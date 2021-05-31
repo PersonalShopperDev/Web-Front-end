@@ -1,11 +1,15 @@
-import Login from 'templates/login'
 import Layout from 'layouts/default'
+import StylistHome from 'templates/stylist-home'
+import StylistHomeAppBar from 'components/app-bar/stylist-home'
 
 export default function Page() {
   return (
-    <Layout>
-      <h1>Personal Shopper</h1>
-      <Login />
+    <Layout
+      header={(
+        <StylistHomeAppBar />
+      )}
+    >
+      <StylistHome />
     </Layout>
   )
 }
