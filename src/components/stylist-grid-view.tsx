@@ -11,7 +11,7 @@ export default function StylistGridView() {
       />
       <section className={styles.grid}>
         {data.map(() => (
-          <figure className={styles.figure}>
+          <figure key={Math.random()} className={styles.figure}>
             <div className={styles.imageWrapper} style={{ backgroundColor: `#${Math.random().toString(16).slice(-6)}` }}>
               <img src="/" alt="stylist" />
             </div>

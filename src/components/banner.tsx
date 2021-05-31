@@ -65,6 +65,7 @@ export default function Banner() {
       <div className={styles.indicator}>
         {[...Array(figureArray.length)].map((_, index) => (
           <div
+            key={figureArray[index]}
             className={cn(
               styles.child,
               index === temporaryImages.indexOf(figureArray[0]) && styles.active,
