@@ -6,6 +6,7 @@ import StylistGridView, { StylistGridViewData } from 'components/stylist-grid-vi
 import StylistHomeAppBar from 'components/app-bar/stylist-home'
 import { GetServerSideProps } from 'next'
 import { communicateWithContext } from 'lib/api'
+import getServerSideAuth from 'lib/server/auth'
 
 interface Props {
   needLogin: boolean,
@@ -34,11 +35,8 @@ export default function Page({ needLogin, data } : Props) {
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
-  const [authResponse, dataResponse] = await Promise.all([
-    communicateWithContext({
-      url: '/auth/test',
-      context,
-    }),
+  const [{ authenticated }, dataResponse] = await Promise.all([
+    getServerSideAuth(context),
     communicateWithContext({
       url: '/home',
       context,
@@ -56,7 +54,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
 
   const data = await dataResponse.json()
 
-  if (!authResponse.ok) {
+  if (!authenticated) {
     return {
       props: {
         needLogin: true,
@@ -64,6 +62,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
       },
     }
   }
+
   return {
     props: {
       needLogin: false,
