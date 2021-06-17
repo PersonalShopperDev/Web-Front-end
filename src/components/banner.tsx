@@ -3,14 +3,17 @@ import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import styles from 'sass/components/banner.module.scss'
 
-export default function Banner() {
-  const temporaryImages = ['red', 'green', 'blue']
+export interface BannerData {
+  img: string,
+}
 
-  const [figureArray, setFigureArray] = useState(temporaryImages)
+export default function Banner({ data }: { data: BannerData[] }) {
+  const [figureArray, setFigureArray] = useState(data)
 
+  console.log(data)
   const carouselRef = useRef<HTMLElement>()
 
-  const data = {
+  const state = {
     animation: null,
     interval: 3000,
     timeout: null,
@@ -19,14 +22,14 @@ export default function Banner() {
   }
 
   const animate = () => {
-    data.animation = requestAnimationFrame(animate)
-    carouselRef.current.style.transform = `translateX(-${data.current * 100}%)`
+    state.animation = requestAnimationFrame(animate)
+    carouselRef.current.style.transform = `translateX(-${state.current * 100}%)`
   }
 
   const tranistion = () => {
-    carouselRef.current.style.transition = `transform ${data.transition}ms`
-    data.current += 1
-    setTimeout(arrange, data.transition)
+    carouselRef.current.style.transition = `transform ${state.transition}ms`
+    state.current += 1
+    setTimeout(arrange, state.transition)
   }
 
   const arrange = () => {
@@ -35,29 +38,28 @@ export default function Banner() {
       const [prev, ...rest] = array
       return [...rest, prev]
     })
-    data.current = 0
+    state.current = 0
   }
 
   useEffect(() => {
-    data.timeout = setInterval(tranistion, data.interval)
-    data.animation = requestAnimationFrame(animate)
+    state.timeout = setInterval(tranistion, state.interval)
+    state.animation = requestAnimationFrame(animate)
     return () => {
-      clearInterval(data.timeout)
-      cancelAnimationFrame(data.animation)
+      clearInterval(state.timeout)
+      cancelAnimationFrame(state.animation)
     }
   }, [])
 
   return (
     <section className={styles.container}>
       <section className={styles.carousel} ref={carouselRef}>
-        {figureArray.map((value) => (
-          <Link href="/" key={value}>
+        {figureArray.map(({ img }) => (
+          <Link href="/" key={img}>
             <a
               href="/"
               className={styles.figure}
-              style={{ backgroundColor: value }}
             >
-              <img src={value} alt="banner" />
+              <img src={img} alt="banner" />
             </a>
           </Link>
         ))}
@@ -65,10 +67,11 @@ export default function Banner() {
       <div className={styles.indicator}>
         {[...Array(figureArray.length)].map((_, index) => (
           <div
-            key={figureArray[index]}
+            key={figureArray[index].img}
             className={cn(
               styles.child,
-              index === temporaryImages.indexOf(figureArray[0]) && styles.active,
+              index === data.findIndex((value) => value.img === figureArray[0].img)
+              && styles.active,
             )}
           />
         ))}

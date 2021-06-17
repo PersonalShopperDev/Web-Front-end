@@ -1,8 +1,14 @@
 import SectionHeader from 'src/widget/section-header'
 import styles from 'sass/components/stylist-grid-view.module.scss'
 
-export default function StylistGridView() {
-  const data = [...Array(6)]
+export interface StylistGridViewData {
+  img: string,
+  name: string,
+  hire: number,
+  review: number,
+}
+
+export default function StylistGridView({ data } : { data: StylistGridViewData[] }) {
   return (
     <section className={styles.container}>
       <SectionHeader
@@ -10,14 +16,19 @@ export default function StylistGridView() {
         moreHref="/"
       />
       <section className={styles.grid}>
-        {data.map(() => (
+        {data.map(({
+          img,
+          name,
+          hire = 0,
+          review = 0,
+        }) => (
           <figure key={Math.random()} className={styles.figure}>
-            <div className={styles.imageWrapper} style={{ backgroundColor: `#${Math.random().toString(16).slice(-6)}` }}>
-              <img src="/" alt="stylist" />
+            <div className={styles.imageWrapper}>
+              <img src={img} alt="stylist" />
             </div>
             <figcaption className={styles.figcaption}>
-              <h4 className={styles.stylist}>유지원 스타일리스트</h4>
-              <span className={styles.info}>{`고용 ${12}회 | 리뷰 ${10}`}</span>
+              <h4 className={styles.stylist}>{`${name} 스타일리스트`}</h4>
+              <span className={styles.info}>{`고용 ${hire}회 | 리뷰 ${review}`}</span>
             </figcaption>
           </figure>
         ))}
