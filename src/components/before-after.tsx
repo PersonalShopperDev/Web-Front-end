@@ -13,7 +13,7 @@ export interface BeforeAfterData {
 
 export default function BeforeAfter({ data } : {data: BeforeAfterData[]}) {
   const description = '리뷰 사진 클릭 시 스타일리스트 프로필로 이동합니다'
-  console.log(data)
+
   return (
     <section className={styles.container}>
       <section className={styles.header}>

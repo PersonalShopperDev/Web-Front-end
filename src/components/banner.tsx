@@ -10,7 +10,6 @@ export interface BannerData {
 export default function Banner({ data }: { data: BannerData[] }) {
   const [figureArray, setFigureArray] = useState(data)
 
-  console.log(data)
   const carouselRef = useRef<HTMLElement>()
 
   const state = {
