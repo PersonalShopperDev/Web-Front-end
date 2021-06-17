@@ -82,7 +82,11 @@ Maybe you can make another /components, /layout, /providers under this directory
 Write utility functions like fetcher, date convert, and whatever.
 + ### /api
     + For fetching data.
++ ### /config
+    + For constant variables on global environment.
 + ### /hooks
     + For React.js custom hooks.
++ ### /server
+    + For serverSideFunctions working in getStaticProps, getServerSideProps and so on.
 + ### /util
     + For any utility functions.
