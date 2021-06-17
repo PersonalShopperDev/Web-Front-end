@@ -46,6 +46,9 @@ export default function Carousel({
   const animate = (): void => {
     transitionData.animation = requestAnimationFrame(animate)
 
+    if (!containerRef.current) {
+      return
+    }
     const { offsetWidth } = containerRef.current
 
     if (!dragData.control) {
