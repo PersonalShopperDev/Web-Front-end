@@ -1,6 +1,6 @@
 import { cn } from 'lib/util'
 import { MouseEventHandler } from 'react'
-import styles from 'sass/widget/icon.module.scss'
+import styles from 'sass/widgets/icon.module.scss'
 
 export default function Icon({
   className,
@@ -11,7 +11,7 @@ export default function Icon({
   className?: string
   src: string
   size? : number
-  onClick: MouseEventHandler
+  onClick?: MouseEventHandler
 }) {
   return (
     <input
@@ -21,7 +21,7 @@ export default function Icon({
       style={{
         width: size,
         height: size,
-        backgroundImage: `url(icons/${src})`,
+        backgroundImage: `url(/icons/${src})`,
       }}
     />
   )
@@ -30,4 +30,5 @@ export default function Icon({
 Icon.defaultProps = {
   className: null,
   size: 16,
+  onClick: null,
 }

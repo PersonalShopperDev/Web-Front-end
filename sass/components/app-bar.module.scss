@@ -1,6 +1,6 @@
 .container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     height: 57px;
 }
@@ -10,5 +10,14 @@
 }
 
 .landings, .actions {
+    position: absolute;
     display: flex;
+}
+
+.landings {
+    left: 15px;
+}
+
+.actions {
+    right: 15px;
 }

@@ -1,12 +1,15 @@
+import communicate from 'lib/api'
+import { deleteCookie, getCookie, setCookie } from 'lib/util/cookie'
 import { useRouter } from 'next/dist/client/router'
 import React, {
   createContext, useContext, useEffect, useState,
 } from 'react'
-import Api, { getApiUrl } from 'lib/api'
+
+export const ACCESS_TOKEN = 'accessToken'
+export const REFRESH_TOKEN = 'refreshToken'
 
 interface User {
   accessToken: string
-  refreshToken: string
 }
 
 interface AuthProps {
@@ -33,9 +36,7 @@ export default function AuthProvider({
   const [pending, setPending] = useState(true)
   const [user, setUser] = useState<User>(null)
 
-  const ACCESS_TOKEN = 'accessToken'
-  const REFRESH_TOKEN = 'refreshToken'
-
+  const tokenExpiration = 1000 * 60 * 30
   const silentRefreshInterval = 1000 * 60 * 29
 
   const authenticate = async (provider: string, token: string) : Promise<void> => {
@@ -43,7 +44,11 @@ export default function AuthProvider({
       resource: provider,
       token,
     }
-    const res = await Api.post(getApiUrl('auth/login'), payload)
+    const res = await communicate({
+      url: '/auth/login',
+      payload,
+      method: 'POST',
+    })
     if (res.ok) {
       onResponse(res)
       return
@@ -54,7 +59,7 @@ export default function AuthProvider({
   const isValidToken = (token : string) : boolean => token !== null && typeof token !== 'undefined' && token !== 'undefined'
 
   const silentRefresh = async () : Promise<void> => {
-    const refreshToken = localStorage.getItem(REFRESH_TOKEN)
+    const refreshToken = getCookie(REFRESH_TOKEN)
     if (!isValidToken(refreshToken)) {
       signOut()
       return
@@ -62,7 +67,11 @@ export default function AuthProvider({
     const payload: any = {
       refreshToken,
     }
-    const res = await Api.post(getApiUrl('auth/token'), payload)
+    const res = await communicate({
+      url: '/auth/token',
+      payload,
+      method: 'POST',
+    })
     if (res.ok) {
       onResponse(res)
       return
@@ -73,13 +82,12 @@ export default function AuthProvider({
   const onResponse = async (res: Response) : Promise<void> => {
     const data = await res.json()
     const { accessToken, refreshToken } = data
-    localStorage.setItem(ACCESS_TOKEN, accessToken)
+    setCookie(ACCESS_TOKEN, accessToken, tokenExpiration)
     if (refreshToken) {
-      localStorage.setItem(REFRESH_TOKEN, refreshToken)
+      setCookie(REFRESH_TOKEN, refreshToken, tokenExpiration)
     }
     setUser({
       accessToken,
-      refreshToken,
     })
     setTimeout(silentRefresh, silentRefreshInterval)
     setPending(false)
@@ -90,8 +98,8 @@ export default function AuthProvider({
   }
 
   const signOut = () : void => {
-    localStorage.removeItem(ACCESS_TOKEN)
-    localStorage.removeItem(REFRESH_TOKEN)
+    deleteCookie(ACCESS_TOKEN)
+    deleteCookie(REFRESH_TOKEN)
     setUser(null)
     setPending(false)
   }

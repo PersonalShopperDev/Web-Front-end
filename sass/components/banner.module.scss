@@ -1,0 +1,40 @@
+@use '../lib/colors.scss' as colors;
+
+.container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    height: 223px;
+}
+
+.carousel {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    will-change: transform;
+}
+
+.figure {
+    display: block;
+    flex-shrink: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.indicator {
+    position: absolute;
+    display: flex;
+    bottom: 13px;
+    .child {
+        width: 16px;
+        height: 2px;
+        background-color: colors.$background;
+        transition: background-color .5s;
+    }
+    .child.active {
+        background-color: colors.$accent;
+    }
+    .child + .child {
+        margin-left: 5px;
+    }
+}

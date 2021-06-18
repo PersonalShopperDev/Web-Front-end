@@ -1,7 +1,7 @@
 import { useRouter } from 'next/dist/client/router'
 import React from 'react'
 import styles from 'sass/components/app-bar.module.scss'
-import Icon from 'src/widget/icon'
+import Icon from 'widgets/icon'
 
 export default function AppBar({
   title,
@@ -23,12 +23,12 @@ export default function AppBar({
   return (
     <section className={styles.container}>
       <div className={styles.landings}>
-        {landings.map((landing) => landing)
-        || (back && <Icon src="back.png" onClick={onClickBack} />)}
+        {landings?.map((landing) => landing)
+        || (back && <Icon src="back.png" size={17} onClick={onClickBack} />)}
       </div>
-      <h1 className={styles.title}>{title}</h1>
+      {title && <h1 className={styles.title}>{title}</h1>}
       <div className={styles.actions}>
-        {actions.map((action) => action)}
+        {actions?.map((action) => action)}
       </div>
     </section>
   )
@@ -36,7 +36,7 @@ export default function AppBar({
 
 AppBar.defaultProps = {
   title: null,
-  landings: [],
-  actions: [],
+  landings: null,
+  actions: null,
   back: false,
 }
