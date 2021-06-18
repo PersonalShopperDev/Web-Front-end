@@ -1,6 +1,6 @@
 import { cn } from 'lib/util'
 import { MouseEventHandler } from 'react'
-import styles from 'sass/widget/icon.module.scss'
+import styles from 'sass/widgets/icon.module.scss'
 
 export default function Icon({
   className,

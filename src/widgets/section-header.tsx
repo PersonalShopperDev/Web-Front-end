@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
-import styles from 'sass/widget/section-header.module.scss'
+import styles from 'sass/widgets/section-header.module.scss'
 import Icon from './icon'
 
 export default function SectionHeader({

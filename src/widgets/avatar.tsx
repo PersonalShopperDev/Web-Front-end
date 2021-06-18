@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import styles from 'sass/widget/avatar.module.scss'
+import styles from 'sass/widgets/avatar.module.scss'
 
 export default function Avatar({
   src,

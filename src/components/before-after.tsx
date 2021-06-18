@@ -1,7 +1,7 @@
 import { cn } from 'lib/util'
 import Carousel from 'components/carousel'
 import styles from 'sass/components/before-after.module.scss'
-import SectionHeader from 'src/widget/section-header'
+import SectionHeader from 'widgets/section-header'
 
 export interface BeforeAfterData {
   stylistId: string,

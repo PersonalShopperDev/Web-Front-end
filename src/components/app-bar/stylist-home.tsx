@@ -1,4 +1,4 @@
-import Avatar from 'src/widget/avatar'
+import Avatar from 'widgets/avatar'
 import AppBar from '.'
 
 export default function StylistHomeAppBar() {

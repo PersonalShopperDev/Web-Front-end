@@ -1,4 +1,4 @@
-import SectionHeader from 'src/widget/section-header'
+import SectionHeader from 'widgets/section-header'
 import styles from 'sass/components/stylist-grid-view.module.scss'
 
 export interface StylistGridViewData {
