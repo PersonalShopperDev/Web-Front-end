@@ -3,34 +3,12 @@ import styles from 'sass/components/bottom-bar.module.scss'
 import Image from 'next/image'
 
 export default function bottomBar({
-  index,
-  nextStep,
-  setIndex,
-  setNextStep,
+  onPrevButtonClick,
+  onNextButtonClick,
 }: {
-    index: Number,
-    nextStep: boolean,
-    setIndex: (value: number) => void;
-    setNextStep: (value: boolean) => void;
+  onPrevButtonClick: () => void
+  onNextButtonClick: () => void
 }) {
-  const onPrevButtonClick = () => {
-    if (index > 1 && !nextStep) {
-      setIndex(+index - 1)
-    } else if (nextStep) {
-      setNextStep(!nextStep)
-    }
-  }
-  const onNextButtonClick = () => {
-    if (index < 6) {
-      if (index === 3 && !nextStep) {
-        setNextStep(true)
-      } else {
-        setIndex(+index + 1)
-      }
-    } else if (index === 6) {
-      console.log('welcome personal Shopper')
-    }
-  }
   return (
     <section className={styles.container}>
       <button
@@ -49,8 +27,4 @@ export default function bottomBar({
       </button>
     </section>
   )
-}
-
-bottomBar.defaultProps = {
-  index: 0,
 }

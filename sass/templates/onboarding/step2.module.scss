@@ -1,0 +1,45 @@
+@use '../../lib/colors.scss' as colors;
+
+.title {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    color: #ff5917;
+    margin-top: 37px;
+}
+
+.content {
+    margin-top: 9px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+    color: #020202;
+}
+
+.step2Container {
+    margin-top: 149px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 26px;
+    color: #c4c4c4;
+    .button {
+        margin-right: 17px;
+        margin-left: 17px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        >span {
+            margin-top: 19px;
+        }
+    }
+    .selectedText {
+        color: #020202
+    }
+    .image {
+        width: 118px;
+        height: 118px;
+    }
+}

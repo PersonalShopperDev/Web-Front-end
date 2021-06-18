@@ -1,0 +1,111 @@
+@use '../../lib/colors.scss' as colors;
+
+.title {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    color: #ff5917;
+    margin-top: 37px;
+}
+
+.content {
+    margin-top: 9px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+    color: #020202;
+}
+
+.subContent {
+    margin-top: 9px;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 19px;
+    color: #444444;
+}
+
+.step3 {
+    position: absolute;
+}
+
+.step3Container {
+    display: flex;
+    padding-top: 41px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-left: 18.5px;
+    overflow: auto;
+    height: 480px;
+}
+.step3Container::-webkit-scrollbar {
+    display: none;
+}
+
+@mixin bodyFormBox {
+    width: 151px;
+    height: 238px;
+    background-color: #dcdcdc;
+    border-radius: 7px;
+    border: 2px solid black;
+    margin-right: 8.5px;
+    margin-left: 8.5px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 75px;
+    >span {
+        font-size: 14px;
+        line-height: 26px;
+        font-weight: 600;
+        color: #c4c4c4;
+    }
+    >div {
+        width: 151px;
+        height: 238px;
+        margin-bottom: 10px
+    }
+}
+
+.selectedBodyForm {
+    @include bodyFormBox();
+    background-color: #444444;
+    .selectedText { 
+        color: #000000;
+    }
+}
+.notSelectedBodyForm {
+    @include bodyFormBox();
+}
+
+.paletteContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 44px;
+}
+@mixin paletteBox { 
+    width: 140px;
+    height: 140px;
+    border-radius: 7px;
+    border: 2px solid #dcdcdc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 9px;
+    margin-left: 9px;
+    margin-bottom: 30px;
+}
+
+.palette {
+    width: 90px;
+    height: 90px;
+}
+
+.selectedPalette {
+    @include paletteBox();
+    border: 2px solid #020202;
+}
+.notSelectedPalette {
+    @include paletteBox();
+}

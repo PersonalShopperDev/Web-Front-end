@@ -1,0 +1,56 @@
+@use '../../lib/colors.scss' as colors;
+
+.title {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    color: #ff5917;
+    margin-top: 37px;
+}
+
+.content {
+    margin-top: 9px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+    color: #020202;
+}
+
+
+@mixin sizeBox {
+    width: 76px;
+    height: 38px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #767474;
+    margin-right: 9px
+}
+
+.notSelectedSize { 
+    @include sizeBox();
+    border: 1px solid #dcdcdc;
+}
+.selectedSize {
+    @include sizeBox();
+    background-color: #ff5917;
+    color: #ffffff
+}
+.sizeText {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 26px;
+    margin-top: 37px;
+    margin-bottom: 9px;
+    display: block;
+}
+.step4 {
+    position: absolute;
+}
+.step4Container {
+    overflow: auto;
+    height: 450px;
+}
+.step4Container::-webkit-scrollbar {
+    display: none;
+}

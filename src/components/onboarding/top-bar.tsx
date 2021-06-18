@@ -1,25 +1,22 @@
 import React from 'react'
 import styles from 'sass/components/top-bar.module.scss'
-import Image from 'next/image'
 
 export default function topBar({
   index,
+  indexNum,
 }: {
     index: Number,
+    indexNum: number,
 }) {
-  let key = 0
   return (
     <section className={styles.container}>
-      {[...Array(6)].map(() => {
-        key += 1
-        return (
-          <>
-            { key === index
-              ? <Image src="/icons/onboardingColoredTop.png" width="48" height="4" />
-              : <Image src="/icons/onboardingTop.png" width="48" height="4" />}
-          </>
-        )
-      })}
+      {[...Array(indexNum)].map((value, idx) => (
+        <>
+          { idx + 1 === index
+            ? <img src="/icons/onboardingColoredTop.png" className={styles.icon} alt="topBar" />
+            : <img src="/icons/onboardingTop.png" className={styles.icon} alt="coloredTopBar" />}
+        </>
+      ))}
     </section>
   )
 }

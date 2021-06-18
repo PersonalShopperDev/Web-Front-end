@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-import styles from 'sass/templates/onboarding/step.module.scss'
-import Image from 'next/image'
+import styles from 'sass/templates/onboarding/step1.module.scss'
 
 export default function Step1() {
   const [option, setOption] = useState(-1)
+  const onClick = (index) => {
+    setOption(index)
+  }
   return (
     <section>
       <h1 className={styles.title}>STEP 1</h1>
@@ -15,11 +17,11 @@ export default function Step1() {
       <div className={styles.step1Container}>
         <button
           type="button"
-          onClick={() => setOption(0)}
+          onClick={() => onClick(0)}
           className={option === 0 ? styles.selectedStep1Box : styles.notSelectedStep1Box}
         >
           <div className={styles.image1}>
-            <Image src="/icons/step1top.png" width="333" height="94" />
+            <img src="/icons/step1top.png" alt="user" className={styles.image} />
           </div>
           <span className={styles.firstLine}>코디를 받고 싶어요~!</span>
           <span>스타일리스트에게 코디를 받습니다.</span>
@@ -27,10 +29,10 @@ export default function Step1() {
         <button
           type="button"
           className={option === 1 ? styles.selectedStep1Box : styles.notSelectedStep1Box}
-          onClick={() => setOption(1)}
+          onClick={() => onClick(1)}
         >
           <div className={styles.image2}>
-            <Image src="/icons/step1bottom.png" width="333" height="94" />
+            <img src="/icons/step1bottom.png" alt="stylist" className={styles.image} />
           </div>
           <span className={styles.firstLine}>코디를 해주고 싶어요~!</span>
           <span>사용자에게 코디를 해줍니다.</span>

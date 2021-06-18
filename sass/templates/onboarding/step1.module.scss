@@ -1,0 +1,67 @@
+@use '../../lib/colors.scss' as colors;
+
+.title {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    color: #ff5917;
+    margin-top: 37px;
+}
+
+.content {
+    margin-top: 9px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+    color: #020202;
+}
+
+.step1Container {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .image {
+        width: 333px;
+        height: 94px;
+    }
+}
+
+@mixin step1Box {
+    width: 333px;
+    height: 94px;
+    border-radius: 7px;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 26px;
+    margin-bottom: 11px;
+    display: flex;
+    flex-direction: column;
+
+    .image1 {
+        position: absolute;
+    }
+    .image2 {
+        position: absolute;
+        left: -13px;
+    }
+    > span {
+        display: block;
+        margin-left: 153px;
+    }
+    .firstLine { 
+        font-weight: 600;
+        font-size: 15px;
+        padding-top: 29px;
+    }
+}
+
+.selectedStep1Box {
+    @include step1Box();
+    background-color: #ff4900;
+    color: #ffffff;
+} 
+.notSelectedStep1Box {
+    @include step1Box();
+    background-color: #eeeeee;
+} 
