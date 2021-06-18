@@ -1,0 +1,227 @@
+.title {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    color: #ff5917;
+    margin-top: 37px;
+}
+
+.content {
+    margin-top: 9px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+    color: #020202;
+}
+
+.subContent {
+    margin-top: 9px;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 19px;
+    color: #444444;
+}
+
+.step1Container {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@mixin step1Box {
+    width: 333px;
+    height: 94px;
+    border-radius: 7px;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 26px;
+    margin-bottom: 11px;
+    display: flex;
+    flex-direction: column;
+
+    .image1 {
+        position: absolute;
+    }
+    .image2 {
+        position: absolute;
+        left: -13px;
+    }
+    > span {
+        display: block;
+        margin-left: 153px;
+    }
+    .firstLine { 
+        font-weight: 600;
+        font-size: 15px;
+        padding-top: 29px;
+    }
+}
+
+.selectedStep1Box {
+    @include step1Box();
+    background-color: #ff4900;
+    color: #ffffff;
+} 
+.notSelectedStep1Box {
+    @include step1Box();
+    background-color: #eeeeee;
+} 
+
+.step2Container {
+    margin-top: 149px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 26px;
+    color: #c4c4c4;
+    .button {
+        margin-right: 17px;
+        margin-left: 17px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        >span {
+            margin-top: 19px;
+        }
+    }
+    .selectedText {
+        color: #020202
+    }
+}
+
+.step3 {
+    position: absolute;
+}
+
+.step3Container {
+    display: flex;
+    padding-top: 41px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-left: 18.5px;
+    overflow: auto;
+    height: 480px;
+}
+.step3Container::-webkit-scrollbar {
+    display: none;
+}
+
+@mixin bodyFormBox {
+    width: 151px;
+    height: 238px;
+    background-color: #dcdcdc;
+    border-radius: 7px;
+    border: 2px solid black;
+    margin-right: 8.5px;
+    margin-left: 8.5px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 75px;
+    >span {
+        font-size: 14px;
+        line-height: 26px;
+        font-weight: 600;
+        color: #c4c4c4;
+    }
+    .bodyA {
+        margin-left: 12px;
+        margin-top: -28px;
+    }
+    .bodyB {
+        margin-left: 12px;
+        margin-top: -24px;
+    }
+    .bodyC {
+        margin-left: 12px;
+        margin-top: -24px;
+    }
+    .bodyD {
+        margin-left: 12px;
+        margin-top: -16px;
+    }
+    .bodyE {
+        margin-left: 12px;
+        margin-top: -32px;
+    }
+}
+
+.selectedBodyForm {
+    @include bodyFormBox();
+    background-color: #444444;
+    .selectedText { 
+        color: #000000;
+    }
+}
+.notSelectedBodyForm {
+    @include bodyFormBox();
+}
+
+.paletteContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 44px;
+}
+@mixin paletteBox { 
+    width: 140px;
+    height: 140px;
+    border-radius: 7px;
+    border: 2px solid #dcdcdc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 9px;
+    margin-left: 9px;
+    margin-bottom: 30px;
+}
+
+.selectedPalette {
+    @include paletteBox();
+    border: 2px solid #020202;
+}
+.notSelectedPalette {
+    @include paletteBox();
+}
+
+@mixin sizeBox {
+    width: 76px;
+    height: 38px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #767474;
+    margin-right: 9px
+}
+
+.notSelectedSize { 
+    @include sizeBox();
+    border: 1px solid #dcdcdc;
+}
+.selectedSize {
+    @include sizeBox();
+    background-color: #ff5917;
+    color: #ffffff
+}
+.sizeText {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 26px;
+    margin-top: 37px;
+    margin-bottom: 9px;
+    display: block;
+}
+.step4 {
+    position: absolute;
+}
+.step4Container {
+    overflow: auto;
+    height: 450px;
+}
+.step4Container::-webkit-scrollbar {
+    display: none;
+}
