@@ -19,7 +19,7 @@ interface AuthProps {
 }
 
 export interface ThridPartyAuthProps {
-  LoginButton: () => JSX.Element
+  LoginButton: React.ReactNode
 }
 
 const AuthContext = createContext<AuthProps>(null)
@@ -37,6 +37,7 @@ export default function AuthProvider({
   const [user, setUser] = useState<User>(null)
 
   const tokenExpiration = 1000 * 60 * 30
+  const refreshTokenExpiration = 1000 * 60 * 60 * 24 * 7
   const silentRefreshInterval = 1000 * 60 * 29
 
   const authenticate = async (provider: string, token: string) : Promise<void> => {
@@ -84,7 +85,7 @@ export default function AuthProvider({
     const { accessToken, refreshToken } = data
     setCookie(ACCESS_TOKEN, accessToken, tokenExpiration)
     if (refreshToken) {
-      setCookie(REFRESH_TOKEN, refreshToken, tokenExpiration)
+      setCookie(REFRESH_TOKEN, refreshToken, refreshTokenExpiration)
     }
     setUser({
       accessToken,

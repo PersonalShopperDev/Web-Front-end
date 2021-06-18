@@ -1,14 +1,14 @@
-import LoginForm from 'components/loginForm'
 import Layout from 'layouts/default'
 import getServerSideAuth from 'lib/server/auth'
 import { GetServerSideProps } from 'next'
 import IntegratedAuthProvider from 'providers/authProvider/integratedAuthProvider'
+import Login from 'templates/login'
 
 export default function Page() {
   return (
     <Layout>
       <IntegratedAuthProvider>
-        <LoginForm />
+        <Login />
       </IntegratedAuthProvider>
     </Layout>
   )
