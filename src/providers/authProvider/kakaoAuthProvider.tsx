@@ -1,5 +1,6 @@
 import { useRouter } from 'next/dist/client/router'
 import React, { createContext, useContext } from 'react'
+import KakaoLoginButton from 'widgets/kakao-login-button'
 import { ThridPartyAuthProps, useAuth } from '.'
 
 declare global {
@@ -38,7 +39,7 @@ export default function KaKaoAuthProvider({
   }
 
   const value = {
-    LoginButton: () => <button type="submit" onClick={loginHandler}>카카오 로그인</button>,
+    LoginButton: <KakaoLoginButton onClick={loginHandler} />,
   }
 
   return (

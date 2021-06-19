@@ -1,5 +1,8 @@
 import { NextRouter } from 'next/dist/client/router'
-import React, { createContext, useContext, useEffect } from 'react'
+import React, {
+  createContext, useContext, useEffect, useRef,
+} from 'react'
+import NaverLoginButton from 'widgets/naver-login-button'
 import { ThridPartyAuthProps } from '.'
 
 declare global {
@@ -23,6 +26,8 @@ export default function NaverAuthProvider({
 
   const callbackUrl = `/login/${provider}/callback`
 
+  const loginButtonRef = useRef<HTMLDivElement>()
+
   useEffect(() => {
     const { naver } = window
     const loginHandler = new naver.LoginWithNaverId({
@@ -39,12 +44,21 @@ export default function NaverAuthProvider({
     loginHandler.init()
   }, [])
 
+  const loginHandler = () => {
+    const loginHref = loginButtonRef.current.firstChild as HTMLAnchorElement
+    if (!loginHref) {
+      return
+    }
+    loginHref.click()
+  }
+
   const value = {
-    LoginButton: () => <div id="naverIdLogin" />,
+    LoginButton: <NaverLoginButton onClick={loginHandler} />,
   }
 
   return (
     <NaverAuthContext.Provider value={value}>
+      <div ref={loginButtonRef} id="naverIdLogin" style={{ display: 'none' }} />
       {children}
     </NaverAuthContext.Provider>
   )

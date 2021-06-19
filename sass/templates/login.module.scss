@@ -1,0 +1,34 @@
+@use '../lib/colors.scss' as colors;
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: colors.$accent;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.logoContainer {
+    position: absolute;
+    top: 212px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    p {
+        margin-top: 17px;
+        color: white;
+        font-size: 18px;
+    }
+}
+
+.buttonContainer {
+    position: absolute;
+    top: 409px;
+    width: 100%;
+    padding: 0 21px;
+    button + button {
+        margin-top: 9px;
+    }
+}
