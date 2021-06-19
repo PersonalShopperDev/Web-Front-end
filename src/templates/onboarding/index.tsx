@@ -36,7 +36,7 @@ export default function Onboarding() {
   return (
     <>
       <header>
-        <TopBar index={stepIndex} indexNum={indexNum} />
+        <TopBar index={stepIndex} totalIndexNum={indexNum} />
       </header>
       {stepComponents[stepIndex - 1]}
       <section>

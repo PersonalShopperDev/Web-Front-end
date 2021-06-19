@@ -3,14 +3,14 @@ import styles from 'sass/components/top-bar.module.scss'
 
 export default function topBar({
   index,
-  indexNum,
+  totalIndexNum,
 }: {
-    index: Number,
-    indexNum: number,
+    index: number,
+    totalIndexNum: number,
 }) {
   return (
     <section className={styles.container}>
-      {[...Array(indexNum)].map((value, idx) => (
+      {[...Array(totalIndexNum)].map((value, idx) => (
         <>
           { idx + 1 === index
             ? <img src="/icons/onboardingColoredTop.png" className={styles.icon} alt="topBar" />

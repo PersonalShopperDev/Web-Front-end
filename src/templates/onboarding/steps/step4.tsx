@@ -50,7 +50,7 @@ export default function Step4() {
       <div className={styles.step4}>
         <h1 className={styles.title}>STEP 4</h1>
         <h2 className={styles.content}>평소 의류 사이즈와 핏을 알려주세요</h2>
-        <div className={styles.step4Container}>
+        <div className={styles.container}>
           {sizeLists.map((value, index) => (
             <>
               <span className={styles.sizeText}>{value.title}</span>

@@ -42,7 +42,7 @@ export default function Step3({
           <div className={styles.step3}>
             <h1 className={styles.title}>STEP 3-1</h1>
             <h2 className={styles.content}>다음 중 자신과 제일 유사한 체형을 골라주세요</h2>
-            <div className={styles.step3Container}>
+            <div className={styles.container}>
               {bodyTypeLists.map((value, index) => (
                 <button
                   type="button"

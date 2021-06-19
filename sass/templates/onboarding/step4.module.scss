@@ -47,10 +47,10 @@
 .step4 {
     position: absolute;
 }
-.step4Container {
+.container {
     overflow: auto;
     height: 450px;
 }
-.step4Container::-webkit-scrollbar {
+.container::-webkit-scrollbar {
     display: none;
 }

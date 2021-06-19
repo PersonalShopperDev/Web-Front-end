@@ -18,7 +18,7 @@ export default function Step2() {
     <section>
       <h1 className={styles.title}>STEP 2</h1>
       <h2 className={styles.content}>당신의 성별을 알려주세요</h2>
-      <div className={styles.step2Container}>
+      <div className={styles.container}>
         {genderLists.map((value, index) => (
           <button
             type="button"

@@ -28,7 +28,7 @@
     position: absolute;
 }
 
-.step3Container {
+.container {
     display: flex;
     padding-top: 41px;
     flex-direction: row;
@@ -37,7 +37,7 @@
     overflow: auto;
     height: 480px;
 }
-.step3Container::-webkit-scrollbar {
+.container::-webkit-scrollbar {
     display: none;
 }
 
