@@ -4,6 +4,7 @@ import getPosition from 'lib/util/mouseEvent'
 import React, {
   createContext, useContext, useEffect, useRef, useState,
 } from 'react'
+import styles from 'sass/components/carousel.module.scss'
 
 interface CarouselContextProps {
   currentIndex: number
@@ -84,6 +85,9 @@ export default function Carousel({
   }
 
   const onDragEnd = (): void => {
+    document.body.removeEventListener('mouseup', onDragEnd)
+    document.body.removeEventListener('mousemove', onDrag)
+
     const { origin, duration, threshold } = dragData
     const distance = transitionData.result - origin
     const { offsetWidth } = containerRef.current
@@ -97,9 +101,6 @@ export default function Carousel({
     }
 
     dragData.control = false
-
-    document.body.removeEventListener('mouseup', onMouseDown)
-    document.body.removeEventListener('mousemove', onDrag)
   }
 
   const initializeEventListener = () => {
@@ -130,7 +131,11 @@ export default function Carousel({
   return (
     <CarouselContext.Provider value={value}>
       <div className={className} ref={containerRef}>
-        {children}
+        {children.map((child) => (
+          <section key={Math.random()} className={styles.wrapper}>
+            {child}
+          </section>
+        ))}
       </div>
       {extraChild}
     </CarouselContext.Provider>
