@@ -1,5 +1,5 @@
-import { useKaKaoAuth } from 'providers/authProvider/kakaoAuthProvider'
-import { useNaverAuth } from 'providers/authProvider/naverAuthProvider'
+import { useKaKaoAuth } from 'providers/auth/kakao'
+import { useNaverAuth } from 'providers/auth/naver'
 import Icon from 'widgets/icon'
 import styles from 'sass/templates/login.module.scss'
 

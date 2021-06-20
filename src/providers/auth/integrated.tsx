@@ -1,6 +1,10 @@
 import React from 'react'
-import KaKaoAuthProvider from './kakaoAuthProvider'
-import NaverAuthProvider from './naverAuthProvider'
+import KaKaoAuthProvider from './kakao'
+import NaverAuthProvider from './naver'
+
+export interface ThirdPartyAuthContextProps {
+  LoginButton: React.ReactNode
+}
 
 export default function IntegratedAuthProvider({
   children,

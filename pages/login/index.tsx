@@ -1,7 +1,7 @@
 import Layout from 'layouts/default'
 import getServerSideAuth from 'lib/server/auth'
 import { GetServerSideProps } from 'next'
-import IntegratedAuthProvider from 'providers/authProvider/integratedAuthProvider'
+import IntegratedAuthProvider from 'providers/auth/integrated'
 import Login from 'templates/login'
 
 export default function Page() {

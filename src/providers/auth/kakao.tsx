@@ -1,7 +1,8 @@
 import { useRouter } from 'next/dist/client/router'
 import React, { createContext, useContext } from 'react'
 import KakaoLoginButton from 'widgets/kakao-login-button'
-import { ThridPartyAuthProps, useAuth } from '.'
+import { useAuth } from '.'
+import { ThirdPartyAuthContextProps } from './integrated'
 
 declare global {
   // eslint-disable-next-line no-unused-vars
@@ -10,9 +11,9 @@ declare global {
   }
 }
 
-interface KaKaoAuthProps extends ThridPartyAuthProps { }
+interface KaKaoAuthContextProps extends ThirdPartyAuthContextProps { }
 
-const KakaoAuthContext = createContext<KaKaoAuthProps>(null)
+const KakaoAuthContext = createContext<KaKaoAuthContextProps>(null)
 export const useKaKaoAuth = () => useContext(KakaoAuthContext)
 
 export default function KaKaoAuthProvider({

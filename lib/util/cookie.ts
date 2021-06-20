@@ -24,5 +24,5 @@ export function getCookie(name : string) : string {
 }
 
 export function deleteCookie(name: string) {
-  document.cookie = `${name}=; Max-Age=-99999999;`
+  setCookie(name, '', -1)
 }

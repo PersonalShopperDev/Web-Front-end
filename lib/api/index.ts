@@ -1,6 +1,6 @@
 import { getCookie } from 'lib/util/cookie'
 import { GetServerSidePropsContext } from 'next'
-import { ACCESS_TOKEN } from 'providers/authProvider'
+import { ACCESS_TOKEN } from 'providers/auth'
 import { ParsedUrlQuery } from 'querystring'
 
 export function getApiUrl(url: string): string {
