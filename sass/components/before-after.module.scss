@@ -1,5 +1,5 @@
 @use '../lib/colors.scss' as colors;
-@import '../lib/no-drag.scss';
+@use '../lib/util.scss' as util;
 
 @mixin padding {
     padding: 0 17px;
@@ -21,11 +21,6 @@
     margin-top: 20px;
 }
 
-.article {
-    flex-shrink: 0;
-    width: 100%;
-}
-
 .photozone {
     display: flex;
     width: 100%;
@@ -34,7 +29,7 @@
 }
 
 .figure {
-    @include noDrag();
+    @include util.noDrag();
     position: relative;
     display: flex;
     justify-content: center;
