@@ -1,6 +1,8 @@
 import { AppProps } from 'next/app'
 import Head from 'next/head'
-import AuthProvider from 'providers/authProvider'
+import AuthProvider from 'providers/auth'
+import ModalProvider from 'providers/modal'
+import IntegratedDialogProvider from 'providers/dialog/integrated'
 import 'sass/global.scss'
 
 const title = '퍼스널 쇼퍼'
@@ -12,9 +14,13 @@ export default function App({ Component, pageProps }: AppProps) {
         <title>{title}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
-      <AuthProvider>
-        <Component {...pageProps} />
-      </AuthProvider>
+      <ModalProvider>
+        <IntegratedDialogProvider>
+          <AuthProvider>
+            <Component {...pageProps} />
+          </AuthProvider>
+        </IntegratedDialogProvider>
+      </ModalProvider>
     </>
   )
 }

@@ -14,12 +14,8 @@ interface User {
 
 interface AuthProps {
   user: User
-  authenticate: (provider: string, token: string) => void
-  signOut: () => void
-}
-
-export interface ThridPartyAuthProps {
-  LoginButton: React.ReactNode
+  authenticate: (provider: string, token: string) => Promise<void>
+  signOut: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthProps>(null)
@@ -33,7 +29,6 @@ export default function AuthProvider({
 }) {
   const router = useRouter()
 
-  const [pending, setPending] = useState(true)
   const [user, setUser] = useState<User>(null)
 
   const tokenExpiration = 1000 * 60 * 30
@@ -51,7 +46,8 @@ export default function AuthProvider({
       method: 'POST',
     })
     if (res.ok) {
-      onResponse(res)
+      await onResponse(res)
+      router.push('/')
       return
     }
     onFail()
@@ -62,7 +58,9 @@ export default function AuthProvider({
   const silentRefresh = async () : Promise<void> => {
     const refreshToken = getCookie(REFRESH_TOKEN)
     if (!isValidToken(refreshToken)) {
-      signOut()
+      if (user) {
+        signOut()
+      }
       return
     }
     const payload: any = {
@@ -91,33 +89,22 @@ export default function AuthProvider({
       accessToken,
     })
     setTimeout(silentRefresh, silentRefreshInterval)
-    setPending(false)
   }
 
   const onFail = () : void => {
     router.push('/login/error')
   }
 
-  const signOut = () : void => {
+  const signOut = async () : Promise<void> => {
     deleteCookie(ACCESS_TOKEN)
     deleteCookie(REFRESH_TOKEN)
     setUser(null)
-    setPending(false)
+    router.reload()
   }
-
-  useEffect(() => {
-    if (user) {
-      router.push('/')
-    }
-  }, [user])
 
   useEffect(() => {
     silentRefresh()
   }, [])
-
-  if (pending) {
-    return <>pending....</>
-  }
 
   const value = {
     user,

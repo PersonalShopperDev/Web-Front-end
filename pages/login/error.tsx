@@ -1,6 +1,6 @@
 import Layout from 'layouts/default'
 import { useRouter } from 'next/dist/client/router'
-import { useAuth } from 'providers/authProvider'
+import { useAuth } from 'providers/auth'
 import { useEffect } from 'react'
 
 export default function Page() {

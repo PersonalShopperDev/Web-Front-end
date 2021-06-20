@@ -3,7 +3,7 @@ import React, {
   createContext, useContext, useEffect, useRef,
 } from 'react'
 import NaverLoginButton from 'widgets/naver-login-button'
-import { ThridPartyAuthProps } from '.'
+import { ThirdPartyAuthContextProps } from './integrated'
 
 declare global {
   // eslint-disable-next-line no-unused-vars
@@ -12,9 +12,9 @@ declare global {
   }
 }
 
-interface NaverAuthProps extends ThridPartyAuthProps { }
+interface NaverAuthContextProps extends ThirdPartyAuthContextProps { }
 
-const NaverAuthContext = createContext<NaverAuthProps>(null)
+const NaverAuthContext = createContext<NaverAuthContextProps>(null)
 export const useNaverAuth = () => useContext(NaverAuthContext)
 
 export default function NaverAuthProvider({

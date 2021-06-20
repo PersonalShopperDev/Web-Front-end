@@ -1,8 +1,8 @@
 import { useRouter } from 'next/dist/client/router'
 import { useEffect } from 'react'
 import Layout from 'layouts/default'
-import { useAuth } from 'providers/authProvider'
-import { processToken as processNaverToken } from 'providers/authProvider/naverAuthProvider'
+import { useAuth } from 'providers/auth'
+import { processToken as processNaverToken } from 'providers/auth/naver'
 import { GetServerSideProps } from 'next'
 import getServerSideAuth from 'lib/server/auth'
 import providers from 'lib/config/provider'
@@ -34,7 +34,7 @@ export default function Page() {
 
   return (
     <Layout>
-      <p>processing ...</p>
+      <></>
     </Layout>
   )
 }
