@@ -20,16 +20,6 @@ interface DialogBuilder {
   open(): Promise<boolean>
 }
 
-interface DialogCallbackProps {
-  ok: EventHandler
-  cancle: EventHandler
-}
-
-export type DialogProviderProps = DialogCallbackProps & {
-  className: string,
-  inner: React.ReactNode
-}
-
 interface DialogProviderContextProps {
   buildDialog: (props? : DialogRequestProps) => DialogBuilder
 }
