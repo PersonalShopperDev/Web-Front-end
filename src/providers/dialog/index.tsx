@@ -15,8 +15,8 @@ interface DialogRequestProps {
   className?: string
 }
 
-interface IDialogRequest {
-  insert(child: Inner): IDialogRequest
+interface DialogBuilder {
+  insert(child: Inner): DialogBuilder
   open(): Promise<boolean>
 }
 
@@ -31,7 +31,7 @@ export type DialogProviderProps = DialogCallbackProps & {
 }
 
 interface DialogProviderContextProps {
-  buildDialog: (props? : DialogRequestProps) => IDialogRequest
+  buildDialog: (props? : DialogRequestProps) => DialogBuilder
 }
 
 const DialogProviderContext = createContext<DialogProviderContextProps>(null)
@@ -43,24 +43,25 @@ export default function DialogProvider({
 }: {
   children?: React.ReactNode
 }) {
-  const [requests, setRequests] = useState<DialogProviderProps[]>([])
+  const [requests, setRequests] = useState<DialogRequest[]>([])
   const { update } = useModalProvider()
 
-  const finishRequest = (request: DialogProviderProps) => {
+  const finishRequest = (request: DialogRequest) => {
     setRequests((array) => array.filter((value) => value !== request))
   }
 
-  class DialogRequest implements IDialogRequest {
-    private inner: React.ReactNode
+  class DialogRequest implements DialogBuilder {
+    public id: number
+    public className: string
+    public inner: React.ReactNode
     private executions : {
-      ok: Function
-      cancle: Function
-      close: Function
+      ok: EventHandler
+      cancle: EventHandler
+      close: EventHandler
     }
 
-    public className: string
-
     constructor({ className } : DialogRequestProps) {
+      this.id = requests.length + 1
       this.className = className
     }
 
@@ -78,7 +79,7 @@ export default function DialogProvider({
       this.executions.close()
     }
 
-    public insert(inner : Inner): IDialogRequest {
+    public insert(inner : Inner): DialogBuilder {
       if (typeof inner === 'function') {
         this.inner = inner({
           ok: () => this.executeOk(),
@@ -92,23 +93,24 @@ export default function DialogProvider({
 
     public open(): Promise<boolean> {
       return new Promise<boolean>((resolve) => {
-        const request = {
-          className: this.className,
-          inner: this.inner,
-          ok: () => this.executeOk(),
-          cancle: () => this.executeCancle(),
-        }
         this.executions = {
           ok: () => resolve(true),
           cancle: () => resolve(false),
-          close: () => finishRequest(request),
+          close: () => finishRequest(this),
         }
-        setRequests((array) => array.concat(request))
+        setRequests((array) => array.concat(this))
       })
+    }
+
+    public getExecutions(): { ok: EventHandler, cancle: EventHandler } {
+      return {
+        ok: () => this.executeOk(),
+        cancle: () => this.executeCancle(),
+      }
     }
   }
 
-  const buildDialog = (props? : DialogRequestProps): DialogRequest => new DialogRequest(props)
+  const buildDialog = (props? : DialogRequestProps): DialogBuilder => new DialogRequest(props)
 
   const value = {
     buildDialog,
@@ -123,12 +125,17 @@ export default function DialogProvider({
   return (
     <DialogProviderContext.Provider value={value}>
       {children}
-      {requests.map(({ className, inner, cancle }) => (
+      {requests.map(({
+        id,
+        className,
+        inner,
+        getExecutions,
+      }) => (
         <Modal
           className={className}
-          key={Math.random()}
+          key={id}
           immediate
-          onOff={cancle}
+          onOff={getExecutions().cancle}
         >
           {inner}
         </Modal>
