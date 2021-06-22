@@ -15,7 +15,6 @@
 <br />
 
 ## __Widgets__
----
 ## __`Icon`__
 기본 아이콘 위젯입니다.
 |Property|Type|Default (Nullable)|Remark|
@@ -46,7 +45,6 @@
 <br />
 
 ## __Components__
----
 ## __`AppBar`__
 타이틀, 뒤로가기, 프로필 이동 버튼 등을 포함하는 앱 상단 고정 메뉴 입니다.
 |Property|Type|Default (Nullable)|Remark|
@@ -133,7 +131,6 @@
 <br />
 
 ## __Providers__
----
 ## __`AuthProvider`__
 유저 정보를 처리합니다.
 
@@ -340,7 +337,6 @@ export default function Comment() {
 <br />
 
 ## __Api__
----
 ## __`communicate({ url, payload, options, method }) : Promise<Response>`__
 `fetch()`를 대신합니다.
 |Property|Type|Default (Nullable)|Remark|
@@ -386,7 +382,6 @@ export const getServerSideProps : GetServerSideProps = async (context) => {
 <br />
 
 ## __Server__
----
 ## __`getServerSideAuth(context) : Promise<{ authenticated : boolean }>`__
 `GetServerSideProps` 환경에서 유저를 검증합니다.
 |Property|Type|Default (Nullable)|Remark|
@@ -403,7 +398,6 @@ export const getServerSideProps : GetServerSideProps = async (context) => {
 <br />
 
 ## __Util__
----
 ## __`setCookie(name, value, ms) : void`__
 쿠키를 저장합니다.
 |Property|Type|Default (Nullable)|Remark|
