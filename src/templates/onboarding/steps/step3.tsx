@@ -1,30 +1,51 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from 'sass/templates/onboarding/step3.module.scss'
+import { Gender } from '../index'
 
 export default function Step3({
   nextStep,
-  setNextStep,
+  body,
+  skin,
+  gender,
+  setBody,
+  setSkin,
 }: {
   nextStep: boolean,
-  setNextStep: (value: boolean) => void;
+  body: number,
+  skin: number,
+  gender: Gender,
+  setBody: (value: number) => void;
+  setSkin: (value: number) => void;
 }) {
-  const [bodyType, setBodyType] = useState(-1)
-  const [skinType, setSkinType] = useState(-1)
-  const bodyTypeLists = [{
-    path: '/icons/bodyA.png',
+  const [bodyType, setBodyType] = useState(null)
+  const femaleBodyTypeLists = [{
+    path: '/icons/femaleBodyA.png',
     type: 'A.모래시계체형',
   }, {
-    path: '/icons/bodyB.png',
+    path: '/icons/femaleBodyB.png',
     type: 'B.원형체형',
   }, {
-    path: '/icons/bodyC.png',
+    path: '/icons/femaleBodyC.png',
     type: 'C.역삼각형체형',
   }, {
-    path: '/icons/bodyD.png',
+    path: '/icons/femaleBodyD.png',
     type: 'D.삼각형체형',
   }, {
-    path: '/icons/bodyE.png',
+    path: '/icons/femaleBodyE.png',
     type: 'E.사각형체형',
+  }]
+  const maleBodyTypeLists = [{
+    path: '/icons/maleBodyA.png',
+    type: 'A.슬림체형',
+  }, {
+    path: '/icons/maleBodyA.png',
+    type: 'A.평균체형',
+  }, {
+    path: '/icons/maleBodyA.png',
+    type: 'A.근육질체형',
+  }, {
+    path: '/icons/maleBodyA.png',
+    type: 'A.지방형체형',
   }]
   const skinTypeLists = [{
     path: '/icons/skinA.png',
@@ -35,6 +56,13 @@ export default function Step3({
   }, {
     path: '/icons/skinD.png',
   }]
+  useEffect(() => {
+    if (gender === 'F') {
+      setBodyType(femaleBodyTypeLists)
+    } else {
+      setBodyType(maleBodyTypeLists)
+    }
+  }, [])
   return (
     <section>
       {!nextStep
@@ -43,17 +71,22 @@ export default function Step3({
             <h1 className={styles.title}>STEP 3-1</h1>
             <h2 className={styles.content}>다음 중 자신과 제일 유사한 체형을 골라주세요</h2>
             <div className={styles.container}>
-              {bodyTypeLists.map((value, index) => (
+              {bodyType !== null && bodyType.map((value, index) => (
                 <button
                   type="button"
-                  className={bodyType === index ? styles.selectedBodyForm
+                  className={body === index ? styles.selectedBodyForm
                     : styles.notSelectedBodyForm}
-                  onClick={() => setBodyType(index)}
+                  onClick={() => setBody(index)}
+                  key={Math.random()}
                 >
                   <div>
                     <img src={value.path} alt="bodyType" />
                   </div>
-                  <span className={bodyType === index && styles.selectedText}>{value.type}</span>
+                  <span className={body === index
+                    ? styles.selectedText : null}
+                  >
+                    {value.type}
+                  </span>
                 </button>
               ))}
             </div>
@@ -68,9 +101,10 @@ export default function Step3({
               {skinTypeLists.map((value, index) => (
                 <button
                   type="button"
-                  className={skinType === index
+                  className={skin === index
                     ? styles.selectedPalette : styles.notSelectedPalette}
-                  onClick={() => setSkinType(index)}
+                  onClick={() => setSkin(index)}
+                  key={Math.random()}
                 >
                   <img src={value.path} alt="skintype" className={styles.palette} />
                 </button>

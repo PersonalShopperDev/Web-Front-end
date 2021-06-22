@@ -1,27 +1,53 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styles from 'sass/templates/onboarding/step4.module.scss'
+import { Gender } from '../index'
 
-export default function Step4() {
-  const topLists = ['44사이즈', '55사이즈', '66사이즈', '77사이즈']
-  const bottomLists = ['S사이즈', 'M사이즈', 'L사이즈']
+export default function Step4({
+  gender,
+  topSize,
+  bottomSize,
+  shoulderSize,
+  waistSize,
+  bellySize,
+  hipSize,
+  setTopSize,
+  setBottomSize,
+  setShoulderSize,
+  setWaistSize,
+  setBellySize,
+  setHipSize,
+}: {
+  gender: Gender
+  topSize: number
+  bottomSize: number
+  shoulderSize: number
+  waistSize: number
+  bellySize: number
+  hipSize: number
+  setTopSize: (value: number) => void
+  setBottomSize: (value: number) => void
+  setShoulderSize: (value: number) => void
+  setWaistSize: (value: number) => void
+  setBellySize: (value: number) => void
+  setHipSize: (value: number) => void
+}) {
+  const femaleTopLists = ['44사이즈', '55사이즈', '66사이즈', '77사이즈']
+  const maleTopLists = ['S사이즈', 'M사이즈', 'L사이즈', 'XL사이즈']
+  const femaleBottomLists = ['S사이즈', 'M사이즈', 'L사이즈']
+  const maleBottomLists = ['26~28', '29~31', '32~34']
   const shoulderLists = ['옷이 크다', '잘 맞는다', '옷이 작다']
   const waistLists = ['옷이 크다', '잘 맞는다', '옷이 작다']
-  const middleLists = ['옷이 크다', '잘 맞는다', '옷이 작다']
+  const bellyLists = ['옷이 크다', '잘 맞는다', '옷이 작다']
   const hipLists = ['옷이 크다', '잘 맞는다', '옷이 작다']
-  const [topSize, setTopSize] = useState('')
-  const [bottomSize, setBottomSize] = useState('')
-  const [shoulderSize, setShoulderSize] = useState('')
-  const [waistSize, setWaistSize] = useState('')
-  const [middleSize, setMiddleSize] = useState('')
-  const [hipSize, setHipSize] = useState('')
+
   const sizeLists = [{
     title: '상의 사이즈',
-    sizeLists: topLists,
+    sizeLists: gender === 'F' ? femaleTopLists : maleTopLists,
     size: topSize,
     setSize: setTopSize,
   }, {
     title: '하의 사이즈',
-    sizeLists: bottomLists,
+    sizeLists: gender === 'F' ? femaleBottomLists : maleBottomLists,
     size: bottomSize,
     setSize: setBottomSize,
   }, {
@@ -36,9 +62,9 @@ export default function Step4() {
     setSize: setWaistSize,
   }, {
     title: '배',
-    sizeLists: middleLists,
-    size: middleSize,
-    setSize: setMiddleSize,
+    sizeLists: bellyLists,
+    size: bellySize,
+    setSize: setBellySize,
   }, {
     title: '엉덩이',
     sizeLists: hipLists,
@@ -51,21 +77,22 @@ export default function Step4() {
         <h1 className={styles.title}>STEP 4</h1>
         <h2 className={styles.content}>평소 의류 사이즈와 핏을 알려주세요</h2>
         <div className={styles.container}>
-          {sizeLists.map((value, index) => (
-            <>
+          {sizeLists.map((value) => (
+            <div key={Math.random()}>
               <span className={styles.sizeText}>{value.title}</span>
               <div>
-                {value.sizeLists.map((item) => (
+                {value.sizeLists.map((item, index) => (
                   <button
                     type="button"
-                    className={item === value.size ? styles.selectedSize : styles.notSelectedSize}
-                    onClick={() => value.setSize(item)}
+                    className={index === value.size ? styles.selectedSize : styles.notSelectedSize}
+                    onClick={() => value.setSize(index)}
+                    key={Math.random()}
                   >
                     <span>{item}</span>
                   </button>
                 ))}
               </div>
-            </>
+            </div>
           ))}
         </div>
       </div>

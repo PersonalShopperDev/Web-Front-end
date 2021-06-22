@@ -1,12 +1,16 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styles from 'sass/templates/onboarding/step1.module.scss'
+import { User } from '../index'
 
-type Purpose = 'user' | 'stylist'
-
-export default function Step1() {
-  const [purpose, setPurpose] = useState<Purpose>(null)
+export default function Step1({
+  user,
+  setUser,
+}: {
+  user: User,
+  setUser: (value: User) => void;
+}) {
   const onClick = (item) => {
-    setPurpose(item)
+    setUser(item)
   }
   return (
     <section>
@@ -19,8 +23,8 @@ export default function Step1() {
       <div className={styles.container}>
         <button
           type="button"
-          onClick={() => onClick('user')}
-          className={purpose === 'user' ? styles.selectedStep1Box : styles.notSelectedStep1Box}
+          onClick={() => onClick('D')}
+          className={user === 'D' ? styles.selectedStep1Box : styles.notSelectedStep1Box}
         >
           <div className={styles.image1}>
             <img src="/icons/step1top.png" alt="user" className={styles.image} />
@@ -30,8 +34,8 @@ export default function Step1() {
         </button>
         <button
           type="button"
-          className={purpose === 'stylist' ? styles.selectedStep1Box : styles.notSelectedStep1Box}
-          onClick={() => onClick('stylist')}
+          className={user === 'S' ? styles.selectedStep1Box : styles.notSelectedStep1Box}
+          onClick={() => onClick('S')}
         >
           <div className={styles.image2}>
             <img src="/icons/step1bottom.png" alt="stylist" className={styles.image} />
