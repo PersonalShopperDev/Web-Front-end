@@ -6,7 +6,7 @@ import styles from 'sass/components/alert.module.scss'
 import { useDialog } from '..'
 
 interface ConfirmContextProps {
-  createConfirm: ({ ...props }: AlertHeaderProps) => Promise<void | boolean>
+  createConfirm: ({ ...props }: AlertHeaderProps) => Promise<boolean>
 }
 
 const ConfirmContext = createContext<ConfirmContextProps>(null)
