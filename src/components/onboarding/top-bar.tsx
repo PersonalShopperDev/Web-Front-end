@@ -11,11 +11,11 @@ export default function topBar({
   return (
     <section className={styles.container}>
       {[...Array(totalIndexNum)].map((value, idx) => (
-        <>
+        <div key={Math.random()}>
           { idx + 1 === index
             ? <img src="/icons/onboardingColoredTop.png" className={styles.icon} alt="topBar" />
             : <img src="/icons/onboardingTop.png" className={styles.icon} alt="coloredTopBar" />}
-        </>
+        </div>
       ))}
     </section>
   )
