@@ -4,7 +4,7 @@
     font-weight: 700;
     font-size: 18px;
     line-height: 22px;
-    color: #ff5917;
+    color: colors.$accent;
     margin-top: 37px;
 }
 
@@ -13,7 +13,7 @@
     font-weight: 600;
     font-size: 16px;
     line-height: 26px;
-    color: #020202;
+    color: colors.$primary-700;
 }
 
 .subContent {
@@ -21,7 +21,7 @@
     font-weight: 500;
     font-size: 12px;
     line-height: 19px;
-    color: #444444;
+    color: colors.$primary-600;
 }
 
 .step3 {
@@ -44,7 +44,7 @@
 @mixin bodyFormBox {
     width: 151px;
     height: 238px;
-    background-color: #dcdcdc;
+    background-color: colors.$primary-200;
     border-radius: 7px;
     border: 2px solid black;
     margin-right: 8.5px;
@@ -57,7 +57,7 @@
         font-size: 14px;
         line-height: 26px;
         font-weight: 600;
-        color: #c4c4c4;
+        color: colors.$primary-300;
     }
     >div {
         width: 151px;
@@ -68,7 +68,7 @@
 
 .selectedBodyForm {
     @include bodyFormBox();
-    background-color: #444444;
+    background-color: colors.$primary-600;
     .selectedText { 
         color: #000000;
     }
@@ -88,7 +88,7 @@
     width: 140px;
     height: 140px;
     border-radius: 7px;
-    border: 2px solid #dcdcdc;
+    border: 2px solid colors.$primary-200;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -104,7 +104,7 @@
 
 .selectedPalette {
     @include paletteBox();
-    border: 2px solid #020202;
+    border: 2px solid colors.$primary-700;
 }
 .notSelectedPalette {
     @include paletteBox();

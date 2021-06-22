@@ -4,7 +4,7 @@
     font-weight: 700;
     font-size: 18px;
     line-height: 22px;
-    color: #ff5917;
+    color: colors.$accent;
     margin-top: 37px;
 }
 
@@ -13,7 +13,7 @@
     font-weight: 600;
     font-size: 16px;
     line-height: 26px;
-    color: #020202;
+    color: colors.$primary-700;
 }
 
 
@@ -29,12 +29,12 @@
 
 .notSelectedSize { 
     @include sizeBox();
-    border: 1px solid #dcdcdc;
+    border: 1px solid colors.$primary-200;
 }
 .selectedSize {
     @include sizeBox();
-    background-color: #ff5917;
-    color: #ffffff
+    background-color: colors.$accent;
+    color: colors.$background
 }
 .sizeText {
     font-size: 14px;

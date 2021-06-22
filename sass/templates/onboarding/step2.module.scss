@@ -4,7 +4,7 @@
     font-weight: 700;
     font-size: 18px;
     line-height: 22px;
-    color: #ff5917;
+    color: colors.$accent;
     margin-top: 37px;
 }
 
@@ -13,7 +13,7 @@
     font-weight: 600;
     font-size: 16px;
     line-height: 26px;
-    color: #020202;
+    color: colors.$primary-700;
 }
 
 .container {
@@ -24,7 +24,7 @@
     font-weight: 600;
     font-size: 14px;
     line-height: 26px;
-    color: #c4c4c4;
+    color: colors.$primary-300;
     .button {
         margin-right: 17px;
         margin-left: 17px;
@@ -36,7 +36,7 @@
         }
     }
     .selectedText {
-        color: #020202
+        color: colors.$primary-700
     }
     .image {
         width: 118px;

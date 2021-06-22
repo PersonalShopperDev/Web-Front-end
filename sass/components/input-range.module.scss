@@ -1,0 +1,106 @@
+@use '../lib/colors.scss' as colors;
+
+.inputContainer {
+    width: 304px;
+    margin-top: 17px;
+    margin-bottom: 15px;
+    margin-left: 35px;
+}
+
+.rangeLeft {
+    position: absolute;
+    width: 304px;
+    left: 35px;
+    z-index: 2;
+    -webkit-appearance: none;
+    pointer-events: none;
+    opacity: 0;
+}
+.rangeRight {
+    position: absolute;
+    width: 304px;
+    right: 35px;
+    z-index: 2;
+    -webkit-appearance: none;
+    pointer-events: none;
+    opacity: 0;
+}
+.rangeLeft::-webkit-slider-thumb{
+    width: 18px;
+    height: 18px;
+    border-radius: 18px;
+    border: 0 none;
+    background-color: colors.$accent;
+    -webkit-appearance: none;
+    transform: translate(-9px,-4.5px);
+    pointer-events: all;
+}
+.rangeRight::-webkit-slider-thumb{
+    width: 18px;
+    height: 18px;
+    border-radius: 18px;
+    border: 0 none;
+    background-color: colors.$accent;
+    -webkit-appearance: none;
+    transform: translate(9px,-4.5px);   
+    pointer-events: all;
+}
+.slider {
+    position: relative;
+    z-index: 1;
+    height: 10px;
+    .track {
+        position: absolute;
+        z-index: 1;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        border-radius: 5px;
+        background-color: colors.$primary-300;
+    }
+    .range {
+        position: absolute;
+        z-index: 2;
+        left:0px;
+        right: 0px;
+        top:0;
+        bottom:0;
+        border-radius: 5px;
+        background-color: #000000;
+    }
+    .thumb_left {
+        position: absolute;
+        z-index: 3;
+        width: 18px;
+        height: 18px;
+        background-color: colors.$accent;
+        border-radius: 18px;
+        left: 0px;
+        transform: translate(-9px,-4.5px);
+    }
+    .thumb_right {
+        position: absolute;
+        z-index: 3;
+        width: 18px;
+        height: 18px;
+        background-color: colors.$accent;
+        border-radius: 18px;
+        right: 0px;
+        transform: translate(9px,-4.5px);   
+    }
+}
+
+.flexContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    >span{
+        display: block;
+        color:colors.$primary-600;
+        font-size: 10px;
+        line-height: 19px;
+        margin-top: 6px;
+    }
+}

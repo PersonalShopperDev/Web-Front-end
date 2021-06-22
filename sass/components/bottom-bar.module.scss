@@ -36,3 +36,13 @@
     line-height: 25px;
     color: colors.$background;
 }
+
+.completeButton {
+    width: 333px;
+    height: 54px;
+    background-color: #000000;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

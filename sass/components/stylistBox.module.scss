@@ -1,8 +1,10 @@
+@use '../lib/colors.scss' as colors;
+
 .stylistBox {
     width: 341px;
     height: 128px;
     border-radius: 9px;
-    box-shadow: 0 0 13px 0 rgba(0,0,0,0.11);
+    box-shadow: 0 0 13px 0 rgba(0,0,0,0.1);
     margin-bottom: 14px;
     display: flex;
     flex-direction: row;
@@ -14,6 +16,8 @@
 
 .profileImg {
     border-radius: 8px;
+    width: 94px;
+    height: 94px;
 }
 
 .infoBox {
@@ -34,18 +38,24 @@
     font-weight: 500;
 }
 
+.priceText { 
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 16px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
 .indicatorText {
     font-weight: 600;
-    color: #444444;
-    margin-top: 10px;
-    margin-bottom: 16px;
+    color: colors.$primary-600;
+    margin-bottom: 6px;
 }
 .indicatorText > span {
     margin-left: 7.08px;
     margin-right: 7.08px;
 }
 .style {
-    border: 1px solid #c4c4c4;
+    border: 1px solid colors.$primary-300;
     padding: 0.25rem 0.5625rem;
     border-radius: 0.9375rem;
     font-size: 0.5625rem;

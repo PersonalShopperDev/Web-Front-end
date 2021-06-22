@@ -1,3 +1,5 @@
+@use '../lib/colors.scss' as colors;
+
 .profileDetailBox {
     height: 59vh;
     overflow: scroll;
@@ -10,7 +12,7 @@
 @mixin container {
     margin-left: 20px;
     margin-right: 20px;
-    border-bottom: 1px solid #dcdcdc;
+    border-bottom: 1px solid colors.$primary-200;
 }
 
 .infoContainer {
@@ -33,7 +35,7 @@
 .careerText {
     font-size: 12px;
     font-weight: 500;
-    color: #616161;
+    color: colors.$primary-500;
     margin-left: 20px;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -43,7 +45,7 @@
     font-size: 11px;
     font-weight: 600;
     line-height: 14.98px;
-    color: #444444
+    color: colors.$primary-600
 }
 .indicatorText {
     @include indicator();
@@ -64,7 +66,7 @@
     font-size: 12px;
     font-weight: 500;
     line-height: 20px;
-    color: #616161;
+    color: colors.$primary-600;
 }
 
 .introductionContainer {

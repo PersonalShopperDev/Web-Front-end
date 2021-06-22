@@ -4,7 +4,7 @@
     font-weight: 700;
     font-size: 18px;
     line-height: 22px;
-    color: #ff5917;
+    color: colors.$accent;
     margin-top: 37px;
 }
 
@@ -13,7 +13,7 @@
     font-weight: 600;
     font-size: 16px;
     line-height: 26px;
-    color: #020202;
+    color: colors.$primary-700;
 }
 
 .container {
@@ -59,7 +59,7 @@
 .selectedStep1Box {
     @include step1Box();
     background-color: #ff4900;
-    color: #ffffff;
+    color: colors.$background;
 } 
 .notSelectedStep1Box {
     @include step1Box();
