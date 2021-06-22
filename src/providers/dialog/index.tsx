@@ -125,7 +125,7 @@ export default function DialogProvider({
           className={className}
           key={id}
           immediate
-          onOff={getExecutions().cancle}
+          onClose={getExecutions().cancle}
         >
           {inner}
         </Modal>
