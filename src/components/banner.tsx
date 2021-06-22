@@ -22,21 +22,27 @@ export default function Banner({ data }: { data: BannerData[] }) {
 
   const animate = () => {
     state.animation = requestAnimationFrame(animate)
-    carouselRef.current.style.transform = `translateX(-${state.current * 100}%)`
+    if (!carouselRef.current) {
+      return
+    }
+    carouselRef.current.style.transform = `translateX(${state.current * -100}%)`
   }
 
   const tranistion = () => {
+    if (!carouselRef.current) {
+      return
+    }
     carouselRef.current.style.transition = `transform ${state.transition}ms`
     state.current += 1
-    setTimeout(arrange, state.transition)
+    state.timeout = setTimeout(arrange, state.transition)
   }
 
   const arrange = () => {
+    if (!carouselRef.current) {
+      return
+    }
     carouselRef.current.style.transition = ''
-    setFigureArray((array) => {
-      const [prev, ...rest] = array
-      return [...rest, prev]
-    })
+    setFigureArray(([prev, ...rest]) => [...rest, prev])
     state.current = 0
   }
 
@@ -66,11 +72,11 @@ export default function Banner({ data }: { data: BannerData[] }) {
       <div className={styles.indicator}>
         {[...Array(figureArray.length)].map((_, index) => (
           <div
-            key={figureArray[index].img}
+            key={data[index].img}
             className={cn(
               styles.child,
-              index === data.findIndex((value) => value.img === figureArray[0].img)
-              && styles.active,
+              figureArray[0].img === data[index].img
+                && styles.active,
             )}
           />
         ))}

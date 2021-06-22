@@ -1,5 +1,6 @@
 @use './lib/variables.scss' as variables;
 @use './lib/colors.scss' as colors;
+@use './lib/util.scss' as util;
 @import './lib/fonts.scss';
 
 * {
@@ -15,6 +16,7 @@ html {
 body {
   display: flex;
   justify-content: center;
+  @include util.no-scroll();
 }
 
 article, aside, details, figcaption, figure,
