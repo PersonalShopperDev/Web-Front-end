@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import Image from 'next/image'
 import styles from 'sass/templates/stylist/search.module.scss'
 import BottomButton from 'src/components/bottomButton'
 
@@ -39,8 +38,8 @@ export default function Search() {
       </div>
       { isOverLength
         ? (
-          <div>
-            <Image src="/icons/warning.png" width="10" height="10" />
+          <div className={styles.flexRow}>
+            <img src="/icons/warning.png" alt="warning" width="10" height="10" />
             <span className={styles.warningText}>최대 3개까지 선택가능합니다.</span>
           </div>
         ) : null}
