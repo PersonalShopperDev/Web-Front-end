@@ -50,9 +50,9 @@ export default function DialogProvider({
       close: EventHandler
     }
 
-    constructor({ className } : DialogRequestProps) {
+    constructor(props : DialogRequestProps) {
       this.id = requests.length + 1
-      this.className = className
+      this.className = props?.className
     }
 
     private executeOk() {
