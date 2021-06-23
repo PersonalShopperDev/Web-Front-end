@@ -1,0 +1,13 @@
+.container {
+    width: 100%;
+    overflow: hidden;
+}
+
+.list {
+    width: 100%;
+    display: flex;
+}
+
+.wrapper {
+    flex-shrink: 0;
+}
