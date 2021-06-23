@@ -44,10 +44,9 @@ export default function DialogProvider({
     public id: number
     public className: string
     public inner: React.ReactNode
-    private executions : {
+    public executions : {
       ok: EventHandler
       cancle: EventHandler
-      close: EventHandler
     }
 
     constructor(props : DialogRequestProps) {
@@ -55,25 +54,11 @@ export default function DialogProvider({
       this.className = props?.className
     }
 
-    private executeOk() {
-      this.executions.ok()
-      this.executeClose()
-    }
-
-    private executeCancle() {
-      this.executions.cancle()
-      this.executeClose()
-    }
-
-    private executeClose() {
-      this.executions.close()
-    }
-
     public insert(inner : Inner): DialogBuilder {
       if (typeof inner === 'function') {
         this.inner = inner({
-          ok: () => this.executeOk(),
-          cancle: () => this.executeCancle(),
+          ok: () => this.executions.ok(),
+          cancle: () => this.executions.cancle(),
         })
         return this
       }
@@ -84,19 +69,17 @@ export default function DialogProvider({
     public open(): Promise<boolean> {
       return new Promise<boolean>((resolve) => {
         this.executions = {
-          ok: () => resolve(true),
-          cancle: () => resolve(false),
-          close: () => finishRequest(this),
+          ok: () => {
+            resolve(true)
+            finishRequest(this)
+          },
+          cancle: () => {
+            resolve(false)
+            finishRequest(this)
+          },
         }
         setRequests((array) => array.concat(this))
       })
-    }
-
-    public getExecutions(): { ok: EventHandler, cancle: EventHandler } {
-      return {
-        ok: () => this.executeOk(),
-        cancle: () => this.executeCancle(),
-      }
     }
   }
 
@@ -119,13 +102,13 @@ export default function DialogProvider({
         id,
         className,
         inner,
-        getExecutions,
+        executions,
       }) => (
         <Modal
           className={className}
           key={id}
           immediate
-          onClose={getExecutions().cancle}
+          onClose={executions.cancle}
         >
           {inner}
         </Modal>
