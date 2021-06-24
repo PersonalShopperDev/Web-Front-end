@@ -1,0 +1,61 @@
+@use '../../lib/colors.scss' as colors;
+
+.notice {
+    margin-top: 7px;
+    color: colors.$primary-400;
+    font-size: 10px;
+}
+
+.switchWrapper {
+    width: 39px;
+    height: 21px;
+    border-radius: 10.5px;
+    transition: background-color .5s;
+    background-color: colors.$primary-200;
+    &.active {
+      background-color: colors.$accent;
+      .switch {
+          transform: translateX(20px);
+      }
+    }
+}
+
+.switch {
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    background-color: white;
+    transform: translateX(2px);
+    transition: transform .5s;
+    box-shadow: 0 0 4px 0 rgba(black, .2);
+}
+
+.container {
+    margin-top: 14px;
+}
+
+.head {
+    font-size: 12px;
+    height: 30px;
+    text-align: left;
+    display: flex;
+    align-items: flex-end;
+}
+
+.cell {
+    padding-top: 12px;
+    padding-left: 11px;
+}
+
+.inputWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    color: colors.$primary-200;
+    border-bottom: 1px solid colors.$primary-200;
+}
+
+.input {
+    width: 55px;
+}
