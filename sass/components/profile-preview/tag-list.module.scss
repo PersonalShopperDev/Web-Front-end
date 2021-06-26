@@ -1,0 +1,16 @@
+@use '../../lib/colors.scss' as colors;
+
+.container {
+    margin-top: 10px;
+    display: flex;
+    padding: 0 17px;
+}
+
+.tag {
+    font-size: 10px;
+    color: colors.$primary-600;
+    border: 1px solid colors.$primary-300;
+    padding: 6px 13px;
+    border-radius: 50px;
+    margin-right: 7px;
+}
