@@ -21,6 +21,8 @@ module.exports = {
   ],
   rules: {
     semi: [2, 'never'],
+    'react/prop-types': 'off',
+    'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
     'no-continue': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/jsx-props-no-spreading': 'off',
