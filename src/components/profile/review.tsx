@@ -12,7 +12,7 @@ export default function Review() {
         gap={12}
       >
         {data.map((value) => (
-          <Link href={value}>
+          <Link key={value} href={value}>
             <a
               className={styles.wrapper}
               href={value}

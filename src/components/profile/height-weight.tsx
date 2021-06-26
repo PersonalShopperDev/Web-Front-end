@@ -34,7 +34,7 @@ export default function Wardrobe() {
               <th className={styles.head}>키</th>
               <td className={styles.cell}>
                 <div className={styles.inputWrapper}>
-                  <input className={styles.input} id="weight" type="text" />
+                  <input className={styles.input} type="text" />
                   kg
                 </div>
               </td>
@@ -43,7 +43,7 @@ export default function Wardrobe() {
               <th className={styles.head}>몸무게</th>
               <td className={styles.cell}>
                 <div className={styles.inputWrapper}>
-                  <input className={styles.input} id="weight" type="text" />
+                  <input className={styles.input} type="text" />
                   kg
                 </div>
               </td>
