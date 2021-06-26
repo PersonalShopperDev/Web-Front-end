@@ -15,6 +15,7 @@ export default function HorizontalList({
   gap?: number
 }) {
   const containerRef = useRef<HTMLDivElement>()
+  const listRef = useRef<HTMLDivElement>()
   const childrenRef = useRef<HTMLDivElement[]>([])
 
   const data = {
@@ -36,17 +37,17 @@ export default function HorizontalList({
 
   const animate = () => {
     transitionData.animation = requestAnimationFrame(animate)
-    if (!containerRef.current) {
+    if (!listRef.current) {
       return
     }
 
     const { current } = transitionData
 
     transitionData.result = Math.floor(
-      clamp(current, containerRef.current.offsetWidth - data.width, 0) * 10,
+      clamp(current, listRef.current.offsetWidth - data.width, 0) * 10,
     ) / 10
 
-    containerRef.current.style.transform = `translateX(${transitionData.result}px)`
+    listRef.current.style.transform = `translateX(${transitionData.result}px)`
   }
 
   const onMouseDown = (e: MouseEvent) => {
@@ -72,7 +73,7 @@ export default function HorizontalList({
   }
 
   const initializeEventListener = () => {
-    const { current } = containerRef
+    const { current } = listRef
     if (getDeviceType() === 'desktop') {
       current.addEventListener('mousedown', onMouseDown)
       return
@@ -89,6 +90,9 @@ export default function HorizontalList({
   }
 
   useEffect(() => {
+    if (getDeviceType() !== 'desktop') {
+      return () => {}
+    }
     initializeData()
     transitionData.animation = requestAnimationFrame(animate)
     initializeEventListener()
@@ -96,10 +100,13 @@ export default function HorizontalList({
   }, [])
 
   return (
-    <section className={styles.container}>
+    <section
+      className={styles.container}
+      ref={containerRef}
+    >
       <div
         className={cn(styles.list, className)}
-        ref={containerRef}
+        ref={listRef}
       >
         {children.map((child, index) => (
           <div

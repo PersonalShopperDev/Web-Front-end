@@ -1,6 +1,10 @@
+@use '../lib/util.scss' as util;
+
 .container {
     width: 100%;
-    overflow: hidden;
+    overflow-x: scroll;
+    @include util.no-scroll();
+    @include util.no-drag();
 }
 
 .list {
