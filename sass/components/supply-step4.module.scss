@@ -1,0 +1,69 @@
+@use '../lib/colors.scss' as colors;
+
+.title {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    color: colors.$accent;
+    margin-top: 37px;
+    margin-left: 21px;
+}
+
+.content {
+    margin-top: 9px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+    color: colors.$primary-700;
+    margin-left: 21px;
+}
+
+
+@mixin sizeBox {
+    width: 76px;
+    height: 38px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #767474;
+    margin-right: 9px
+}
+
+.notSelectedSize { 
+    @include sizeBox();
+    border: 1px solid colors.$primary-200;
+}
+.selectedSize {
+    @include sizeBox();
+    background-color: colors.$accent;
+    color: colors.$background
+}
+.sizeText {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 26px;
+    margin-top: 37px;
+    margin-bottom: 9px;
+    display: block;
+}
+
+.container {
+    margin-top: 80px;
+    margin-left: 21px;
+}
+
+.careerListsContainer {
+    display: flex;
+    align-items: center;
+    margin-top: 19px;
+    >span {
+        margin-left: 10px;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 26px;
+        color: colors.$primary-300;
+    }
+    .selectedText {
+        color: #000000
+    }
+}
