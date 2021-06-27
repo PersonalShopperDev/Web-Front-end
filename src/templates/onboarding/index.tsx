@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TopBar from 'src/components/onboarding/top-bar'
 import BottomBar from 'src/components/onboarding/bottom-bar'
+// import communicate from 'lib/api/index'
 import Step1 from './steps/step1'
 import Step2 from './steps/step2'
 import Step3 from './steps/step3'
@@ -19,21 +20,21 @@ export interface PriceLists {
 }
 
 interface Payload {
-  'userType': User
+  userType: User
   gender: Gender
-  body: number
-  skin: number
-  topSize: number
-  bottomSize: number
-  shoulderSize: number
-  waistSize: number
-  bellySize: number
-  hipSize: number
-  topPrice: {
+  body?: number
+  skin?: number
+  topSize?: number
+  bottomSize?: number
+  shoulderSize?: number
+  waistSize?: number
+  bellySize?: number
+  hipSize?: number
+  topPrice?: {
     min: number
     max: number
   }
-  bottomPrice: {
+  bottomPrice?: {
     min: number
     max: number
   }
@@ -41,11 +42,11 @@ interface Payload {
     min: number
     max: number
   }
-  shoesPrice: {
+  shoesPrice?: {
     min: number
     max: number
   }
-  bagPrice: {
+  bagPrice?: {
     min: number
     max: number
   }
@@ -57,6 +58,10 @@ interface Payload {
     min: number
     max: number
   }
+  stylePicture?: Array<number>
+  supplyMale?: boolean
+  supplyFemale?: boolean
+  career?: number
 }
 
 export default function Onboarding() {
@@ -86,31 +91,41 @@ export default function Onboarding() {
   const [accessoryMaxPrice, setAccessoryMaxPrice] = useState(50000)
   const [hatMinPrice, setHatMinPrice] = useState(5000)
   const [hatMaxPrice, setHatMaxPrice] = useState(50000)
+  const [codyLists, setCodyLists] = useState([])
+  const [career, setCareer] = useState(-1)
+  const [stylePictureLists, setStylePictureLists] = useState([])
 
   const putOnboardingInfo = () => {
     const userOnboardingInfo: Payload = {
       userType: user,
       gender,
-      body,
-      skin,
-      topSize,
-      bottomSize,
-      shoulderSize,
-      waistSize,
-      bellySize,
-      hipSize,
-      topPrice: { min: topMinPrice, max: topMaxPrice },
-      bottomPrice: { min: bottomMinPrice, max: bottomMaxPrice },
-      shoesPrice: { min: shoesMinPrice, max: shoesMaxPrice },
-      bagPrice: { min: bagMinPrice, max: bagMaxPrice },
     }
-    if (gender === 'M') {
-      userOnboardingInfo.hatPrice = { min: hatMinPrice, max: hatMaxPrice }
+    if (user === 'D') {
+      userOnboardingInfo.body = body
+      userOnboardingInfo.topSize = topSize
+      userOnboardingInfo.bottomSize = bottomSize
+      userOnboardingInfo.shoulderSize = shoulderSize
+      userOnboardingInfo.waistSize = waistSize
+      userOnboardingInfo.bellySize = bellySize
+      userOnboardingInfo.hipSize = hipSize
+      userOnboardingInfo.topPrice = { min: topMinPrice, max: topMaxPrice }
+      userOnboardingInfo.bottomPrice = { min: bottomMinPrice, max: bottomMaxPrice }
+      userOnboardingInfo.shoesPrice = { min: shoesMinPrice, max: shoesMaxPrice }
+      userOnboardingInfo.bagPrice = { min: bagMinPrice, max: bagMaxPrice }
+      if (gender === 'M') {
+        userOnboardingInfo.hatPrice = { min: hatMinPrice, max: hatMaxPrice }
+      } else {
+        userOnboardingInfo.skin = skin
+        userOnboardingInfo.dressPrice = { min: dressMinPrice, max: dressMaxPrice }
+        userOnboardingInfo.accessoryPrice = { min: accessoryMinPrice, max: accessoryMaxPrice }
+      }
+      // communicate({ url: '/style/img', payload: stylePictureLists, method: 'PUT' })
     } else {
-      userOnboardingInfo.dressPrice = { min: dressMinPrice, max: dressMaxPrice }
-      userOnboardingInfo.accessoryPrice = { min: accessoryMinPrice, max: accessoryMaxPrice }
+      userOnboardingInfo.supplyMale = codyLists.includes('M')
+      userOnboardingInfo.supplyFemale = codyLists.includes('F')
+      userOnboardingInfo.career = career
     }
-    console.log(userOnboardingInfo)
+    // communicate({ url: '/onboard', payload: userOnboardingInfo, method: 'PUT' })
   }
   const topPriceLists: PriceLists = {
     title: '상의',
@@ -161,19 +176,23 @@ export default function Onboarding() {
     setMinPrice: setHatMinPrice,
     setMaxPrice: setHatMaxPrice,
   }
-  const indexNum = 6
+  const [indexNum, setIndexNum] = useState(6)
   const step3 = 3
   const stepComponents = [<Step1 user={user} setUser={setUser} />,
     <Step2 gender={gender} setGender={setGender} />,
     <Step3
+      user={user}
       nextStep={nextStep}
       body={body}
       setBody={setBody}
       skin={skin}
       setSkin={setSkin}
       gender={gender}
+      codyLists={codyLists}
+      setCodyLists={setCodyLists}
     />,
     <Step4
+      user={user}
       gender={gender}
       topSize={topSize}
       bottomSize={bottomSize}
@@ -181,13 +200,16 @@ export default function Onboarding() {
       waistSize={waistSize}
       bellySize={bellySize}
       hipSize={hipSize}
+      career={career}
       setTopSize={setTopSize}
       setBottomSize={setBottomSize}
       setShoulderSize={setShoulderSize}
       setWaistSize={setWaistSize}
       setBellySize={setBellySize}
       setHipSize={setHipSize}
+      setCareer={setCareer}
     />, <Step5
+      user={user}
       gender={gender}
       topPriceLists={topPriceLists}
       bottomPriceLists={bottomPriceLists}
@@ -196,7 +218,11 @@ export default function Onboarding() {
       bagPriceLists={bagPriceLists}
       accessoryPriceLists={accessoryPriceLists}
       hatPriceLists={hatPriceLists}
-    />, <Step6 />]
+    />, <Step6
+      gender={gender}
+      stylePictureLists={stylePictureLists}
+      setStylePictureLists={setStylePictureLists}
+    />]
   const onPrevButtonClick = () => {
     if (stepIndex > 1 && !nextStep) {
       setStepIndex(+stepIndex - 1)
@@ -206,7 +232,7 @@ export default function Onboarding() {
   }
   const onNextButtonClick = () => {
     if (stepIndex < indexNum) {
-      if (stepIndex === step3 && !nextStep) {
+      if (stepIndex === step3 && !nextStep && user === 'D' && gender === 'F') {
         setNextStep(true)
       } else {
         setStepIndex(+stepIndex + 1)
@@ -216,10 +242,17 @@ export default function Onboarding() {
       console.log('welcome personal Shopper')
     }
   }
+  useEffect(() => {
+    if (user === 'D') {
+      setIndexNum(6)
+    } else {
+      setIndexNum(5)
+    }
+  }, [user])
   return (
     <>
       <header>
-        <TopBar index={stepIndex} totalIndexNum={indexNum} />
+        <TopBar index={stepIndex} totalIndexNum={indexNum} user={user} />
       </header>
       {stepComponents[stepIndex - 1]}
       <section>
@@ -227,6 +260,8 @@ export default function Onboarding() {
           onPrevButtonClick={onPrevButtonClick}
           onNextButtonClick={onNextButtonClick}
           stepIndex={stepIndex}
+          totalIndexNum={indexNum}
+          user={user}
         />
       </section>
     </>

@@ -2,7 +2,7 @@ import React from 'react'
 import styles from 'sass/templates/onboarding/step2.module.scss'
 import { Gender } from '../index'
 
-interface genderType {
+export interface genderType {
   gender: Gender,
   selectedPath: string,
   notSelectedPath: string,
