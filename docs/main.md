@@ -99,7 +99,7 @@
 <br/>
 
 ## __`Modal`__
-드래그로 전환을 지원하는 슬라이드 쇼입니다.
+모달의 기본 컨테이너입니다.
 |Property|Type|Default (Nullable)|Remark|
 |---|---|---|---|
 |children|`ReactNode`|-||
@@ -109,23 +109,51 @@
 |immediate|`boolean`|`false`|-|
 |controller|`React.Dispatch<SetStateAction<boolean>>`|`null`|-|
 |onClose|`() => void`|`null`|-|
+|transition|`Transition`|`null`|-|
 
 |Context Prop|Type|Remark|
 |---|---|---|
-|active|`boolean`|현재 모달의 활성화 상태입니다.|
 |close|`() => void`|닫기를 요청합니다.|
+
+### __Interface__
+```
+interface TransitionProperties {
+  opacity?: number
+  transform?: string
+}
+
+interface TransitionData extends TransitionProperties {
+  duration: number
+}
+
+interface Transition {
+  default: TransitionProperties
+  onActive?: TransitionData
+  onInactive?: TransitionData
+}
+
+```
 ### __Usage__
 ```
-<Carousel>
-  {slides.map(({ src, caption }) => (
-    <figure>
-      <img src={src} />
-      <figcaption>
-        {caption}
-      </figcaption>
-    <figure/>
-  ))}
-</Carousel>
+<Modal
+  className={styles.container}
+  initializer={<Avatar />}
+  transition={{
+    default: {
+      transform: 'translateX(100%)',
+    },
+    onActive: {
+      transform: 'translateX(0%)',
+      duration: 500,
+    },
+    onInactive: {
+      transform: 'translateX(100%)',
+      duration: 500,
+    },
+  }}
+  >
+  <Drawer />
+</Modal>
 ```
 
 <br />
