@@ -1,26 +1,31 @@
 import React from 'react'
 import styles from 'sass/components/bottom-bar.module.scss'
-import Image from 'next/image'
+import { User } from 'src/templates/onboarding/index'
 
 export default function bottomBar({
+  user,
   stepIndex,
+  totalIndexNum,
   onPrevButtonClick,
   onNextButtonClick,
 }: {
+  user: User,
   stepIndex: number
+  totalIndexNum: number
   onPrevButtonClick: () => void
   onNextButtonClick: () => void
 }) {
+  const nextTitle = user === 'D' ? '확인하기' : '이동하기'
   return (
     <section className={styles.container}>
-      {stepIndex === 6
+      {stepIndex === totalIndexNum || stepIndex === 1
         ? (
           <button
             type="button"
             onClick={() => onNextButtonClick()}
             className={styles.completeButton}
           >
-            <span className={styles.nextText}>확인하기</span>
+            <span className={styles.nextText}>{stepIndex === 1 ? '다음' : nextTitle}</span>
           </button>
         )
         : (
@@ -30,7 +35,7 @@ export default function bottomBar({
               onClick={() => onPrevButtonClick()}
               className={styles.prevButton}
             >
-              <Image src="/icons/prevButton.png" width="6" height="13" />
+              <img src="/icons/prevButton.png" alt="prevButton" width={6} height={13} />
             </button>
             <button
               type="button"
