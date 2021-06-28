@@ -1,5 +1,4 @@
 import Layout from 'layouts/default'
-import getServerSideAuth from 'lib/server/auth'
 import { GetServerSideProps } from 'next'
 import IntegratedAuthProvider from 'providers/auth/integrated'
 import Login from 'templates/login'
@@ -15,8 +14,9 @@ export default function Page() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { authenticated } = await getServerSideAuth(context)
-  if (authenticated) {
+  const { accessToken } = context.req.cookies
+
+  if (accessToken) {
     return {
       redirect: {
         destination: '/',
@@ -24,6 +24,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     }
   }
+
   return {
     props: {},
   }

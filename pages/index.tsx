@@ -6,7 +6,7 @@ import StylistGridView, { StylistGridViewData } from 'components/stylist-grid-vi
 import StylistHomeAppBar from 'components/app-bar/stylist-home'
 import { GetServerSideProps } from 'next'
 import { communicateWithContext } from 'lib/api'
-import getServerSideAuth from 'lib/server/auth'
+import parseJwt from 'lib/util/jwt'
 
 interface Props {
   needLogin: boolean,
@@ -35,15 +35,12 @@ export default function Page({ needLogin, data } : Props) {
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
-  const [{ authenticated }, dataResponse] = await Promise.all([
-    getServerSideAuth(context),
-    communicateWithContext({
-      url: '/home',
-      context,
-    }),
-  ])
+  const res = await communicateWithContext({
+    url: '/home',
+    context,
+  })
 
-  if (!dataResponse.ok) {
+  if (res.status !== 200) {
     return {
       redirect: {
         destination: '/500',
@@ -52,13 +49,26 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
     }
   }
 
-  const data = await dataResponse.json()
+  const data = await res.json()
 
-  if (!authenticated) {
+  const { accessToken } = context.req.cookies
+
+  if (!accessToken) {
     return {
       props: {
         needLogin: true,
         data,
+      },
+    }
+  }
+
+  const { userType } = parseJwt(accessToken)
+
+  if (userType === 'N') {
+    return {
+      redirect: {
+        destination: '/onboarding',
+        permanent: false,
       },
     }
   }
