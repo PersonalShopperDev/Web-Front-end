@@ -15,7 +15,7 @@ interface User {
 interface AuthProps {
   user: User
   authenticate: (provider: string, token: string) => Promise<void>
-  signOut: () => Promise<void>
+  signOut: (redirect?: string) => Promise<void>
 }
 
 const AuthContext = createContext<AuthProps>(null)
@@ -81,13 +81,14 @@ export default function AuthProvider({
   const onResponse = async (res: Response) : Promise<void> => {
     const data = await res.json()
     const { accessToken, refreshToken } = data
+
     setCookie(ACCESS_TOKEN, accessToken, tokenExpiration)
     if (refreshToken) {
       setCookie(REFRESH_TOKEN, refreshToken, refreshTokenExpiration)
     }
-    setUser({
-      accessToken,
-    })
+
+    setUser({ accessToken })
+
     setTimeout(silentRefresh, silentRefreshInterval)
   }
 
@@ -95,10 +96,14 @@ export default function AuthProvider({
     router.push('/login/error')
   }
 
-  const signOut = async () : Promise<void> => {
+  const signOut = async (redirect?: string) : Promise<void> => {
     deleteCookie(ACCESS_TOKEN)
     deleteCookie(REFRESH_TOKEN)
     setUser(null)
+    if (redirect) {
+      router.push(redirect)
+      return
+    }
     router.reload()
   }
 
