@@ -21,6 +21,7 @@ interface User {
 
 interface AuthProps {
   user: User
+  fetchUser: () => Promise<boolean>
   authenticate: (provider: string, token: string) => Promise<void>
   signOut: (redirect?: string) => Promise<void>
 }
@@ -109,11 +110,11 @@ export default function AuthProvider({
     const { accessToken, refreshToken } = await res.json()
     setAccessToken(accessToken)
     setRefreshToken(refreshToken)
-    fetchUserData()
+    fetchUser()
     setTimeout(silentRefresh, silentRefreshInterval)
   }
 
-  const fetchUserData = async () : Promise<void> => {
+  const fetchUser = async () : Promise<boolean> => {
     const res = await communicate({
       url: '/profile',
     })
@@ -121,7 +122,9 @@ export default function AuthProvider({
     if (res.status === 200) {
       const data = await res.json()
       setUser(data)
+      return true
     }
+    return false
   }
 
   const onFail = () : void => {
@@ -145,6 +148,7 @@ export default function AuthProvider({
 
   const value = {
     user,
+    fetchUser,
     authenticate,
     signOut,
   }
