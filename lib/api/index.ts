@@ -7,7 +7,7 @@ export function getApiUrl(url: string): string {
   return `${process.env.API_URL}${url}`
 }
 
-type Method = 'GET' | 'POST' | 'UPDATE' | 'DELETE'
+type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
 interface Protocol {
   url: string
