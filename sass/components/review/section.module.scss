@@ -1,0 +1,11 @@
+@use '../../lib/colors.scss' as colors;
+
+.container {
+    width: 100%;
+    padding: 20px 17px;
+    overflow: hidden;
+}
+
+.title {
+    font-size: 14px;
+}

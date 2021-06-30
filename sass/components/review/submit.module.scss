@@ -1,0 +1,12 @@
+@use '../../lib/colors.scss' as colors;
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px 17px 35px 17px;
+    padding: 14px;
+    color: white;
+    background-color: colors.$accent;
+    border-radius: 5px;
+}
