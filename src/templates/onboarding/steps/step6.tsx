@@ -1,33 +1,24 @@
 import React, {
   useState,
   useEffect,
-  Dispatch,
-  SetStateAction,
 } from 'react'
 import styles from 'sass/templates/onboarding/step6.module.scss'
 import communicate from 'lib/api/index'
-import { Gender } from '../index'
+import { useOnboarding } from 'providers/onboarding'
 
-export default function Step6({
-  gender,
-  stylePictureLists,
-  setStylePictureLists,
-}: {
-  gender: Gender
-  stylePictureLists: Array<number>
-  setStylePictureLists: Dispatch<SetStateAction<any>>
-}) {
+export default function Step6() {
+  const { information, stylePicture, setStylePicture } = useOnboarding()
   const [styleImageLists, setStyleImageLists] = useState([])
   const onClick = (index) => {
-    if (!stylePictureLists.includes(index)) {
-      setStylePictureLists([...stylePictureLists, index])
+    if (!stylePicture.includes(index)) {
+      setStylePicture([...stylePicture, index])
     } else {
-      setStylePictureLists(stylePictureLists.filter((item) => item !== index))
+      setStylePicture(stylePicture.filter((item) => item !== index))
     }
   }
   useEffect(() => {
     async function fetchStylistData() {
-      const res = await communicate({ url: `/style/img?gender=${gender}` })
+      const res = await communicate({ url: `/style/img?gender=${information.gender}` })
       const styleImage = await res.json()
       setStyleImageLists(styleImage)
     }
@@ -40,9 +31,9 @@ export default function Step6({
       <div className={styles.container}>
         {styleImageLists.map((value, index) => (
           <button type="button" onClick={() => onClick(index)} className={styles.tmp} key={Math.random()}>
-            {stylePictureLists.includes(index) && <div className={styles.selectedImg} /> }
+            {stylePicture.includes(index) && <div className={styles.selectedImg} /> }
             <img src={value.img} alt="styleImg" width="159" height="159" className={styles.img} />
-            {stylePictureLists.includes(index) && <span className={styles.selectedText}>선택</span>}
+            {stylePicture.includes(index) && <span className={styles.selectedText}>선택</span>}
           </button>
         ))}
       </div>

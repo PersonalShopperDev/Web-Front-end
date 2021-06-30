@@ -1,50 +1,24 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-} from 'react'
+import React from 'react'
 import DemandStep3 from 'src/components/onboarding/demand-step3'
 import SupplyStep3 from 'src/components/onboarding/supply-step3'
-import { Gender, User } from '../index'
+import { useOnboarding } from 'providers/onboarding'
 
 export default function Step3({
-  user,
   nextStep,
-  body,
-  skin,
-  gender,
-  setBody,
-  setSkin,
-  codyLists,
-  setCodyLists,
 }: {
-  user: User
   nextStep: boolean,
-  body: number,
-  skin: number,
-  gender: Gender,
-  setBody: (value: number) => void;
-  setSkin: (value: number) => void;
-  codyLists: Array<string>
-  setCodyLists: Dispatch<SetStateAction<any>>
 
 }) {
+  const { information } = useOnboarding()
   return (
     <div>
-      {user === 'D'
+      {information.userType === 'D'
         ? (
           <DemandStep3
             nextStep={nextStep}
-            body={body}
-            setBody={setBody}
-            skin={skin}
-            setSkin={setSkin}
-            gender={gender}
           />
         ) : (
-          <SupplyStep3
-            codyLists={codyLists}
-            setCodyLists={setCodyLists}
-          />
+          <SupplyStep3 />
         )}
     </div>
   )

@@ -1,21 +1,19 @@
 import React from 'react'
 import styles from 'sass/templates/onboarding/step2.module.scss'
-import { Gender } from '../index'
+import { useOnboarding } from 'providers/onboarding'
 
 export interface genderType {
-  gender: Gender,
+  gender: 'M' | 'F' | 'supplyFemale' | 'supplyMale',
   selectedPath: string,
   notSelectedPath: string,
   title: string,
 }
 
-export default function Step2({
-  gender,
-  setGender,
-}: {
-  gender: Gender,
-  setGender: (value: Gender) => void,
-}) {
+export default function Step2() {
+  const { information, setData } = useOnboarding()
+  const onClick = (item) => {
+    setData('gender', item)
+  }
   const genderLists: genderType[] = [{
     gender: 'F',
     selectedPath: '/icons/selectedWoman.png',
@@ -36,13 +34,13 @@ export default function Step2({
           <button
             type="button"
             className={styles.button}
-            onClick={() => setGender(value.gender)}
+            onClick={() => onClick(value.gender)}
             key={Math.random()}
           >
-            {gender === value.gender
+            {information.gender === value.gender
               ? <img src={value.selectedPath} alt="selectedIcons" className={styles.image} />
               : <img src={value.notSelectedPath} alt="icons" className={styles.image} />}
-            <span className={gender === value.gender
+            <span className={information.gender === value.gender
               ? styles.selectedText : null}
             >
               {value.title}

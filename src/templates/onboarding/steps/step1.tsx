@@ -1,16 +1,11 @@
 import React from 'react'
 import styles from 'sass/templates/onboarding/step1.module.scss'
-import { User } from '../index'
+import { useOnboarding } from 'providers/onboarding'
 
-export default function Step1({
-  user,
-  setUser,
-}: {
-  user: User,
-  setUser: (value: User) => void;
-}) {
+export default function Step1() {
+  const { information, setData } = useOnboarding()
   const onClick = (item) => {
-    setUser(item)
+    setData('userType', item)
   }
   return (
     <section>
@@ -24,7 +19,7 @@ export default function Step1({
         <button
           type="button"
           onClick={() => onClick('D')}
-          className={user === 'D' ? styles.selectedStep1Box : styles.notSelectedStep1Box}
+          className={information !== null && information.userType === 'D' ? styles.selectedStep1Box : styles.notSelectedStep1Box}
         >
           <div className={styles.image1}>
             <img src="/icons/step1top.png" alt="user" className={styles.image} />
@@ -34,7 +29,7 @@ export default function Step1({
         </button>
         <button
           type="button"
-          className={user === 'S' ? styles.selectedStep1Box : styles.notSelectedStep1Box}
+          className={information !== null && information.userType === 'S' ? styles.selectedStep1Box : styles.notSelectedStep1Box}
           onClick={() => onClick('S')}
         >
           <div className={styles.image2}>

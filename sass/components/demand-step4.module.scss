@@ -18,33 +18,6 @@
     margin-left: 21px;
 }
 
-@mixin sizeBox {
-    width: 76px;
-    height: 38px;
-    border-radius: 5px;
-    font-size: 12px;
-    font-weight: 500;
-    color: #767474;
-    margin-right: 9px
-}
-
-.notSelectedSize { 
-    @include sizeBox();
-    border: 1px solid colors.$primary-200;
-}
-.selectedSize {
-    @include sizeBox();
-    background-color: colors.$accent;
-    color: colors.$background
-}
-.sizeText {
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 26px;
-    margin-top: 37px;
-    margin-bottom: 9px;
-    display: block;
-}
 .step4 {
     position: absolute;
 }

@@ -1,21 +1,20 @@
 import React from 'react'
 import styles from 'sass/components/bottom-bar.module.scss'
-import { User } from 'src/templates/onboarding/index'
+import { useOnboarding } from 'providers/onboarding'
 
 export default function bottomBar({
-  user,
   stepIndex,
   totalIndexNum,
   onPrevButtonClick,
   onNextButtonClick,
 }: {
-  user: User,
   stepIndex: number
   totalIndexNum: number
   onPrevButtonClick: () => void
   onNextButtonClick: () => void
 }) {
-  const nextTitle = user === 'D' ? '확인하기' : '이동하기'
+  const { information } = useOnboarding()
+  const nextTitle = information !== null && information.userType === 'D' ? '확인하기' : '이동하기'
   return (
     <section className={styles.container}>
       {stepIndex === totalIndexNum || stepIndex === 1

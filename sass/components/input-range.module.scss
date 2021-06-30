@@ -1,16 +1,15 @@
 @use '../lib/colors.scss' as colors;
 
-.inputContainer {
-    width: 304px;
+.container {
+    width: 306px;
     margin-top: 17px;
     margin-bottom: 15px;
-    margin-left: 35px;
+    padding-left: 35px;
 }
 
 .rangeLeft {
     position: absolute;
-    width: 304px;
-    left: 35px;
+    width: 306px;
     z-index: 2;
     -webkit-appearance: none;
     pointer-events: none;
@@ -18,11 +17,11 @@
 }
 .rangeRight {
     position: absolute;
-    width: 304px;
-    right: 35px;
+    width: 306px;
     z-index: 2;
     -webkit-appearance: none;
     pointer-events: none;
+    right: 50px;
     opacity: 0;
 }
 .rangeLeft::-webkit-slider-thumb{
@@ -67,6 +66,7 @@
         right: 0px;
         top:0;
         bottom:0;
+        border: 1px solid black;
         border-radius: 5px;
         background-color: #000000;
     }

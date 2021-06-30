@@ -1,19 +1,18 @@
 import React from 'react'
 import styles from 'sass/components/top-bar.module.scss'
-import { User } from 'src/templates/onboarding/index'
+import { useOnboarding } from 'providers/onboarding'
 
 export default function topBar({
-  user,
   index,
   totalIndexNum,
 }: {
-  user: User
     index: number,
     totalIndexNum: number,
 }) {
+  const { information } = useOnboarding()
   return (
     <section className={styles.container}>
-      {user === 'S' && index === totalIndexNum ? null : [...Array(totalIndexNum)].map((value, idx) => (
+      {information !== null && information.userType === 'S' && index === totalIndexNum ? null : [...Array(totalIndexNum)].map((value, idx) => (
         <div key={Math.random()}>
           { idx + 1 === index
             ? <img src="/icons/onboardingColoredTop.png" className={styles.icon} alt="topBar" />

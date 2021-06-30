@@ -1,43 +1,14 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-} from 'react'
+import React from 'react'
 import styles from 'sass/components/supply-step3.module.scss'
-import { genderType } from 'src/templates/onboarding/steps/step2'
+import { useOnboarding } from 'providers/onboarding'
+import CodyGender from 'components/information/cody-gender'
 
-export default function SupplyStep3({
-  codyLists,
-  setCodyLists,
-}: {
-  codyLists: Array<string>
-  setCodyLists: Dispatch<SetStateAction<any>>
-}) {
-  const genderLists: genderType[] = [{
-    gender: 'F',
-    selectedPath: '/icons/selectedFemaleCareer.png',
-    notSelectedPath: '/icons/femaleCareer.png',
-    title: '여자',
-  }, {
-    gender: 'M',
-    selectedPath: '/icons/selectedMaleCareer.png',
-    notSelectedPath: '/icons/maleCareer.png',
-    title: '남자',
-  }]
+export default function SupplyStep3() {
+  const { information, setData } = useOnboarding()
+
   const onClickAll = () => {
-    if (!codyLists.includes('F') && !codyLists.includes('M')) {
-      setCodyLists([...codyLists, 'F', 'M'])
-    } else if (!codyLists.includes('F')) {
-      setCodyLists([...codyLists, 'F'])
-    } else {
-      setCodyLists([...codyLists, 'M'])
-    }
-  }
-  const onClickEach = ({ gender }) => {
-    if (!codyLists.includes(gender)) {
-      setCodyLists([...codyLists, gender])
-    } else {
-      setCodyLists(codyLists.filter((item) => item !== gender))
-    }
+    if (!information.supplyFemale) setData('supplyFemale', true)
+    if (!information.supplyMale) setData('supplyMale', true)
   }
   return (
     <section>
@@ -47,25 +18,7 @@ export default function SupplyStep3({
         <button type="button" onClick={onClickAll} className={styles.selectButton}>
           <span className={styles.text}>모두선택가능</span>
         </button>
-        <div className={styles.container}>
-          {genderLists.map((value, index) => (
-            <button
-              type="button"
-              className={styles.button}
-              onClick={() => onClickEach({ gender: value.gender })}
-              key={Math.random()}
-            >
-              {codyLists.includes(value.gender)
-                ? <img src={value.selectedPath} alt="selectedIcons" className={styles.image} />
-                : <img src={value.notSelectedPath} alt="icons" className={styles.image} />}
-              <span className={codyLists.includes(value.gender)
-                ? styles.selectedText : null}
-              >
-                {value.title}
-              </span>
-            </button>
-          ))}
-        </div>
+        <CodyGender isEdit isOnboarding />
       </div>
     </section>
   )
