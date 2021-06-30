@@ -44,6 +44,28 @@
 
 <br />
 
+## __`StarRate`__
+별점입니다.
+|Property|Type|Default (Nullable)|Remark|
+|---|---|---|---|
+|className|`string`|`null`|-|
+|value|`number`|`0`|-|
+|setValue|`Dispatch<SetStateAction<number>>`|`null`|-|
+|size|`number`|-|-|
+|gap|`number`|`0`|-|
+### __Usage__
+```
+<StartRate
+  className={styles.container}
+  value={rate}
+  setValue={setRate}
+  size={22}
+  gap={7}
+/>
+```
+
+<br />
+
 ## __Components__
 ## __`AppBar`__
 타이틀, 뒤로가기, 프로필 이동 버튼 등을 포함하는 앱 상단 고정 메뉴 입니다.
