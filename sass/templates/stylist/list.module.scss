@@ -1,0 +1,12 @@
+.listContainer {
+    position: absolute;
+    align-self: center;
+    overflow: auto;
+    height: 610px;
+    width: 100%;
+    padding-left: 17px;
+}
+
+.listContainer::-webkit-scrollbar {
+    display: none;
+}
