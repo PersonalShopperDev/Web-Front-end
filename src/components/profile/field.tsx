@@ -1,16 +1,14 @@
+import communicate from 'lib/api'
+import { useAuth } from 'providers/auth'
+import { useAlert } from 'providers/dialog/alert/inner'
 import React, {
-  useState, useRef, createContext, useContext, MutableRefObject, useEffect,
+  useState, useRef, createContext, useContext, ChangeEvent, ChangeEventHandler, useEffect,
 } from 'react'
-import styles from 'sass/components/profile/field.module.scss'
-import Icon from 'widgets/icon'
-import Section from './section'
-
-type State = 'default' | 'edit' | 'pending'
+import StatefulSection, { useStatefulSection } from './stateful-section'
 
 interface FieldContextProps {
-  state: State,
-  inputRef: MutableRefObject<HTMLInputElement>
-  textareaRef:MutableRefObject<HTMLTextAreaElement>
+  text: string,
+  onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 
 const FieldContext = createContext<FieldContextProps>(null)
@@ -19,63 +17,101 @@ export const useField = () => useContext(FieldContext)
 
 export default function Field({
   head,
-  content,
+  name,
+  maxLength,
   children,
 } : {
   head: string
-  content: string,
+  name: string,
+  maxLength?: number
   children: React.ReactNode
 }) {
-  const [state, setState] = useState<State>('default')
+  return (
+    <StatefulSection
+      head={head}
+    >
+      <Inner
+        name={name}
+        maxLength={maxLength}
+      >
+        {children}
+      </Inner>
+    </StatefulSection>
+  )
+}
 
-  const inputRef = useRef<HTMLInputElement>()
-  const textareaRef = useRef<HTMLTextAreaElement>()
+function Inner({
+  name,
+  maxLength,
+  children,
+} : {
+  name: string,
+  maxLength: number
+  children: React.ReactNode
+}) {
+  const { setOnEdit, setState } = useStatefulSection()
+  const { fetchUser } = useAuth()
+  const { createAlert } = useAlert()
 
-  const onEdit = () => {
-    if (state === 'default') {
-      setState('edit')
+  const [text, setText] = useState<string>('')
+
+  const textRef = useRef<string>(text)
+
+  const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    if (maxLength) {
+      if (e.target.value.length > maxLength) {
+        setText(e.target.value.substring(0, 100))
+        return
+      }
+    }
+    setText(e.target.value)
+  }
+
+  const onEdit = async () => {
+    const value = textRef.current
+    if (!value) {
+      await createAlert({ text: '내용을 입력해 주세요' })
       return
     }
-    if (state === 'edit') {
-      setState('default')
-    }
+
+    await communicate({
+      url: '/profile',
+      payload: {
+        [name]: value,
+      },
+      method: 'PATCH',
+    }).then((res) => {
+      if (!res.ok) {
+        throw new Error('error')
+      }
+      fetchUser()
+    }).catch(async () => {
+      await createAlert({ text: 'error' })
+    })
+
+    setState('default')
   }
 
   useEffect(() => {
-    if (state === 'edit') {
-      if (inputRef.current) {
-        inputRef.current.value = content
-      }
-      if (textareaRef.current) {
-        textareaRef.current.value = content
-      }
-    }
-  }, [state])
+    textRef.current = text
+  }, [text])
+
+  useEffect(() => {
+    setOnEdit(onEdit)
+  }, [])
 
   const value = {
-    state,
-    inputRef,
-    textareaRef,
+    text,
+    onChange,
   }
 
   return (
-    <Section
-      head={head}
-      action={(
-        <button
-          type="button"
-          className={styles.button}
-          onClick={onEdit}
-        >
-          {state === 'default'
-            ? <Icon src="edit.png" size={17} />
-            : '수정'}
-        </button>
-      )}
-    >
-      <FieldContext.Provider value={value}>
-        {children}
-      </FieldContext.Provider>
-    </Section>
+    <FieldContext.Provider value={value}>
+      {children}
+    </FieldContext.Provider>
   )
+}
+
+Field.defaultProps = {
+  maxLength: null,
 }

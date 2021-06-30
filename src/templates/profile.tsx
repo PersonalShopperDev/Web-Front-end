@@ -15,11 +15,14 @@ export default function Profile() {
       />
       <InputField
         head="이름"
+        name="name"
         content="오진수"
       />
       <Divider />
       <TextareaField
         head="자기소개"
+        name="introduction"
+        maxLength={100}
       />
       <Divider />
       <Wardrobe />
@@ -28,6 +31,8 @@ export default function Profile() {
       <Divider />
       <TextareaField
         head="스타일리스트에게 바라는 점"
+        name="hopeToSupplier"
+        maxLength={500}
       />
       <Review />
     </>
