@@ -97,6 +97,9 @@ export default function HorizontalList({
       return null
     }
     initializeData()
+    if (data.width <= containerRef.current.offsetWidth) {
+      return null
+    }
     transitionData.animation = requestAnimationFrame(animate)
     initializeEventListener()
     return () => cancelAnimationFrame(transitionData.animation)
