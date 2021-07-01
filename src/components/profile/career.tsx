@@ -35,19 +35,25 @@ function Inner({
 }) {
   const { user, fetchUser } = useAuth()
   const { createAlert } = useAlert()
-  const { setState, setOnEdit } = useStatefulSection()
+  const { state, setState, setOnEdit } = useStatefulSection()
 
   const { careerList } = user || data
+
+  const [company, career] = careerList || [{ type: 0, value: null }, { type: 1, value: null }]
 
   const companyRef = useRef<HTMLInputElement>()
   const careerRef = useRef<HTMLInputElement>()
 
   const onEdit = async () => {
-    const career = careerRef.current.value
-    const company = companyRef.current.value
+    const careerValue = careerRef.current.value
+    const companyValue = companyRef.current.value
 
-    if (!career || !company) {
+    if (!careerValue || !companyValue) {
       await createAlert({ text: '내용을 채워주세요' })
+      return
+    }
+
+    if (careerValue === company?.value && companyValue === company?.value) {
       return
     }
 
@@ -55,10 +61,10 @@ function Inner({
       url: '/profile',
       payload: {
         careerList: [{
-          value: company,
+          value: companyValue,
           type: 0,
         }, {
-          value: career,
+          value: careerValue,
           type: 1,
         }],
       },
@@ -81,7 +87,12 @@ function Inner({
     setOnEdit(onEdit)
   }, [])
 
-  const [company, career] = careerList || [{ type: 0, value: null }, { type: 1, value: null }]
+  useEffect(() => {
+    if (state === 'edit') {
+      companyRef.current.value = company?.value
+      careerRef.current.value = career?.value
+    }
+  }, [state])
 
   return (
     <section className={styles.container}>
