@@ -13,7 +13,7 @@ interface RepresentData {
   }[]
 }
 
-export default function Represents({ data }: { data: RepresentData }) {
+export default function Represent({ data }: { data: RepresentData }) {
   const { user, fetchUser } = useAuth()
   const { createAlert } = useAlert()
 
@@ -49,7 +49,9 @@ export default function Represents({ data }: { data: RepresentData }) {
   return (
     <Section
       head="대표 코디"
-      action={<ProfileImagePicker id="represents-picker" upload={upload} />}
+      action={(!coord || coord.length < 4) && (
+        <ProfileImagePicker id="represents-picker" upload={upload} />
+      )}
     >
       {(coord && coord.length > 0) && (
         <section className={styles.container}>
