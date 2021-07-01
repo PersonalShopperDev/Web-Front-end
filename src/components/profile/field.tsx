@@ -2,12 +2,21 @@ import communicate from 'lib/api'
 import { useAuth } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
 import React, {
-  useState, useRef, createContext, useContext, ChangeEvent, ChangeEventHandler, useEffect,
+  useState,
+  useRef,
+  createContext,
+  useContext,
+  ChangeEvent,
+  ChangeEventHandler,
+  useEffect,
+  Dispatch,
+  SetStateAction,
 } from 'react'
 import StatefulSection, { useStatefulSection } from './stateful-section'
 
 interface FieldContextProps {
   text: string,
+  setText: Dispatch<SetStateAction<string>>
   onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 
@@ -120,6 +129,7 @@ function Inner({
 
   const value = {
     text,
+    setText,
     onChange,
   }
 
