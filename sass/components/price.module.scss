@@ -1,0 +1,30 @@
+@use '../lib/colors.scss' as colors;
+
+.container {
+    overflow: auto;
+    height: 400px;
+    margin-left: 21px;
+}
+.infoContainer {
+    overflow: auto;
+}
+
+.container::-webkit-scrollbar {
+    display: none;
+}
+
+.priceListContainer {
+    display: flex;
+    align-items: center;
+    margin-top: 19px;
+    >span {
+        margin-left: 10px;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 26px;
+        color: colors.$primary-300;
+    }
+    .selectedText {
+        color: #000000
+    }
+}
