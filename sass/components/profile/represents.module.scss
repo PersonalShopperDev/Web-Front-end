@@ -1,0 +1,14 @@
+@use '../../lib/colors.scss' as colors;
+@use '../../lib/util.scss' as utils;
+
+.container {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 11px;
+}
+
+.figure {
+    aspect-ratio: 1;
+    object-fit: cover;
+}
