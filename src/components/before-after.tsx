@@ -28,7 +28,7 @@ export default function BeforeAfter({ data } : {data: BeforeAfterData[]}) {
           title,
         }) => (
           <>
-            <section className={styles.photozone}>
+            <section key={stylistId} className={styles.photozone}>
               <figure className={cn(styles.figure, styles.before)}>
                 <figcaption className={styles.figcaption}>Before</figcaption>
                 <img src={beforeImg} alt="Before" />

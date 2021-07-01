@@ -8,14 +8,29 @@ import React, {
 export const ACCESS_TOKEN = 'accessToken'
 export const REFRESH_TOKEN = 'refreshToken'
 
-interface User {
-  accessToken: string
+export interface User {
+  userType: 'N' | 'D' | 'S' | 'W'
+  name: string
+  introduction: string
+  styles: string[]
+  img: string
+  closet: {id: number, img: string}[]
+  careerList: { value: string, type: number }[]
+  price: number
+  coord: string[]
+  hopeToSupplier: string
+  bodyStat: {
+    isPublic: boolean
+    height: number
+    weight: number
+  }
 }
 
 interface AuthProps {
   user: User
+  fetchUser: () => Promise<boolean>
   authenticate: (provider: string, token: string) => Promise<void>
-  signOut: () => Promise<void>
+  signOut: (redirect?: string) => Promise<void>
 }
 
 const AuthContext = createContext<AuthProps>(null)
@@ -40,65 +55,97 @@ export default function AuthProvider({
       resource: provider,
       token,
     }
+
     const res = await communicate({
       url: '/auth/login',
       payload,
       method: 'POST',
     })
-    if (res.ok) {
-      await onResponse(res)
-      router.push('/')
+
+    if (res.status !== 200) {
+      onFail()
       return
     }
-    onFail()
+
+    await onResponse(res)
+    router.push('/')
   }
 
   const isValidToken = (token : string) : boolean => token !== null && typeof token !== 'undefined' && token !== 'undefined'
 
   const silentRefresh = async () : Promise<void> => {
     const refreshToken = getCookie(REFRESH_TOKEN)
+
     if (!isValidToken(refreshToken)) {
       if (user) {
         signOut()
       }
       return
     }
+
     const payload: any = {
       refreshToken,
     }
+
     const res = await communicate({
       url: '/auth/token',
       payload,
       method: 'POST',
     })
-    if (res.ok) {
+
+    if (res.status === 200) {
       onResponse(res)
       return
     }
+
     onFail()
   }
 
-  const onResponse = async (res: Response) : Promise<void> => {
-    const data = await res.json()
-    const { accessToken, refreshToken } = data
-    setCookie(ACCESS_TOKEN, accessToken, tokenExpiration)
-    if (refreshToken) {
-      setCookie(REFRESH_TOKEN, refreshToken, refreshTokenExpiration)
+  const setAccessToken = (token: string) => {
+    if (token) {
+      setCookie(ACCESS_TOKEN, token, tokenExpiration)
     }
-    setUser({
-      accessToken,
-    })
+  }
+
+  const setRefreshToken = (token: string) => {
+    if (token) {
+      setCookie(REFRESH_TOKEN, token, refreshTokenExpiration)
+    }
+  }
+
+  const onResponse = async (res: Response) : Promise<void> => {
+    const { accessToken, refreshToken } = await res.json()
+    setAccessToken(accessToken)
+    setRefreshToken(refreshToken)
+    fetchUser()
     setTimeout(silentRefresh, silentRefreshInterval)
+  }
+
+  const fetchUser = async () : Promise<boolean> => {
+    const res = await communicate({
+      url: '/profile',
+    })
+
+    if (res.status === 200) {
+      const data = await res.json()
+      setUser(data)
+      return true
+    }
+    return false
   }
 
   const onFail = () : void => {
     router.push('/login/error')
   }
 
-  const signOut = async () : Promise<void> => {
+  const signOut = async (redirect?: string) : Promise<void> => {
     deleteCookie(ACCESS_TOKEN)
     deleteCookie(REFRESH_TOKEN)
     setUser(null)
+    if (redirect) {
+      router.push(redirect)
+      return
+    }
     router.reload()
   }
 
@@ -108,6 +155,7 @@ export default function AuthProvider({
 
   const value = {
     user,
+    fetchUser,
     authenticate,
     signOut,
   }

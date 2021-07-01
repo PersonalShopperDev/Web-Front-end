@@ -1,0 +1,124 @@
+@use '../lib/colors.scss' as colors;
+
+.reviewContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.reviewBox {
+    width: 341px;
+    height: 82px;
+    border-radius: 7px;
+    box-shadow: 0 0 11px 0 rgba(0,0,0,0.1);
+    margin-top: 24px;   
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-bottom: 8px;
+}
+
+@mixin item {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    flex: 1;
+    text-align: center;
+}
+.leftItem {
+    @include item();
+    border-right: 1px solid colors.$primary-200;
+}
+.rightItem {
+    @include item();
+}
+.keyText { 
+    font-size: 14px;
+    color: colors.$primary-400
+}
+.valueText {
+    font-size: 20px;
+    color: colors.$accent
+}
+
+.userBox {
+    //border: 1px solid black;
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+    margin-top: 20px;
+}
+
+.userNameBox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.userNameBox > div {
+    align-items: center;
+    display: flex;
+}
+
+.nameText {
+    font-size: 14px;
+    font-weight: 700;
+    margin-left: 5px;
+}
+
+.dateText {
+    font-size: 10px;
+    font-weight: 500;
+    color: colors.$primary-400
+}
+
+.starBox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.starBox >div {
+    display: flex;
+    margin-right: 4px;
+}
+
+.starBox > span {
+    font-size: 12px;
+    font-weight: 700;
+    margin-right: 4px;
+}
+
+.infoBox {
+    display: flex;
+    flex-direction: column;
+}
+.infoBox > div {
+    display: flex;
+    align-items: center;
+    font-size: 11px;
+    margin-bottom: 8px;
+    > span {
+        display: block;
+        width: 60px;
+        color: colors.$primary-500;
+        font-weight: 700;
+    }
+}
+
+.contentBox {
+    border-bottom:1px solid colors.$primary-200 ;
+    padding-bottom: 17px;
+    >span {
+        font-size: 11px;
+        font-weight: 500;
+        color: colors.$primary-600;
+        line-height: 18px;
+    }
+}
+
+.styleHashtag {
+    margin-right: 5px;
+}

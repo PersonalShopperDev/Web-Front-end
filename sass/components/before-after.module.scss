@@ -29,7 +29,7 @@
 }
 
 .figure {
-    @include util.noDrag();
+    @include util.no-drag();
     position: relative;
     display: flex;
     justify-content: center;

@@ -1,0 +1,42 @@
+@use '../lib/colors.scss' as colors;
+
+.container {
+    margin-top: 80px;
+    margin-left: 21px;
+}
+
+.careerListsContainer {
+    display: flex;
+    align-items: center;
+    margin-top: 19px;
+    >span {
+        margin-left: 10px;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 26px;
+        color: colors.$primary-300;
+    }
+    .selectedText {
+        color: #000000
+    }
+}
+
+.infoContainer {
+    padding-top: 8px;
+}
+
+.infoCareerLists {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+    >span {
+        margin-left: 10px;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 26px;
+        color: colors.$primary-300;
+    }
+    .selectedText {
+        color: #000000
+    }
+}
