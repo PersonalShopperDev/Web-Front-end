@@ -7,6 +7,7 @@
 }
 
 .switchWrapper {
+    margin-top: 9px;
     width: 39px;
     height: 21px;
     border-radius: 10.5px;
@@ -34,28 +35,37 @@
     margin-top: 14px;
 }
 
+.row {
+    display: flex;
+
+    & + & {
+        margin-top: 10px;
+    }
+}
+
 .head {
     font-size: 12px;
-    height: 30px;
+    font-weight: bold;
+    width: 45px;
     text-align: left;
     display: flex;
     align-items: flex-end;
 }
 
-.cell {
-    padding-top: 12px;
-    padding-left: 11px;
+.content {
+    border-bottom: 1px solid colors.$primary-200;
+    display: flex;
+    color: colors.$primary-300;
+    font-size: 12px;
+
 }
 
-.inputWrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 12px;
-    color: colors.$primary-200;
-    border-bottom: 1px solid colors.$primary-200;
+.text,
+.input {
+    color: colors.$primary-500;
+    text-align: right;
 }
 
 .input {
-    width: 55px;
+    width: 25px;
 }
