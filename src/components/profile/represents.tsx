@@ -6,13 +6,20 @@ import styles from 'sass/components/profile/represents.module.scss'
 import ProfileImagePicker from './image-picker'
 import Section from './section'
 
-export default function Represents() {
-  const images = ['/images/sample-avatar.jpg', '/images/sample-avatar.jpg', '/images/sample-avatar.jpg']
+interface RepresentData {
+  coord: {
+    id: number,
+    img: string,
+  }[]
+}
 
-  const { fetchUser } = useAuth()
+export default function Represents({ data }: { data: RepresentData }) {
+  const { user, fetchUser } = useAuth()
   const { createAlert } = useAlert()
 
-  const upload = async (e : ChangeEvent<HTMLInputElement>) => {
+  const { coord } = user || data || {}
+
+  const upload = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files[0]) {
       return
     }
@@ -27,36 +34,35 @@ export default function Represents() {
         body: formData,
       },
       method: 'POST',
-    }).then((res) => {
-      if (!res.ok) {
-        throw new Error()
-      }
-      fetchUser()
-    }).catch(async () => {
-      await createAlert({ text: '에러가 발생했습니다' })
     })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error()
+        }
+        fetchUser()
+      })
+      .catch(async () => {
+        await createAlert({ text: '에러가 발생했습니다' })
+      })
   }
 
   return (
     <Section
       head="대표 코디"
-      action={(
-        <ProfileImagePicker
-          id="represents-picker"
-          upload={upload}
-        />
-      )}
+      action={<ProfileImagePicker id="represents-picker" upload={upload} />}
     >
-      <section className={styles.container}>
-        {images.map((value) => (
-          <img
-            key={Math.random()}
-            className={styles.figure}
-            src={value}
-            alt=""
-          />
-        ))}
-      </section>
+      {(coord && coord.length > 0) && (
+        <section className={styles.container}>
+          {coord.map(({ id, img }) => (
+            <img
+              key={id}
+              className={styles.figure}
+              src={img}
+              alt=""
+            />
+          ))}
+        </section>
+      )}
     </Section>
   )
 }

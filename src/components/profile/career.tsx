@@ -10,14 +10,16 @@ import Icon from 'widgets/icon'
 import StatefulSection, { useStatefulSection } from './stateful-section'
 
 interface CareerData {
-  value: string
-  type: number
+  careerList: {
+    type: number,
+    value: string,
+  }[]
 }
 
 export default function Career({
-  data = [{ value: '여기', type: 1 }, { value: '1년차 어쩌구', type: 1 }],
+  data,
 }: {
-  data: CareerData[]
+  data: CareerData
 }) {
   return (
     <StatefulSection head="경력">
@@ -26,10 +28,16 @@ export default function Career({
   )
 }
 
-function Inner({ data }: { data: CareerData[] }) {
-  const { fetchUser } = useAuth()
+function Inner({
+  data,
+}: {
+  data: CareerData
+}) {
+  const { user, fetchUser } = useAuth()
   const { createAlert } = useAlert()
   const { setState, setOnEdit } = useStatefulSection()
+
+  const { careerList } = user || data
 
   const companyRef = useRef<HTMLInputElement>()
   const careerRef = useRef<HTMLInputElement>()
@@ -73,15 +81,15 @@ function Inner({ data }: { data: CareerData[] }) {
     setOnEdit(onEdit)
   }, [])
 
-  const company = data[0].value
-  const career = data[1].value
+  const [company, career] = careerList || [{ type: 0, value: null }, { type: 1, value: null }]
 
   return (
     <section className={styles.container}>
       <Label
         id="company-input"
         icon="building.png"
-        content={`${company}에서 근무 중`}
+        content={company.value && `${company.value}에서 근무 중`}
+        placeholder="근무지"
       >
         <input
           className={styles.field}
@@ -95,7 +103,8 @@ function Inner({ data }: { data: CareerData[] }) {
       <Label
         id="career-input"
         icon="briefcase.png"
-        content={career}
+        content={career.value}
+        placeholder="스타일리스트 경력"
       >
         <input
           className={styles.field}
@@ -115,11 +124,13 @@ function Label({
   children,
   icon,
   content,
+  placeholder,
 } : {
   id: string,
   children: ReactNode
   icon: string
   content: string
+  placeholder: string
 }) {
   const { state } = useStatefulSection()
 
@@ -130,7 +141,7 @@ function Label({
         children
       ) : (
         <p className={styles.field}>
-          {content}
+          {content || placeholder}
         </p>
       )}
     </label>

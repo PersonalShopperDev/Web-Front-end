@@ -1,49 +1,46 @@
 import styles from 'sass/components/profile/cody-style.module.scss'
 import Link from 'next/link'
 import Icon from 'widgets/icon'
+import { useAuth } from 'providers/auth'
 import Section from './section'
 
 interface StyleData {
-  male: Style[],
-  female: Style[],
-}
-
-interface Style {
-  id: number
-  value: string
+  styles: string[]
 }
 
 export default function CodyStyle({
-  data = {
-    male: [{ id: 0, value: '뭐' }, { id: 1, value: '아니' }, { id: 2, value: '야리ㄹ리' }],
-    female: null,
-  },
+  label,
+  data,
 }: {
+  label: string
   data: StyleData
 }) {
-  const { male, female } = data
+  const { user } = useAuth()
 
-  const mapping = ({ value }) => (
-    <div key={value} className={styles.style}>
-      {value}
-    </div>
-  )
+  const { styles: styleList } = user || data || {}
 
   return (
     <Section
-      head="자신있는 코디 스타일"
-      action={(
-        <Link href="/profile/style-select">
-          <a href="/profile/style-select">
-            <Icon src="edit.png" size={17} />
-          </a>
-        </Link>
-      )}
+      head={label}
+      action={
+        (
+          <Link href="/profile/style-select">
+            <a href="/profile/style-select">
+              <Icon src="edit.png" size={17} />
+            </a>
+          </Link>
+        )
+      }
     >
-      <section className={styles.container}>
-        {male?.map(mapping)}
-        {female?.map(mapping)}
-      </section>
+      {styleList && styleList.length > 0 && (
+        <section className={styles.container}>
+          {styleList.map((value) => (
+            <div key={value} className={styles.style}>
+              {value}
+            </div>
+          ))}
+        </section>
+      )}
     </Section>
   )
 }
