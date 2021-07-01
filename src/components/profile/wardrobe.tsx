@@ -7,11 +7,15 @@ import styles from 'sass/components/profile/wardrobe.module.scss'
 import Icon from 'widgets/icon'
 import Section from './section'
 
-export default function Wardrobe() {
-  const images = ['/a', '/b', '/c', '/d', '/e', '/f']
+interface WardrobeData {
+  closet: string[]
+}
 
-  const { fetchUser } = useAuth()
+export default function Wardrobe({ data } : { data: WardrobeData }) {
+  const { user, fetchUser } = useAuth()
   const { createAlert } = useAlert()
+
+  const { closet } = user || data || {}
 
   const upload : ChangeEventHandler<HTMLInputElement> = async (e) => {
     if (!e.target.files[0]) {
@@ -57,7 +61,7 @@ export default function Wardrobe() {
         className={styles.container}
         gap={12}
       >
-        {images.map((value) => (
+        {closet?.map((value) => (
           <img
             key={value}
             className={styles.figure}

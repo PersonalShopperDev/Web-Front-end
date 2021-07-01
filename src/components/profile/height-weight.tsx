@@ -27,8 +27,8 @@ function Inner({ data } : { data: HeightWeightData}) {
   const { state, setOnEdit, setState } = useStatefulSection()
   const { createAlert } = useAlert()
 
-  const { bodyStat } = user || data
-  const { isPublic, height, weight } = bodyStat || { isPublic: false, height: 0, weight: 0 }
+  const { bodyStat } = user || data || {}
+  const { isPublic, height, weight } = bodyStat || {}
 
   const [publicState, setPublicState] = useState(isPublic)
 
