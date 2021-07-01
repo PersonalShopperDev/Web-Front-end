@@ -5,7 +5,7 @@ import CodyStyle from 'components/profile/cody-style'
 import Price from 'components/profile/price'
 import Divider from 'widgets/divider'
 import Career from 'components/profile/career'
-import Represents from 'components/profile/represents'
+import Represent from 'components/profile/represents'
 import LookBook from 'components/profile/look-book'
 
 export default function SupplierProfile() {
@@ -33,7 +33,7 @@ export default function SupplierProfile() {
       <Divider />
       <Price />
       <Divider />
-      <Represents />
+      <Represent />
       <Divider />
       <LookBook />
     </>
