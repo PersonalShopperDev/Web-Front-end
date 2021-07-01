@@ -103,7 +103,7 @@ export default function HorizontalList({
     transitionData.animation = requestAnimationFrame(animate)
     initializeEventListener()
     return () => cancelAnimationFrame(transitionData.animation)
-  }, [])
+  }, [children])
 
   if (!children) {
     return <></>
