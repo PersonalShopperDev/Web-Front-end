@@ -1,4 +1,4 @@
-@use '../lib/colors.scss' as colors;
+@use '../../lib/colors.scss' as colors;
 
 .container { 
     padding-left: 17px;
@@ -21,4 +21,10 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.pictureText {
+    font-weight: 700;
+    font-size: 10px;
+    color: colors.$primary-600
 }

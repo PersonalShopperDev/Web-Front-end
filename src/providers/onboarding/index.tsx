@@ -55,6 +55,7 @@ interface IsEdit {
   price: boolean
   codyGender: boolean
   career: boolean
+  style: boolean
 }
 
 interface OnboardingProps {
@@ -66,7 +67,6 @@ interface OnboardingProps {
     setEdit: (key: string) => void
     setStylePicture: Dispatch<SetStateAction<any>>
     putOnboardingInfo: () => void
-    editOnboardingInfo: (key:string, value: string | number | boolean) => void
 }
 
 const OnboardingContext = createContext<OnboardingProps>(null)
@@ -87,6 +87,7 @@ export default function OnboardingProvider({
     price: false,
     codyGender: false,
     career: false,
+    style: false,
   })
   console.log(information)
   const setData = (key: string, value: string | number | boolean,
@@ -99,7 +100,7 @@ export default function OnboardingProvider({
       setInformation((prevInfo) => ({ ...prevInfo, [key]: value }))
     }
   }
-  const setEdit = (key:string) => {
+  const setEdit = async (key:string) => {
     if (editCheck[key]) {
       const payload: any = {}
       if (key === 'body' || key === 'skin' || key === 'career') {
@@ -124,6 +125,10 @@ export default function OnboardingProvider({
       } else if (key === 'codyGender') {
         payload.supplyMale = information.supplyMale
         payload.supplyFemale = information.supplyFemale
+      } else {
+        payload.list = stylePicture
+        await communicate({ url: '/style/img', payload, method: 'PUT' })
+        return
       }
       communicate({ url: '/onboard', payload, method: 'PATCH' })
     }
@@ -139,12 +144,13 @@ export default function OnboardingProvider({
     }
   }
   const putOnboardingInfo = () => {
+    const payload = { list: stylePicture }
     communicate({ url: '/onboard', payload: information, method: 'PUT' })
-    if (information.userType === 'D') communicate({ url: '/style/img', payload: stylePicture, method: 'PUT' })
+    if (information.userType === 'D') {
+      communicate({ url: '/style/img', payload, method: 'PUT' })
+    }
   }
-  const editOnboardingInfo = (key: string, value: string | number | boolean) => {
 
-  }
   useEffect(() => {
     fetchInformationData()
   }, [])
@@ -157,7 +163,6 @@ export default function OnboardingProvider({
     setEdit,
     setStylePicture,
     putOnboardingInfo,
-    editOnboardingInfo,
   }
 
   return <OnboardingContext.Provider value={value}>{children}</OnboardingContext.Provider>
