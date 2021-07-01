@@ -13,10 +13,17 @@ interface User {
   name: string
   introduction: string
   styles: string[]
-  profileImg: string
+  img: string
+  closet: []
   careerList: { value: string, type: number }[]
   price: number
   coord: string[]
+  hopeToSupplier: string
+  bodyStat: {
+    isPublic: boolean
+    height: number
+    weight: number
+  }
 }
 
 interface AuthProps {
