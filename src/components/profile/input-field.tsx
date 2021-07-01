@@ -32,7 +32,7 @@ function Inner({ content }: { content: string }) {
   }, [state])
 
   useEffect(() => {
-    setText(content)
+    setText(content || '')
   }, [])
 
   return (

@@ -49,7 +49,7 @@ function Inner({
   }, [state])
 
   useEffect(() => {
-    setText(content)
+    setText(content || '')
   }, [])
 
   return (
