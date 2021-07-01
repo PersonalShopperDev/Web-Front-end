@@ -1,0 +1,17 @@
+@use '../lib/util.scss' as util;
+
+.container {
+    width: 100%;
+    overflow-x: scroll;
+    @include util.no-scroll();
+    @include util.no-drag();
+}
+
+.list {
+    width: 100%;
+    display: flex;
+}
+
+.wrapper {
+    flex-shrink: 0;
+}

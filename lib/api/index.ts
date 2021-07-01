@@ -7,7 +7,7 @@ export function getApiUrl(url: string): string {
   return `${process.env.API_URL}${url}`
 }
 
-type Method = 'GET' | 'POST' | 'UPDATE' | 'DELETE' | 'PUT' | 'PATCH'
+type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
 interface Protocol {
   url: string
@@ -25,7 +25,6 @@ async function fetcher({
 }: Protocol & {
   token?: string
 }) {
-  const body = options?.body || JSON.stringify(payload)
   const headers: any = options?.headers || {}
 
   const init: RequestInit = {}
@@ -34,9 +33,11 @@ async function fetcher({
     init.method = method
   }
 
-  if (body) {
-    init.body = body
+  if (payload) {
+    init.body = JSON.stringify(payload)
     headers['Content-Type'] = 'application/json'
+  } else if (options?.body) {
+    init.body = options?.body
   }
 
   if (token) {
