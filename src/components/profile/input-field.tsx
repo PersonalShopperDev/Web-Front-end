@@ -22,7 +22,7 @@ export default function InputField({
 function Inner({ content }: { content: string }) {
   const defaultValue = '내용을 입력해주세요.'
   const { state } = useStatefulSection()
-  const { onChange } = useField()
+  const { onChange, setText } = useField()
   const inputRef = useRef<HTMLInputElement>()
 
   useEffect(() => {
@@ -30,6 +30,10 @@ function Inner({ content }: { content: string }) {
       inputRef.current.value = content
     }
   }, [state])
+
+  useEffect(() => {
+    setText(content)
+  }, [])
 
   return (
     <>

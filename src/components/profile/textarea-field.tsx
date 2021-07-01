@@ -38,7 +38,7 @@ function Inner({
   maxLength: number,
 }) {
   const { state } = useStatefulSection()
-  const { text, onChange } = useField()
+  const { text, setText, onChange } = useField()
   const defaultValue = '내용을 입력해주세요.'
   const textareaRef = useRef<HTMLTextAreaElement>()
 
@@ -47,6 +47,10 @@ function Inner({
       textareaRef.current.value = content
     }
   }, [state])
+
+  useEffect(() => {
+    setText(content)
+  }, [])
 
   return (
     <>
