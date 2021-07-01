@@ -25,7 +25,7 @@ export default function AppBar({
         {landings?.map((landing) => landing)
         || (back && <Icon src="back.png" onClick={onClickBack} />)}
       </div>
-      <h1 className={styles.title}>{title}</h1>
+      {title && <h1 className={styles.title}>{title}</h1>}
       <div className={styles.actions}>
         {actions?.map((action) => action)}
       </div>
