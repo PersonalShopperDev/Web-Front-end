@@ -90,14 +90,21 @@ export default function HorizontalList({
   }
 
   useEffect(() => {
+    if (!children) {
+      return null
+    }
     if (getDeviceType() !== 'desktop') {
-      return () => {}
+      return null
     }
     initializeData()
     transitionData.animation = requestAnimationFrame(animate)
     initializeEventListener()
     return () => cancelAnimationFrame(transitionData.animation)
   }, [])
+
+  if (!children) {
+    return <></>
+  }
 
   return (
     <section
