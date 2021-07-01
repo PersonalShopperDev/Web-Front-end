@@ -101,6 +101,10 @@ function Inner({
       return
     }
 
+    if (value === content) {
+      return
+    }
+
     await communicate({
       url: '/profile',
       payload: {
