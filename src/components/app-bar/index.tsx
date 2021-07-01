@@ -1,7 +1,7 @@
 import { useRouter } from 'next/dist/client/router'
 import React from 'react'
 import styles from 'sass/components/app-bar.module.scss'
-import Icon from 'src/widget/icon'
+import Icon from 'widgets/icon'
 
 export default function AppBar({
   title,
