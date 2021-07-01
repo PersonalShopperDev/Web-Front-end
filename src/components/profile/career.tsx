@@ -88,7 +88,7 @@ function Inner({
       <Label
         id="company-input"
         icon="building.png"
-        content={company.value && `${company.value}에서 근무 중`}
+        content={company?.value && `${company.value}에서 근무 중`}
         placeholder="근무지"
       >
         <input
@@ -103,7 +103,7 @@ function Inner({
       <Label
         id="career-input"
         icon="briefcase.png"
-        content={career.value}
+        content={career?.value}
         placeholder="스타일리스트 경력"
       >
         <input
