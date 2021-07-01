@@ -2,9 +2,9 @@ import HorizontalList from 'components/horizontal-list'
 import communicate from 'lib/api'
 import { useAuth } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
-import { ChangeEventHandler } from 'react'
+import { ChangeEvent } from 'react'
 import styles from 'sass/components/profile/wardrobe.module.scss'
-import Icon from 'widgets/icon'
+import ProfileImagePicker from './image-picker'
 import Section from './section'
 
 export default function Wardrobe() {
@@ -13,7 +13,7 @@ export default function Wardrobe() {
   const { fetchUser } = useAuth()
   const { createAlert } = useAlert()
 
-  const upload : ChangeEventHandler<HTMLInputElement> = async (e) => {
+  const upload = async (e : ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files[0]) {
       return
     }
@@ -41,16 +41,10 @@ export default function Wardrobe() {
     <Section
       head="내 옷장"
       action={(
-        <label className={styles.button} htmlFor="wardrobePicker">
-          <Icon src="add.png" size={14} />
-          <input
-            id="wardrobePicker"
-            type="file"
-            accept="image/png, image/jpeg, image/jpg"
-            style={{ display: 'none' }}
-            onChange={upload}
-          />
-        </label>
+        <ProfileImagePicker
+          id="wardrobe-picker"
+          upload={upload}
+        />
       )}
     >
       <HorizontalList
