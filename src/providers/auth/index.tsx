@@ -8,13 +8,13 @@ import React, {
 export const ACCESS_TOKEN = 'accessToken'
 export const REFRESH_TOKEN = 'refreshToken'
 
-interface User {
+export interface User {
   userType: 'N' | 'D' | 'S' | 'W'
   name: string
   introduction: string
   styles: string[]
   img: string
-  closet: []
+  closet: {id: number, img: string}[]
   careerList: { value: string, type: number }[]
   price: number
   coord: string[]

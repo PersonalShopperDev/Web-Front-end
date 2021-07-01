@@ -8,7 +8,10 @@ import Icon from 'widgets/icon'
 import Section from './section'
 
 interface WardrobeData {
-  closet: string[]
+  closet: {
+    id: number,
+    img: string
+  }[]
 }
 
 export default function Wardrobe({ data } : { data: WardrobeData }) {
@@ -61,11 +64,11 @@ export default function Wardrobe({ data } : { data: WardrobeData }) {
         className={styles.container}
         gap={12}
       >
-        {closet?.map((value) => (
+        {closet?.map(({ id, img }) => (
           <img
-            key={value}
+            key={id}
             className={styles.figure}
-            src={value}
+            src={img}
             alt=""
             draggable="false"
           />
