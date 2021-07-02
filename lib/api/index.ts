@@ -48,10 +48,16 @@ async function fetcher({
     init.headers = headers
   }
 
-  return fetch(getApiUrl(url), {
+  const requestInit = {
     ...options,
     ...init,
-  })
+  }
+
+  if (Object.keys(requestInit).length === 0) {
+    return fetch(getApiUrl(url))
+  }
+
+  return fetch(getApiUrl(url), requestInit)
 }
 
 export default async function communicate(props: Protocol): Promise<Response> {
