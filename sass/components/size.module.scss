@@ -1,0 +1,57 @@
+@use '../lib/colors.scss' as colors;
+
+.container {
+    display: flex;
+    flex-direction: row;
+}
+@mixin sizeBox {
+    width: 76px;
+    height: 38px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #767474;
+    margin-right: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notSelectedSize { 
+    @include sizeBox();
+    border: 1px solid colors.$primary-200;
+}
+.selectedSize {
+    @include sizeBox();
+    background-color: colors.$primary-600;
+    color: colors.$background;
+}
+.editSize {
+    @include sizeBox();
+    background-color: colors.$accent;
+    color: colors.$background;
+}
+@mixin sizeText {
+    font-weight: 600;
+    line-height: 26px;
+    display: block;
+}
+.sizeText {
+    @include sizeText();
+    font-size: 12px;
+    margin-top: 20px;
+    margin-bottom: 3px;
+    color: #767474;
+}
+.editInfoSizeText {
+    @include sizeText();
+    font-size: 12px;
+    margin-top: 20px;
+    margin-bottom: 3px;
+}
+.editSizeText {
+    @include sizeText();
+    font-size: 14px;
+    margin-top: 37px;
+    margin-bottom: 9px;
+}

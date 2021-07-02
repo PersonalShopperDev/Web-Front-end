@@ -1,29 +1,68 @@
 import HorizontalList from 'components/horizontal-list'
+import communicate from 'lib/api'
+import { useAuth } from 'providers/auth'
+import { useAlert } from 'providers/dialog/alert/inner'
+import { ChangeEvent } from 'react'
 import styles from 'sass/components/profile/wardrobe.module.scss'
-import Icon from 'widgets/icon'
+import ProfileImagePicker from './image-picker'
 import Section from './section'
 
-export default function Wardrobe() {
-  const images = ['/a', '/b', '/c', '/d', '/e', '/f']
+interface WardrobeData {
+  closet: {
+    id: number,
+    img: string
+  }[]
+}
+
+export default function Wardrobe({ data } : { data: WardrobeData }) {
+  const { user, fetchUser } = useAuth()
+  const { createAlert } = useAlert()
+
+  const { closet } = user || data || {}
+
+  const upload = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files[0]) {
+      return
+    }
+
+    const formData = new FormData()
+    formData.append('img', e.target.files[0])
+
+    await communicate({
+      url: '/profile/closet',
+      options: {
+        body: formData,
+      },
+      method: 'POST',
+    }).then((res) => {
+      if (!res.ok) {
+        throw new Error()
+      }
+      fetchUser()
+    }).catch(async () => {
+      await createAlert({ text: 'error' })
+    })
+  }
 
   return (
     <Section
       head="내 옷장"
       action={(
-        <button className={styles.button} type="button">
-          <Icon src="add.png" size={14} />
-        </button>
+        <ProfileImagePicker
+          id="wardrobe-picker"
+          upload={upload}
+        />
       )}
     >
       <HorizontalList
         className={styles.container}
         gap={12}
       >
-        {images.map((value) => (
+        {closet?.map(({ id, img }) => (
           <img
-            key={value}
+            key={id}
             className={styles.figure}
-            src={value}
+            src={img}
             alt=""
             draggable="false"
           />

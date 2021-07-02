@@ -1,20 +1,24 @@
 .container {
     position: fixed;
-    width: inherit;
     top: 0;
     bottom: 0;
+    max-width: inherit;
+    width: inherit;
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
  }
  
  .scrim {
-     position: fixed;
-     display: none;
-     width: inherit;
-     height: 100%;
-     background-color : rgba(0, 0, 0, .5);
-     &.active {
-         display: block;
-     }
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    opacity: 0;
+    background-color : rgba(0, 0, 0, .5);
+    &.active {
+        opacity: 1;
+    }
  }

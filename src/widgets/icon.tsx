@@ -13,6 +13,18 @@ export default function Icon({
   size? : number
   onClick?: MouseEventHandler
 }) {
+  if (!onClick) {
+    return (
+      <i
+        className={cn(styles.container, className)}
+        style={{
+          width: size,
+          height: size,
+          backgroundImage: `url(/icons/${src})`,
+        }}
+      />
+    )
+  }
   return (
     <input
       className={cn(styles.container, className)}

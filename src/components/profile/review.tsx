@@ -3,15 +3,18 @@ import styles from 'sass/components/profile/review.module.scss'
 import Link from 'next/link'
 import Section from './section'
 
-export default function Review() {
-  const data = ['a', 'b', 'c', 'd']
+interface ReviewData {
+  value: string
+}
+
+export default function Review({ data } : { data: ReviewData[] }) {
   return (
     <Section head="내 리뷰">
       <HorizontalList
         className={styles.container}
         gap={12}
       >
-        {data.map((value) => (
+        {data?.map(({ value }) => (
           <Link key={value} href={value}>
             <a
               className={styles.wrapper}
