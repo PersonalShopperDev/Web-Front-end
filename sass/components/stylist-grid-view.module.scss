@@ -28,6 +28,19 @@
     }
 }
 
+.title {
+    color: colors.$primary-200;
+    font-weight: bold;
+
+    &.active {
+        color: colors.$primary-700;
+    }
+
+    & + & {
+        margin-left: 11px;
+    }
+}
+
 .stylist {
     font-size: 14px;
 }
