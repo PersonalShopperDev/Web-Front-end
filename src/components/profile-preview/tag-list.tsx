@@ -1,7 +1,13 @@
 import styles from 'sass/components/profile-preview/tag-list.module.scss'
 
-export default function TagList() {
-  const data = ['캐쥬얼', '모던', '오피스룩']
+export default function TagList({ data } : { data: string[]}) {
+  if (!data) {
+    return <></>
+  }
+
+  if (data.length < 1) {
+    return <></>
+  }
 
   return (
     <section className={styles.container}>

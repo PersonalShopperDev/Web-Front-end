@@ -4,11 +4,11 @@ import styles from 'sass/components/profile-preview/style-info.module.scss'
 interface Data {
   height: number,
   weight: number,
-  shape: string,
+  body: number,
 }
 
 export default function StyleInfo({ data } : { data : Data }) {
-  const { height, weight, shape } = data
+  const { height, weight, body } = data
   return (
     <Section
       head="스타일 정보"
@@ -26,10 +26,10 @@ export default function StyleInfo({ data } : { data : Data }) {
             <span className={styles.value}>{`${weight}kg`}</span>
           </div>
         )}
-        {shape && (
+        {body && (
           <div className={styles.row}>
             <span className={styles.property}>체형</span>
-            <span className={styles.value}>{`${shape}`}</span>
+            <span className={styles.value}>{`${body}`}</span>
           </div>
         )}
       </div>

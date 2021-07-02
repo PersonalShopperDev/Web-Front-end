@@ -2,8 +2,12 @@ import { useState } from 'react'
 import styles from 'sass/components/profile-preview/slide.module.scss'
 import Icon from 'widgets/icon'
 
-export default function PreviewSlide() {
-  const data = ['/images/sample-avatar.jpg', 'd', 'c']
+interface PreviewData {
+  id: number
+  img: string
+}
+
+export default function PreviewSlide({ data } : { data: PreviewData[] }) {
   const [current, setCurrent] = useState(0)
 
   const onPrev = () => {
@@ -14,14 +18,22 @@ export default function PreviewSlide() {
     setCurrent((value) => value + 1)
   }
 
+  if (!data) {
+    return <></>
+  }
+
+  if (data.length < 1) {
+    return <></>
+  }
+
   return (
     <section className={styles.container}>
       <div
         className={styles.list}
         style={{ transform: `translateX(${-1 * current * 100}%)` }}
       >
-        {data.map((value) => (
-          <img className={styles.image} src={value} alt="" />
+        {data.map(({ id, img }) => (
+          <img key={id} className={styles.image} src={img} alt="" />
         ))}
       </div>
       <div className={styles.index}>{`${current + 1}/${data.length}`}</div>
