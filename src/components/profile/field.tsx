@@ -27,11 +27,15 @@ export const useField = () => useContext(FieldContext)
 export default function Field({
   head,
   name,
+  type,
+  content,
   maxLength,
   children,
 } : {
   head: string
   name: string,
+  type?: 'text' | 'number'
+  content?: string,
   maxLength?: number
   children: React.ReactNode
 }) {
@@ -41,6 +45,8 @@ export default function Field({
     >
       <Inner
         name={name}
+        type={type}
+        content={content}
         maxLength={maxLength}
       >
         {children}
@@ -51,18 +57,22 @@ export default function Field({
 
 function Inner({
   name,
+  type,
   maxLength,
+  content,
   children,
 } : {
   name: string,
+  type: 'text' | 'number'
   maxLength: number
+  content: string
   children: React.ReactNode
 }) {
   const { setOnEdit, setState } = useStatefulSection()
   const { fetchUser } = useAuth()
   const { createAlert } = useAlert()
 
-  const [text, setText] = useState<string>('')
+  const [text, setText] = useState<string>(content || '')
 
   const textRef = useRef<string>(text)
 
@@ -76,10 +86,22 @@ function Inner({
     setText(e.target.value)
   }
 
+  const getValue = () => {
+    const result = textRef.current
+    if (type === 'number') {
+      return parseInt(result, 10)
+    }
+    return result
+  }
+
   const onEdit = async () => {
-    const value = textRef.current
+    const value = getValue()
     if (!value) {
       await createAlert({ text: '내용을 입력해 주세요' })
+      return
+    }
+
+    if (value === content) {
       return
     }
 
@@ -95,7 +117,7 @@ function Inner({
       }
       fetchUser()
     }).catch(async () => {
-      await createAlert({ text: 'error' })
+      await createAlert({ text: '에러가 발생했습니다' })
     })
 
     setState('default')
@@ -123,5 +145,7 @@ function Inner({
 }
 
 Field.defaultProps = {
+  type: 'text',
+  content: null,
   maxLength: null,
 }

@@ -37,7 +37,7 @@ export default function AvatarInput({ data } : { data: AvatarInputData}) {
       }
       fetchUser()
     }).catch(async () => {
-      await createAlert({ text: 'error' })
+      await createAlert({ text: '에러가 발생했습니다' })
     })
   }
 

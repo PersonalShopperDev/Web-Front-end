@@ -1,35 +1,28 @@
-import HorizontalList from 'components/horizontal-list'
 import communicate from 'lib/api'
 import { useAuth } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
 import { ChangeEvent } from 'react'
-import styles from 'sass/components/profile/wardrobe.module.scss'
+import styles from 'sass/components/profile/look-book.module.scss'
 import ProfileImagePicker from './image-picker'
 import Section from './section'
 
-interface WardrobeData {
-  closet: {
-    id: number,
-    img: string
-  }[]
-}
+export default function LookBook() {
+  const images = ['/images/sample-avatar.jpg', '/images/sample-avatar.jpg', '/images/sample-avatar.jpg', '/images/sample-avatar.jpg', '/images/sample-avatar.jpg', '/images/sample-avatar.jpg']
 
-export default function Wardrobe({ data } : { data: WardrobeData }) {
-  const { user, fetchUser } = useAuth()
+  const { fetchUser } = useAuth()
   const { createAlert } = useAlert()
 
-  const { closet } = user || data || {}
-
-  const upload = async (e: ChangeEvent<HTMLInputElement>) => {
+  const upload = async (e : ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files[0]) {
       return
     }
 
     const formData = new FormData()
     formData.append('img', e.target.files[0])
+    formData.append('represent', 'false')
 
     await communicate({
-      url: '/profile/closet',
+      url: '/profile/lookbook',
       options: {
         body: formData,
       },
@@ -40,34 +33,30 @@ export default function Wardrobe({ data } : { data: WardrobeData }) {
       }
       fetchUser()
     }).catch(async () => {
-      await createAlert({ text: 'error' })
+      await createAlert({ text: '에러가 발생했습니다' })
     })
   }
 
   return (
     <Section
-      head="내 옷장"
+      head="대표 코디"
       action={(
         <ProfileImagePicker
-          id="wardrobe-picker"
+          id="represents-picker"
           upload={upload}
         />
       )}
     >
-      <HorizontalList
-        className={styles.container}
-        gap={12}
-      >
-        {closet?.map(({ id, img }) => (
+      <section className={styles.container}>
+        {images.map((value) => (
           <img
-            key={id}
+            key={Math.random()}
             className={styles.figure}
-            src={img}
+            src={value}
             alt=""
-            draggable="false"
           />
         ))}
-      </HorizontalList>
+      </section>
     </Section>
   )
 }

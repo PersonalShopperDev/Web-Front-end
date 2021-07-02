@@ -17,7 +17,7 @@ export interface User {
   closet: {id: number, img: string}[]
   careerList: { value: string, type: number }[]
   price: number
-  coord: string[]
+  coord: {id: number, img: string}[]
   hopeToSupplier: string
   bodyStat: {
     isPublic: boolean

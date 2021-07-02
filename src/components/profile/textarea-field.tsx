@@ -18,6 +18,7 @@ export default function TextareaField({
     <Field
       head={head}
       name={name}
+      content={content}
       maxLength={maxLength}
     >
       <Inner content={content} maxLength={maxLength} />
@@ -64,12 +65,14 @@ function Inner({
               maxLength={maxLength}
               onChange={onChange}
             />
-            <div className={styles.limit}>
-              <strong className={styles.strong}>
-                {text.length || 0}
-              </strong>
-              {`/${maxLength}자`}
-            </div>
+            {maxLength && (
+              <div className={styles.limit}>
+                <strong className={styles.strong}>
+                  {text.length || 0}
+                </strong>
+                {`/${maxLength}자`}
+              </div>
+            )}
           </div>
         )}
     </>
