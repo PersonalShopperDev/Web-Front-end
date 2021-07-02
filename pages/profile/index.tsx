@@ -13,7 +13,7 @@ import Review from 'components/profile/review'
 import Represent from 'components/profile/represents'
 import { GetServerSideProps } from 'next'
 import { communicateWithContext } from 'lib/api'
-import { User } from 'providers/auth'
+import { ACCESS_TOKEN, User } from 'providers/auth'
 import CodyStyle from 'components/profile/cody-style'
 
 export default function Page({ data } : { data: User }) {
@@ -73,8 +73,8 @@ export default function Page({ data } : { data: User }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { accessToken } = context.req.cookies
-  if (!accessToken) {
+  const token = context.req.cookies[ACCESS_TOKEN]
+  if (!token) {
     return {
       redirect: {
         destination: '/login',
@@ -83,12 +83,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
-  const profileResponse = await communicateWithContext({
+  const res = await communicateWithContext({
     context,
     url: '/profile',
   })
 
-  if (profileResponse.status !== 200) {
+  if (res.status !== 200) {
     return {
       redirect: {
         destination: '/500',
@@ -97,11 +97,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
-  const profileData = await profileResponse.json()
+  const data = await res.json()
 
   return {
     props: {
-      data: profileData,
+      data,
     },
   }
 }
