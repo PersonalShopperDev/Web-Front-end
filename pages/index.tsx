@@ -7,6 +7,7 @@ import StylistHomeAppBar from 'components/app-bar/stylist-home'
 import { GetServerSideProps } from 'next'
 import { communicateWithContext } from 'lib/api'
 import parseJwt from 'lib/util/jwt'
+import { ACCESS_TOKEN } from 'providers/auth'
 
 interface Props {
   needLogin: boolean,
@@ -15,12 +16,12 @@ interface Props {
 
 interface Data {
   banners: BannerData[]
-  stylists: StylistGridViewData[]
+  suppliers: StylistGridViewData[]
   reviews: BeforeAfterData[]
 }
 
 export default function Page({ needLogin, data } : Props) {
-  const { banners, stylists, reviews } = data
+  const { banners, suppliers, reviews } = data
   return (
     <Layout
       header={(
@@ -29,7 +30,7 @@ export default function Page({ needLogin, data } : Props) {
     >
       { needLogin ? <LoginBanner /> : <Banner data={banners} />}
       <BeforeAfter data={reviews} />
-      <StylistGridView data={stylists} />
+      <StylistGridView data={suppliers} />
     </Layout>
   )
 }
@@ -51,9 +52,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
 
   const data = await res.json()
 
-  const { accessToken } = context.req.cookies
+  const token = context.req.cookies[ACCESS_TOKEN]
 
-  if (!accessToken) {
+  if (!token) {
     return {
       props: {
         needLogin: true,
@@ -62,7 +63,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
     }
   }
 
-  const { userType } = parseJwt(accessToken)
+  const { userType } = parseJwt(token)
 
   if (userType === 'N') {
     return {
