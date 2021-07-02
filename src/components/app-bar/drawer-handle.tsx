@@ -6,6 +6,10 @@ import { ACCESS_TOKEN } from 'providers/auth'
 import Avatar from './avatar'
 
 export default function DrawerHandle() {
+  if (typeof document === 'undefined') {
+    return <Avatar />
+  }
+
   const token = getCookie(ACCESS_TOKEN)
 
   if (!token) {
