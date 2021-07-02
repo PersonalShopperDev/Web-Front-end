@@ -13,7 +13,7 @@ export default function InputField({
   content?: string
 }) {
   return (
-    <Field head={head} name={name}>
+    <Field head={head} name={name} content={content}>
       <Inner content={content} />
     </Field>
   )

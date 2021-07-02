@@ -66,7 +66,7 @@ function Inner({ data } : { data: HeightWeightData}) {
       }
       fetchUser()
     }).catch(async () => {
-      await createAlert({ text: 'error' })
+      await createAlert({ text: '에러가 발생했습니다' })
     })
 
     setState('default')
