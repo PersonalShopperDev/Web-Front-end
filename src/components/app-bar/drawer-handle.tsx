@@ -1,9 +1,17 @@
 import Modal from 'components/modal'
 import Drawer from 'components/drawer'
 import styles from 'sass/components/drawer.module.scss'
+import { getCookie } from 'lib/util/cookie'
+import { ACCESS_TOKEN } from 'providers/auth'
 import Avatar from './avatar'
 
 export default function DrawerHandle() {
+  const token = getCookie(ACCESS_TOKEN)
+
+  if (!token) {
+    return <Avatar />
+  }
+
   return (
     <Modal
       className={styles.container}

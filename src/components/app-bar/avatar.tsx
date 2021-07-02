@@ -10,7 +10,7 @@ export default function AppBarAvatar({
   const { img } = user || {}
 
   return (
-    <Avatar src={img} size={size} />
+    <Avatar src={img || '/images/default-avatar.png'} size={size} />
   )
 }
 

@@ -13,7 +13,7 @@ export default function Drawer() {
 
   const token = getCookie(ACCESS_TOKEN)
 
-  const { email } = parseJwt(token)
+  const { email } = parseJwt(token) || {}
 
   const getType = () => {
     if (userType === 'D') {
