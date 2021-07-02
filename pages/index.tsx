@@ -2,34 +2,39 @@ import Layout from 'layouts/default'
 import LoginBanner from 'components/login-banner'
 import Banner, { BannerData } from 'components/banner'
 import BeforeAfter, { BeforeAfterData } from 'components/before-after'
-import StylistGridView, { StylistGridViewData } from 'components/stylist-grid-view'
+import StylistGridView, { SupplierData, DemanderData } from 'components/stylist-grid-view'
 import StylistHomeAppBar from 'components/app-bar/stylist-home'
 import { GetServerSideProps } from 'next'
 import { communicateWithContext } from 'lib/api'
 import parseJwt from 'lib/util/jwt'
+import { ACCESS_TOKEN, UserType } from 'providers/auth'
 
 interface Props {
-  needLogin: boolean,
+  userType: UserType
   data: Data
 }
 
 interface Data {
   banners: BannerData[]
-  stylists: StylistGridViewData[]
+  suppliers: SupplierData[]
+  demanders: DemanderData[]
   reviews: BeforeAfterData[]
 }
 
-export default function Page({ needLogin, data } : Props) {
-  const { banners, stylists, reviews } = data
+export default function Page({ userType, data } : Props) {
+  const {
+    banners, suppliers, demanders, reviews,
+  } = data
+
   return (
     <Layout
       header={(
         <StylistHomeAppBar />
       )}
     >
-      { needLogin ? <LoginBanner /> : <Banner data={banners} />}
+      { userType === 'N' ? <LoginBanner /> : <Banner data={banners} />}
       <BeforeAfter data={reviews} />
-      <StylistGridView data={stylists} />
+      <StylistGridView suppliers={suppliers} demanders={userType !== 'D' && demanders} />
     </Layout>
   )
 }
@@ -51,18 +56,18 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
 
   const data = await res.json()
 
-  const { accessToken } = context.req.cookies
+  const token = context.req.cookies[ACCESS_TOKEN]
 
-  if (!accessToken) {
+  if (!token) {
     return {
       props: {
-        needLogin: true,
+        userType: 'N',
         data,
       },
     }
   }
 
-  const { userType } = parseJwt(accessToken)
+  const { userType } = parseJwt(token)
 
   if (userType === 'N') {
     return {
@@ -76,6 +81,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
   return {
     props: {
       needLogin: false,
+      userType,
       data,
     },
   }
