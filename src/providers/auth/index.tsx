@@ -5,8 +5,8 @@ import React, {
   createContext, useContext, useEffect, useState,
 } from 'react'
 
-export const ACCESS_TOKEN = 'accessToken'
-export const REFRESH_TOKEN = 'refreshToken'
+export const ACCESS_TOKEN = 'personalshopper_accessToken'
+export const REFRESH_TOKEN = 'personalshopper_refreshToken'
 
 export interface User {
   userType: 'N' | 'D' | 'S' | 'W'
