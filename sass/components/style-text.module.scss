@@ -1,0 +1,36 @@
+@use '../lib/colors.scss' as colors;
+
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 300px;
+    margin-top: 16px;
+}
+
+@mixin textBox {
+    padding-left: 11px;
+    padding-right: 11px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 13px;
+    color: colors.$primary-600;
+    margin-right: 6px;
+    margin-bottom: 9px;
+}
+
+.selectedBox {
+    @include textBox();
+    color: colors.$background;
+    background-color: colors.$primary-600;
+    border: 1px solid colors.$primary-600;
+
+}
+
+.notSelectedBox {
+    @include textBox();
+    border: 1px solid colors.$primary-300;
+}

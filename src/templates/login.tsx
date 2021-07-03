@@ -1,31 +1,22 @@
-import Link from 'next/link'
-import { useAuth } from 'providers/authProvider'
+import { useKaKaoAuth } from 'providers/auth/kakao'
+import { useNaverAuth } from 'providers/auth/naver'
+import Icon from 'widgets/icon'
+import styles from 'sass/templates/login.module.scss'
 
 export default function Login() {
-  const { user, signOut } = useAuth()
-
-  if (!user) {
-    return (
-      <>
-        <Link href="/login">
-          <a href="replace">로그인</a>
-        </Link>
-      </>
-    )
-  }
+  const { LoginButton: NaverLoginButton } = useNaverAuth()
+  const { LoginButton: KaKaoLoginButton } = useKaKaoAuth()
 
   return (
-    <>
-      <p>{user.accessToken}</p>
-      <button type="submit" onClick={signOut}>
-        Sign Out
-      </button>
-      <Link href="/test">
-        <a href="replace"><p>go to test</p></a>
-      </Link>
-      <Link href="/">
-        <a href="replace"><p>go to index</p></a>
-      </Link>
-    </>
+    <section className={styles.container}>
+      <h1 className={styles.logoContainer}>
+        <Icon src="personal-login-logo.png" size={93} />
+        <p>Personal Shopper</p>
+      </h1>
+      <div className={styles.buttonContainer}>
+        {NaverLoginButton}
+        {KaKaoLoginButton}
+      </div>
+    </section>
   )
 }
