@@ -9,8 +9,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "prestart": "npm run build",
     "start": "next start -p 8080",
-    "deploy": "npm install && npm run build && eb deploy",
+    "deploy": "eb deploy",
     "lint": "eslint ."
   },
   "dependencies": {
