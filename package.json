@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "prestart": "npm run build",
+    "prestart": "npm install && npm run build",
     "start": "next start -p 8080",
     "deploy": "eb deploy",
     "lint": "eslint ."
