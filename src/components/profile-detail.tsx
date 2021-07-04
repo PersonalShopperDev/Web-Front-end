@@ -14,24 +14,26 @@ export default function ProfileDetail({
           <span className={styles.stylistText}>Stylist</span>
         </div>
         <div>
-          {/*
-          <div className={styles.flexContainer}>
-            <Icon src="profileIcon1.png" size={12} />
-            <span className={styles.careerText}>
-              {info.careerList.value}
-              에서 근무중
-            </span>
-          </div>
-          <div className={styles.flexContainer}>
-            <Icon src="profileIcon2.png" size={12} />
-            <span className={styles.careerText}>
-              경력
-              {' '}
-              {info.careerList.type}
-              년차 스타일리스트
-            </span>
-          </div>
-          */}
+          {info.careerList.map((item) => (
+            <div key={item.type}>
+              <div className={styles.flexContainer}>
+                <Icon src="profileIcon1.png" size={12} />
+                <span className={styles.careerText}>
+                  {item.value}
+                  에서 근무중
+                </span>
+              </div>
+              <div className={styles.flexContainer}>
+                <Icon src="profileIcon2.png" size={12} />
+                <span className={styles.careerText}>
+                  경력
+                  {' '}
+                  {item.type}
+                  년차 스타일리스트
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
         <div>
           <span className={styles.indicatorText}>
@@ -58,7 +60,7 @@ export default function ProfileDetail({
         <div className={styles.titleText}>대표 코디</div>
         <div className={styles.coordContainer}>
           {info.coord.map((item) => (
-            <img src="/images/sample-avatar.jpg" width="164" height="171" className={styles.clothImage} alt="대표 코디" />
+            <img src={item.img} width="164" height="171" className={styles.clothImage} alt="대표 코디" />
           ))}
         </div>
       </div>

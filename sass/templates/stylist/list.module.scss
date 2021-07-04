@@ -1,12 +1,48 @@
+@use '../../lib/colors.scss' as colors;
+
 .listContainer {
-    position: absolute;
     align-self: center;
     overflow: auto;
-    height: 610px;
     width: 100%;
     padding-left: 17px;
 }
 
 .listContainer::-webkit-scrollbar {
     display: none;
+}
+
+.modalContainer {
+    background-color: rgba(0,0,0,0.5);
+    position: fixed;
+    width: 375px;
+    bottom: 0px;
+    height: 100%;
+}
+
+.modalBox {
+    width: 375px;
+    height: 184px;
+    background-color: colors.$background;
+    position: absolute;
+    bottom: 0px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    padding-top: 11px;
+}
+
+.eachModalContent {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-bottom: 16px;
+    padding-top: 16px;
+    border-bottom: 1px solid colors.$primary-200;
+    .filterText {
+        font-size: 14px;
+        font-weight: 700;
+        color: colors.$primary-700
+    }
 }

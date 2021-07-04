@@ -24,13 +24,12 @@ export default function Profile({
   }
   useEffect(() => {
     async function fetchProfileData() {
-      const res = await communicate({ url: `/profile/?${id}` })
+      const res = await communicate({ url: `/profile/${id}` })
       const information = await res.json()
       setInfo(information)
     }
     fetchProfileData()
   }, [id])
-
   return (
     <>
       {info != null
@@ -67,7 +66,7 @@ export default function Profile({
           ))}
         </div>
         { menuComponent[menu] }
-        { menu === 0 && <BottomButton text="매칭하기" onClick={onMatchingClick} /> }
+        { menu === 0 && <BottomButton text="채팅하기" onClick={onMatchingClick} /> }
       </>
       ) }
 

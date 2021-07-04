@@ -2,11 +2,17 @@ import { useState, useEffect } from 'react'
 import styles from 'sass/templates/stylist/search.module.scss'
 import BottomButton from 'src/components/bottom-button'
 import communicate from 'lib/api'
+import { useOnboarding } from 'providers/onboarding'
+import { useRouter } from 'next/router'
+import { useUserList } from 'providers/infinityScroll/userList'
 
 export default function Search() {
   const [styleLists, setStyleLists] = useState([])
   const [clickedStyleList, setClickedStyleList] = useState([])
   const [isOverLength, setIsOverLength] = useState(false)
+  const { information } = useOnboarding()
+  const router = useRouter()
+  const { setStyleType } = useUserList()
   const styleClick = (style) => {
     if (clickedStyleList.includes(style)) {
       if (isOverLength) setIsOverLength(false)
@@ -18,11 +24,14 @@ export default function Search() {
     }
   }
 
-  const onButtonClick = () => {
+  const onButtonClick = async () => {
+    const type = clickedStyleList.join('|')
+    setStyleType(type)
+    router.back()
   }
 
   useEffect(() => {
-    const gender = 'male'
+    const gender = information.gender === 'F' ? 'femal' : 'male'
     async function fetchStylistData() {
       const res = await communicate({ url: `/style?${gender}=${true}` })
       const styleList = await res.json()
@@ -40,6 +49,7 @@ export default function Search() {
             onClick={() => styleClick(item.id)}
             className={clickedStyleList.includes(item.id)
               ? styles.selectedBox : styles.notSelectedBox}
+            key={item.value}
           >
             <span className={clickedStyleList.includes(item.id)
               ? styles.selectedText : styles.notSelectedText}

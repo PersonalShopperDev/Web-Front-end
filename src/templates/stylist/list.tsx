@@ -1,22 +1,18 @@
-import React, { useEffect, useState } from 'react'
-
+import React, { useEffect } from 'react'
 import styles from 'sass/templates/stylist/list.module.scss'
 import ListBox from 'src/components/list-box'
-import communicate from 'lib/api/index'
+import { useUserList } from 'providers/infinityScroll/userList'
+import { useInfinityScroll } from 'providers/infinityScroll'
 
 export default function List() {
-  const [supplierLists, setSupplierLists] = useState([])
+  const { userLists } = useUserList()
+  const { setScrollFunc } = useInfinityScroll()
   useEffect(() => {
-    async function fetchSupplierData() {
-      const res = await communicate({ url: '/supplier' })
-      const suppliers = await res.json()
-      setSupplierLists(suppliers.list)
-    }
-    fetchSupplierData()
+    setScrollFunc('lists')
   }, [])
   return (
     <div className={styles.listContainer}>
-      { supplierLists.map((value) => (
+      { userLists.map((value) => (
         <ListBox info={value} key={value.id} />
       ))}
     </div>
