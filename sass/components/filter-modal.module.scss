@@ -1,0 +1,36 @@
+@use '../lib/colors.scss' as colors;
+
+.modalContainer {
+    width: 375px;
+    bottom: 0px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.modalBox {
+    width: 375px;
+    height: 184px;
+    background-color: colors.$background;
+    bottom: 0;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    padding-top: 11px;
+    top: 0;
+}
+
+.eachModalContent {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-bottom: 16px;
+    padding-top: 16px;
+    border-bottom: 1px solid colors.$primary-200;
+    .filterText {
+        font-size: 14px;
+        font-weight: 700;
+        color: colors.$primary-700
+    }
+}
