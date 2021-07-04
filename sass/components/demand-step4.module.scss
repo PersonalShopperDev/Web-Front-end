@@ -1,0 +1,29 @@
+@use '../lib/colors.scss' as colors;
+
+.title {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    color: colors.$accent;
+    margin-top: 37px;
+    margin-left: 21px;
+}
+
+.content {
+    margin-top: 9px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+    color: colors.$primary-700;
+    margin-left: 21px;
+}
+
+.container {
+    overflow: auto;
+    margin-left: 21px;
+    padding-bottom: 120px;
+}
+
+.container::-webkit-scrollbar {
+    display: none;
+}

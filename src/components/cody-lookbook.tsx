@@ -1,53 +1,66 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import SwiperCore from 'swiper'
 import 'swiper/swiper-bundle.css'
 import styles from 'sass/components/cody-lookbook.module.scss'
-import communicate from 'lib/api'
 import Icon from 'widgets/icon'
+import { useLookBook } from 'providers/infinityScroll/lookBook'
+import { useInfinityScroll } from 'providers/infinityScroll'
 
 export default function CodyLookBook({
   id,
 } : {
   id: number,
 }) {
-  const [lookBook, setLookBook] = useState([])
   const [imageModal, setImageModal] = useState(false)
   const [imageIndex, setImageIndex] = useState(1)
   const [initialIndex, setInitialIndex] = useState(0)
+  const [fixedHeight, setFixedHeight] = useState(0)
+  const { lookBookLists, setId } = useLookBook()
+  const { setScrollFunc } = useInfinityScroll()
   const imageModalRef = useRef()
+
   const slides = []
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < lookBookLists.length; i++) {
     slides.push(
       <SwiperSlide key={`slide-${i}`}>
-        <img src="/images/sample-avatar.jpg" width="375px" height="375px" className={styles.img} alt="코디 룩북" />
+        <img src={lookBookLists[i].img} width="375px" height="375px" className={styles.img} alt="코디 룩북" />
       </SwiperSlide>,
     )
   }
   const closeModal = (e) => {
-    if (imageModalRef.current === e.target) setImageModal(false)
+    if (imageModalRef.current === e.target) {
+      document.body.style.cssText = `position: relative; top:${-1 * window.scrollY}px;`
+      setImageModal(false)
+      window.scrollTo({ top: fixedHeight })
+    }
   }
   const onButtonClick = (index) => {
+    if (!imageModal) {
+      setFixedHeight(document.documentElement.scrollTop)
+      document.body.style.cssText = 'position:fixed; left:0; right:0; margin: 0 auto '
+    } else {
+      document.body.style.cssText = `position: relative; top:${-1 * window.scrollY}px;`
+      window.scrollTo({ top: fixedHeight })
+    }
     setImageModal(!imageModal)
     setInitialIndex(index)
   }
+
   useEffect(() => {
-    async function fetchLookBookData() {
-      const res = await communicate({ url: `/profile/${id}/lookbook` })
-      const information = await res.json()
-      setLookBook(information.list)
-    }
-    fetchLookBookData()
-  }, [id])
+    setId(id)
+    setScrollFunc('lookBook')
+  }, [])
+
   return (
     <>
       <div className={styles.container}>
-        {[...Array(5)].map((item, index) => (
+        {lookBookLists.map((item, index) => (
           <button
             type="button"
             onClick={() => onButtonClick(index)}
+            key={Math.random()}
           >
-            <img src="/images/sample-avatar.jpg" width="104" height="104" className={styles.clothImage} alt="코디 룩북" />
+            <img src={item.img} width="104" height="104" className={styles.clothImage} alt="코디 룩북" />
           </button>
         ))}
 
@@ -60,7 +73,7 @@ export default function CodyLookBook({
           {' / '}
           {slides.length}
         </span>
-        <Icon src="lookbookExit.png" size={24} onClick={onButtonClick} className={styles.exit} />
+        <Icon src="lookbookExit.png" size={24} onClick={onButtonClick} className={styles.exit} key="exit" />
         <Swiper onSlideChange={(e) => setImageIndex(e.realIndex + 1)} initialSlide={initialIndex}>
           {slides}
         </Swiper>
