@@ -1,11 +1,29 @@
 import styles from 'sass/components/drawer.module.scss'
 import Link from 'next/link'
 import Icon from 'widgets/icon'
-import { useAuth } from 'providers/auth'
+import { ACCESS_TOKEN, useAuth } from 'providers/auth'
+import parseJwt from 'lib/util/jwt'
+import { getCookie } from 'lib/util/cookie'
 import Avatar from './app-bar/avatar'
 
 export default function Drawer() {
-  const { signOut } = useAuth()
+  const { user, signOut } = useAuth()
+
+  const { userType, name } = user || {}
+
+  const token = getCookie(ACCESS_TOKEN)
+
+  const { email } = parseJwt(token) || {}
+
+  const getType = () => {
+    if (userType === 'D') {
+      return '일반 유저'
+    }
+    if (userType === 'S' || userType === 'W') {
+      return '스타일리스트'
+    }
+    return null
+  }
 
   const onSignOut = () => {
     signOut()
@@ -19,10 +37,10 @@ export default function Drawer() {
         </div>
         <div className={styles.detail}>
           <div className={styles.identity}>
-            <h2 className={styles.name}>김세현</h2>
-            <span className={styles.grade}>일반유저</span>
+            <h2 className={styles.name}>{name}</h2>
+            <span className={styles.grade}>{getType()}</span>
           </div>
-          <span className={styles.email}>alyssa071@naver.com</span>
+          <span className={styles.email}>{email}</span>
         </div>
       </div>
       <nav className={styles.navigation}>

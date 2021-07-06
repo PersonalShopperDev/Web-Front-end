@@ -34,7 +34,7 @@ function Inner({
       className={styles.container}
       style={{ width: size, height: size }}
     >
-      <img src={src} alt="avatar" />
+      <img className={styles.image} src={src} alt="avatar" />
     </figure>
   )
 }

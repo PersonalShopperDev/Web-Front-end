@@ -4,6 +4,7 @@ import React, {
   createContext, useContext, useEffect, useRef, useState,
 } from 'react'
 import styles from 'sass/providers/modal.module.scss'
+import { useRouter } from 'next/router'
 
 type Listener = (this: HTMLDivElement, ev: MouseEvent) => any
 
@@ -23,6 +24,8 @@ export default function ModalProvider({
 }: {
   children: React.ReactNode
 }) {
+  const router = useRouter()
+
   const containerRef = useRef<HTMLDivElement>()
   const scrimRef = useRef<HTMLDivElement>()
   const transitionDelayRef = useRef<number>(0)
@@ -50,6 +53,10 @@ export default function ModalProvider({
       setActive(true)
       return
     }
+    checkClose()
+  }
+
+  const checkClose = () => {
     if (containerRef.current.childElementCount <= 2) {
       setActive(false)
     }
@@ -91,6 +98,10 @@ export default function ModalProvider({
       resetBody()
     }
   }, [active])
+
+  useEffect(() => {
+    checkClose()
+  }, [router])
 
   const value = {
     appendToContainer,
