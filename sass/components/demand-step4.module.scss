@@ -18,14 +18,12 @@
     margin-left: 21px;
 }
 
-.step4 {
-    position: absolute;
-}
 .container {
     overflow: auto;
-    height: 450px;
     margin-left: 21px;
+    padding-bottom: 120px;
 }
+
 .container::-webkit-scrollbar {
     display: none;
 }

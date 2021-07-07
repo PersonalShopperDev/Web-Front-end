@@ -15,8 +15,8 @@ export default function topBar({
       {information !== null && information.userType === 'S' && index === totalIndexNum ? null : [...Array(totalIndexNum)].map((value, idx) => (
         <div key={Math.random()}>
           { idx + 1 === index
-            ? <img src="/icons/onboardingColoredTop.png" className={styles.icon} alt="topBar" />
-            : <img src="/icons/onboardingTop.png" className={styles.icon} alt="coloredTopBar" />}
+            ? <img src="/icons/onboardingColoredTop.png" className={information !== null && information.userType === 'S' ? styles.supplyIcon : styles.demandIcon} alt="topBar" />
+            : <img src="/icons/onboardingTop.png" className={information !== null && information.userType === 'S' ? styles.supplyIcon : styles.demandIcon} alt="coloredTopBar" />}
         </div>
       ))}
     </section>

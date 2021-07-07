@@ -6,11 +6,11 @@ import { useOnboarding } from 'providers/onboarding'
 export default function Step5() {
   const { information } = useOnboarding()
   return (
-    <div>
+    <>
       {information.userType === 'D'
         ? (
           <DemandStep5 />
         ) : <SupplyStep5 />}
-    </div>
+    </>
   )
 }

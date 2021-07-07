@@ -11,7 +11,7 @@ export default function Step3({
 }) {
   const { information } = useOnboarding()
   return (
-    <div>
+    <>
       {information.userType === 'D'
         ? (
           <DemandStep3
@@ -20,6 +20,6 @@ export default function Step3({
         ) : (
           <SupplyStep3 />
         )}
-    </div>
+    </>
   )
 }

@@ -89,7 +89,6 @@ export default function OnboardingProvider({
     career: false,
     style: false,
   })
-  console.log(information)
   const setData = (key: string, value: string | number | boolean,
     min?: boolean, max?: boolean) => {
     if (max) {
@@ -128,6 +127,7 @@ export default function OnboardingProvider({
       } else {
         payload.list = stylePicture
         await communicate({ url: '/style/img', payload, method: 'PUT' })
+        fetchInformationData()
         return
       }
       communicate({ url: '/onboard', payload, method: 'PATCH' })
