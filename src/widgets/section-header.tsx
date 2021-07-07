@@ -15,8 +15,8 @@ export default function SectionHeader({
       <h2 className={styles.title}>{title}</h2>
       <Link href="/">
         <a className={styles.more} href={moreHref}>
-          more
-          <Icon size={6} src="back-small.png" />
+          <span>more</span>
+          <Icon size={7} src="back-small.png" />
         </a>
       </Link>
     </section>
