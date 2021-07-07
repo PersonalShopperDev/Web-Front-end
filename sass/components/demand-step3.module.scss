@@ -1,0 +1,40 @@
+@use '../lib/colors.scss' as colors;
+
+.container {
+    margin-bottom: 79px;
+}
+
+.title {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    color: colors.$accent;
+    margin-top: 37px;
+    margin-left: 21px;
+}
+
+.content {
+    margin-top: 9px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+    color: colors.$primary-700;
+    margin-left: 21px;
+}
+
+.subContent {
+    margin-top: 9px;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 19px;
+    color: colors.$primary-600;
+    margin-left: 21px;
+}
+
+.paletteContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 23px;
+}
