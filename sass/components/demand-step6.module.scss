@@ -1,0 +1,19 @@
+@use '../lib/colors.scss' as colors;
+
+.title {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    color: #ff5917;
+    margin-top: 37px;
+    margin-left: 21px;
+}
+
+.content {
+    margin-top: 9px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+    color: #020202;
+    margin-left: 21px;
+}

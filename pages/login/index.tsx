@@ -1,5 +1,6 @@
 import Layout from 'layouts/default'
 import { GetServerSideProps } from 'next'
+import { ACCESS_TOKEN } from 'providers/auth'
 import IntegratedAuthProvider from 'providers/auth/integrated'
 import Login from 'templates/login'
 
@@ -14,9 +15,9 @@ export default function Page() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { accessToken } = context.req.cookies
+  const token = context.req.cookies[ACCESS_TOKEN]
 
-  if (accessToken) {
+  if (token) {
     return {
       redirect: {
         destination: '/',

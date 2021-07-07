@@ -1,0 +1,44 @@
+@use '../lib/colors.scss' as colors;
+
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 37px;
+    padding-left: 21px;
+    padding-bottom: 120px;
+    overflow: auto;
+}
+
+.container::-webkit-scrollbar {
+    display: none;
+}
+.buttonImg {
+    position: relative;
+}
+.img {
+    border-radius: 6px;
+    margin-right: 15px;
+    margin-bottom: 14px;
+}
+.selectedImg {
+    z-index: 1;
+    background-color: rgba(255,89,23,0.53);
+    position: absolute;
+    height: 159px;
+    width: 159px;
+    border-radius: 6px;
+}
+.selectedText {
+    display: block;
+    position: absolute;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 26px;
+    height: 26px;
+    width: 26px;
+    top:68px;
+    left: 68px;
+    color: colors.$background;
+    z-index: 2;
+}

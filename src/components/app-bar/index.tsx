@@ -19,7 +19,6 @@ export default function AppBar({
   const onClickBack = () => {
     router.back()
   }
-
   return (
     <section className={styles.container}>
       <div className={styles.landings}>
