@@ -60,7 +60,7 @@ export default function ProfileDetail({
         <div className={styles.titleText}>대표 코디</div>
         <div className={styles.coordContainer}>
           {info.coord.map((item) => (
-            <img src={item.img} width="164" height="171" className={styles.clothImage} alt="대표 코디" />
+            <img src={item.img} width="164" height="171" className={styles.clothImage} alt="대표 코디" key={item} />
           ))}
         </div>
       </div>

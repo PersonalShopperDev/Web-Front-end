@@ -41,7 +41,6 @@
 }
 
 .userBox {
-    //border: 1px solid black;
     width: 100%;
     padding-left: 16px;
     padding-right: 16px;
@@ -99,7 +98,9 @@
     display: flex;
     align-items: center;
     font-size: 11px;
-    margin-bottom: 8px;
+    margin-top: 8px;
+    font-weight: 700;
+    color: colors.$primary-700;
     > span {
         display: block;
         width: 60px;
@@ -111,6 +112,7 @@
 .contentBox {
     border-bottom:1px solid colors.$primary-200 ;
     padding-bottom: 17px;
+    margin-top: 11px;
     >span {
         font-size: 11px;
         font-weight: 500;
@@ -121,4 +123,51 @@
 
 .styleHashtag {
     margin-right: 5px;
+}
+
+.coordContainer {
+    display: flex;
+    flex-direction: row;
+    overflow: auto;
+    .img {
+        width: 124px;
+        height: 130px;
+        margin-right: 9px;
+        border-radius: 8px;
+    }
+}
+
+.coordContainer::-webkit-scrollbar {
+    display: none;
+}
+
+.modalContainer {
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    position: absolute;
+    top: 0px;
+    .img {
+        margin-top: 115px;
+    }
+    .exit {
+        position: absolute;
+        top: 57px;
+        right: 12px;
+        z-index: 2;
+    }
+    .text {
+        color: colors.$background;
+        font-size: 18px;
+        font-weight: 700;
+        display: block;
+        margin-top: 60px;
+        text-align: center;
+    }
+}
+
+.swiperContainer {
+    display: absolute;
+    flex-direction: row;
+    background-color: white;
 }

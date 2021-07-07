@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import SwiperCore from 'swiper'
 import 'swiper/swiper-bundle.css'
 import styles from 'sass/components/cody-lookbook.module.scss'
 import communicate from 'lib/api'

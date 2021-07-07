@@ -15,7 +15,7 @@ export default function Profile({
   const [menu, setMenu] = useState(0)
   const menuLists = ['프로필', '코디룩북', '리뷰']
   const menuComponent = [<ProfileDetail info={info} />,
-    <CodyLookBook id={id} />, <Review info={info} />]
+    <CodyLookBook id={id} />, <Review id={id} />]
 
   const onMatchingClick = () => {
   }
