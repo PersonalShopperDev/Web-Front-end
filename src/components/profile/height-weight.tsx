@@ -55,8 +55,8 @@ function Inner({ data } : { data: HeightWeightData}) {
       payload: {
         bodyStat: {
           isPublic: isPublicValue,
-          height: heightValue,
-          weight: weightValue,
+          height: parseInt(heightValue, 10),
+          weight: parseInt(weightValue, 10),
         },
       },
       method: 'PATCH',
