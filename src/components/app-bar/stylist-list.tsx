@@ -2,7 +2,6 @@ import Icon from 'widgets/icon'
 import { useRouter } from 'next/router'
 import FilterModal from './filter-modal'
 import AppBar from '.'
-
 export default function StylistListAppBar() {
   const router = useRouter()
   const onClickSearch = () => (

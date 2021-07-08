@@ -34,7 +34,7 @@ export default function Profile({
     <>
       {info != null
       && (
-      <>
+      <div className={styles.container}>
         <div className={styles.profileContainer}>
           <img src={info.img} alt="profileImg" width="141" height="141" className={styles.profileImg} />
           <div className={styles.infoBox}>
@@ -66,8 +66,13 @@ export default function Profile({
           ))}
         </div>
         { menuComponent[menu] }
-        { menu === 0 && <BottomButton text="채팅하기" onClick={onMatchingClick} /> }
-      </>
+          { menu === 0
+            && (
+            <div className={styles.gradient}>
+              <BottomButton text="채팅하기" onClick={onMatchingClick} />
+            </div>
+            )}
+      </div>
       ) }
 
     </>

@@ -76,7 +76,7 @@ export default function Review({
         <div className={styles.userBox} key={item.id}>
           <div className={styles.userNameBox}>
             <div>
-              <Icon src={item.profileImg} size={25} key="profile" />
+              <img src={item.profileImg} width={25} height={25} alt="프로필" className={styles.profileImg}/>
               <span className={styles.nameText}>
                 {item.name}
                 님
@@ -105,7 +105,7 @@ export default function Review({
             {item.img.map((value, index) => (
               <div>
                 <button type="button" onClick={() => onClickCoord(item.img, index)} className={styles.img}>
-                  <img src={value} width="124" height="130" alt="코디" />
+                  <img src={value} width="124" height="130" alt="코디"  className={styles.img}/>
                 </button>
               </div>
             ))}

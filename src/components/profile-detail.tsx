@@ -35,7 +35,7 @@ export default function ProfileDetail({
             </div>
           ))}
         </div>
-        <div>
+        <div className={styles.indicatorContainer}>
           <span className={styles.indicatorText}>
             {info.rating}
             점
