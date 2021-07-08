@@ -4,7 +4,7 @@ import BottomButton from 'src/components/bottom-button'
 import communicate from 'lib/api'
 import { useOnboarding } from 'providers/onboarding'
 import { useRouter } from 'next/router'
-import { useUserList } from 'providers/infinityScroll/userList'
+import { useUserList } from 'providers/infinity-scroll/user-list'
 
 export default function Search() {
   const [styleLists, setStyleLists] = useState([])

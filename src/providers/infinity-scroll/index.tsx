@@ -2,8 +2,8 @@ import React, {
   useEffect, useContext, createContext, useRef, useState,
 } from 'react'
 
-import { useUserList } from './userList'
-import { useLookBook } from './lookBook'
+import { useUserList } from './user-list'
+import { useLookBook } from './look-book'
 
 interface InfinityScrollProps {
   setScrollFunc: (value: any) => void
@@ -23,28 +23,19 @@ export default function InfinityScrollProvider({
   const { fetchLookBookData } = useLookBook()
   const scrollFuncRef = useRef<any>()
   const scrollListener = () => {
-    if (window.scrollY < getDocumentHeight() - window.innerHeight) return
+    if (document.getElementById('main').scrollTop + document.getElementById('main').clientHeight !== document.getElementById('main').scrollHeight) return
     scrollFuncRef.current()
   }
-  const getDocumentHeight = () => {
-    const { body } = document
-    const html = document.documentElement
-    return Math.max(
-      body.scrollHeight, body.offsetHeight,
-      html.clientHeight, html.scrollHeight, html.offsetHeight,
-    )
-  }
-
   useEffect(() => {
     if (scrollFunc !== undefined) {
-      window.addEventListener('scroll', scrollListener)
+      document.getElementById('main').addEventListener('scroll', scrollListener)
     }
     if (scrollFunc === 'lists') {
       scrollFuncRef.current = fetchUserData
     } else if (scrollFunc === 'lookBook') {
       scrollFuncRef.current = fetchLookBookData
     }
-    return () => window.removeEventListener('scroll', scrollListener)
+    return () => document.getElementById('main').removeEventListener('scroll', scrollListener)
   }, [scrollFunc])
   const value = {
     setScrollFunc,

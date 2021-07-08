@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Modal from 'components/modal'
 import styles from 'sass/components/filter-modal.module.scss'
 import Icon from 'widgets/icon'
-import { useUserList } from 'providers/infinityScroll/userList'
+import { useUserList } from 'providers/infinity-scroll/user-list'
 
 export default function FilterModal() {
   const { setSortType } = useUserList()

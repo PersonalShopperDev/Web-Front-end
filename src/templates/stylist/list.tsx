@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import styles from 'sass/templates/stylist/list.module.scss'
 import ListBox from 'src/components/list-box'
-import { useUserList } from 'providers/infinityScroll/userList'
-import { useInfinityScroll } from 'providers/infinityScroll'
+import { useUserList } from 'providers/infinity-scroll/user-list'
+import { useInfinityScroll } from 'providers/infinity-scroll'
 
 export default function List() {
   const { userLists } = useUserList()
   const { setScrollFunc } = useInfinityScroll()
+
   useEffect(() => {
     setScrollFunc('lists')
   }, [])

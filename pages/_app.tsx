@@ -1,7 +1,6 @@
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import AuthProvider from 'providers/auth'
-import IntegratedInfinityScrollProvider from 'providers/infinityScroll/integrated'
 import OnboardingProvider from 'providers/onboarding'
 import ModalProvider from 'providers/modal'
 import IntegratedDialogProvider from 'providers/dialog/integrated'
@@ -18,13 +17,11 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <ModalProvider>
         <IntegratedDialogProvider>
-          <IntegratedInfinityScrollProvider>
-            <OnboardingProvider>
-              <AuthProvider>
-                <Component {...pageProps} />
-              </AuthProvider>
-            </OnboardingProvider>
-          </IntegratedInfinityScrollProvider>
+          <OnboardingProvider>
+            <AuthProvider>
+              <Component {...pageProps} />
+            </AuthProvider>
+          </OnboardingProvider>
         </IntegratedDialogProvider>
       </ModalProvider>
     </>

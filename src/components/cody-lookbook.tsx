@@ -3,8 +3,8 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/swiper-bundle.css'
 import styles from 'sass/components/cody-lookbook.module.scss'
 import Icon from 'widgets/icon'
-import { useLookBook } from 'providers/infinityScroll/lookBook'
-import { useInfinityScroll } from 'providers/infinityScroll'
+import { useLookBook } from 'providers/infinity-scroll/look-book'
+import { useInfinityScroll } from 'providers/infinity-scroll'
 
 export default function CodyLookBook({
   id,
