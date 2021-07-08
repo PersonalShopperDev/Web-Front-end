@@ -5,22 +5,32 @@ import React, {
   createContext, useContext, useEffect, useState,
 } from 'react'
 
-export const ACCESS_TOKEN = 'accessToken'
-export const REFRESH_TOKEN = 'refreshToken'
+export const ACCESS_TOKEN = 'personalshopper_accessToken'
+export const REFRESH_TOKEN = 'personalshopper_refreshToken'
 
-interface User {
-  userType: 'N' | 'D' | 'S' | 'W'
+export type UserType = 'N' | 'D' | 'S' | 'W'
+
+export interface User {
+  userType: UserType
   name: string
   introduction: string
   styles: string[]
-  profileImg: string
+  img: string
+  closet: {id: number, img: string}[]
   careerList: { value: string, type: number }[]
   price: number
-  coord: string[]
+  coord: {id: number, img: string}[]
+  hopeToSupplier: string
+  bodyStat: {
+    isPublic: boolean
+    height: number
+    weight: number
+  }
 }
 
 interface AuthProps {
   user: User
+  fetchUser: () => Promise<boolean>
   authenticate: (provider: string, token: string) => Promise<void>
   signOut: (redirect?: string) => Promise<void>
 }
@@ -109,11 +119,11 @@ export default function AuthProvider({
     const { accessToken, refreshToken } = await res.json()
     setAccessToken(accessToken)
     setRefreshToken(refreshToken)
-    fetchUserData()
+    fetchUser()
     setTimeout(silentRefresh, silentRefreshInterval)
   }
 
-  const fetchUserData = async () : Promise<void> => {
+  const fetchUser = async () : Promise<boolean> => {
     const res = await communicate({
       url: '/profile',
     })
@@ -121,7 +131,9 @@ export default function AuthProvider({
     if (res.status === 200) {
       const data = await res.json()
       setUser(data)
+      return true
     }
+    return false
   }
 
   const onFail = () : void => {
@@ -145,6 +157,7 @@ export default function AuthProvider({
 
   const value = {
     user,
+    fetchUser,
     authenticate,
     signOut,
   }

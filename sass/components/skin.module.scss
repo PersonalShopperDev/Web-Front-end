@@ -1,0 +1,35 @@
+@use '../lib/colors.scss' as colors;
+
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 21px;
+    margin-bottom: -30px;
+}
+@mixin paletteBox { 
+    width: 140px;
+    height: 140px;
+    border-radius: 7px;
+    border: 2px solid colors.$primary-200;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 9px;
+    margin-left: 9px;
+    margin-bottom: 30px;
+}
+
+.palette {
+    width: 90px;
+    height: 90px;
+}
+
+.selectedPalette {
+    @include paletteBox();
+    border: 2px solid colors.$primary-700;
+}
+.notSelectedPalette {
+    @include paletteBox();
+}

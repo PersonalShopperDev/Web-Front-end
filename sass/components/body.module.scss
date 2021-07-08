@@ -1,0 +1,74 @@
+@use '../lib/colors.scss' as colors;
+
+.infoContainer {
+    display: flex;
+    flex-direction: row;
+    padding-top: 16px;
+    height: 300px;
+    overflow: auto;
+}
+
+.infoContainer::-webkit-scrollbar {
+    display: none;
+}
+
+.container {
+    display: flex;
+    padding-top: 41px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-left: 27px;
+}
+.container::-webkit-scrollbar {
+    display: none;
+}
+@mixin bodyFormBox {
+    width: 151px;
+    height: 238px;
+    background-color: colors.$primary-200;
+    border-radius: 7px;
+    border: 2px solid black;
+    margin-right: 17px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    >span {
+        font-size: 14px;
+        line-height: 26px;
+        font-weight: 600;
+        color: colors.$primary-300;
+    }
+    >div {
+        width: 151px;
+        height: 238px;
+        margin-bottom: 10px
+    }
+}
+
+.selectedBodyForm {
+    @include bodyFormBox();
+    margin-bottom: 75px;
+    background-color: colors.$primary-600;
+    .selectedText { 
+        color: #000000;
+    }
+}
+
+.notSelectedBodyForm {
+    margin-bottom: 75px;
+    @include bodyFormBox();
+}
+
+.infoSelectedBodyForm {
+    @include bodyFormBox();
+    margin-bottom: 26px;
+    background-color: colors.$primary-600;
+    .selectedText { 
+        color: #000000;
+    }
+}
+
+.infoNotSelectedBodyForm {
+    margin-bottom: 26px;
+    @include bodyFormBox();   
+}

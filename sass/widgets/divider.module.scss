@@ -1,0 +1,7 @@
+@use '../lib/colors.scss' as colors;
+
+.widget {
+  border: none;
+  border-bottom: 1px solid colors.$primary-200;
+  margin: 0 17px;
+}
