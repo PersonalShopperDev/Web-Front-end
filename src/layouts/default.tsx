@@ -13,7 +13,7 @@ export default function Layout({
   return (
     <>
       {header && <header className={styles.header}>{header}</header>}
-      <main className={styles.main}>{children}</main>
+      <main className={styles.main} id="main">{children}</main>
       {bottom && <section className={styles.bottom}>{bottom}</section>}
     </>
   )

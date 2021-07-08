@@ -1,16 +1,14 @@
+@use '../lib/util.scss' as util;
+
 .header,
-.main {
+.main,
+.bottom {
     width: inherit;
 }
 
 .main {
     flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.bottom {
-    position: fixed;
-    bottom: 0;
-    width: inherit;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    @include util.no-scroll();
 }
