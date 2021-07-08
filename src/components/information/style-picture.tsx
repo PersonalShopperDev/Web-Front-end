@@ -6,12 +6,8 @@ import styles from 'sass/components/style-picture.module.scss'
 import communicate from 'lib/api/index'
 import { useOnboarding } from 'providers/onboarding'
 
-export default function StylePicture({
-  isOnboarding,
-}: {
-  isOnboarding?: boolean
-}) {
-  const { information, stylePicture, setStylePicture } = useOnboarding()
+export default function StylePicture() {
+  const { stylePicture, setStylePicture } = useOnboarding()
   const [styleImageLists, setStyleImageLists] = useState([])
   const onClick = (id) => {
     if (!stylePicture.includes(id)) {
@@ -22,14 +18,14 @@ export default function StylePicture({
   }
   useEffect(() => {
     async function fetchStylistData() {
-      const res = await communicate({ url: `/style/img?gender=${information.gender}` })
+      const res = await communicate({ url: '/style/img' })
       const styleImage = await res.json()
       setStyleImageLists(styleImage)
     }
     fetchStylistData()
   }, [])
   return (
-    <div className={isOnboarding ? styles.container : styles.changeContainer}>
+    <div className={styles.container}>
       {styleImageLists.map((value, index) => (
         <button type="button" onClick={() => onClick(value.id)} className={styles.buttonImg} key={Math.random()}>
           {stylePicture.includes(value.id) && <div className={styles.selectedImg} /> }
@@ -39,8 +35,4 @@ export default function StylePicture({
       ))}
     </div>
   )
-}
-
-StylePicture.defaultProps = {
-  isOnboarding: false,
 }

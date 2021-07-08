@@ -2,15 +2,16 @@
 
 .container {
     overflow: auto;
-    height: 400px;
     margin-left: 21px;
-}
-.infoContainer {
-    overflow: auto;
+    padding-bottom: 120px;
 }
 
 .container::-webkit-scrollbar {
     display: none;
+}
+
+.infoContainer {
+    overflow: auto;
 }
 
 .priceListContainer {

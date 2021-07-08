@@ -1,7 +1,15 @@
 @use '../../lib/colors.scss' as colors;
 
 .container { 
-    height: 100%;
+    height: 100vh;
+    //position: fixed;
+    display: flex;
+    flex-direction: column;
+    //width: 375px;
+}
+
+.container::-webkit-scrollbar {
+    display: none;
 }
 
 .title {

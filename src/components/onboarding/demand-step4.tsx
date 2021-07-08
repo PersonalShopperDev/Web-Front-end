@@ -5,12 +5,10 @@ import Size from 'components/information/size'
 export default function DemandStep4() {
   return (
     <section>
-      <div className={styles.step4}>
-        <h1 className={styles.title}>STEP 4</h1>
-        <h2 className={styles.content}>평소 의류 사이즈와 핏을 알려주세요</h2>
-        <div className={styles.container}>
-          <Size isEdit isOnboarding />
-        </div>
+      <h1 className={styles.title}>STEP 4</h1>
+      <h2 className={styles.content}>평소 의류 사이즈와 핏을 알려주세요</h2>
+      <div className={styles.container}>
+        <Size isEdit isOnboarding />
       </div>
     </section>
   )

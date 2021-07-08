@@ -6,25 +6,19 @@ import styles from 'sass/components/style-text.module.scss'
 export default function StyleText() {
   const { information } = useOnboarding()
   const [styleLists, setStyleLists] = useState([])
-  const [selectedIdLists, setSelectedIdLists] = useState([])
   useEffect(() => {
     async function fetchData() {
-      const gender = information.gender === 'F' ? 'female' : 'male'
-      const res = await communicate({ url: `/style?${gender}=${true}` })
+      const res = await communicate({ url: '/style' })
       const data = await res.json()
       setStyleLists(information.gender === 'F' ? data.female : data.male)
     }
     fetchData()
-    for (let i = 0; i < information.styles.length; i++) {
-      setSelectedIdLists([...selectedIdLists, information.styles[i].id])
-    }
   }, [])
-
   return (
     <div className={styles.container}>
       {styleLists.map((value) => (
         <div
-          className={selectedIdLists.includes(value.id)
+          className={information.styles.findIndex((e) => e.id === value.id) !== -1
             ? styles.selectedBox : styles.notSelectedBox}
           key={Math.random()}
         >

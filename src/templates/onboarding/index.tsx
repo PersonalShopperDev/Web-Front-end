@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import TopBar from 'src/components/onboarding/top-bar'
 import BottomBar from 'src/components/onboarding/bottom-bar'
 import { useOnboarding } from 'providers/onboarding'
+import styles from 'sass/templates/onboarding/step.module.scss'
 import Step1 from './steps/step1'
 import Step2 from './steps/step2'
 import Step3 from './steps/step3'
@@ -41,26 +42,30 @@ export default function Onboarding() {
     }
   }
   useEffect(() => {
-    if (information !== null && information.userType === 'D') {
-      setIndexNum(6)
-    } else {
+    if (information !== null && information.userType === 'S') {
       setIndexNum(5)
+    } else {
+      setIndexNum(6)
     }
   }, [information])
   return (
     <>
-      <header>
-        <TopBar index={stepIndex} totalIndexNum={indexNum} />
-      </header>
-      {stepComponents[stepIndex - 1]}
-      <section>
+      <div className={styles.container}>
+        <header className={styles.topBarConatiner}>
+          <TopBar index={stepIndex} totalIndexNum={indexNum} />
+        </header>
+        <div className={styles.stepContainer}>
+          {stepComponents[stepIndex - 1]}
+        </div>
+      </div>
+      <footer className={styles.bottomBarContainer}>
         <BottomBar
           onPrevButtonClick={onPrevButtonClick}
           onNextButtonClick={onNextButtonClick}
           stepIndex={stepIndex}
           totalIndexNum={indexNum}
         />
-      </section>
+      </footer>
     </>
   )
 }

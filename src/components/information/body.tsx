@@ -33,13 +33,13 @@ export default function Body({
     type: 'A.슬림체형',
   }, {
     path: '/icons/maleBodyA.png',
-    type: 'A.평균체형',
+    type: 'B.평균체형',
   }, {
     path: '/icons/maleBodyA.png',
-    type: 'A.근육질체형',
+    type: 'C.근육질체형',
   }, {
     path: '/icons/maleBodyA.png',
-    type: 'A.지방형체형',
+    type: 'D.지방형체형',
   }]
   const onBodyClick = (item) => {
     setData('body', item)

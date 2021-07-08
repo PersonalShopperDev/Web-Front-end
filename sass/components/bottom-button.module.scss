@@ -1,0 +1,17 @@
+@use '../lib/colors.scss' as colors;
+
+.button {
+    width: 333px;
+    height: 54px;
+    border-radius: 5px;
+    background-color: colors.$accent;
+    position: absolute;
+    bottom: 25px;
+    left: 20px
+}
+
+.buttonText {
+    color:colors.$background;
+    font-weight: 600;
+    font-size: 14px;
+}
