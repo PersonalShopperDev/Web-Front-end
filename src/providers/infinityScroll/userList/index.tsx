@@ -34,6 +34,9 @@ export default function UserListProvider({
     } else {
       res = await communicate({ url: `/supplier?sort=${userListsRef.current.sort}&page=${page}` })
     }
+    if (res.status !== 200) {
+      return
+    }
     const lists = await res.json()
     if (userListsRef.current.type !== '') {
       newLists = userListsRef.current.value.concat(lists.list)

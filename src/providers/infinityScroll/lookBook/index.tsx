@@ -26,6 +26,9 @@ export default function LookBookProvider({
     const page = lookBookRef.current.value.length / pageNum
     if (Math.floor(lookBookRef.current.value.length / pageNum) !== page) return
     const res = await communicate({ url: `/profile/${id}/lookbook?page=${page}` })
+    if (res.status !== 200) {
+      return
+    }
     const newLookBook = await res.json()
     lookBookRef.current.value = lookBookRef.current.value.concat(newLookBook.list)
     setLookBookLists(lookBookRef.current.value)

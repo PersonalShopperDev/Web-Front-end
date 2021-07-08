@@ -37,7 +37,7 @@ export default function FilterModal() {
         {filterLists.map((value, index) => (
           <div className={styles.eachModalContent} key={value}>
             <span className={styles.filterText}>{value}</span>
-            {currentFilter === index ? <Icon src="selectedFilterCheck.png" onClick={() => onClickFilter(index)} key="selectedFilterCheck" /> : <Icon src="filterCheck.png" onClick={() => onClickFilter(index)} key="filterCheck" /> }
+            <Icon src={currentFilter === index ? 'selectedFilterCheck.png' : 'filterCheck.png'} onClick={() => onClickFilter(index)} key="filter" />
           </div>
         ))}
       </div>
