@@ -2,8 +2,8 @@ import React, {
   useEffect, useContext, createContext, useRef, useState,
 } from 'react'
 
-import { useUserList } from './userList'
-import { useLookBook } from './lookBook'
+import { useUserList } from './user-list'
+import { useLookBook } from './look-book'
 
 interface InfinityScrollProps {
   setScrollFunc: (value: any) => void

@@ -1,6 +1,6 @@
 import React from 'react'
-import LookBookProvider from './lookBook'
-import UserListProvider from './userList'
+import LookBookProvider from './look-book'
+import UserListProvider from './user-list'
 import InfinityScrollProvider from '.'
 
 export default function IntegratedInfinityScrollProvider({

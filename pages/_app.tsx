@@ -1,7 +1,7 @@
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import AuthProvider from 'providers/auth'
-import IntegratedInfinityScrollProvider from 'providers/infinityScroll/integrated'
+import IntegratedInfinityScrollProvider from 'providers/infinity-scroll/integrated'
 import OnboardingProvider from 'providers/onboarding'
 import ModalProvider from 'providers/modal'
 import IntegratedDialogProvider from 'providers/dialog/integrated'

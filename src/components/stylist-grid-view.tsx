@@ -15,24 +15,7 @@ export default function StylistGridView({ data } : { data: StylistGridViewData[]
         title="스타일리스트"
         moreHref="/"
       />
-      <section className={styles.grid}>
-        {data.map(({
-          img,
-          name,
-          hire = 0,
-          review = 0,
-        }) => (
-          <figure key={Math.random()} className={styles.figure}>
-            <div className={styles.imageWrapper}>
-              <img src={img} alt="stylist" />
-            </div>
-            <figcaption className={styles.figcaption}>
-              <h4 className={styles.stylist}>{`${name} 스타일리스트`}</h4>
-              <span className={styles.info}>{`고용 ${hire}회 | 리뷰 ${review}`}</span>
-            </figcaption>
-          </figure>
-        ))}
-      </section>
+      <section className={styles.grid} />
     </section>
   )
 }
