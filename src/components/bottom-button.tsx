@@ -6,11 +6,15 @@ export default function BottomButton({
   onClick,
 } : {
   text : string,
-  onClick: React.MouseEventHandler,
+  onClick?: React.MouseEventHandler,
 }) {
   return (
     <button type="button" className={styles.button} onClick={onClick}>
       <span className={styles.buttonText}>{text}</span>
     </button>
   )
+}
+
+BottomButton.defaultProps = {
+  onClick: null,
 }

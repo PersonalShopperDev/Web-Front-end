@@ -19,16 +19,18 @@ export default function bottomBar({
     <section className={styles.container}>
       {stepIndex === totalIndexNum || stepIndex === 1
         ? (
-          <button
-            type="button"
-            onClick={() => onNextButtonClick()}
-            className={styles.completeButton}
-          >
-            <span className={styles.nextText}>{stepIndex === 1 ? '다음' : nextTitle}</span>
-          </button>
+          <div className={styles.gradient}>
+            <button
+              type="button"
+              onClick={() => onNextButtonClick()}
+              className={styles.completeButton}
+            >
+              <span className={styles.nextText}>{stepIndex === 1 ? '다음' : nextTitle}</span>
+            </button>
+          </div>
         )
         : (
-          <>
+          <div className={styles.nextGradient}>
             <button
               type="button"
               onClick={() => onPrevButtonClick()}
@@ -43,7 +45,7 @@ export default function bottomBar({
             >
               <span className={styles.nextText}>다음</span>
             </button>
-          </>
+          </div>
         )}
     </section>
   )

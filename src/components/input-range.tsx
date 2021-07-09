@@ -5,12 +5,12 @@ import { useOnboarding } from 'providers/onboarding'
 
 export default function InputRange({
   priceLists,
-  isEdit,
+  isOnboarding,
 }: {
   priceLists: PriceLists
-  isEdit?: boolean
+  isOnboarding?: boolean,
 }) {
-  const { information, setData, editCheck } = useOnboarding()
+  const { information, setData, setEdit } = useOnboarding()
   const priceStep = 5000
   const rangeLeftRef = useRef<HTMLInputElement>()
   const rangeRightRef = useRef<HTMLInputElement>()
@@ -26,6 +26,7 @@ export default function InputRange({
     rangeLeftRef.current.value = Math.min(parseInt(rangeLeftRef.current.value, 10),
       parseInt(rangeRightRef.current.value, 10) - priceStep).toString()
     setData(priceLists.key, parseInt(rangeLeftRef.current.value, 10), true)
+    if (!isOnboarding) setEdit('price')
     setMinPrice(parseInt(rangeLeftRef.current.value, 10))
     const percent = ((parseInt(rangeLeftRef.current.value, 10) - priceLists.minPrice)
     / (priceLists.maxPrice - priceLists.minPrice)) * 100
@@ -36,6 +37,7 @@ export default function InputRange({
     rangeRightRef.current.value = Math.max(parseInt(rangeRightRef.current.value, 10),
       parseInt(rangeLeftRef.current.value, 10) + priceStep).toString()
     setData(priceLists.key, parseInt(rangeRightRef.current.value, 10), false, true)
+    if (!isOnboarding) setEdit('price')
     setMaxPrice(parseInt(rangeRightRef.current.value, 10))
     const percent = ((parseInt(rangeRightRef.current.value, 10) - priceLists.minPrice)
     / (priceLists.maxPrice - priceLists.minPrice)) * 100
@@ -49,18 +51,17 @@ export default function InputRange({
   }
 
   useEffect(() => {
-    document.getElementById('step5_container').addEventListener('scroll', scrollEventListner)
-    return () => document.removeEventListener('scroll', scrollEventListner)
-  }, [])
-
-  useEffect(() => {
-    if (rangeLeftRef !== null && isEdit) {
+    rangeLeftRef.current.style.top = `${rangeRef.current.getBoundingClientRect().top}px`
+    rangeRightRef.current.style.top = `${rangeRef.current.getBoundingClientRect().top}px`
+    if (rangeLeftRef !== null) {
       rangeLeftRef.current.addEventListener('input', setLeftValue)
       setData(priceLists.key, parseInt(rangeLeftRef.current.value, 10), true)
+      if (!isOnboarding) setEdit('price')
     }
-    if (rangeRightRef !== null && isEdit) {
+    if (rangeRightRef !== null) {
       rangeRightRef.current.addEventListener('input', setRightValue)
       setData(priceLists.key, parseInt(rangeRightRef.current.value, 10), false, true)
+      if (!isOnboarding) setEdit('price')
     }
     thumbLeftRef.current.style.left = `${((parseInt(rangeLeftRef.current.value, 10) - priceLists.minPrice)
       / (priceLists.maxPrice - priceLists.minPrice)) * 100}%`
@@ -71,19 +72,20 @@ export default function InputRange({
     rangeRef.current.style.right = `${100 - ((parseInt(rangeRightRef.current.value, 10) - priceLists.minPrice)
       / (priceLists.maxPrice - priceLists.minPrice)) * 100}%`
   }, [rangeLeftRef, rangeRightRef])
-
   useEffect(() => {
-    if (editCheck.price) {
-      rangeLeftRef.current.value = information[priceLists.key].min
-      rangeRightRef.current.value = information[priceLists.key].max
-      rangeLeftRef.current.addEventListener('input', setLeftValue)
-      rangeRightRef.current.addEventListener('input', setRightValue)
+    rangeLeftRef.current.addEventListener('input', setLeftValue)
+    rangeRightRef.current.addEventListener('input', setRightValue)
+    if (isOnboarding) {
+      document.getElementById('stepContainer').addEventListener('scroll', scrollEventListner)
+    } else {
+      document.getElementById('main').addEventListener('scroll', scrollEventListner)
     }
     return () => {
+      document.removeEventListener('scroll', scrollEventListner)
       if (rangeLeftRef.current !== null) rangeLeftRef.current.removeEventListener('input', setLeftValue)
       if (rangeRightRef.current !== null) rangeRightRef.current.removeEventListener('input', setRightValue)
     }
-  }, [editCheck.price])
+  }, [])
   return (
     <div className={styles.container}>
       <input
@@ -127,5 +129,5 @@ export default function InputRange({
 }
 
 InputRange.defaultProps = {
-  isEdit: false,
+  isOnboarding: false,
 }

@@ -8,6 +8,7 @@ export default function InformationAppBar() {
       back
       actions={[
         <Icon
+          key="exit"
           src="exit.png"
           size={24}
         />,

@@ -1,31 +1,82 @@
+import React, {
+  useEffect, useState, useRef,
+} from 'react'
 import styles from 'sass/components/review.module.scss'
-import Image from 'next/image'
+import communicate from 'lib/api'
+import Icon from 'widgets/icon'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/swiper-bundle.css'
 
 export default function Review({
-  info,
+  id,
 }: {
-  info: any,
+  id: number,
 }) {
-  console.log(info)
-  const reviewUserLists: ReviewInfo[] = [reviewUser, reviewUser]
+  const [review, setReview] = useState(null)
+  const [slides, setSlids] = useState([])
+  const [imageIndex, setImageIndex] = useState(1)
+  const [imageModal, setImageModal] = useState(false)
+  const [initialIndex, setInitialIndex] = useState(0)
+  const [fixedHeight, setFixedHeight] = useState(0)
+  const imageModalRef = useRef<HTMLDivElement>()
+  const onClickCoord = (img, index) => {
+    if (!imageModal) {
+      setFixedHeight(document.documentElement.scrollTop)
+      document.body.style.cssText = 'position:fixed; left:0; right:0; margin: 0 auto '
+    } else {
+      document.body.style.cssText = `position: relative; top:${-1 * window.scrollY}px;`
+      window.scrollTo({ top: fixedHeight })
+    }
+    setSlids(img)
+    setImageModal(!imageModal)
+    setInitialIndex(index)
+    setImageIndex(index + 1)
+  }
+  const onExitClick = () => {
+    if (!imageModal) {
+      setFixedHeight(document.documentElement.scrollTop)
+      document.body.style.cssText = 'position:fixed; left:0; right:0; margin: 0 auto '
+    } else {
+      document.body.style.cssText = `position: relative; top:${-1 * window.scrollY}px;`
+      window.scrollTo({ top: fixedHeight })
+    }
+    setImageModal(!imageModal)
+  }
+  const closeModal = (e: React.MouseEvent) => {
+    if (imageModalRef.current === e.target) {
+      document.body.style.cssText = `position: relative; top:${-1 * window.scrollY}px;`
+      setImageModal(false)
+      window.scrollTo({ top: fixedHeight })
+    }
+  }
+  useEffect(() => {
+    async function fetchReviewData() {
+      const res = await communicate({ url: `/profile/${id}/review` })
+      const reviews = await res.json()
+      setReview(reviews)
+    }
+    fetchReviewData()
+  }, [])
   return (
+    <>
+      {review !== null
+    && (
     <div className={styles.reviewContainer}>
       <div className={styles.reviewBox}>
         <div className={styles.leftItem}>
           <div className={styles.keyText}>평점</div>
-          <span className={styles.valueText}>{info.grade}</span>
+          <span className={styles.valueText}>{review.rating}</span>
         </div>
         <div className={styles.rightItem}>
           <div className={styles.keyText}>리뷰</div>
-          <span className={styles.valueText}>{info.review}</span>
+          <span className={styles.valueText}>{review.totalCount}</span>
         </div>
       </div>
-      {reviewUserLists.map((item) => (
-
-        <div className={styles.userBox}>
+      {review.list.map((item) => (
+        <div className={styles.userBox} key={item.id}>
           <div className={styles.userNameBox}>
             <div>
-              <Image src={reviewUser.profileImg} width="25" height="25" />
+              <img src={item.profileImg} width={25} height={25} alt="프로필" className={styles.profileImg} />
               <span className={styles.nameText}>
                 {item.name}
                 님
@@ -35,73 +86,87 @@ export default function Review({
           </div>
           <div className={styles.starBox}>
             <span>평점:</span>
-            {[...Array(4)].map(() => (
-              <div>
-                <Image src="/icons/filledStar.png" width="15" height="15" />
+            {[...Array(Math.round(item.rating))].map((value) => (
+              <div key={Math.random()}>
+                <Icon src="filledStar.png" size={15} />
               </div>
             ))}
-            <div>
-              <Image src="/icons/Star.png" width="15" height="15" />
-            </div>
+            {[...Array(5 - Math.round(item.rating))].map(() => (
+              <div key={Math.random()}>
+                <Icon src="Star.png" size={15} />
+              </div>
+            ))}
             <span>
-              {item.grade.toFixed(1)}
+              {item.rating.toFixed(1)}
               점
             </span>
           </div>
-          <Image src={reviewUser.style} width="124" height="130" />
+          <div className={styles.coordContainer}>
+            {item.img.map((value, index) => (
+              <div>
+                <button type="button" onClick={() => onClickCoord(item.img, index)} className={styles.img}>
+                  <img src={value} width="124" height="130" alt="코디" className={styles.img} />
+                </button>
+              </div>
+            ))}
+          </div>
           <div className={styles.infoBox}>
+            {item.height !== undefined && (
             <div>
               <span>키</span>
               {item.height}
               cm
             </div>
+            )}
+            {item.weight !== undefined && (
             <div>
               <span>몸무게</span>
               {item.weight}
               kg
             </div>
+            )}
             <div>
               <span>체형</span>
-              {item.form}
+              {item.body.value}
             </div>
             <div>
               <span>선호스타일</span>
-              {item.preferredStyle.map((style) => (
-                <div className={styles.styleHashtag}>{ style }</div>
+              {item.styleTypeList.map((style) => (
+                <div className={styles.styleHashtag} key={style.id}>
+                  #
+                  {style.value}
+                </div>
               ))}
             </div>
           </div>
           <div className={styles.contentBox}>
-            <span>{item.review}</span>
+            <span>{item.content}</span>
           </div>
         </div>
       ))}
     </div>
+    )}
+      {imageModal
+      && (
+      <div className={styles.modalContainer} ref={imageModalRef} onClick={closeModal} aria-hidden="true">
+        <span className={styles.text}>
+          {imageIndex}
+          {' / '}
+          {slides.length}
+        </span>
+        <Icon src="lookbookExit.png" size={24} onClick={onExitClick} className={styles.exit} key="exit" />
+        <Swiper
+          onSlideChange={(e) => setImageIndex(e.realIndex + 1)}
+          initialSlide={initialIndex}
+        >
+          {slides.map((item) => (
+            <SwiperSlide key={`slide-${Math.random()}`}>
+              <img src={item} width="375px" height="375px" className={styles.img} alt="코디" />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+      )}
+    </>
   )
-}
-
-const reviewUser: ReviewInfo = {
-  profileImg: '/icons/sample-icon.png',
-  name: '김세현',
-  grade: 4.0,
-  style: '/images/sample-cody.png',
-  review: '선생님 덕분에 패션고자에서 벗어났습니다~! 옷이 이쁘면 나한테 어울리는거 상관없이 입었는데 이제는 나에게 잘 어울리는 옷이 뭔지 알게 되었습니다!',
-  date: '2021.05.30',
-  height: 162,
-  weight: 50,
-  form: '슬림체형',
-  preferredStyle: ['#페미닌', '#심플베이직', '#우아함'],
-}
-
-export interface ReviewInfo {
-    profileImg: string,
-    name: string,
-    grade: number,
-    style: string,
-    review: string,
-    date: string,
-    height: number,
-    weight: number,
-    form: string,
-    preferredStyle: string[],
 }

@@ -1,33 +1,21 @@
-@use '../../lib/colors.scss' as colors;
-
-.listContainer {
-    align-self: center;
-    overflow: auto;
-    width: 100%;
-    padding-left: 17px;
-}
-
-.listContainer::-webkit-scrollbar {
-    display: none;
-}
+@use '../lib/colors.scss' as colors;
 
 .modalContainer {
-    background-color: rgba(0,0,0,0.5);
-    position: fixed;
     width: 375px;
     bottom: 0px;
-    height: 100%;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .modalBox {
     width: 375px;
     height: 184px;
     background-color: colors.$background;
-    position: absolute;
-    bottom: 0px;
+    bottom: 0;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
     padding-top: 11px;
+    top: 0;
 }
 
 .eachModalContent {

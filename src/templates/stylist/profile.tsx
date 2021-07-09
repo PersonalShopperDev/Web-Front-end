@@ -15,7 +15,7 @@ export default function Profile({
   const [menu, setMenu] = useState(0)
   const menuLists = ['프로필', '코디룩북', '리뷰']
   const menuComponent = [<ProfileDetail info={info} />,
-    <CodyLookBook id={id} />, <Review info={info} />]
+    <CodyLookBook id={id} />, <Review id={id} />]
 
   const onMatchingClick = () => {
   }
@@ -24,22 +24,21 @@ export default function Profile({
   }
   useEffect(() => {
     async function fetchProfileData() {
-      const res = await communicate({ url: `/profile/?${id}` })
+      const res = await communicate({ url: `/profile/${id}` })
       const information = await res.json()
       setInfo(information)
     }
     fetchProfileData()
   }, [id])
-
   return (
     <>
       {info != null
       && (
-      <>
+      <div className={styles.container}>
         <div className={styles.profileContainer}>
-          <img src={info.img} alt="profileImg" width="141" height="141" className={styles.profileImg} />
+          <img src={info.img} alt="profileImg" width="122" height="122" className={styles.profileImg} />
           <div className={styles.infoBox}>
-            <span className={styles.name}>Stylist</span>
+            <span className={styles.name}>스타일리스트</span>
             <br />
             <span className={styles.name}>{info.name}</span>
             <div className={styles.category}>
@@ -67,8 +66,13 @@ export default function Profile({
           ))}
         </div>
         { menuComponent[menu] }
-        { menu === 0 && <BottomButton text="매칭하기" onClick={onMatchingClick} /> }
-      </>
+          { menu === 0
+            && (
+            <div className={styles.gradient}>
+              <BottomButton text="채팅하기" onClick={onMatchingClick} />
+            </div>
+            )}
+      </div>
       ) }
 
     </>

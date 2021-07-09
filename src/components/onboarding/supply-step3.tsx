@@ -18,7 +18,7 @@ export default function SupplyStep3() {
         <button type="button" onClick={onClickAll} className={styles.selectButton}>
           <span className={styles.text}>모두선택가능</span>
         </button>
-        <CodyGender isEdit isOnboarding />
+        <CodyGender isOnboarding />
       </div>
     </section>
   )

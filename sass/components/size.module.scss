@@ -36,18 +36,12 @@
     line-height: 26px;
     display: block;
 }
-.sizeText {
-    @include sizeText();
-    font-size: 12px;
-    margin-top: 20px;
-    margin-bottom: 3px;
-    color: #767474;
-}
 .editInfoSizeText {
     @include sizeText();
     font-size: 12px;
     margin-top: 20px;
     margin-bottom: 3px;
+    color: #767474;
 }
 .editSizeText {
     @include sizeText();

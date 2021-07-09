@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from 'react'
-
+import React, { useEffect } from 'react'
 import styles from 'sass/templates/stylist/list.module.scss'
 import ListBox from 'src/components/list-box'
-import communicate from 'lib/api/index'
+import { useInfinityScroll } from 'providers/infinity-scroll'
+import { useUserList } from 'providers/user-list'
+import { useRouter } from 'next/router'
 
 export default function List() {
-  const [supplierLists, setSupplierLists] = useState([])
+  const { userLists, fetchUserData, setStyleType } = useUserList()
+  const { setOnScrollFunc } = useInfinityScroll()
+  const router = useRouter()
   useEffect(() => {
-    async function fetchSupplierData() {
-      const res = await communicate({ url: '/supplier' })
-      const suppliers = await res.json()
-      setSupplierLists(suppliers.list)
-    }
-    fetchSupplierData()
+    setOnScrollFunc(fetchUserData)
+    if (router.query.type !== undefined) setStyleType(router.query.type)
   }, [])
   return (
     <div className={styles.listContainer}>
-      { supplierLists.map((value) => (
+      { userLists.map((value) => (
         <ListBox info={value} key={value.id} />
       ))}
     </div>

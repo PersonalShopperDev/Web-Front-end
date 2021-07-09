@@ -54,7 +54,7 @@ export default function Onboarding() {
         <header className={styles.topBarConatiner}>
           <TopBar index={stepIndex} totalIndexNum={indexNum} />
         </header>
-        <div className={styles.stepContainer}>
+        <div className={styles.stepContainer} id="stepContainer">
           {stepComponents[stepIndex - 1]}
         </div>
       </div>

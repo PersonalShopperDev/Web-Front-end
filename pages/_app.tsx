@@ -1,8 +1,6 @@
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import AuthProvider from 'providers/auth'
-import OnboardingProvider from 'providers/onboarding'
-import UserListProvider from 'providers/userlist'
 import ModalProvider from 'providers/modal'
 import IntegratedDialogProvider from 'providers/dialog/integrated'
 import 'sass/global.scss'
@@ -18,13 +16,9 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <ModalProvider>
         <IntegratedDialogProvider>
-          <UserListProvider>
-            <OnboardingProvider>
-              <AuthProvider>
-                <Component {...pageProps} />
-              </AuthProvider>
-            </OnboardingProvider>
-          </UserListProvider>
+          <AuthProvider>
+            <Component {...pageProps} />
+          </AuthProvider>
         </IntegratedDialogProvider>
       </ModalProvider>
     </>
