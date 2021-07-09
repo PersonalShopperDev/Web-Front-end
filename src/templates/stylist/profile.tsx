@@ -36,9 +36,9 @@ export default function Profile({
       && (
       <div className={styles.container}>
         <div className={styles.profileContainer}>
-          <img src={info.img} alt="profileImg" width="141" height="141" className={styles.profileImg} />
+          <img src={info.img} alt="profileImg" width="122" height="122" className={styles.profileImg} />
           <div className={styles.infoBox}>
-            <span className={styles.name}>Stylist</span>
+            <span className={styles.name}>스타일리스트</span>
             <br />
             <span className={styles.name}>{info.name}</span>
             <div className={styles.category}>
