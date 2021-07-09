@@ -364,6 +364,37 @@ export default function Comment() {
 
 <br />
 
+## __`InfinityScrollProvider`__
+`<main />`dom에 대해서 무한스크롤을 제공합니다.
+
+|Context Prop|Type|Remark|
+|---|---|---|
+|setOnScrollFunc|`(callback: FetchDataFunc) => void`|데이터 fetching에 필요한 함수를 설정합니다.|
+
+### __Interface__
+```
+type FetchDataFunc = () => void
+
+interface InfinityScrollProps {
+  setOnScrollFunc: (callback: FetchDataFunc) => void
+}
+```
+
+### __Usage__
+```
+export default function List() {
+  const { fetchUserData } = useUserList() // 데이터 fetching을 위한 함수
+  const { setOnScrollFunc } = useInfinityScroll()
+  ...
+  useEffect(() => {
+    setOnScrollFunc(fetchUserData)
+  }, [])
+  ...
+}
+```
+
+<br />
+
 ## __Api__
 ## __`communicate({ url, payload, options, method }) : Promise<Response>`__
 `fetch()`를 대신합니다.
