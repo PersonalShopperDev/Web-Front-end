@@ -1,12 +1,24 @@
+import AppBar from 'components/app-bar'
+import Layout from 'layouts/default'
 import { NextPageContext } from 'next'
+import ErrorContainer from 'templates/error-container'
 
 export default function Error({ statusCode } : { statusCode: number}) {
+  const getContent = () => {
+    if (statusCode) {
+      return `An error ${statusCode} occurred on server`
+    }
+    return 'An error occurred on client'
+  }
+
   return (
-    <p>
-      {statusCode
-        ? `An error ${statusCode} occurred on server`
-        : 'An error occurred on client'}
-    </p>
+    <Layout
+      header={<AppBar back />}
+    >
+      <ErrorContainer>
+        {getContent()}
+      </ErrorContainer>
+    </Layout>
   )
 }
 

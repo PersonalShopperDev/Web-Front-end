@@ -1,9 +1,15 @@
+import AppBar from 'components/app-bar'
 import Layout from 'layouts/default'
+import ErrorContainer from 'templates/error-container'
 
 export default function Page() {
   return (
-    <Layout>
-      <p>404 Page not found</p>
+    <Layout
+      header={<AppBar back />}
+    >
+      <ErrorContainer>
+        Page not found
+      </ErrorContainer>
     </Layout>
   )
 }
