@@ -39,19 +39,17 @@ export default function Page({ userType, data } : Props) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const res = await communicateWithContext({
     url: '/home',
     context,
   })
 
   if (res.status !== 200) {
-    return {
-      redirect: {
-        destination: '/500',
-        permanent: false,
-      },
+    if (context.res) {
+      context.res.statusCode = res.status
     }
+    throw new Error()
   }
 
   const data = await res.json()
