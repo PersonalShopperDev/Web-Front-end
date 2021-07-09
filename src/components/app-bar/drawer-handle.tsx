@@ -1,18 +1,27 @@
 import Modal from 'components/modal'
 import Drawer from 'components/drawer'
 import styles from 'sass/components/drawer.module.scss'
-import { getCookie } from 'lib/util/cookie'
-import { ACCESS_TOKEN } from 'providers/auth'
+import { useAuth } from 'providers/auth'
+import { useEffect, useState } from 'react'
+import { deleteCookie, getCookie } from 'lib/util/cookie'
+import { DRAWER_SHOULD_BE_OPEN } from './term'
 import Avatar from './avatar'
 
 export default function DrawerHandle() {
-  if (typeof document === 'undefined') {
-    return <Avatar />
-  }
+  const { user } = useAuth()
+  const [shouldOpen, setShouldOpen] = useState<boolean>(false)
+  const [load, setLoad] = useState(false)
 
-  const token = getCookie(ACCESS_TOKEN)
+  useEffect(() => {
+    const drawerShouldBeOpen = getCookie(DRAWER_SHOULD_BE_OPEN)
+    if (drawerShouldBeOpen) {
+      setShouldOpen(true)
+      deleteCookie(DRAWER_SHOULD_BE_OPEN)
+    }
+    setLoad(true)
+  }, [])
 
-  if (!token) {
+  if (!load || !user) {
     return <Avatar />
   }
 
@@ -20,6 +29,7 @@ export default function DrawerHandle() {
     <Modal
       className={styles.container}
       initializer={<Avatar />}
+      immediate={shouldOpen}
       transition={{
         default: {
           transform: 'translateX(100%)',

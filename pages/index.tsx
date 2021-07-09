@@ -7,21 +7,24 @@ import StylistHomeAppBar from 'components/app-bar/stylist-home'
 import { GetServerSideProps } from 'next'
 import { communicateWithContext } from 'lib/api'
 import parseJwt from 'lib/util/jwt'
-import { ACCESS_TOKEN, UserType } from 'providers/auth'
+import { ACCESS_TOKEN, useAuth, UserType } from 'providers/auth'
 
 interface Props {
-  userType: UserType
   data: Data
 }
 
 interface Data {
+  userType: UserType
   banners: BannerData[]
   suppliers: SupplierData[]
   demanders: DemanderData[]
   reviews: BeforeAfterData[]
 }
 
-export default function Page({ userType, data } : Props) {
+export default function Page({ data } : Props) {
+  const { user } = useAuth()
+  const { userType } = user || data
+  console.log(userType)
   const {
     banners, suppliers, demanders, reviews,
   } = data
@@ -32,7 +35,7 @@ export default function Page({ userType, data } : Props) {
         <StylistHomeAppBar />
       )}
     >
-      { userType === 'N' ? <LoginBanner /> : <Banner data={banners} />}
+      { !userType ? <LoginBanner /> : <Banner data={banners} />}
       <BeforeAfter data={reviews} />
       <StylistGridView suppliers={suppliers} demanders={userType !== 'D' && demanders} />
     </Layout>
@@ -59,7 +62,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (!token) {
     return {
       props: {
-        userType: 'N',
         data,
       },
     }
@@ -78,9 +80,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      needLogin: false,
-      userType,
-      data,
+      data: {
+        userType,
+        ...data,
+      },
     },
   }
 }

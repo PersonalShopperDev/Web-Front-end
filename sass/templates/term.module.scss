@@ -1,0 +1,10 @@
+@use '../lib/colors.scss' as colors;
+
+.container {
+    line-height: 1.6;
+    padding: 17px;
+    font-size: 14px;
+    font-family: inherit;
+    color: colors.$primary-500;
+    white-space: pre-wrap;
+}
