@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react'
 import styles from 'sass/templates/stylist/list.module.scss'
 import ListBox from 'src/components/list-box'
-import { useUserList } from 'providers/infinity-scroll/user-list'
 import { useInfinityScroll } from 'providers/infinity-scroll'
+import { useUserList } from 'providers/user-list'
+import { useRouter } from 'next/router'
 
 export default function List() {
-  const { userLists } = useUserList()
-  const { setScrollFunc } = useInfinityScroll()
-
+  const { userLists, fetchUserData, setStyleType } = useUserList()
+  const { setOnScrollFunc } = useInfinityScroll()
+  const router = useRouter()
   useEffect(() => {
-    setScrollFunc('lists')
+    setOnScrollFunc(fetchUserData)
+    if (router.query.type !== undefined) setStyleType(router.query.type)
   }, [])
   return (
     <div className={styles.listContainer}>
