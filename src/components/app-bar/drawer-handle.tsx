@@ -1,18 +1,17 @@
 import Modal from 'components/modal'
 import Drawer from 'components/drawer'
 import styles from 'sass/components/drawer.module.scss'
-import { getCookie } from 'lib/util/cookie'
-import { ACCESS_TOKEN } from 'providers/auth'
+import { useAuth } from 'providers/auth'
+import { useRouter } from 'next/router'
 import Avatar from './avatar'
 
 export default function DrawerHandle() {
-  if (typeof document === 'undefined') {
-    return <Avatar />
-  }
+  const { user } = useAuth()
+  const router = useRouter()
 
-  const token = getCookie(ACCESS_TOKEN)
+  const { drawer } = router.query
 
-  if (!token) {
+  if (!user) {
     return <Avatar />
   }
 
@@ -20,6 +19,7 @@ export default function DrawerHandle() {
     <Modal
       className={styles.container}
       initializer={<Avatar />}
+      immediate={drawer === 'open'}
       transition={{
         default: {
           transform: 'translateX(100%)',
