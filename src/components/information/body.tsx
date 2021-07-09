@@ -4,13 +4,11 @@ import styles from 'sass/components/body.module.scss'
 import { useOnboarding } from 'providers/onboarding'
 
 export default function Body({
-  isEdit,
   isOnboarding,
 }: {
-  isEdit?: boolean
   isOnboarding?: boolean
 }) {
-  const { information, setData, editCheck } = useOnboarding()
+  const { information, setData, setEdit } = useOnboarding()
   const [bodyType, setBodyType] = useState(null)
   const femaleBodyTypeLists = [{
     path: '/icons/femaleBodyA.png',
@@ -43,6 +41,7 @@ export default function Body({
   }]
   const onBodyClick = (item) => {
     setData('body', item)
+    if (!isOnboarding) setEdit('body')
   }
   useEffect(() => {
     if (information.gender === 'F') {
@@ -55,42 +54,23 @@ export default function Body({
     <div className={isOnboarding ? styles.container : styles.infoContainer}>
       {bodyType !== null && bodyType.map((value, index) => (
         <div key={Math.random()}>
-          {isEdit || editCheck.body
-            ? (
-              <button
-                type="button"
-                className={isOnboarding ? (information.body === index
-                  ? styles.selectedBodyForm
-                  : styles.notSelectedBodyForm) : (information.body === index
-                  ? styles.infoSelectedBodyForm : styles.infoNotSelectedBodyForm)}
-                onClick={() => onBodyClick(index)}
-              >
-                <div>
-                  <img src={value.path} alt="bodyType" />
-                </div>
-                <span className={information.body === index
-                  ? styles.selectedText : null}
-                >
-                  {value.type}
-                </span>
-              </button>
-            ) : (
-              <div
-                className={isOnboarding ? (information.body === index
-                  ? styles.selectedBodyForm
-                  : styles.notSelectedBodyForm) : (information.body === index
-                  ? styles.infoSelectedBodyForm : styles.infoNotSelectedBodyForm)}
-              >
-                <div>
-                  <img src={value.path} alt="bodyType" />
-                </div>
-                <span className={information.body === index
-                  ? styles.selectedText : null}
-                >
-                  {value.type}
-                </span>
-              </div>
-            ) }
+          <button
+            type="button"
+            className={isOnboarding ? (information.body === index
+              ? styles.selectedBodyForm
+              : styles.notSelectedBodyForm) : (information.body === index
+              ? styles.infoSelectedBodyForm : styles.infoNotSelectedBodyForm)}
+            onClick={() => onBodyClick(index)}
+          >
+            <div>
+              <img src={value.path} alt="bodyType" />
+            </div>
+            <span className={information.body === index
+              ? styles.selectedText : null}
+            >
+              {value.type}
+            </span>
+          </button>
         </div>
       ))}
     </div>
@@ -99,5 +79,4 @@ export default function Body({
 
 Body.defaultProps = {
   isOnboarding: false,
-  isEdit: false,
 }

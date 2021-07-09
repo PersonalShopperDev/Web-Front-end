@@ -1,17 +1,8 @@
 @use '../lib/colors.scss' as colors;
 
 .container {
-    overflow: auto;
     margin-left: 21px;
     padding-bottom: 120px;
-}
-
-.container::-webkit-scrollbar {
-    display: none;
-}
-
-.infoContainer {
-    overflow: auto;
 }
 
 .priceListContainer {
