@@ -1,12 +1,11 @@
 import React, {
-  useEffect, useContext, createContext, useRef, useState,
+  useEffect, useContext, createContext, useRef,
 } from 'react'
 
-import { useUserList } from './user-list'
-import { useLookBook } from './look-book'
+type FetchDataFunc = () => void
 
 interface InfinityScrollProps {
-  setScrollFunc: (value: any) => void
+  setOnScrollFunc: (callback: FetchDataFunc) => void
 }
 
 const InfinityScrollContext = createContext<InfinityScrollProps>(null)
@@ -18,27 +17,26 @@ export default function InfinityScrollProvider({
 }: {
   children: React.ReactNode
 }) {
-  const [scrollFunc, setScrollFunc] = useState<string>()
-  const { fetchUserData } = useUserList()
-  const { fetchLookBookData } = useLookBook()
-  const scrollFuncRef = useRef<any>()
+  const scrollFuncRef = useRef<FetchDataFunc>()
+  const mainDomRef = useRef<HTMLElement>()
+  const setOnScrollFunc = (callback: FetchDataFunc) => {
+    scrollFuncRef.current = callback
+  }
   const scrollListener = () => {
-    if (document.getElementById('main').scrollTop + document.getElementById('main').clientHeight !== document.getElementById('main').scrollHeight) return
-    scrollFuncRef.current()
+    if (mainDomRef.current.scrollTop + mainDomRef.current.clientHeight
+      !== mainDomRef.current.scrollHeight) return
+    if (scrollFuncRef.current !== undefined) scrollFuncRef.current()
   }
   useEffect(() => {
-    if (scrollFunc !== undefined) {
-      document.getElementById('main').addEventListener('scroll', scrollListener)
-    }
-    if (scrollFunc === 'lists') {
-      scrollFuncRef.current = fetchUserData
-    } else if (scrollFunc === 'lookBook') {
-      scrollFuncRef.current = fetchLookBookData
-    }
-    return () => document.getElementById('main').removeEventListener('scroll', scrollListener)
-  }, [scrollFunc])
+    mainDomRef.current = document.getElementById('main')
+  }, [])
+  useEffect(() => {
+    mainDomRef.current.addEventListener('scroll', scrollListener)
+    return () => mainDomRef.current.removeEventListener('scroll', scrollListener)
+  }, [scrollFuncRef])
+
   const value = {
-    setScrollFunc,
+    setOnScrollFunc,
   }
   return <InfinityScrollContext.Provider value={value}>{children}</InfinityScrollContext.Provider>
 }
