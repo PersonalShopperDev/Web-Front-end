@@ -8,17 +8,24 @@ export default function AppBar({
   landings,
   actions,
   back,
+  backUrl,
 } : {
   title? : React.ReactNode
   landings? : React.ReactNode[]
   actions? : React.ReactNode[]
   back? : boolean,
+  backUrl?: string,
 }) {
   const router = useRouter()
 
   const onClickBack = () => {
+    if (backUrl) {
+      router.push(backUrl)
+      return
+    }
     router.back()
   }
+
   return (
     <section className={styles.container}>
       <div className={styles.landings}>
@@ -38,4 +45,5 @@ AppBar.defaultProps = {
   landings: null,
   actions: null,
   back: false,
+  backUrl: null,
 }
