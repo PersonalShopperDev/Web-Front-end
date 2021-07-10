@@ -31,7 +31,7 @@ export default function Page({ data } : Props) {
   return (
     <Layout
       header={(
-        <StylistHomeAppBar />
+        <StylistHomeAppBar title={!userType ? '퍼스널쇼퍼' : '스타일매칭'} />
       )}
     >
       { !userType ? <LoginBanner /> : <Banner data={banners} />}
