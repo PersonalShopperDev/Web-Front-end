@@ -61,7 +61,7 @@ export default function Page({ data } : { data: User }) {
       )}
       {userType === 'S' && (
         <>
-          <CodyStyle label="선호하는 스타일" data={{ styles }} />
+          <CodyStyle label="자신있는 코디 스타일" data={{ styles }} />
           <Divider />
           <Price data={{ price }} />
           <Divider />
