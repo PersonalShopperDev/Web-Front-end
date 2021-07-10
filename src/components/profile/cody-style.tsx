@@ -24,8 +24,8 @@ export default function CodyStyle({
       head={label}
       action={
         (
-          <Link href="/profile/style-select">
-            <a href="/profile/style-select">
+          <Link href="/information/style">
+            <a href="/information/style">
               <Icon src="edit.png" size={17} />
             </a>
           </Link>

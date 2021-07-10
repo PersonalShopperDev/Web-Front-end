@@ -24,7 +24,6 @@ interface Data {
 export default function Page({ data } : Props) {
   const { user } = useAuth()
   const { userType } = user || data
-  console.log(userType)
   const {
     banners, suppliers, demanders, reviews,
   } = data
