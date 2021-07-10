@@ -28,7 +28,7 @@ export default function Information() {
   }, [])
   useEffect(() => {
     if (tokenInfo !== null) {
-      if (tokenInfo.userType === 'W' && tokenInfo.gender === 'F') {
+      if (tokenInfo.userType === 'S' && tokenInfo.gender === 'F') {
         setEachBoxLists([{
           title: '선호스타일',
           information: <StyleText />,
@@ -50,7 +50,7 @@ export default function Information() {
           information: <Price />,
           key: 'price',
         }])
-      } else if (tokenInfo.userType === 'W' && tokenInfo.gender === 'M') {
+      } else if (tokenInfo.userType === 'S' && tokenInfo.gender === 'M') {
         setEachBoxLists([{
           title: '선호스타일',
           information: <StyleText />,
@@ -87,7 +87,7 @@ export default function Information() {
         <div className={styles.eachContainer} key={value.key}>
           <div className={styles.flexContainer}>
             <span className={styles.title}>{value.title}</span>
-            {(tokenInfo.userType === 'W' && index === 0)
+            {(tokenInfo.userType === 'S' && index === 0)
                 && (
                 <button type="button" onClick={() => onClickEdit(value.key)}>
                   <span className={styles.pictureText}>사진으로찾기</span>
