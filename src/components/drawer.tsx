@@ -1,9 +1,9 @@
 import styles from 'sass/components/drawer.module.scss'
-import Link from 'next/link'
 import Icon from 'widgets/icon'
 import { ACCESS_TOKEN, useAuth } from 'providers/auth'
 import parseJwt from 'lib/util/jwt'
 import { getCookie } from 'lib/util/cookie'
+import ModalLink from 'widgets/modal-link'
 import Avatar from './app-bar/avatar'
 
 export default function Drawer() {
@@ -47,12 +47,10 @@ export default function Drawer() {
         <ul className={styles.inner}>
           {categories.map(({ title, link }) => (
             <li key={title} className={styles.menu}>
-              <Link href={link}>
-                <a className={styles.link} href={link}>
-                  <span>{title}</span>
-                  <Icon src="drawer-arrow.png" size={16} />
-                </a>
-              </Link>
+              <ModalLink href={link} className={styles.link}>
+                <span>{title}</span>
+                <Icon src="drawer-arrow.png" size={16} />
+              </ModalLink>
             </li>
           ))}
           <li key="logOut" className={styles.menu}>
