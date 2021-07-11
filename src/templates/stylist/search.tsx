@@ -26,6 +26,7 @@ export default function Search() {
     const gender = information.gender === 'F' ? 'female' : 'male'
     async function fetchStylistData() {
       const res = await communicate({ url: `/style?${gender}=${true}` })
+      if (res.status !== 200) return
       const styleList = await res.json()
       setStyleLists(styleList[gender])
     }

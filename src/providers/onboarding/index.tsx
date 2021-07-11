@@ -140,6 +140,7 @@ export default function OnboardingProvider({
 
   useEffect(() => {
     informationRef.current = information
+    if (informationRef.current === null) informationRef.current = { userType: 'N' }
   }, [information])
 
   const value = {
