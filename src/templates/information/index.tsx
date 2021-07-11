@@ -21,7 +21,7 @@ export default function Information() {
 
   const onClickEdit = (key) => {
     setEdit(key)
-    if (key === 'style') router.push('/information/style')
+    if (key === 'style') router.push('/profile/information/style')
   }
   useEffect(() => {
     setTokenInfo(parseJwt(getCookie(ACCESS_TOKEN)))
