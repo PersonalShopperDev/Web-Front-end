@@ -13,8 +13,9 @@ import Review from 'components/profile/review'
 import Represent from 'components/profile/represents'
 import { GetServerSideProps } from 'next'
 import { communicateWithContext } from 'lib/api'
-import { ACCESS_TOKEN, User } from 'providers/auth'
+import { ACCESS_TOKEN, useAuth, User } from 'providers/auth'
 import CodyStyle from 'components/profile/cody-style'
+import { useEffect } from 'react'
 
 export default function Page({ data } : { data: User }) {
   const {
@@ -30,6 +31,12 @@ export default function Page({ data } : { data: User }) {
     bodyStat,
     hopeToSupplier,
   } = data
+
+  const { fetchUser } = useAuth()
+
+  useEffect(() => {
+    fetchUser()
+  }, [])
 
   return (
     <Layout
