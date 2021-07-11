@@ -52,6 +52,7 @@ export default function Review({
   useEffect(() => {
     async function fetchReviewData() {
       const res = await communicate({ url: `/profile/${id}/review` })
+      if (res.status !== 200) return
       const reviews = await res.json()
       setReview(reviews)
     }
