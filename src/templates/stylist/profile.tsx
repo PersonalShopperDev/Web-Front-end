@@ -5,6 +5,10 @@ import ProfileDetail from 'src/components/profile-detail'
 import CodyLookBook from 'src/components/cody-lookbook'
 import Review from 'src/components/review'
 import communicate from 'lib/api'
+import parseJwt from 'lib/util/jwt'
+import { ACCESS_TOKEN } from 'providers/auth'
+import { getCookie } from 'lib/util/cookie'
+import Avatar from 'widgets/avatar'
 
 export default function Profile({
   id,
@@ -16,7 +20,7 @@ export default function Profile({
   const menuLists = ['프로필', '코디룩북', '리뷰']
   const menuComponent = [<ProfileDetail info={info} />,
     <CodyLookBook id={id} />, <Review id={id} />]
-
+  const { userId } = parseJwt(getCookie(ACCESS_TOKEN))
   const onMatchingClick = () => {
   }
   const onMenuClick = (index) => {
@@ -25,18 +29,20 @@ export default function Profile({
   useEffect(() => {
     async function fetchProfileData() {
       const res = await communicate({ url: `/profile/${id}` })
+      if (res.status !== 200) return
       const information = await res.json()
       setInfo(information)
     }
     fetchProfileData()
   }, [id])
+
   return (
     <>
       {info != null
       && (
       <div className={styles.container}>
         <div className={styles.profileContainer}>
-          <img src={info.img} alt="profileImg" width="122" height="122" className={styles.profileImg} />
+          <Avatar src={info.img} size={122} />
           <div className={styles.infoBox}>
             <span className={styles.name}>스타일리스트</span>
             <br />
@@ -66,7 +72,7 @@ export default function Profile({
           ))}
         </div>
         { menuComponent[menu] }
-          { menu === 0
+          { (menu === 0 && userId !== id)
             && (
             <div className={styles.gradient}>
               <BottomButton text="채팅하기" onClick={onMatchingClick} />
