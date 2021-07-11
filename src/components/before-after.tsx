@@ -27,8 +27,8 @@ export default function BeforeAfter({ data } : {data: BeforeAfterData[]}) {
           afterImg,
           title,
         }) => (
-          <>
-            <section key={stylistId} className={styles.photozone}>
+          <section key={`${stylistId}${title}`}>
+            <div className={styles.photozone}>
               <figure className={cn(styles.figure, styles.before)}>
                 <figcaption className={styles.figcaption}>Before</figcaption>
                 <img src={beforeImg} alt="Before" />
@@ -37,9 +37,9 @@ export default function BeforeAfter({ data } : {data: BeforeAfterData[]}) {
                 <figcaption className={styles.figcaption}>After</figcaption>
                 <img src={afterImg} alt="After" />
               </figure>
-            </section>
+            </div>
             <h3 className={styles.caption}>{title}</h3>
-          </>
+          </section>
         ))}
       </Carousel>
     </section>
