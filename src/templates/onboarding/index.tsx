@@ -31,7 +31,7 @@ export default function Onboarding() {
       setNextStep(!nextStep)
     }
   }
-  const onNextButtonClick = () => {
+  const onNextButtonClick = async () => {
     if (stepIndex < indexNum) {
       if (stepIndex === step3 && !nextStep && information.userType === 'D' && information.gender === 'F') {
         setNextStep(true)
@@ -39,7 +39,7 @@ export default function Onboarding() {
         setStepIndex(+stepIndex + 1)
       }
     } else if (stepIndex === indexNum) {
-      putOnboardingInfo()
+      await putOnboardingInfo()
       router.push('/')
     }
   }

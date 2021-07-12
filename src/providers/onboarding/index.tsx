@@ -55,7 +55,7 @@ interface OnboardingProps {
         min?: boolean, max?: boolean) => void
     setEdit: (key: string) => void
     setStylePicture: Dispatch<SetStateAction<any>>
-    putOnboardingInfo: () => void
+    putOnboardingInfo: () => Promise<void>
 }
 
 const OnboardingContext = createContext<OnboardingProps>(null)
@@ -126,11 +126,11 @@ export default function OnboardingProvider({
       setInformation(data)
     }
   }
-  const putOnboardingInfo = () => {
+  const putOnboardingInfo = async () => {
     const payload = { list: stylePicture }
-    communicate({ url: '/onboard', payload: information, method: 'PUT' })
+    await communicate({ url: '/onboard', payload: information, method: 'PUT' })
     if (information.userType === 'D') {
-      communicate({ url: '/style/img', payload, method: 'PUT' })
+      await communicate({ url: '/style/img', payload, method: 'PUT' })
     }
   }
 
