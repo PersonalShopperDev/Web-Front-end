@@ -4,13 +4,11 @@ import styles from 'sass/components/size.module.scss'
 import { useOnboarding } from 'providers/onboarding'
 
 export default function Size({
-  isEdit,
   isOnboarding,
 }: {
-  isEdit?: boolean
   isOnboarding?: boolean
 }) {
-  const { information, setData, editCheck } = useOnboarding()
+  const { information, setData, setEdit } = useOnboarding()
   const femaleTopLists = ['44사이즈', '55사이즈', '66사이즈', '77사이즈']
   const maleTopLists = ['S사이즈', 'M사이즈', 'L사이즈', 'XL사이즈']
   const femaleBottomLists = ['S사이즈', 'M사이즈', 'L사이즈']
@@ -47,38 +45,26 @@ export default function Size({
   }]
   const onClick = (key, value) => {
     setData(key, value)
+    if (!isOnboarding) setEdit('size')
   }
   return (
     <>
       {sizeLists.map((value) => (
         <div key={Math.random()}>
-          <span className={isOnboarding ? styles.editSizeText
-            : (isEdit || editCheck.size) ? styles.editInfoSizeText : styles.sizeText}
-          >
+          <span className={isOnboarding ? styles.editSizeText : styles.editInfoSizeText}>
             {value.title}
           </span>
           <div className={styles.container}>
             {value.sizeLists.map((item, index) => (
               <div key={Math.random()}>
-                {isEdit || editCheck.size
-                  ? (
-                    <button
-                      type="button"
-                      className={index === information[value.key]
-                        ? styles.editSize : styles.notSelectedSize}
-                      onClick={() => onClick(value.key, index)}
-                    >
-                      <span>{item}</span>
-                    </button>
-                  )
-                  : (
-                    <div
-                      className={index === information[value.key]
-                        ? styles.selectedSize : styles.notSelectedSize}
-                    >
-                      <span>{item}</span>
-                    </div>
-                  )}
+                <button
+                  type="button"
+                  className={index === information[value.key]
+                    ? isOnboarding ? styles.editSize : styles.selectedSize : styles.notSelectedSize}
+                  onClick={() => onClick(value.key, index)}
+                >
+                  <span>{item}</span>
+                </button>
               </div>
             ))}
           </div>
@@ -90,5 +76,4 @@ export default function Size({
 
 Size.defaultProps = {
   isOnboarding: false,
-  isEdit: false,
 }

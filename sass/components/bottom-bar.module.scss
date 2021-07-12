@@ -1,12 +1,9 @@
 @use '../lib/colors.scss' as colors;
 
 .container {
-    position: absolute;
-    bottom: 25px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 83px;
 }
 
 .prevButton {
@@ -47,4 +44,19 @@
     align-items: center;
     justify-content: center;
     margin-left: 21px;
+}
+.gradient {
+    width: 375px;
+    height: 116px;
+    background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,0.5), rgba(255,255,255,1));
+    padding-top: 37px;
+}
+
+.nextGradient { 
+    width: 375px;
+    height: 116px;
+    background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,0.5), rgba(255,255,255,1));
+    padding-top: 37px;
+    flex-direction: row;
+    display: flex;
 }

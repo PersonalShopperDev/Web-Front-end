@@ -1,6 +1,6 @@
 import communicate from 'lib/api'
 import React, {
-  createContext, useContext, useEffect, useState, Dispatch, SetStateAction,
+  createContext, useContext, useEffect, useState, Dispatch, SetStateAction, useRef,
 } from 'react'
 
 interface Information {
@@ -48,20 +48,9 @@ interface Information {
     career?: number
 }
 
-interface IsEdit {
-  body: boolean
-  skin: boolean
-  size: boolean
-  price: boolean
-  codyGender: boolean
-  career: boolean
-  style: boolean
-}
-
 interface OnboardingProps {
     information: Information
     stylePicture: Array<any>
-    editCheck: IsEdit
     setData: (key: string, value: string | number | boolean,
         min?: boolean, max?: boolean) => void
     setEdit: (key: string) => void
@@ -80,59 +69,53 @@ export default function OnboardingProvider({
 }) {
   const [information, setInformation] = useState<Information>(null)
   const [stylePicture, setStylePicture] = useState([])
-  const [editCheck, setEditCheck] = useState<IsEdit>({
-    body: false,
-    skin: false,
-    size: false,
-    price: false,
-    codyGender: false,
-    career: false,
-    style: false,
-  })
-  console.log(information)
+  const informationRef = useRef<any>()
   const setData = (key: string, value: string | number | boolean,
     min?: boolean, max?: boolean) => {
     if (max) {
       setInformation((prevInfo) => ({ ...prevInfo, [key]: { ...prevInfo[key], max: value } }))
+      informationRef.current[key].max = value
     } else if (min) {
       setInformation((prevInfo) => ({ ...prevInfo, [key]: { ...prevInfo[key], min: value } }))
+      informationRef.current[key].min = value
     } else {
       setInformation((prevInfo) => ({ ...prevInfo, [key]: value }))
+      informationRef.current[key] = value
     }
   }
   const setEdit = async (key:string) => {
-    if (editCheck[key]) {
-      const payload: any = {}
-      if (key === 'body' || key === 'skin' || key === 'career') {
-        payload[key] = information[key]
-      } else if (key === 'size') {
-        payload.topSize = information.topSize
-        payload.bottomSize = information.bottomSize
-        payload.shoulderSize = information.shoulderSize
-        payload.waistSize = information.waistSize
-        payload.bellySize = information.bellySize
-        payload.hipSize = information.hipSize
-      } else if (key === 'price') {
-        payload.topPrice = information.topPrice
-        payload.bottomPrice = information.bottomPrice
-        payload.shoesPrice = information.shoesPrice
-        payload.bagPrice = information.bagPrice
-        if (information.accessoryPrice !== undefined) {
-          payload.accessoryPrice = information.accessoryPrice
-        }
-        if (information.dressPrice !== undefined) payload.dressPrice = information.dressPrice
-        if (information.hatPrice !== undefined)payload.hatPrice = information.hatPrice
-      } else if (key === 'codyGender') {
-        payload.supplyMale = information.supplyMale
-        payload.supplyFemale = information.supplyFemale
-      } else {
-        payload.list = stylePicture
-        await communicate({ url: '/style/img', payload, method: 'PUT' })
-        return
+    const payload: any = {}
+    if (key === 'body' || key === 'skin' || key === 'career') {
+      payload[key] = informationRef.current[key]
+    } else if (key === 'size') {
+      payload.topSize = informationRef.current.topSize
+      payload.bottomSize = informationRef.current.bottomSize
+      payload.shoulderSize = informationRef.current.shoulderSize
+      payload.waistSize = informationRef.current.waistSize
+      payload.bellySize = informationRef.current.bellySize
+      payload.hipSize = informationRef.current.hipSize
+    } else if (key === 'price') {
+      payload.topPrice = informationRef.current.topPrice
+      payload.bottomPrice = informationRef.current.bottomPrice
+      payload.shoesPrice = informationRef.current.shoesPrice
+      payload.bagPrice = informationRef.current.bagPrice
+      if (information.accessoryPrice !== undefined) {
+        payload.accessoryPrice = informationRef.current.accessoryPrice
       }
-      communicate({ url: '/onboard', payload, method: 'PATCH' })
+      if (information.dressPrice !== undefined) {
+        payload.dressPrice = informationRef.current.dressPrice
+      }
+      if (information.hatPrice !== undefined) payload.hatPrice = informationRef.current.hatPrice
+    } else if (key === 'codyGender') {
+      payload.supplyMale = informationRef.current.supplyMale
+      payload.supplyFemale = informationRef.current.supplyFemale
+    } else {
+      payload.list = stylePicture
+      await communicate({ url: '/style/img', payload, method: 'PUT' })
+      fetchInformationData()
+      return
     }
-    setEditCheck((prevInfo) => ({ ...prevInfo, [key]: !prevInfo[key] }))
+    communicate({ url: '/onboard', payload, method: 'PATCH' })
   }
   const fetchInformationData = async () : Promise<void> => {
     const res = await communicate({
@@ -155,9 +138,13 @@ export default function OnboardingProvider({
     fetchInformationData()
   }, [])
 
+  useEffect(() => {
+    informationRef.current = information
+    if (informationRef.current === null) informationRef.current = { userType: 'N' }
+  }, [information])
+
   const value = {
     information,
-    editCheck,
     stylePicture,
     setData,
     setEdit,

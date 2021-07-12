@@ -61,7 +61,7 @@ export default function Page({ data } : { data: User }) {
       )}
       {userType === 'S' && (
         <>
-          <CodyStyle label="선호하는 스타일" data={{ styles }} />
+          <CodyStyle label="자신있는 코디 스타일" data={{ styles }} />
           <Divider />
           <Price data={{ price }} />
           <Divider />
@@ -89,12 +89,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   })
 
   if (res.status !== 200) {
-    return {
-      redirect: {
-        destination: '/500',
-        permanent: false,
-      },
+    if (context.res) {
+      context.res.statusCode = res.status
     }
+    throw new Error()
   }
 
   const data = await res.json()

@@ -17,15 +17,12 @@
     padding-top: 41px;
     flex-direction: row;
     flex-wrap: wrap;
-    padding-left: 18.5px;
-    overflow: auto;
-    height: 480px;
+    padding-left: 27px;
+    padding-bottom: 60px;
 }
-
 .container::-webkit-scrollbar {
     display: none;
 }
-
 @mixin bodyFormBox {
     width: 151px;
     height: 238px;

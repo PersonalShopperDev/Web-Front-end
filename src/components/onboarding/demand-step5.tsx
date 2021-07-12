@@ -19,7 +19,7 @@ export default function DemandStep5() {
         <br />
         경우는 슬라이더를 오른쪽 끝으로 밀어주세요.
       </h3>
-      <Price isEdit isOnboarding />
+      <Price isOnboarding />
     </section>
   )
 }

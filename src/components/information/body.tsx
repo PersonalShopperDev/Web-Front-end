@@ -2,95 +2,55 @@
 import React, { useState, useEffect } from 'react'
 import styles from 'sass/components/body.module.scss'
 import { useOnboarding } from 'providers/onboarding'
+import communicate from 'lib/api'
 
 export default function Body({
-  isEdit,
   isOnboarding,
 }: {
-  isEdit?: boolean
   isOnboarding?: boolean
 }) {
-  const { information, setData, editCheck } = useOnboarding()
+  const { information, setData, setEdit } = useOnboarding()
   const [bodyType, setBodyType] = useState(null)
-  const femaleBodyTypeLists = [{
-    path: '/icons/femaleBodyA.png',
-    type: 'A.모래시계체형',
-  }, {
-    path: '/icons/femaleBodyB.png',
-    type: 'B.원형체형',
-  }, {
-    path: '/icons/femaleBodyC.png',
-    type: 'C.역삼각형체형',
-  }, {
-    path: '/icons/femaleBodyD.png',
-    type: 'D.삼각형체형',
-  }, {
-    path: '/icons/femaleBodyE.png',
-    type: 'E.사각형체형',
-  }]
-  const maleBodyTypeLists = [{
-    path: '/icons/maleBodyA.png',
-    type: 'A.슬림체형',
-  }, {
-    path: '/icons/maleBodyA.png',
-    type: 'A.평균체형',
-  }, {
-    path: '/icons/maleBodyA.png',
-    type: 'A.근육질체형',
-  }, {
-    path: '/icons/maleBodyA.png',
-    type: 'A.지방형체형',
-  }]
-  const onBodyClick = (item) => {
-    setData('body', item)
+
+  const onBodyClick = (id) => {
+    setData('body', id)
+    if (!isOnboarding) setEdit('body')
   }
   useEffect(() => {
-    if (information.gender === 'F') {
-      setBodyType(femaleBodyTypeLists)
-    } else {
-      setBodyType(maleBodyTypeLists)
+    const fetchBodyData = async () : Promise<void> => {
+      const res = await communicate({
+        url: `/onboard/body?gender=${information.gender}`,
+      })
+      if (res.status === 200) {
+        const data = await res.json()
+        setBodyType(data)
+      }
     }
+    fetchBodyData()
   }, [])
   return (
     <div className={isOnboarding ? styles.container : styles.infoContainer}>
-      {bodyType !== null && bodyType.map((value, index) => (
-        <div key={Math.random()}>
-          {isEdit || editCheck.body
-            ? (
-              <button
-                type="button"
-                className={isOnboarding ? (information.body === index
-                  ? styles.selectedBodyForm
-                  : styles.notSelectedBodyForm) : (information.body === index
-                  ? styles.infoSelectedBodyForm : styles.infoNotSelectedBodyForm)}
-                onClick={() => onBodyClick(index)}
-              >
-                <div>
-                  <img src={value.path} alt="bodyType" />
-                </div>
-                <span className={information.body === index
-                  ? styles.selectedText : null}
-                >
-                  {value.type}
-                </span>
-              </button>
-            ) : (
-              <div
-                className={isOnboarding ? (information.body === index
-                  ? styles.selectedBodyForm
-                  : styles.notSelectedBodyForm) : (information.body === index
-                  ? styles.infoSelectedBodyForm : styles.infoNotSelectedBodyForm)}
-              >
-                <div>
-                  <img src={value.path} alt="bodyType" />
-                </div>
-                <span className={information.body === index
-                  ? styles.selectedText : null}
-                >
-                  {value.type}
-                </span>
-              </div>
-            ) }
+      {bodyType !== null && bodyType.map((item, index) => (
+        <div key={item.id}>
+          <button
+            type="button"
+            className={isOnboarding ? (information.body === item.id
+              ? styles.selectedBodyForm
+              : styles.notSelectedBodyForm) : (information.body === item.id
+              ? styles.infoSelectedBodyForm : styles.infoNotSelectedBodyForm)}
+            onClick={() => onBodyClick(item.id)}
+          >
+            <div>
+              <img src={item.img} alt="bodyType" />
+            </div>
+            <span className={information.body === item.id
+              ? styles.selectedText : null}
+            >
+              { String.fromCharCode(index + 65)}
+              .
+              {item.value}
+            </span>
+          </button>
         </div>
       ))}
     </div>
@@ -99,5 +59,4 @@ export default function Body({
 
 Body.defaultProps = {
   isOnboarding: false,
-  isEdit: false,
 }

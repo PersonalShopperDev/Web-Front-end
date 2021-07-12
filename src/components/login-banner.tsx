@@ -12,6 +12,7 @@ export default function LoginBanner() {
         <strong className={styles.highlight}>코디를 제안</strong>
         받아보세요!
       </p>
+      <img className={styles.illustration} src="/images/login-banner.png" alt="" />
       <Link href="/login">
         <a href="/login" className={styles.button} type="button">
           로그인하기

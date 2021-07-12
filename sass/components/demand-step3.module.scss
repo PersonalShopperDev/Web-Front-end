@@ -1,5 +1,9 @@
 @use '../lib/colors.scss' as colors;
 
+.container {
+    margin-bottom: 79px;
+}
+
 .title {
     font-weight: 700;
     font-size: 18px;
@@ -25,10 +29,6 @@
     line-height: 19px;
     color: colors.$primary-600;
     margin-left: 21px;
-}
-
-.step3 {
-    position: absolute;
 }
 
 .paletteContainer {

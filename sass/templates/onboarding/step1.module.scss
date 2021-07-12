@@ -1,5 +1,6 @@
 @use '../../lib/colors.scss' as colors;
 
+
 .title {
     font-weight: 700;
     font-size: 18px;
@@ -18,7 +19,7 @@
     margin-left: 21px;
 }
 
-.container {
+.contentBox {
     margin-top: 100px;
     display: flex;
     flex-direction: column;

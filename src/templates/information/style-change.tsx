@@ -13,12 +13,20 @@ export default function StyleChange() {
     router.back()
   }
   return (
-    <div className={styles.container}>
-      <span className={styles.title}>다음 사진 중 마음에 드는 스타일을 골라주세요</span>
-      <StylePicture />
-      <button type="button" className={styles.completeButton} onClick={() => onClickEdit('style')}>
-        <span className={styles.nextText}>수정하기</span>
-      </button>
-    </div>
+    <>
+      <div className={styles.container}>
+        <span className={styles.title}>다음 사진 중 마음에 드는 스타일을 골라주세요</span>
+        <StylePicture />
+      </div>
+      <footer>
+        <section className={styles.tmp}>
+          <div className={styles.gradient}>
+            <button type="button" className={styles.completeButton} onClick={() => onClickEdit('style')}>
+              <span className={styles.nextText}>수정하기</span>
+            </button>
+          </div>
+        </section>
+      </footer>
+    </>
   )
 }

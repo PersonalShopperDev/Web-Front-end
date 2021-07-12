@@ -7,21 +7,23 @@ import StylistHomeAppBar from 'components/app-bar/stylist-home'
 import { GetServerSideProps } from 'next'
 import { communicateWithContext } from 'lib/api'
 import parseJwt from 'lib/util/jwt'
-import { ACCESS_TOKEN, UserType } from 'providers/auth'
+import { ACCESS_TOKEN, useAuth, UserType } from 'providers/auth'
 
 interface Props {
-  userType: UserType
   data: Data
 }
 
 interface Data {
+  userType: UserType
   banners: BannerData[]
   suppliers: SupplierData[]
   demanders: DemanderData[]
   reviews: BeforeAfterData[]
 }
 
-export default function Page({ userType, data } : Props) {
+export default function Page({ data } : Props) {
+  const { user } = useAuth()
+  const { userType } = user || data
   const {
     banners, suppliers, demanders, reviews,
   } = data
@@ -29,29 +31,27 @@ export default function Page({ userType, data } : Props) {
   return (
     <Layout
       header={(
-        <StylistHomeAppBar />
+        <StylistHomeAppBar title={!userType ? '퍼스널쇼퍼' : '스타일매칭'} />
       )}
     >
-      { userType === 'N' ? <LoginBanner /> : <Banner data={banners} />}
+      { !userType ? <LoginBanner /> : <Banner data={banners} />}
       <BeforeAfter data={reviews} />
       <StylistGridView suppliers={suppliers} demanders={userType !== 'D' && demanders} />
     </Layout>
   )
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const res = await communicateWithContext({
     url: '/home',
     context,
   })
 
   if (res.status !== 200) {
-    return {
-      redirect: {
-        destination: '/500',
-        permanent: false,
-      },
+    if (context.res) {
+      context.res.statusCode = res.status
     }
+    throw new Error()
   }
 
   const data = await res.json()
@@ -61,7 +61,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
   if (!token) {
     return {
       props: {
-        userType: 'N',
         data,
       },
     }
@@ -80,9 +79,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
 
   return {
     props: {
-      needLogin: false,
-      userType,
-      data,
+      data: {
+        userType,
+        ...data,
+      },
     },
   }
 }

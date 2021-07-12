@@ -4,7 +4,6 @@ import parseJwt from 'lib/util/jwt'
 import { getCookie } from 'lib/util/cookie'
 import { ACCESS_TOKEN } from 'providers/auth'
 import { useOnboarding } from 'providers/onboarding'
-import Icon from 'widgets/icon'
 import StyleText from 'components/information/style-text'
 import Body from 'components/information/body'
 import Size from 'components/information/size'
@@ -29,7 +28,7 @@ export default function Information() {
   }, [])
   useEffect(() => {
     if (tokenInfo !== null) {
-      if (tokenInfo.userType === 'W' && tokenInfo.gender === 'F') {
+      if (tokenInfo.userType === 'S' && tokenInfo.gender === 'F') {
         setEachBoxLists([{
           title: '선호스타일',
           information: <StyleText />,
@@ -40,7 +39,7 @@ export default function Information() {
           key: 'body',
         }, {
           title: '피부톤',
-          information: <Skin isEdit />,
+          information: <Skin />,
           key: 'skin',
         }, {
           title: '내 체형',
@@ -51,7 +50,7 @@ export default function Information() {
           information: <Price />,
           key: 'price',
         }])
-      } else if (tokenInfo.userType === 'W' && tokenInfo.gender === 'M') {
+      } else if (tokenInfo.userType === 'S' && tokenInfo.gender === 'M') {
         setEachBoxLists([{
           title: '선호스타일',
           information: <StyleText />,
@@ -83,18 +82,17 @@ export default function Information() {
     }
   }, [tokenInfo])
   return (
-    <section className={styles.container}>
+    <section className={styles.container} id="info_container">
       {information !== null && eachBoxLists.map((value, index) => (
         <div className={styles.eachContainer} key={value.key}>
           <div className={styles.flexContainer}>
             <span className={styles.title}>{value.title}</span>
-            {(tokenInfo.userType === 'W' && index === 0)
-              ? (
+            {(tokenInfo.userType === 'S' && index === 0)
+                && (
                 <button type="button" onClick={() => onClickEdit(value.key)}>
                   <span className={styles.pictureText}>사진으로찾기</span>
                 </button>
-              )
-              : <Icon src="edit.png" size={17} onClick={() => onClickEdit(value.key)} />}
+                )}
           </div>
           {value.information}
         </div>

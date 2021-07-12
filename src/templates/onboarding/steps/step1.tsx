@@ -15,7 +15,7 @@ export default function Step1() {
         <br />
         어떤 목적으로 퍼스널 쇼퍼를 사용하시나요?
       </h2>
-      <div className={styles.container}>
+      <div className={styles.contentBox}>
         <button
           type="button"
           onClick={() => onClick('D')}
