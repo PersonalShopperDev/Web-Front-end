@@ -52,6 +52,20 @@ export default function StylistGridView({
     setState(selected)
   }
 
+  const isEmpty = (array: any[]) => {
+    if (!array) {
+      return true
+    }
+    if (array.length === 0) {
+      return true
+    }
+    return false
+  }
+
+  if (isEmpty(suppliers) && isEmpty(demanders)) {
+    return <></>
+  }
+
   return (
     <section className={styles.container}>
       <SectionHeader
@@ -83,9 +97,9 @@ export default function StylistGridView({
       />
       <section className={styles.grid}>
         {isSelected('supplier') && suppliers.map(({
-          img, name, hire = 0, review = 0,
+          id, img, name, hire = 0, review = 0,
         }) => (
-          <figure key={Math.random()} className={styles.figure}>
+          <figure key={id} className={styles.figure}>
             <div className={styles.imageWrapper}>
               <img src={img} alt="stylist" />
             </div>
@@ -100,16 +114,16 @@ export default function StylistGridView({
           </figure>
         ))}
         {isSelected('demander') && demanders.map(({
-          img, name, styles: demanderStyles,
+          id, img, name, styles: demanderStyles,
         }) => (
-          <figure key={Math.random()} className={styles.figure}>
+          <figure key={id} className={styles.figure}>
             <div className={styles.imageWrapper}>
               <img src={img} alt="stylist" />
             </div>
             <figcaption className={styles.figcaption}>
               <h4 className={styles.stylist}>{`${name} 스타일리스트`}</h4>
-              {demanderStyles.map((value, index) => (
-                <span className={styles.info}>{`${index > 0 ? '/' : ''}${value}`}</span>
+              {demanderStyles?.map((value, index) => (
+                <span key={value} className={styles.info}>{`${index > 0 ? '/' : ''}${value}`}</span>
               ))}
             </figcaption>
           </figure>
