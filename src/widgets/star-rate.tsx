@@ -3,7 +3,7 @@ import { useState, Dispatch, SetStateAction } from 'react'
 import styles from 'sass/widgets/star-rate.module.scss'
 import Icon from './icon'
 
-export default function StartRate({
+export default function StarRate({
   className,
   value,
   setValue,
@@ -25,9 +25,9 @@ export default function StartRate({
   return (
     <div className={cn(styles.container, className)}>
       {[...Array(5)].map((_, index) => (
-        <div style={{ marginLeft: index > 0 ? gap : 0 }}>
+        // eslint-disable-next-line react/no-array-index-key
+        <div key={index} style={{ marginLeft: index > 0 ? gap : 0 }}>
           <Icon
-            key={Math.random()}
             src={rate >= index ? 'accent-star.png' : 'blank-star.png'}
             size={size}
             onClick={setValue && (() => onClick(index))}
@@ -38,7 +38,7 @@ export default function StartRate({
   )
 }
 
-StartRate.defaultProps = {
+StarRate.defaultProps = {
   className: null,
   value: 0,
   setValue: null,
