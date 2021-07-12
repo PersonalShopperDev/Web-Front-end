@@ -120,6 +120,7 @@ export default function HorizontalList({
       >
         {children.filter((child) => child).map((child, index) => (
           <div
+            key={Math.random()}
             className={styles.wrapper}
             ref={(ref) => {
               childrenRef.current[index] = ref

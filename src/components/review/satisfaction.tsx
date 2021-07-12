@@ -1,10 +1,17 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import StarRate from 'widgets/star-rate'
 import styles from 'sass/components/review/satisfaction.module.scss'
+import { useReviewEditor } from 'templates/review-editor'
 import Section from './section'
 
 export default function Satisfaction() {
   const [rate, setRate] = useState(3)
+
+  const { dataRef } = useReviewEditor()
+
+  useEffect(() => {
+    dataRef.current.statisfaction = rate
+  }, [rate])
 
   return (
     <Section

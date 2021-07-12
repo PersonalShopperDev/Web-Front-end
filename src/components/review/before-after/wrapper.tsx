@@ -2,10 +2,10 @@ import { ReactNode } from 'react'
 import styles from 'sass/components/review/before-after.module.scss'
 
 export default function Wrapper({
-  name,
+  which,
   children,
 } : {
-  name: string,
+  which: string,
   children: ReactNode
 }) {
   return (
@@ -13,7 +13,7 @@ export default function Wrapper({
       <div className={styles.inner}>
         {children}
       </div>
-      <div className={styles.which}>{name}</div>
+      <div className={styles.which}>{which}</div>
     </div>
   )
 }

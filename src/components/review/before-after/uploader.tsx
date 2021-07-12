@@ -40,7 +40,7 @@ export default function Uploader({
   })
 
   return (
-    <Wrapper name={name}>
+    <Wrapper which={name}>
       <label className={styles.addButton} htmlFor={`${name}-picker`}>
         <Icon src="add-gray.png" size={24} />
         <input
