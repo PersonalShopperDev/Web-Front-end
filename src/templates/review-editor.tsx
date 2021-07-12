@@ -4,18 +4,18 @@ import Preview from 'components/review/preview'
 import Satisfaction from 'components/review/satisfaction'
 import Submit from 'components/review/submit'
 import Textarea from 'components/review/textarea'
-// import Divider from 'widgets/divider'
+import Divider from 'widgets/divider'
 
 export default function ReviewEditor() {
   return (
     <>
       <Preview />
       <Satisfaction />
-      {/* <Divider /> */}
+      <Divider />
       <Textarea />
-      {/* <Divider /> */}
+      <Divider />
       <BeforeAfter />
-      {/* <Divider /> */}
+      <Divider />
       <AskPublic />
       <Submit onClick={() => {}} />
     </>

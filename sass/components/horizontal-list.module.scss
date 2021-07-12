@@ -4,7 +4,10 @@
     width: 100%;
     overflow-x: scroll;
     @include util.no-scroll();
-    @include util.no-drag();
+    &,
+    * {
+        @include util.no-drag();
+    }
 }
 
 .list {
