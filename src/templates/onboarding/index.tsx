@@ -20,7 +20,7 @@ export default function Onboarding() {
   const [indexNum, setIndexNum] = useState(6)
   const router = useRouter()
   const step3 = 3
-  console.log('render', stepIndex)
+
   const stepComponents = [<Step1 />,
     <Step2 />,
     <Step3

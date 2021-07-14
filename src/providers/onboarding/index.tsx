@@ -71,7 +71,6 @@ export default function OnboardingProvider({
   const [stylePicture, setStylePicture] = useState([])
   const informationRef = useRef<any>()
 
-  console.log(information, 'ㅋㅋ')
   const setData = (key: string, value: string | number | boolean,
     min?: boolean, max?: boolean) => {
     if (informationRef.current[key] === undefined && informationRef.current.userType === 'D') {
