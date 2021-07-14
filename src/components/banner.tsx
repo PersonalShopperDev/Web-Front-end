@@ -55,6 +55,10 @@ export default function Banner({ data }: { data: BannerData[] }) {
     }
   }, [])
 
+  if (!figureArray || figureArray?.length === 0) {
+    return <></>
+  }
+
   return (
     <section className={styles.container}>
       <section className={styles.carousel} ref={carouselRef}>
