@@ -3,6 +3,7 @@ import TopBar from 'src/components/onboarding/top-bar'
 import BottomBar from 'src/components/onboarding/bottom-bar'
 import { useOnboarding } from 'providers/onboarding'
 import { useRouter } from 'next/router'
+import { useAuth } from 'providers/auth'
 import styles from 'sass/templates/onboarding/step.module.scss'
 import Step1 from './steps/step1'
 import Step2 from './steps/step2'
@@ -12,6 +13,7 @@ import Step5 from './steps/step5'
 import Step6 from './steps/step6'
 
 export default function Onboarding() {
+  const { requestAccessToken } = useAuth()
   const { information, putOnboardingInfo } = useOnboarding()
   const [stepIndex, setStepIndex] = useState(1)
   const [nextStep, setNextStep] = useState(false)
@@ -40,6 +42,7 @@ export default function Onboarding() {
       }
     } else if (stepIndex === indexNum) {
       await putOnboardingInfo()
+      await requestAccessToken()
       router.push('/')
     }
   }
