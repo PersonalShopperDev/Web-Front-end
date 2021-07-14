@@ -5,7 +5,7 @@ import { useReviewEditor } from 'templates/review-editor'
 import Section from './section'
 
 export default function Satisfaction() {
-  const [rate, setRate] = useState(3)
+  const [rate, setRate] = useState(4)
 
   const { dataRef } = useReviewEditor()
 

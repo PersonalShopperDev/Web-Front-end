@@ -28,9 +28,9 @@ export default function StarRate({
         // eslint-disable-next-line react/no-array-index-key
         <div key={index} style={{ marginLeft: index > 0 ? gap : 0 }}>
           <Icon
-            src={rate >= index ? 'accent-star.png' : 'blank-star.png'}
+            src={rate >= index + 1 ? 'accent-star.png' : 'blank-star.png'}
             size={size}
-            onClick={setValue && (() => onClick(index))}
+            onClick={setValue && (() => onClick(index + 1))}
           />
         </div>
       ))}

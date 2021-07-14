@@ -4,6 +4,7 @@ import { GetServerSideProps } from 'next'
 import { ACCESS_TOKEN } from 'providers/auth'
 import SubProfileAppBar from 'components/app-bar/sub-profile'
 import Preview, { PreviewData } from 'components/review/preview'
+import { communicateWithContext } from 'lib/api'
 
 interface Props {
   id: number
@@ -22,40 +23,36 @@ export default function Page({ id, data } : Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  // const token = context.req.cookies[ACCESS_TOKEN]
-  // if (!token) {
-  //   return {
-  //     redirect: {
-  //       destination: '/login',
-  //       permanent: false,
-  //     },
-  //   }
-  // }
+  const token = context.req.cookies[ACCESS_TOKEN]
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
 
   const { id } = context.params
 
-  // const res = await communicateWithContext({
-  //   context,
-  //   url: `/profile/${id}/coord`,
-  // })
+  const res = await communicateWithContext({
+    context,
+    url: `/review/${id}/coord`,
+  })
 
-  // console.log(res)
+  if (res.status !== 200) {
+    if (context.res) {
+      context.res.statusCode = res.status
+    }
+    throw new Error(`Api server responsed ${res.status} :: /profile/${id}/coord`)
+  }
 
-  // if (res.status !== 200) {
-  //   return {
-  //     redirect: {
-  //       destination: '/500',
-  //       permanent: false,
-  //     },
-  //   }
-  // }
-
-  // const data = await res.json()
+  const data = await res.json()
 
   return {
     props: {
       id,
-      // data,
+      data,
     },
   }
 }
