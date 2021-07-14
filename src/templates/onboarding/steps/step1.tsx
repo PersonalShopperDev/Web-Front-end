@@ -8,7 +8,7 @@ export default function Step1() {
     setData('userType', item)
   }
   return (
-    <section>
+    <section className={styles.section}>
       <h1 className={styles.title}>STEP 1</h1>
       <h2 className={styles.content}>
         반가워요!
@@ -21,9 +21,7 @@ export default function Step1() {
           onClick={() => onClick('D')}
           className={information !== null && information.userType === 'D' ? styles.selectedStep1Box : styles.notSelectedStep1Box}
         >
-          <div className={styles.image1}>
-            <img src="/icons/step1top.png" alt="user" className={styles.image} />
-          </div>
+          <img src="/icons/step1top.png" alt="user" className={styles.image1} />
           <span className={styles.firstLine}>코디를 받고 싶어요~!</span>
           <span>스타일리스트에게 코디를 받습니다.</span>
         </button>
@@ -32,9 +30,7 @@ export default function Step1() {
           className={information !== null && information.userType === 'S' ? styles.selectedStep1Box : styles.notSelectedStep1Box}
           onClick={() => onClick('S')}
         >
-          <div className={styles.image2}>
-            <img src="/icons/step1bottom.png" alt="stylist" className={styles.image} />
-          </div>
+          <img src="/icons/step1Bottom.png" alt="stylist" className={styles.image2} />
           <span className={styles.firstLine}>코디를 해주고 싶어요~!</span>
           <span>사용자에게 코디를 해줍니다.</span>
         </button>
