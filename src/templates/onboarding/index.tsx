@@ -18,6 +18,7 @@ export default function Onboarding() {
   const [indexNum, setIndexNum] = useState(6)
   const router = useRouter()
   const step3 = 3
+  console.log('render', stepIndex)
   const stepComponents = [<Step1 />,
     <Step2 />,
     <Step3
@@ -31,7 +32,7 @@ export default function Onboarding() {
       setNextStep(!nextStep)
     }
   }
-  const onNextButtonClick = () => {
+  const onNextButtonClick = async () => {
     if (stepIndex < indexNum) {
       if (stepIndex === step3 && !nextStep && information.userType === 'D' && information.gender === 'F') {
         setNextStep(true)
@@ -39,7 +40,7 @@ export default function Onboarding() {
         setStepIndex(+stepIndex + 1)
       }
     } else if (stepIndex === indexNum) {
-      putOnboardingInfo()
+      await putOnboardingInfo()
       router.push('/')
     }
   }
@@ -50,6 +51,7 @@ export default function Onboarding() {
       setIndexNum(6)
     }
   }, [information])
+
   return (
     <>
       <div className={styles.container}>
