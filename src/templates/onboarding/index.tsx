@@ -44,7 +44,7 @@ export default function Onboarding() {
     } else if (stepIndex === indexNum) {
       await putOnboardingInfo()
       await requestAccessToken()
-      router.push('/')
+      router.push('/profile')
     }
   }
   useEffect(() => {
