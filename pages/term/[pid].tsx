@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (!token) {
     return {
       redirect: {
-        destination: '/500',
+        destination: '/',
         permanent: false,
       },
     }

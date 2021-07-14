@@ -43,12 +43,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   })
 
   if (res.status !== 200) {
-    return {
-      redirect: {
-        destination: '/500',
-        permanent: false,
-      },
+    if (context.res) {
+      context.res.statusCode = res.status
     }
+    throw new Error(`Api server responsed ${res.status} :: /profile/:id`)
   }
 
   const data = await res.json()
