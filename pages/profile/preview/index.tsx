@@ -34,6 +34,14 @@ export default function Page({ data } : any) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const token = context.req.cookies[ACCESS_TOKEN]
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
 
   const { userId } = parseJwt(token)
 
