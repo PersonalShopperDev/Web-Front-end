@@ -1,9 +1,9 @@
 import AskPublic from 'components/review/ask-public'
 import BeforeAfter from 'components/review/before-after'
-import Preview from 'components/review/preview'
 import Satisfaction from 'components/review/satisfaction'
 import Submit from 'components/review/submit'
 import Textarea from 'components/review/textarea'
+import communicate from 'lib/api'
 import { useAlert } from 'providers/dialog/alert/inner'
 import {
   createContext, useContext, useRef, MutableRefObject,
@@ -28,7 +28,11 @@ const ReviewEditorContext = createContext<ReviewEditorContextProps>(null)
 
 export const useReviewEditor = () => useContext(ReviewEditorContext)
 
-export default function ReviewEditor() {
+export default function ReviewEditor({
+  id,
+} : {
+  id: number
+}) {
   const dataRef = useRef<Data>({
     statisfaction: undefined,
     textarea: null,
@@ -51,28 +55,35 @@ export default function ReviewEditor() {
       return
     }
 
-    console.log(dataRef.current)
-
     const formData = new FormData()
 
-    // await communicate({
-    //   url: '/profile/img',
-    //   options: {
-    //     body: formData,
-    //   },
-    //   method: 'POST',
-    // }).then((res) => {
-    //   if (!res.ok) {
-    //     throw new Error()
-    //   }
-    // }).catch(async () => {
-    //   await createAlert({ text: '에러가 발생했습니다' })
-    // })
+    formData.append('rating', dataRef.current.statisfaction.toString())
+    formData.append('content', dataRef.current.textarea)
+    formData.append('publicBody', dataRef.current.public === true ? 'true' : 'false')
+    dataRef.current.beforeAfter.beforeImages.forEach((image) => {
+      formData.append('beforeImg', image)
+    })
+    dataRef.current.beforeAfter.afterImages.forEach((image) => {
+      formData.append('afterImg', image)
+    })
+
+    await communicate({
+      url: `/review/${id}`,
+      options: {
+        body: formData,
+      },
+      method: 'PUT',
+    }).then((res) => {
+      if (!res.ok) {
+        throw new Error()
+      }
+    }).catch(async () => {
+      await createAlert({ text: '에러가 발생했습니다' })
+    })
   }
 
   return (
     <ReviewEditorContext.Provider value={value}>
-      <Preview />
       <Satisfaction />
       <Divider />
       <Textarea />

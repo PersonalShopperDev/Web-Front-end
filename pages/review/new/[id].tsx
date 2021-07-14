@@ -3,13 +3,20 @@ import ReviewEditor from 'templates/review-editor'
 import { GetServerSideProps } from 'next'
 import { ACCESS_TOKEN } from 'providers/auth'
 import SubProfileAppBar from 'components/app-bar/sub-profile'
+import Preview, { PreviewData } from 'components/review/preview'
 
-export default function Page({ data } : any) {
+interface Props {
+  id: number
+  data: PreviewData
+}
+
+export default function Page({ id, data } : Props) {
   return (
     <Layout
       header={<SubProfileAppBar title="리뷰 작성" />}
     >
-      <ReviewEditor />
+      <Preview data={data} />
+      <ReviewEditor id={id} />
     </Layout>
   )
 }
@@ -25,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   //   }
   // }
 
-  // const { id } = context.params
+  const { id } = context.params
 
   // const res = await communicateWithContext({
   //   context,
@@ -47,6 +54,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
+      id,
       // data,
     },
   }

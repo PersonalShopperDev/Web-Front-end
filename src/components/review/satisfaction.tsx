@@ -15,7 +15,7 @@ export default function Satisfaction() {
 
   return (
     <Section
-      head="코디에 대한만족도"
+      head="코디에 대한 만족도"
     >
       <StarRate
         className={styles.container}
