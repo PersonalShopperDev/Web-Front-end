@@ -33,7 +33,7 @@ export default function Step1() {
           onClick={() => onClick('S')}
         >
           <div className={styles.image2}>
-            <img src="/icons/step1bottom.png" alt="stylist" className={styles.image} />
+            <img src="/icons/step1Bottom.png" alt="stylist" className={styles.image} />
           </div>
           <span className={styles.firstLine}>코디를 해주고 싶어요~!</span>
           <span>사용자에게 코디를 해줍니다.</span>

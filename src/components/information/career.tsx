@@ -17,18 +17,18 @@ export default function Career({
     <div className={isOnboarding ? styles.container : styles.infoContainer}>
       {careerLists.map((item, index) => (
         <div key={Math.random()}>
-          <div className={isOnboarding ? styles.careerListsContainer : styles.infoCareerLists}>
-            <button type="button" onClick={() => onClick(index)}>
+          <button className={isOnboarding ? styles.careerListsContainer : styles.infoCareerLists} type="button" onClick={() => onClick(index)}>
+            < >
               { information.career === index
                 ? <img src="/icons/selectedCheck.png" alt="selectedCheck" width="22" height="22" />
                 : <img src="/icons/check.png" alt="check" width="22" height="22" /> }
-            </button>
+            </>
             <span className={information.career === index
               ? styles.selectedText : null}
             >
               {item}
             </span>
-          </div>
+          </button>
         </div>
       ))}
     </div>
