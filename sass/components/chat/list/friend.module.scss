@@ -1,0 +1,55 @@
+@use '../../../lib/colors.scss' as colors;
+
+.container {
+    display: block;
+    width: 100%;
+    display: flex;
+    color: inherit;
+
+    & + & {
+       margin-top: 29px; 
+    }
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+.avatarWrapper {
+    margin-right: 16px;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    transform: translateY(-2px);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.name {
+    font-size: 16px;
+}
+
+.message {
+    margin-top: 2px;
+    color: #767474;
+    font-size: 13px;
+
+    &.active {
+        color: colors.$accent;
+        font-weight: bold;
+    }
+}
+
+.timestamp {
+    color: colors.$primary-300;
+    font-size: 10px;
+}

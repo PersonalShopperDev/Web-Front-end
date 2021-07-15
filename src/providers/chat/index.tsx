@@ -1,11 +1,14 @@
+import communicate from 'lib/api'
+import Room from 'lib/entity/room.entity'
 import { getCookie } from 'lib/util/cookie'
 import { ACCESS_TOKEN } from 'providers/auth'
 import {
-  ReactNode, useContext, createContext, useRef, useEffect,
+  useState, ReactNode, useContext, createContext, useRef, useEffect,
 } from 'react'
 import io, { Socket } from 'socket.io-client'
 
 interface ChatContextProps {
+  rooms: Room[]
   sendMessage: (id: number, message: string) => void
   sendEstimate: (id: number, message: string, price: number) => void
   sendCoord: (id: number, title: string, image: ArrayBuffer) => void
@@ -14,10 +17,12 @@ interface ChatContextProps {
 
 const ChatContext = createContext<ChatContextProps>(null)
 
-export const useChat = useContext(ChatContext)
+export const useChat = () => useContext(ChatContext)
 
 export default function ChatProvider({ children }: { children: ReactNode }) {
   const socketRef = useRef<Socket>()
+
+  const [rooms, setRooms] = useState<Room[]>([])
 
   const sendMessage = (id: number, message: string) => {
     socketRef.current.emit('sendMsg', { roomId: id, msg: message })
@@ -90,14 +95,31 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
     socketRef.current.on('receiveMsg', onReceiveMessage)
   }
 
+  const initializeRoom = async () => {
+    const res = await communicate({
+      url: '/chat',
+    })
+
+    if (res.status !== 200) {
+      return
+    }
+
+    const data = await res.json()
+
+    const result = data.map(({ roomId, users }) => new Room(roomId, users))
+    setRooms(result)
+  }
+
   useEffect(() => {
     connect()
     attachEventListener()
 
+    initializeRoom()
     return disconnect
   }, [])
 
   const value = {
+    rooms,
     sendMessage,
     sendEstimate,
     sendCoord,

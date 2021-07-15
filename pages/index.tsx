@@ -3,7 +3,7 @@ import LoginBanner from 'components/login-banner'
 import Banner, { BannerData } from 'components/banner'
 import BeforeAfter, { BeforeAfterData } from 'components/before-after'
 import StylistGridView, { SupplierData, DemanderData } from 'components/stylist-grid-view'
-import StylistHomeAppBar from 'components/app-bar/stylist-home'
+import HomeAppBar from 'components/app-bar/home'
 import { GetServerSideProps } from 'next'
 import { communicateWithContext } from 'lib/api'
 import parseJwt from 'lib/util/jwt'
@@ -31,7 +31,7 @@ export default function Page({ data } : Props) {
   return (
     <Layout
       header={(
-        <StylistHomeAppBar title={!userType ? '퍼스널쇼퍼' : '스타일매칭'} />
+        <HomeAppBar title={!userType ? '퍼스널쇼퍼' : '스타일매칭'} />
       )}
     >
       { !userType ? <LoginBanner /> : <Banner data={banners} />}
