@@ -5,7 +5,8 @@ import { SupplierData, DemanderData } from 'components/stylist-grid-view'
 import { GetServerSideProps } from 'next'
 import parseJwt from 'lib/util/jwt'
 import { ACCESS_TOKEN, UserType } from 'providers/auth'
-import ChatBanner from 'components/chat-banner'
+import ChatBanner from 'components/chat/banner'
+import ChatList from 'components/chat/list'
 
 interface Props {
   data: Data
@@ -22,33 +23,34 @@ interface Data {
 export default function Page({ data } : Props) {
   return (
     <Layout>
-      <ChatBanner src="none" />
+      <ChatBanner src="/images/sample-avatar.jpg" />
+      <ChatList />
     </Layout>
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const token = context.req.cookies[ACCESS_TOKEN]
+  // const token = context.req.cookies[ACCESS_TOKEN]
 
-  if (!token) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    }
-  }
+  // if (!token) {
+  //   return {
+  //     redirect: {
+  //       destination: '/login',
+  //       permanent: false,
+  //     },
+  //   }
+  // }
 
-  const { userType } = parseJwt(token)
+  // const { userType } = parseJwt(token)
 
-  if (userType === 'N') {
-    return {
-      redirect: {
-        destination: '/onboarding',
-        permanent: false,
-      },
-    }
-  }
+  // if (userType === 'N') {
+  //   return {
+  //     redirect: {
+  //       destination: '/onboarding',
+  //       permanent: false,
+  //     },
+  //   }
+  // }
 
   return {
     props: {},
