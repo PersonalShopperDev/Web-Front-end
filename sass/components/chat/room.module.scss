@@ -1,0 +1,41 @@
+@use '../../lib/colors' as colors;
+
+.container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.inner {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 21px 21px 21px;
+    background-color: #F7F7F7;
+}
+
+.form {
+    border-top: 1px solid colors.$primary-200;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.imagePicker {
+    padding: 21px;
+}
+
+.input {
+    width: 100%;
+    resize: none;
+    font-size: 13px;
+}
+
+.submit {
+    padding: 19px;
+    font-size: 14px;
+    color: #969696;
+}

@@ -1,18 +1,15 @@
 import communicate from 'lib/api'
-import Room from 'lib/entity/room.entity'
+import useForceUpdate from 'lib/hooks/force-update'
+import Room from 'lib/model/room'
 import { getCookie } from 'lib/util/cookie'
 import { ACCESS_TOKEN } from 'providers/auth'
 import {
-  useState, ReactNode, useContext, createContext, useRef, useEffect,
+  ReactNode, useContext, createContext, useRef, useEffect,
 } from 'react'
 import io, { Socket } from 'socket.io-client'
 
 interface ChatContextProps {
   rooms: Room[]
-  sendMessage: (id: number, message: string) => void
-  sendEstimate: (id: number, message: string, price: number) => void
-  sendCoord: (id: number, title: string, image: ArrayBuffer) => void
-  responseEstimate: (id: number, value: boolean) => void
 }
 
 const ChatContext = createContext<ChatContextProps>(null)
@@ -22,27 +19,9 @@ export const useChat = () => useContext(ChatContext)
 export default function ChatProvider({ children }: { children: ReactNode }) {
   const socketRef = useRef<Socket>()
 
-  const [rooms, setRooms] = useState<Room[]>([])
+  const roomsRef = useRef<Room[]>([])
 
-  const sendMessage = (id: number, message: string) => {
-    socketRef.current.emit('sendMsg', { roomId: id, msg: message })
-  }
-
-  const sendEstimate = (id: number, message: string, price: number) => {
-    socketRef.current.emit('sendEstimate', { roomId: id, msg: message, price })
-  }
-
-  const sendCoord = (id: number, title: string, image: ArrayBuffer) => {
-    socketRef.current.emit('sendCoord', {
-      roomId: id,
-      coordTitle: title,
-      coordImg: image,
-    })
-  }
-
-  const responseEstimate = (id: number, value: boolean) => {
-    socketRef.current.emit('responseEstimate', { roomId: id, value })
-  }
+  const update = useForceUpdate()
 
   const connect = () => {
     socketRef.current = io(process.env.SOCKET_URL, {
@@ -53,37 +32,34 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
     })
   }
 
-  const onPayment = ({
-    roomId: id,
-    value,
-  }: {
+  const onPayment = ({ roomId, ...props } : {
     roomId: number
     value: boolean
-  }) => {}
+  }) => {
+    roomsRef.current.find((room) => room.id === roomId).onPayment(props)
+    update()
+  }
 
-  const onResponseEstimate = ({
-    roomId: id,
-    value,
-  }: {
+  const onResponseEstimate = ({ roomId, ...props } : {
     roomId: number
     value: boolean
-  }) => {}
+  }) => {
+    roomsRef.current.find((room) => room.id === roomId).onResponseEstimate(props)
+    update()
+  }
 
-  const onReceiveMessage = ({
-    roomId: id,
-    type,
-    msg: message,
-    price,
-    coordTitle: title,
-    coordImg: img,
-  }: {
+  const onReceive = ({ roomId, ...props } : {
     roomId: number
     type: number
     msg: string
     price: number
     coordTitle: string
     coordImg: ArrayBuffer
-  }) => {}
+  }) => {
+    console.log('received something')
+    roomsRef.current.find((room) => room.id === roomId).onReceive(props)
+    update()
+  }
 
   const disconnect = () => {
     socketRef.current.disconnect()
@@ -92,7 +68,7 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
   const attachEventListener = () => {
     socketRef.current.on('payment', onPayment)
     socketRef.current.on('responseEstimate', onResponseEstimate)
-    socketRef.current.on('receiveMsg', onReceiveMessage)
+    socketRef.current.on('receiveMsg', onReceive)
   }
 
   const initializeRoom = async () => {
@@ -106,8 +82,8 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
 
     const data = await res.json()
 
-    const result = data.map(({ roomId, users }) => new Room(roomId, users))
-    setRooms(result)
+    roomsRef.current = data.map(({ roomId, users }) => new Room(roomId, users, socketRef, update))
+    update()
   }
 
   useEffect(() => {
@@ -119,11 +95,7 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const value = {
-    rooms,
-    sendMessage,
-    sendEstimate,
-    sendCoord,
-    responseEstimate,
+    rooms: roomsRef.current,
   }
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>
