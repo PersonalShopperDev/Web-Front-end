@@ -13,13 +13,17 @@ export default function Search() {
   const { information } = useOnboarding()
   const styleClick = (style: number) => {
     if (clickedStyleList.includes(style)) {
-      if (isOverLength) setIsOverLength(false)
-      setClickedStyleList(clickedStyleList.filter((item) => item !== style))
-    } else if (clickedStyleList.length < 3) {
-      setClickedStyleList([...clickedStyleList, style])
-    } else {
-      setIsOverLength(true)
+      if (isOverLength) {
+        setIsOverLength(false)
+      }
+      setClickedStyleList((list) => list.filter((item) => item !== style))
+      return
     }
+    if (clickedStyleList.length < 3) {
+      setClickedStyleList((list) => [...list, style])
+      return
+    }
+    setIsOverLength(true)
   }
   const fetchStylistData = async (gender) => {
     const res = await communicate({ url: `/style?${gender}=${true}` })

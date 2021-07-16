@@ -15,25 +15,25 @@ export default function StyleList({
 }: {
   isSearch?: boolean
   isOverLength: boolean
-  styleLists: Array<StyleLists>
+  styleLists: StyleLists[]
   clickedStyleList: Array<number>
   styleClick: (value: number) => void
 }) {
   return (
     <>
       <div className={styles.styleContainer}>
-        { styleLists.map((item) => (
+        { styleLists.map(({ id, value }) => (
           <button
             type="button"
-            onClick={() => styleClick(item.id)}
-            className={clickedStyleList.includes(item.id)
+            onClick={() => styleClick(id)}
+            className={clickedStyleList.includes(id)
               ? styles.selectedBox : styles.notSelectedBox}
-            key={item.value}
+            key={value}
           >
-            <span className={clickedStyleList.includes(item.id)
+            <span className={clickedStyleList.includes(id)
               ? styles.selectedText : styles.notSelectedText}
             >
-              {item.value}
+              {value}
             </span>
           </button>
         ))}
