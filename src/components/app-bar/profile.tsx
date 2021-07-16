@@ -21,13 +21,6 @@ export default function ProfileAppBar() {
   return (
     <AppBar
       title="프로필"
-      actions={[
-        <Link key="preview" href={previewLink}>
-          <a className={styles.preview} href={previewLink}>
-            미리보기
-          </a>
-        </Link>,
-      ]}
     />
   )
 }
