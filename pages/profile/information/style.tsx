@@ -2,13 +2,30 @@ import Layout from 'layouts/default'
 import StyleChange from 'templates/information/style-change'
 import OnboardingProvider from 'providers/onboarding'
 import { GetServerSideProps } from 'next'
-import { ACCESS_TOKEN } from 'providers/auth'
+import { ACCESS_TOKEN, useAuth, UserType } from 'providers/auth'
+import StyleLists from 'templates/information/style-list'
+import StyleListAppBar from 'components/app-bar/style-list'
+import parseJwt from 'lib/util/jwt'
 
-export default function Page() {
+interface Props {
+  data: Data
+}
+
+interface Data {
+  userType: UserType
+}
+
+export default function Page({ data } : Props) {
+  const { user } = useAuth()
+  const { userType } = user || data
+
   return (
-    <Layout>
+    <Layout
+      header={userType !== 'D' && <StyleListAppBar />}
+    >
       <OnboardingProvider>
-        <StyleChange />
+        {userType === 'D'
+          ? <StyleChange /> : <StyleLists /> }
       </OnboardingProvider>
     </Layout>
   )
@@ -24,8 +41,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     }
   }
-
+  const { userType } = parseJwt(token)
   return {
-    props: {},
+    props: {
+      data: {
+        userType,
+      },
+    },
   }
 }
