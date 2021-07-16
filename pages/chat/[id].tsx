@@ -19,11 +19,17 @@ export default function Page({ id } : Props) {
 
   const roomId = parseInt(id, 10)
 
+  const room = rooms.find((element) => element.id === roomId)
+
+  if (!room) {
+    return <></>
+  }
+
   return (
     <Layout
       header={<RoomAppBar title="아무이름" />}
     >
-      <ChatRoom room={rooms.find((room) => room.id === roomId)} />
+      <ChatRoom room={room} />
     </Layout>
   )
 }

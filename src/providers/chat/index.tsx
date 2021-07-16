@@ -50,13 +50,12 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
 
   const onReceive = ({ roomId, ...props } : {
     roomId: number
-    type: number
+    chatType: number
     msg: string
     price: number
     coordTitle: string
     coordImg: ArrayBuffer
   }) => {
-    console.log('received something')
     roomsRef.current.find((room) => room.id === roomId).onReceive(props)
     update()
   }

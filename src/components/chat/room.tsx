@@ -2,7 +2,9 @@ import Message from 'lib/model/entity/message.entity'
 import MyMessage from 'lib/model/entity/my-message.entity'
 import YourMessage from 'lib/model/entity/your-message.entity'
 import Room from 'lib/model/room'
-import { ChangeEvent, FormEvent, useRef } from 'react'
+import {
+  useEffect, ChangeEvent, FormEvent, useRef,
+} from 'react'
 import styles from 'sass/components/chat/room.module.scss'
 import Icon from 'widgets/icon'
 import MySpeachBubble from './speach-bubble/my'
@@ -13,9 +15,7 @@ export default function ChatRoom({
 } : {
   room: Room
 }) {
-  if (!room) {
-    return <></>
-  }
+  const innerRef = useRef<HTMLDivElement>()
 
   const { messages } = room
 
@@ -27,6 +27,7 @@ export default function ChatRoom({
       return
     }
     room.sendMessage(inputRef.current.value)
+    inputRef.current.value = ''
   }
 
   const upload = (e: ChangeEvent<HTMLInputElement>) => {
@@ -44,10 +45,19 @@ export default function ChatRoom({
     return null
   }
 
+  useEffect(() => {
+    innerRef.current.scrollTo({
+      behavior: 'smooth',
+      top: innerRef.current.scrollHeight,
+    })
+  }, [messages.length])
+
   return (
     <section className={styles.container}>
-      <section className={styles.inner}>
-        {messages?.map(getMessage)}
+      <section ref={innerRef} className={styles.inner}>
+        <div className={styles.list}>
+          {messages?.map(getMessage)}
+        </div>
       </section>
       <form className={styles.form} onSubmit={onSubmit}>
         <label className={styles.imagePicker} htmlFor="image-picker">

@@ -66,13 +66,13 @@ export default class Room {
   }
 
   public onReceive({
-    type,
+    chatType: type,
     msg: message,
     price,
     coordTitle: title,
     coordImg: img,
   }: {
-    type: number
+    chatType: number
     msg: string
     price: number
     coordTitle: string
