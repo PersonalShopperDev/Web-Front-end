@@ -78,11 +78,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   return {
-    props: {
-      data: {
-        userType,
-        ...data,
-      },
+    redirect: {
+      destination: '/profile',
+      permanent: false,
     },
   }
 }
