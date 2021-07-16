@@ -8,7 +8,7 @@ export default function Career({
   isOnboarding?: boolean
 }) {
   const { information, setData, setEdit } = useOnboarding()
-  const careerLists = ['일반인', '스타일리스트(패션경력자)', '인플루언서(팔로우 만명이상)']
+  const careerLists = ['일반인', '스타일리스트(패션경력자)', '인플루언서(팔로우 천명이상)']
   const onClick = (index) => {
     setData('career', index)
     if (!isOnboarding) setEdit('career')
