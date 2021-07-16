@@ -18,6 +18,7 @@ import { ACCESS_TOKEN, useAuth, User } from 'providers/auth'
 import CodyStyle from 'components/profile/cody-style'
 import { useEffect } from 'react'
 import parseJwt from 'lib/util/jwt'
+import TemporarySubmit from 'components/profile/temporary-submit'
 
 interface Props {
   userId: string
@@ -83,6 +84,7 @@ export default function Page({ userId, data } : Props) {
           <Represent data={{ coord }} />
           <Divider />
           <LookBook data={lookbook} userId={userId} />
+          <TemporarySubmit />
         </>
       )}
     </Layout>
