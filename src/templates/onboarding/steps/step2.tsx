@@ -26,7 +26,7 @@ export default function Step2() {
     title: '남자',
   }]
   return (
-    <section>
+    <section className={styles.section}>
       <h1 className={styles.title}>STEP 2</h1>
       <h2 className={styles.content}>당신의 성별을 알려주세요</h2>
       <div className={styles.container}>

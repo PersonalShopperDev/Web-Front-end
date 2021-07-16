@@ -1,5 +1,16 @@
 @use '../../lib/colors.scss' as colors;
 
+.section { 
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 120px;
+}
+
+.section::-webkit-scrollbar {
+    display: none;
+}
+
 .title {
     font-weight: 700;
     font-size: 18px;

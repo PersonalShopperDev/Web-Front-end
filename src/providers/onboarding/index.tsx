@@ -2,6 +2,7 @@ import communicate from 'lib/api'
 import React, {
   createContext, useContext, useEffect, useState, Dispatch, SetStateAction, useRef,
 } from 'react'
+import { useAlert } from 'providers/dialog/alert/inner'
 
 interface Information {
     userType: 'N' | 'D' | 'S' | 'W'
@@ -42,7 +43,7 @@ interface Information {
       min: number
       max: number
     }
-    styles: Array<any>
+    styles?: Array<any>
     supplyMale?: boolean
     supplyFemale?: boolean
     career?: number
@@ -70,8 +71,26 @@ export default function OnboardingProvider({
   const [information, setInformation] = useState<Information>(null)
   const [stylePicture, setStylePicture] = useState([])
   const informationRef = useRef<any>()
+  const { createAlert } = useAlert()
+
   const setData = (key: string, value: string | number | boolean,
     min?: boolean, max?: boolean) => {
+    if (informationRef.current[key] === undefined && informationRef.current.userType === 'D') {
+      if (informationRef.current.gender === 'M') {
+        informationRef.current.topPrice = { max: 100000, min: 5000 }
+        informationRef.current.bottomPrice = { max: 70000, min: 5000 }
+        informationRef.current.shoesPrice = { max: 100000, min: 10000 }
+        informationRef.current.bagPrice = { max: 100000, min: 10000 }
+        informationRef.current.hatPrice = { max: 50000, min: 5000 }
+      } else {
+        informationRef.current.topPrice = { max: 100000, min: 5000 }
+        informationRef.current.bottomPrice = { max: 70000, min: 5000 }
+        informationRef.current.dressPrice = { max: 100000, min: 5000 }
+        informationRef.current.shoesPrice = { max: 100000, min: 10000 }
+        informationRef.current.bagPrice = { max: 100000, min: 10000 }
+        informationRef.current.accessoryPrice = { max: 50000, min: 5000 }
+      }
+    }
     if (max) {
       setInformation((prevInfo) => ({ ...prevInfo, [key]: { ...prevInfo[key], max: value } }))
       informationRef.current[key].max = value
@@ -126,22 +145,26 @@ export default function OnboardingProvider({
       setInformation(data)
     }
   }
-  const putOnboardingInfo = () => {
+  const putOnboardingInfo = async () => {
     const payload = { list: stylePicture }
-    communicate({ url: '/onboard', payload: information, method: 'PUT' })
-    if (information.userType === 'D') {
-      communicate({ url: '/style/img', payload, method: 'PUT' })
-    }
+    await communicate({ url: '/onboard', payload: information, method: 'PUT' }).then(async (res) => {
+      if (!res.ok) {
+        throw new Error()
+      }
+      if (information.userType === 'D') {
+        await communicate({ url: '/style/img', payload, method: 'PUT' })
+      }
+      await createAlert({ text: '등록완료! 정식 오픈날은 7.29일입니다' })
+    })
   }
 
   useEffect(() => {
     fetchInformationData()
   }, [])
-
   useEffect(() => {
     informationRef.current = information
+    if (informationRef.current === null) informationRef.current = { userType: 'N' }
   }, [information])
-
   const value = {
     information,
     stylePicture,

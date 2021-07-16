@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import TopBar from 'src/components/onboarding/top-bar'
 import BottomBar from 'src/components/onboarding/bottom-bar'
 import { useOnboarding } from 'providers/onboarding'
+import { useRouter } from 'next/router'
 import styles from 'sass/templates/onboarding/step.module.scss'
 import Step1 from './steps/step1'
 import Step2 from './steps/step2'
@@ -14,9 +15,10 @@ export default function Onboarding() {
   const { information, putOnboardingInfo } = useOnboarding()
   const [stepIndex, setStepIndex] = useState(1)
   const [nextStep, setNextStep] = useState(false)
-
   const [indexNum, setIndexNum] = useState(6)
+  const router = useRouter()
   const step3 = 3
+  console.log('render', stepIndex)
   const stepComponents = [<Step1 />,
     <Step2 />,
     <Step3
@@ -30,7 +32,7 @@ export default function Onboarding() {
       setNextStep(!nextStep)
     }
   }
-  const onNextButtonClick = () => {
+  const onNextButtonClick = async () => {
     if (stepIndex < indexNum) {
       if (stepIndex === step3 && !nextStep && information.userType === 'D' && information.gender === 'F') {
         setNextStep(true)
@@ -38,7 +40,8 @@ export default function Onboarding() {
         setStepIndex(+stepIndex + 1)
       }
     } else if (stepIndex === indexNum) {
-      putOnboardingInfo()
+      await putOnboardingInfo()
+      router.push('/')
     }
   }
   useEffect(() => {
@@ -48,6 +51,7 @@ export default function Onboarding() {
       setIndexNum(6)
     }
   }, [information])
+
   return (
     <>
       <div className={styles.container}>
