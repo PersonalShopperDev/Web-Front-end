@@ -13,7 +13,7 @@ export default function SupplyStep3() {
   return (
     <section>
       <h1 className={styles.title}>STEP 3</h1>
-      <h2 className={styles.content}>어떤 성별에게 코디할건가요?</h2>
+      <h2 className={styles.content}>누구에게 코디제안이 가능하신가요?</h2>
       <button type="button" onClick={onClickAll} className={styles.selectButton}>
         <span className={styles.text}>모두선택가능</span>
       </button>

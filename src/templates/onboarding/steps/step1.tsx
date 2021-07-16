@@ -32,7 +32,7 @@ export default function Step1() {
         >
           <img src="/icons/step1Bottom.png" alt="stylist" className={styles.image2} />
           <span className={styles.firstLine}>코디를 해주고 싶어요~!</span>
-          <span>사용자에게 코디를 해줍니다.</span>
+          <span>쇼퍼에게 코디를 제안합니다.</span>
         </button>
       </div>
     </section>
