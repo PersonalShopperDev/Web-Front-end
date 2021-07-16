@@ -1,16 +1,25 @@
 import communicate from 'lib/api'
-import { useAuth } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
-import { ChangeEvent } from 'react'
+import { ChangeEvent, useState } from 'react'
 import styles from 'sass/components/profile/look-book.module.scss'
 import ProfileImagePicker from './image-picker'
 import Section from './section'
 
-export default function LookBook() {
-  const images = ['/images/sample-avatar.jpg', '/images/sample-avatar.jpg', '/images/sample-avatar.jpg', '/images/sample-avatar.jpg', '/images/sample-avatar.jpg', '/images/sample-avatar.jpg']
+export interface LookBookData {
+  list: {
+    id: number
+    img: string
+  }[]
+}
 
-  const { fetchUser } = useAuth()
+export default function LookBook({ userId, data } : { userId: string, data: LookBookData}) {
   const { createAlert } = useAlert()
+
+  if (!data) {
+    return <></>
+  }
+
+  const [list, setList] = useState(data.list)
 
   const upload = async (e : ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files[0]) {
@@ -19,7 +28,6 @@ export default function LookBook() {
 
     const formData = new FormData()
     formData.append('img', e.target.files[0])
-    formData.append('represent', 'false')
 
     await communicate({
       url: '/profile/lookbook',
@@ -27,36 +35,49 @@ export default function LookBook() {
         body: formData,
       },
       method: 'POST',
-    }).then((res) => {
-      if (!res.ok) {
-        throw new Error()
-      }
-      fetchUser()
-    }).catch(async () => {
-      await createAlert({ text: '에러가 발생했습니다' })
     })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error()
+        }
+        return communicate({
+          url: `/profile/${userId}/lookbook`,
+        })
+      })
+      .then((res) => {
+        if (res.status !== 200) {
+          throw new Error()
+        }
+        return res.json()
+      })
+      .then((updatedData) => setList(updatedData.list))
+      .catch(() => {
+        createAlert({ text: '에러가 발생했습니다' })
+      })
   }
 
   return (
     <Section
-      head="대표 코디"
+      head="코디룩북"
       action={(
         <ProfileImagePicker
-          id="represents-picker"
+          id="lookbook-picker"
           upload={upload}
         />
       )}
     >
+      {list?.length > 0 && (
       <section className={styles.container}>
-        {images.map((value) => (
+        {list.map(({ id, img }) => (
           <img
-            key={Math.random()}
+            key={id}
             className={styles.figure}
-            src={value}
+            src={img}
             alt=""
           />
         ))}
       </section>
+      )}
     </Section>
   )
 }

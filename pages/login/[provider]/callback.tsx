@@ -1,7 +1,7 @@
 import { useRouter } from 'next/dist/client/router'
 import { useEffect } from 'react'
 import Layout from 'layouts/default'
-import { ACCESS_TOKEN, useAuth } from 'providers/auth'
+import { useAuth } from 'providers/auth'
 import { processToken as processNaverToken } from 'providers/auth/naver'
 import { GetServerSideProps } from 'next'
 import providers from 'lib/config/provider'
@@ -44,17 +44,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (!providers.includes(provider as string)) {
     return {
       notFound: true,
-    }
-  }
-
-  const token = context.req.cookies[ACCESS_TOKEN]
-
-  if (token) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
     }
   }
 

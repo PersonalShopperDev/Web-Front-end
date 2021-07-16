@@ -33,6 +33,7 @@ interface AuthProps {
   fetchUser: () => Promise<boolean>
   authenticate: (provider: string, token: string) => Promise<void>
   signOut: (redirect?: string) => Promise<void>
+  requestAccessToken: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthProps>(null)
@@ -65,7 +66,7 @@ export default function AuthProvider({
     })
 
     if (res.status !== 200) {
-      onFail()
+      onFail('/login/error')
       return
     }
 
@@ -75,12 +76,12 @@ export default function AuthProvider({
 
   const isValidToken = (token : string) : boolean => token !== null && typeof token !== 'undefined' && token !== 'undefined'
 
-  const silentRefresh = async () : Promise<void> => {
+  const requestAccessToken = async () : Promise<void> => {
     const refreshToken = getCookie(REFRESH_TOKEN)
 
     if (!isValidToken(refreshToken)) {
       if (user) {
-        signOut()
+        await signOut()
       }
       return
     }
@@ -95,12 +96,20 @@ export default function AuthProvider({
       method: 'POST',
     })
 
-    if (res.status === 200) {
-      onResponse(res)
+    if (res.status !== 200) {
+      await onFail()
       return
     }
 
-    onFail()
+    await onResponse(res)
+  }
+
+  const onResponse = async (res: Response) : Promise<void> => {
+    const { accessToken, refreshToken } = await res.json()
+    setAccessToken(accessToken)
+    setRefreshToken(refreshToken)
+    await fetchUser()
+    setTimeout(requestAccessToken, silentRefreshInterval)
   }
 
   const setAccessToken = (token: string) => {
@@ -113,14 +122,6 @@ export default function AuthProvider({
     if (token) {
       setCookie(REFRESH_TOKEN, token, refreshTokenExpiration)
     }
-  }
-
-  const onResponse = async (res: Response) : Promise<void> => {
-    const { accessToken, refreshToken } = await res.json()
-    setAccessToken(accessToken)
-    setRefreshToken(refreshToken)
-    fetchUser()
-    setTimeout(silentRefresh, silentRefreshInterval)
   }
 
   const fetchUser = async () : Promise<boolean> => {
@@ -136,8 +137,10 @@ export default function AuthProvider({
     return false
   }
 
-  const onFail = () : void => {
-    router.push('/login/error')
+  const onFail = async (redirect?: string) : Promise<void> => {
+    if (redirect) {
+      router.push(redirect)
+    }
   }
 
   const signOut = async (redirect?: string) : Promise<void> => {
@@ -152,7 +155,7 @@ export default function AuthProvider({
   }
 
   useEffect(() => {
-    silentRefresh()
+    requestAccessToken()
   }, [])
 
   const value = {
@@ -160,6 +163,7 @@ export default function AuthProvider({
     fetchUser,
     authenticate,
     signOut,
+    requestAccessToken,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

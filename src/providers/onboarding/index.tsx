@@ -56,7 +56,7 @@ interface OnboardingProps {
         min?: boolean, max?: boolean) => void
     setEdit: (key: string) => void
     setStylePicture: Dispatch<SetStateAction<any>>
-    putOnboardingInfo: () => void
+    putOnboardingInfo: () => Promise<void>
 }
 
 const OnboardingContext = createContext<OnboardingProps>(null)
