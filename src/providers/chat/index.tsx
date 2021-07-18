@@ -52,6 +52,7 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
     roomId: number
     chatType: number
     msg: string
+    chatTime: Date
     price: number
     coordTitle: string
     coordImg: ArrayBuffer

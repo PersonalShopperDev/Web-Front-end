@@ -34,11 +34,13 @@ export default class Room {
     this.update()
   }
 
-  public sendEstimate(message: string, price: number) {
+  public sendEstimate(message: string, price: number, account: string, bank: string) {
     this.socketRef.current.emit('sendEstimate', {
       roomId: this.id,
       msg: message,
       price,
+      account,
+      bank,
     })
     this.update()
   }
@@ -71,15 +73,17 @@ export default class Room {
     price,
     coordTitle: title,
     coordImg: img,
+    chatTime: timestamp,
   }: {
     chatType: number
     msg: string
     price: number
     coordTitle: string
     coordImg: ArrayBuffer
+    chatTime: Date,
   }) {
     if (type === 0) {
-      this.messages.push(new YourMessage(message, new Date().toUTCString()))
+      this.messages.push(new YourMessage(message, timestamp.toISOString()))
     }
     this.update()
   }
