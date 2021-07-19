@@ -1,5 +1,6 @@
 import communicate from 'lib/api'
 import ERROR_MESSAGE from 'lib/constants/error'
+import resizeImageFile from 'lib/util/image'
 import { useAuth } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
 import { ChangeEvent } from 'react'
@@ -25,8 +26,10 @@ export default function Represent({ data }: { data: RepresentData }) {
       return
     }
 
+    const file = await resizeImageFile(e.target.files[0])
+
     const formData = new FormData()
-    formData.append('img', e.target.files[0])
+    formData.append('img', file)
     formData.append('represent', 'true')
 
     await communicate({
