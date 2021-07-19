@@ -74,12 +74,13 @@ export default function LookBook({ userId, data } : { userId: string, data: Look
       {list?.length > 0 && (
       <section className={styles.container}>
         {list.map(({ id, img }) => (
-          <img
-            key={id}
-            className={styles.figure}
-            src={img}
-            alt=""
-          />
+          <div key={id} className={styles.figure}>
+            <img
+              className={styles.image}
+              src={img}
+              alt=""
+            />
+          </div>
         ))}
       </section>
       )}

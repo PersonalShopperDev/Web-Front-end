@@ -60,12 +60,16 @@ export default function Represent({ data }: { data: RepresentData }) {
       {(coord && coord.length > 0) && (
         <section className={styles.container}>
           {coord.map(({ id, img }) => (
-            <img
+            <div
               key={id}
               className={styles.figure}
-              src={img}
-              alt=""
-            />
+            >
+              <img
+                className={styles.image}
+                src={img}
+                alt=""
+              />
+            </div>
           ))}
         </section>
       )}
