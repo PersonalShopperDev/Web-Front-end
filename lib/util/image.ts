@@ -14,12 +14,12 @@ export default async function resizeImageFile(file: File): Promise<Blob> {
 
         if (width > height) {
           if (width > maxSize) {
-            width = maxSize
             height *= maxSize / width
+            width = maxSize
           }
         } else if (height > maxSize) {
-          height = maxSize
           width *= maxSize / height
+          height = maxSize
         }
 
         canvas.width = width
