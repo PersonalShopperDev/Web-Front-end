@@ -1,5 +1,6 @@
 import communicate from 'lib/api'
 import ERROR_MESSAGE from 'lib/constants/error'
+import resizeImageFile from 'lib/util/image'
 import { useAlert } from 'providers/dialog/alert/inner'
 import { ChangeEvent, useState } from 'react'
 import styles from 'sass/components/profile/look-book.module.scss'
@@ -27,8 +28,11 @@ export default function LookBook({ userId, data } : { userId: string, data: Look
       return
     }
 
+    const file = await resizeImageFile(e.target.files[0])
+
     const formData = new FormData()
-    formData.append('img', e.target.files[0])
+
+    formData.append('img', file)
 
     await communicate({
       url: '/profile/lookbook',
