@@ -6,6 +6,7 @@ import Icon from 'widgets/icon'
 import communicate from 'lib/api'
 import { useAuth } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
+import ERROR_MESSAGE from 'lib/constants/error'
 
 interface AvatarInputData {
   name: string
@@ -37,7 +38,7 @@ export default function AvatarInput({ data } : { data: AvatarInputData}) {
       }
       fetchUser()
     }).catch(async () => {
-      await createAlert({ text: '에러가 발생했습니다' })
+      await createAlert({ text: ERROR_MESSAGE })
     })
   }
 
