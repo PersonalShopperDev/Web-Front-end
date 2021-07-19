@@ -1,9 +1,12 @@
-import { useAuth } from 'providers/auth'
+import { useAuth, User } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
+import { useEffect, useRef } from 'react'
 import styles from 'sass/components/profile/temporary-submit.module.scss'
 
 export default function TemporarySubmit() {
   const { user } = useAuth()
+
+  const userRef = useRef<User>(user)
 
   const { createAlert } = useAlert()
 
@@ -19,7 +22,8 @@ export default function TemporarySubmit() {
   const validate = () => {
     const {
       coord, introduction, name, careerList, price,
-    } = user
+    } = userRef.current
+
     if (coord.length === 0
         || !introduction
         || !name
@@ -29,8 +33,13 @@ export default function TemporarySubmit() {
     ) {
       return false
     }
+
     return true
   }
+
+  useEffect(() => {
+    userRef.current = user
+  }, [user])
 
   return (
     <section className={styles.container}>
