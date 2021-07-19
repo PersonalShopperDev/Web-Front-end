@@ -1,0 +1,13 @@
+@use '../../lib/colors.scss' as colors;
+
+.container {
+    padding: 21px;
+}
+
+.button {
+    padding: 14px 0;
+    width: 100%;
+    border-radius: 5px;
+    color: white;
+    background-color: colors.$accent;
+}
