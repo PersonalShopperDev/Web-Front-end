@@ -7,9 +7,20 @@ export default function ChatList() {
 
   return (
     <section className={styles.container}>
-      {rooms?.map((room) => {
-        const { id } = room
-        return <Room key={id} id={id} img="/images/sample-avatar.jpg" name={`오진수${id}`} />
+      {rooms?.map(({
+        id, other, lastChat, lastChatTime,
+      }) => {
+        const { profileImg, name } = other
+        return (
+          <Room
+            key={id}
+            id={id}
+            img={profileImg}
+            name={name}
+            lastChat={lastChat}
+            lastChatTime={lastChatTime}
+          />
+        )
       })}
     </section>
   )

@@ -1,36 +1,68 @@
+/* eslint-disable no-underscore-dangle */
 import { MutableRefObject } from 'react'
 import { Socket } from 'socket.io-client'
 import Message from './entity/message.entity'
 import MyMessage from './entity/my-message.entity'
 import YourMessage from './entity/your-message.entity'
 
+export interface Other {
+  id: number,
+  profileImg: string,
+  name: string,
+}
+
+interface Props {
+  id: string | number,
+  other: Other,
+  lastChat?: string,
+  lastChatTime?: string,
+  socketRef: MutableRefObject<Socket>,
+  update: () => void,
+}
+
 export default class Room {
   public readonly id: number
-  public readonly users: number[]
   public readonly messages: Message[]
+  public readonly other: Other
+  private _lastChat: string
+  private _lastChatTime: string
   private readonly socketRef: MutableRefObject<Socket>
   private readonly update: () => void
 
-  constructor(
-    id: string | number,
-    users: number[],
-    socketRef: MutableRefObject<Socket>,
-    update: () => void,
-  ) {
+  constructor({
+    id,
+    other,
+    lastChat,
+    lastChatTime,
+    socketRef,
+    update,
+  } : Props) {
     if (typeof id === 'string') {
       this.id = parseInt(id, 10)
       return
     }
     this.id = id
-    this.users = users
+    this.other = other
+    this._lastChat = lastChat
+    this._lastChatTime = lastChatTime
     this.messages = []
     this.socketRef = socketRef
     this.update = update
   }
 
+  public get lastChat() {
+    return this._lastChat
+  }
+
+  public get lastChatTime() {
+    return this._lastChatTime
+  }
+
   public sendMessage(message: string) {
     this.socketRef.current.emit('sendMsg', { roomId: this.id, msg: message })
     this.messages.push(new MyMessage(message, new Date().toUTCString()))
+    this._lastChat = message
+    this._lastChatTime = new Date().toISOString()
     this.update()
   }
 
@@ -84,6 +116,8 @@ export default class Room {
   }) {
     if (type === 0) {
       this.messages.push(new YourMessage(message, timestamp.toISOString()))
+      this._lastChat = message
+      this._lastChatTime = timestamp.toISOString()
     }
     this.update()
   }

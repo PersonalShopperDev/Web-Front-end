@@ -6,10 +6,14 @@ export default function Room({
   id,
   img,
   name,
+  lastChat,
+  lastChatTime,
 } : {
   id: number,
   img: string,
   name: string,
+  lastChat: string,
+  lastChatTime: string,
 }) {
   return (
     <Link href={`/chat/${id}`}>
@@ -20,9 +24,9 @@ export default function Room({
         <div className={styles.body}>
           <div className={styles.header}>
             <h3 className={styles.name}>{name}</h3>
-            <time className={styles.timestamp}>2021-3-9</time>
+            <time className={styles.timestamp}>{lastChatTime}</time>
           </div>
-          <p className={styles.message}>아무말</p>
+          <p className={styles.message}>{lastChat}</p>
         </div>
       </a>
     </Link>
