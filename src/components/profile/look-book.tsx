@@ -1,4 +1,5 @@
 import communicate from 'lib/api'
+import ERROR_MESSAGE from 'lib/constants/error'
 import { useAlert } from 'providers/dialog/alert/inner'
 import { ChangeEvent, useState } from 'react'
 import styles from 'sass/components/profile/look-book.module.scss'
@@ -52,7 +53,7 @@ export default function LookBook({ userId, data } : { userId: string, data: Look
       })
       .then((updatedData) => setList(updatedData.list))
       .catch(() => {
-        createAlert({ text: '에러가 발생했습니다' })
+        createAlert({ text: ERROR_MESSAGE })
       })
   }
 
