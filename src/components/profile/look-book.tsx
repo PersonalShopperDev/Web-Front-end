@@ -1,4 +1,6 @@
 import communicate from 'lib/api'
+import ERROR_MESSAGE from 'lib/constants/error'
+import resizeImageFile from 'lib/util/image'
 import { useAlert } from 'providers/dialog/alert/inner'
 import { ChangeEvent, useState } from 'react'
 import styles from 'sass/components/profile/look-book.module.scss'
@@ -26,8 +28,11 @@ export default function LookBook({ userId, data } : { userId: string, data: Look
       return
     }
 
+    const file = await resizeImageFile(e.target.files[0])
+
     const formData = new FormData()
-    formData.append('img', e.target.files[0])
+
+    formData.append('img', file)
 
     await communicate({
       url: '/profile/lookbook',
@@ -52,7 +57,7 @@ export default function LookBook({ userId, data } : { userId: string, data: Look
       })
       .then((updatedData) => setList(updatedData.list))
       .catch(() => {
-        createAlert({ text: '에러가 발생했습니다' })
+        createAlert({ text: ERROR_MESSAGE })
       })
   }
 
@@ -69,12 +74,13 @@ export default function LookBook({ userId, data } : { userId: string, data: Look
       {list?.length > 0 && (
       <section className={styles.container}>
         {list.map(({ id, img }) => (
-          <img
-            key={id}
-            className={styles.figure}
-            src={img}
-            alt=""
-          />
+          <div key={id} className={styles.figure}>
+            <img
+              className={styles.image}
+              src={img}
+              alt=""
+            />
+          </div>
         ))}
       </section>
       )}

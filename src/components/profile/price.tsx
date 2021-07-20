@@ -32,6 +32,10 @@ function Inner({
   const { onChange } = useField()
   const inputRef = useRef<HTMLInputElement>()
 
+  const onKeyUp = () => {
+    inputRef.current.value = inputRef.current.value.replace(/[^0-9]/g, '')
+  }
+
   useEffect(() => {
     if (state === 'edit') {
       inputRef.current.value = price?.toString()
@@ -45,7 +49,7 @@ function Inner({
           {price && <p className={styles.content}>{price}</p>}
         </>
       ) : (
-        <input ref={inputRef} className={styles.input} type="number" onChange={onChange} />
+        <input ref={inputRef} className={styles.input} type="number" onChange={onChange} onKeyUp={onKeyUp} pattern="\d*" />
       )}
     </>
   )
