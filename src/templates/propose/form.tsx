@@ -21,7 +21,7 @@ export default function ProposeForm() {
         </fieldset>
         <div className={styles.fieldset}>
           <p className={styles.legend}>코디가격</p>
-          <div className={styles.price}>{`${price.toLocaleString('ko-KR')}원`}</div>
+          <div className={styles.price}>{`${price?.toLocaleString('ko-KR')}원`}</div>
         </div>
         <fieldset className={styles.fieldset}>
           <legend className={styles.legend}>계좌번호</legend>
