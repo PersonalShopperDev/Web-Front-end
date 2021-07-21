@@ -1,18 +1,18 @@
 /* eslint-disable no-underscore-dangle */
-import CommonMessage, { CommonMessageProps } from './common-message.entity'
+import CommonMessage, { CommonMessageProps } from './common.entity'
 
 export interface ProposalMessageProps extends CommonMessageProps {
   price: number
   account: string
   bank: string
-  status: boolean
+  status: number
 }
 
 export default class ProposalMessage extends CommonMessage {
   public readonly price : number
   public readonly account: string
   public readonly bank: string
-  private _status: boolean
+  private _status: number
 
   constructor({
     price, account, bank, status, ...props

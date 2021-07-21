@@ -1,4 +1,4 @@
-import Message, { MessageProps } from './message.entity'
+import Message, { MessageProps } from './base.entity'
 
 export interface CommonMessageProps extends MessageProps {
   content: string,
