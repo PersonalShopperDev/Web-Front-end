@@ -2,7 +2,6 @@
 
 .listBox {
     width: 341px;
-    height: 128px;
     border-radius: 9px;
     box-shadow: 0 0 13px 0 rgba(0,0,0,0.1);
     margin-top: 14px;
@@ -12,7 +11,7 @@
     font-size: 11px;
     padding-left: 20px;
     padding-top: 18px;
-    padding-bottom: 18px;
+    padding-bottom: 13px;
 }
 
 .profileImg {
@@ -62,4 +61,5 @@
     font-size: 10px;
     margin-right: 6px;
     display: inline-block;
+    margin-bottom: 5px;
 }
