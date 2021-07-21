@@ -4,10 +4,9 @@ import parseJwt from 'lib/util/jwt'
 import { ACCESS_TOKEN } from 'providers/auth'
 import RoomAppBar from 'components/app-bar/room'
 import ChatRoom from 'components/chat/room'
-import { useChat } from 'providers/chat'
 import { communicateWithContext } from 'lib/api'
-import Room, { Other, RecieveMessageProps } from 'lib/model/room'
-import { useEffect, useState } from 'react'
+import { Other, RecieveMessageProps } from 'lib/model/room'
+import RoomProvider from 'providers/chat/room'
 
 interface Props {
   id: string
@@ -18,32 +17,6 @@ interface Props {
 }
 
 export default function Page({ id, data } : Props) {
-  const { rooms, open } = useChat()
-
-  const [room, setRoom] = useState<Room>()
-
-  useEffect(() => {
-    if (!rooms) {
-      return
-    }
-
-    const roomId = parseInt(id, 10)
-
-    const assigned = rooms.find((element) => element.id === roomId)
-
-    if (assigned) {
-      setRoom(assigned)
-      return
-    }
-
-    const created = open({ id, other: data.targetUser })
-    setRoom(created)
-  }, [rooms])
-
-  if (!room) {
-    return <></>
-  }
-
   const { targetUser } = data
 
   const { name } = targetUser
@@ -52,7 +25,9 @@ export default function Page({ id, data } : Props) {
     <Layout
       header={<RoomAppBar title={name} />}
     >
-      <ChatRoom room={room} />
+      <RoomProvider id={id} data={data}>
+        <ChatRoom />
+      </RoomProvider>
     </Layout>
   )
 }

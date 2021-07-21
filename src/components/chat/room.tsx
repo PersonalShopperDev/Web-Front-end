@@ -1,7 +1,7 @@
 import Message from 'lib/model/entity/message.entity'
 import MyMessage from 'lib/model/entity/my-message.entity'
 import YourMessage from 'lib/model/entity/your-message.entity'
-import Room from 'lib/model/room'
+import { useRoom } from 'providers/chat/room'
 import {
   useEffect, ChangeEvent, FormEvent, useRef,
 } from 'react'
@@ -10,7 +10,9 @@ import Icon from 'widgets/icon'
 import MySpeachBubble from './speach-bubble/my'
 import YourSpeachBubble from './speach-bubble/your'
 
-export default function ChatRoom({ room }: { room: Room }) {
+export default function ChatRoom() {
+  const { room } = useRoom()
+
   const innerRef = useRef<HTMLDivElement>()
 
   const { messages, other } = room
