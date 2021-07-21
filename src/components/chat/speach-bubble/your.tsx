@@ -1,27 +1,28 @@
-import { cn } from 'lib/util'
+import { ReactNode } from 'react'
 import styles from 'sass/components/chat/speach-bubble/index.module.scss'
 import Avatar from 'widgets/avatar'
+import SpeachBubble from '.'
 
 export default function YourSpeachBubble({
-  content,
   image,
   timestamp,
+  children,
 } : {
-  content: string
   image: string
   timestamp: string,
+  children: ReactNode
 }) {
   return (
-    <figure className={cn(styles.container, styles.your)}>
-      <div className={styles.inner}>
+    <SpeachBubble
+      header={(
         <div className={styles.header}>
           <Avatar src={image} size={35} />
         </div>
-        <div className={cn(styles.body, styles.your)}>
-          <p className={cn(styles.message, styles.your)}>{content}</p>
-          <time className={styles.timestamp}>{timestamp}</time>
-        </div>
-      </div>
-    </figure>
+      )}
+      ownerClassName={styles.your}
+      timestamp={timestamp}
+    >
+      {children}
+    </SpeachBubble>
   )
 }

@@ -1,14 +1,17 @@
-import Message from 'lib/model/entity/message.entity'
-import MyMessage from 'lib/model/entity/my-message.entity'
-import YourMessage from 'lib/model/entity/your-message.entity'
+import {
+  MyMessage, MyProposalMessage, YourMessage, YourProposalMessage,
+} from 'lib/model/entity/message'
+import Message from 'lib/model/entity/message/base.entity'
 import { useRoom } from 'providers/chat/room'
 import {
   useEffect, ChangeEvent, FormEvent, useRef,
 } from 'react'
 import styles from 'sass/components/chat/room.module.scss'
 import Icon from 'widgets/icon'
-import MySpeachBubble from './speach-bubble/my'
-import YourSpeachBubble from './speach-bubble/your'
+import MyMessageSpeachBubble from './speach-bubble/my-message'
+import MyProposalSpeachBubble from './speach-bubble/my-proposal'
+import YourMessageSpeachBubble from './speach-bubble/your-message'
+import YourProposalSpeachBubble from './speach-bubble/your-proposal'
 
 export default function ChatRoom() {
   const { room } = useRoom()
@@ -33,10 +36,33 @@ export default function ChatRoom() {
   const upload = (e: ChangeEvent<HTMLInputElement>) => {}
 
   const getMessage = (message: Message) => {
+    if (message instanceof MyProposalMessage) {
+      const { content, price, timestamp } = message
+      return (
+        <MyProposalSpeachBubble
+          key={timestamp}
+          price={price}
+          content={content}
+          timestamp={timestamp}
+        />
+      )
+    }
+    if (message instanceof YourProposalMessage) {
+      const { content, price, timestamp } = message
+      return (
+        <YourProposalSpeachBubble
+          key={timestamp}
+          price={price}
+          content={content}
+          timestamp={timestamp}
+          image={profileImg}
+        />
+      )
+    }
     if (message instanceof MyMessage) {
       const { content, timestamp } = message
       return (
-        <MySpeachBubble
+        <MyMessageSpeachBubble
           key={timestamp}
           content={content}
           timestamp={timestamp}
@@ -46,7 +72,7 @@ export default function ChatRoom() {
     if (message instanceof YourMessage) {
       const { content, timestamp } = message
       return (
-        <YourSpeachBubble
+        <YourMessageSpeachBubble
           key={timestamp}
           content={content}
           timestamp={timestamp}

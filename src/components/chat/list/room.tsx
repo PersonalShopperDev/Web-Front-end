@@ -1,6 +1,7 @@
 import Avatar from 'widgets/avatar'
 import styles from 'sass/components/chat/list/friend.module.scss'
 import Link from 'next/link'
+import convertTimestamp from 'lib/util/date'
 
 export default function Room({
   id,
@@ -24,7 +25,7 @@ export default function Room({
         <div className={styles.body}>
           <div className={styles.header}>
             <h3 className={styles.name}>{name}</h3>
-            <time className={styles.timestamp}>{lastChatTime}</time>
+            <time className={styles.timestamp}>{convertTimestamp(lastChatTime)}</time>
           </div>
           <p className={styles.message}>{lastChat}</p>
         </div>
