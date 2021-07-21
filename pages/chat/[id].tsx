@@ -5,29 +5,52 @@ import { ACCESS_TOKEN } from 'providers/auth'
 import RoomAppBar from 'components/app-bar/room'
 import ChatRoom from 'components/chat/room'
 import { useChat } from 'providers/chat'
+import { communicateWithContext } from 'lib/api'
+import Room, { Other, RecieveMessageProps } from 'lib/model/room'
+import { useEffect, useState } from 'react'
 
 interface Props {
   id: string
+  data: {
+    targetUser: Other
+    chatList: RecieveMessageProps[]
+  }
 }
 
-export default function Page({ id } : Props) {
-  const { rooms } = useChat()
+export default function Page({ id, data } : Props) {
+  const { rooms, open } = useChat()
 
-  if (!rooms) {
-    return <></>
-  }
+  const [room, setRoom] = useState<Room>()
 
-  const roomId = parseInt(id, 10)
+  useEffect(() => {
+    if (!rooms) {
+      return
+    }
 
-  const room = rooms.find((element) => element.id === roomId)
+    const roomId = parseInt(id, 10)
+
+    const assigned = rooms.find((element) => element.id === roomId)
+
+    if (assigned) {
+      setRoom(assigned)
+      return
+    }
+
+    const created = open({ id, other: data.targetUser })
+    setRoom(created)
+  }, [rooms])
 
   if (!room) {
     return <></>
   }
 
+  const { targetUser } = data
+
+  const { name } = targetUser
+
   return (
     <Layout
-      header={<RoomAppBar title="아무이름" />}
+      header={<RoomAppBar title={name} />}
     >
       <ChatRoom room={room} />
     </Layout>
@@ -59,9 +82,21 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const { id } = context.params
 
+  const res = await communicateWithContext({
+    url: `/chat/history?roomId=${id}`,
+    context,
+  })
+
+  if (res.status !== 200) {
+    throw new Error()
+  }
+
+  const data = await res.json()
+
   return {
     props: {
       id,
+      data,
     },
   }
 }

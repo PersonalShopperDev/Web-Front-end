@@ -1,7 +1,8 @@
 import communicate from 'lib/api'
 import useForceUpdate from 'lib/hooks/force-update'
-import Room from 'lib/model/room'
+import Room, { RecieveMessageProps, RoomProps } from 'lib/model/room'
 import { getCookie } from 'lib/util/cookie'
+import { useRouter } from 'next/router'
 import { ACCESS_TOKEN } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
 import {
@@ -19,18 +20,15 @@ interface OnResponseEstimate {
   value: boolean
 }
 
-interface OnReceive {
+interface OnReceive extends RecieveMessageProps {
   roomId: number
-  chatType: number
-  msg: string
-  chatTime: Date
-  price: number
-  coordTitle: string
-  coordImg: ArrayBuffer
 }
+
+type OpenProps = Omit<RoomProps, 'socketRef' | 'update'>
 
 interface ChatContextProps {
   rooms: Room[]
+  open: (props : OpenProps) => Room
 }
 
 const ChatContext = createContext<ChatContextProps>(null)
@@ -38,6 +36,8 @@ const ChatContext = createContext<ChatContextProps>(null)
 export const useChat = () => useContext(ChatContext)
 
 export default function ChatProvider({ children }: { children: ReactNode }) {
+  const router = useRouter()
+
   const { createAlert } = useAlert()
 
   const socketRef = useRef<Socket>()
@@ -63,7 +63,6 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
     }
 
     room.onPayment(props)
-
     update()
   }
 
@@ -75,7 +74,6 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
     }
 
     room.onResponseEstimate(props)
-
     update()
   }
 
@@ -87,7 +85,6 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
     }
 
     room.onReceive(props)
-
     update()
   }
 
@@ -115,6 +112,12 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
     }
 
     return result
+  }
+
+  const open = (props : OpenProps) => {
+    const room = new Room({ socketRef, update, ...props })
+    roomsRef.current.push(room)
+    return room
   }
 
   const initializeRoom = async () => {
@@ -146,8 +149,19 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
     return disconnect
   }, [])
 
+  useEffect(() => {
+    if (
+      router.asPath.includes('propose')
+    || router.asPath.includes('chat')
+    || router.asPath.includes('suggestion')
+    ) {
+      initializeRoom()
+    }
+  }, [router])
+
   const value = {
     rooms: roomsRef.current,
+    open,
   }
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>

@@ -10,14 +10,12 @@ import Icon from 'widgets/icon'
 import MySpeachBubble from './speach-bubble/my'
 import YourSpeachBubble from './speach-bubble/your'
 
-export default function ChatRoom({
-  room,
-} : {
-  room: Room
-}) {
+export default function ChatRoom({ room }: { room: Room }) {
   const innerRef = useRef<HTMLDivElement>()
 
-  const { messages } = room
+  const { messages, other } = room
+
+  const { profileImg } = other
 
   const inputRef = useRef<HTMLInputElement>()
 
@@ -30,17 +28,29 @@ export default function ChatRoom({
     inputRef.current.value = ''
   }
 
-  const upload = (e: ChangeEvent<HTMLInputElement>) => {
+  const upload = (e: ChangeEvent<HTMLInputElement>) => {}
 
-  }
-
-  const getMessage = (message : Message) => {
-    const { content, timestamp } = message
+  const getMessage = (message: Message) => {
     if (message instanceof MyMessage) {
-      return <MySpeachBubble key={timestamp} content={content} timestamp={timestamp} />
+      const { content, timestamp } = message
+      return (
+        <MySpeachBubble
+          key={timestamp}
+          content={content}
+          timestamp={timestamp}
+        />
+      )
     }
     if (message instanceof YourMessage) {
-      return <YourSpeachBubble key={timestamp} content={content} timestamp={timestamp} image="/images/sample-image.jpg" />
+      const { content, timestamp } = message
+      return (
+        <YourSpeachBubble
+          key={timestamp}
+          content={content}
+          timestamp={timestamp}
+          image={profileImg}
+        />
+      )
     }
     return null
   }
@@ -55,9 +65,7 @@ export default function ChatRoom({
   return (
     <section className={styles.container}>
       <section ref={innerRef} className={styles.inner}>
-        <div className={styles.list}>
-          {messages?.map(getMessage)}
-        </div>
+        <div className={styles.list}>{messages?.map(getMessage)}</div>
       </section>
       <form className={styles.form} onSubmit={onSubmit}>
         <label className={styles.imagePicker} htmlFor="image-picker">
@@ -70,7 +78,13 @@ export default function ChatRoom({
             style={{ display: 'none' }}
           />
         </label>
-        <input ref={inputRef} className={styles.input} type="text" placeholder="문의할 내용을 입력해 주세요" autoComplete="off" />
+        <input
+          ref={inputRef}
+          className={styles.input}
+          type="text"
+          placeholder="문의할 내용을 입력해 주세요"
+          autoComplete="off"
+        />
         <input className={styles.submit} type="submit" value="보내기" />
       </form>
     </section>
