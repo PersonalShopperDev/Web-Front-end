@@ -57,7 +57,7 @@ export default class Room {
     }
     this.other = other
     this._lastChat = lastChat
-    this._lastChatTime = lastChatTime
+    this._lastChatTime = Message.GetTimestamp(new Date(lastChatTime))
     this.messages = messages || []
     this.socketRef = socketRef
     this.update = update
@@ -71,12 +71,15 @@ export default class Room {
     return this._lastChatTime
   }
 
-  public sendMessage(message: string) {
-    this.socketRef.current.emit('sendMsg', { roomId: this.id, msg: message })
+  public sendMessage(content: string) {
+    this.socketRef.current.emit('sendMsg', { roomId: this.id, msg: content })
     const date = new Date()
-    this.messages.push(new MyMessage({
-      id: -1, content: message, date,
-    }))
+    const message = new MyMessage({
+      id: -1, content, date,
+    })
+    this.messages.push(message)
+    this._lastChat = message.content
+    this._lastChatTime = message.timestamp
     this.update()
   }
 
@@ -126,11 +129,17 @@ export default class Room {
     const date = new Date(chatTime)
     switch (type) {
       case 0:
-        this.messages.push(new YourMessage({ id, content: message, date }))
+        this.receiveMessage(id, message, date)
         break
       default:
         break
     }
     this.update()
+  }
+
+  private receiveMessage(id: number, content: string, date: Date) {
+    const message = new YourMessage({ id, content, date })
+    this._lastChat = message.content
+    this._lastChatTime = message.timestamp
   }
 }
