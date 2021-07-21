@@ -1,3 +1,3 @@
-import Message from './message.entity'
+import CommonMessage from './common-message.entity'
 
-export default class MyMessage extends Message {}
+export default class MyMessage extends CommonMessage {}

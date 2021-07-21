@@ -11,13 +11,25 @@ export interface Other {
   name: string,
 }
 
-interface Props {
+export interface RoomProps {
   id: string | number,
   other: Other,
+  messages?: Message[]
   lastChat?: string,
   lastChatTime?: string,
   socketRef: MutableRefObject<Socket>,
   update: () => void,
+}
+
+export interface RecieveMessageProps {
+  chatId: number
+  chatType: number
+  msg: string
+  price: number
+  coordTitle: string
+  coordImg: string
+  chatTime: Date
+  status: boolean
 }
 
 export default class Room {
@@ -32,20 +44,21 @@ export default class Room {
   constructor({
     id,
     other,
+    messages,
     lastChat,
     lastChatTime,
     socketRef,
     update,
-  } : Props) {
+  } : RoomProps) {
     if (typeof id === 'string') {
       this.id = parseInt(id, 10)
-      return
+    } else {
+      this.id = id
     }
-    this.id = id
     this.other = other
     this._lastChat = lastChat
     this._lastChatTime = lastChatTime
-    this.messages = []
+    this.messages = messages || []
     this.socketRef = socketRef
     this.update = update
   }
@@ -60,9 +73,10 @@ export default class Room {
 
   public sendMessage(message: string) {
     this.socketRef.current.emit('sendMsg', { roomId: this.id, msg: message })
-    this.messages.push(new MyMessage(message, new Date().toUTCString()))
-    this._lastChat = message
-    this._lastChatTime = new Date().toISOString()
+    const date = new Date()
+    this.messages.push(new MyMessage({
+      id: -1, content: message, date,
+    }))
     this.update()
   }
 
@@ -100,24 +114,22 @@ export default class Room {
   }
 
   public onReceive({
+    chatId: id,
     chatType: type,
     msg: message,
     price,
     coordTitle: title,
     coordImg: img,
-    chatTime: timestamp,
-  }: {
-    chatType: number
-    msg: string
-    price: number
-    coordTitle: string
-    coordImg: ArrayBuffer
-    chatTime: Date,
-  }) {
-    if (type === 0) {
-      this.messages.push(new YourMessage(message, timestamp.toISOString()))
-      this._lastChat = message
-      this._lastChatTime = timestamp.toISOString()
+    chatTime,
+    status,
+  }: RecieveMessageProps) {
+    const date = new Date(chatTime)
+    switch (type) {
+      case 0:
+        this.messages.push(new YourMessage({ id, content: message, date }))
+        break
+      default:
+        break
     }
     this.update()
   }
