@@ -1,120 +1,113 @@
-import {
-  MyMessage, MyProposalMessage, YourMessage, YourProposalMessage,
-} from 'lib/model/entity/message'
-import Message from 'lib/model/entity/message/base.entity'
+import communicate from 'lib/api'
 import { useRoom } from 'providers/chat/room'
 import {
-  useEffect, ChangeEvent, FormEvent, useRef,
+  useState, useEffect, useRef,
 } from 'react'
 import styles from 'sass/components/chat/room.module.scss'
-import Icon from 'widgets/icon'
-import MyMessageSpeachBubble from './speach-bubble/my-message'
-import MyProposalSpeachBubble from './speach-bubble/my-proposal'
-import YourMessageSpeachBubble from './speach-bubble/your-message'
-import YourProposalSpeachBubble from './speach-bubble/your-proposal'
+import DateDivider from './date-divider'
+import Message from './message'
+import Form from './form'
+
+type State = 'default' | 'pending'
 
 export default function ChatRoom() {
   const { room } = useRoom()
 
+  const [state, setState] = useState<State>('default')
+
+  const stateRef = useRef<State>(state)
+
   const innerRef = useRef<HTMLDivElement>()
 
-  const { messages, other } = room
+  const { messages } = room
 
-  const { profileImg } = other
+  const loadMoreMessages = async () => {
+    setState('pending')
 
-  const inputRef = useRef<HTMLInputElement>()
+    const roomId = room.id
+    const olderChatId = room.messages[0].id
 
-  const onSubmit = (e: FormEvent) => {
-    e.preventDefault()
-    if (!inputRef.current.value) {
+    const res = await communicate({
+      url: `/chat/history?roomId=${roomId}&olderChatId=${olderChatId}`,
+    })
+
+    if (res.status !== 200) {
+      setState('default')
       return
     }
-    room.sendMessage(inputRef.current.value)
-    inputRef.current.value = ''
+
+    const { chatList } = await res.json()
+
+    const previousHeight = innerRef.current.scrollHeight
+
+    room.appendMessage(chatList)
+
+    scrollTo(innerRef.current.scrollHeight - previousHeight)
+
+    setState('default')
   }
 
-  const upload = (e: ChangeEvent<HTMLInputElement>) => {}
+  const scrollTo = (top: number, behavior : 'auto' | 'smooth' = 'auto') => {
+    innerRef.current.scrollTo({ behavior, top })
+  }
 
-  const getMessage = (message: Message) => {
-    if (message instanceof MyProposalMessage) {
-      const { content, price, timestamp } = message
-      return (
-        <MyProposalSpeachBubble
-          key={timestamp}
-          price={price}
-          content={content}
-          timestamp={timestamp}
-        />
-      )
+  const scrollDown = (behavior : 'auto' | 'smooth' = 'auto') => {
+    scrollTo(innerRef.current.scrollHeight, behavior)
+  }
+
+  const onScroll = () => {
+    if (innerRef.current.scrollTop > 0) {
+      return
     }
-    if (message instanceof YourProposalMessage) {
-      const { content, price, timestamp } = message
-      return (
-        <YourProposalSpeachBubble
-          key={timestamp}
-          price={price}
-          content={content}
-          timestamp={timestamp}
-          image={profileImg}
-        />
-      )
+
+    if (stateRef.current === 'pending') {
+      return
     }
-    if (message instanceof MyMessage) {
-      const { content, timestamp } = message
-      return (
-        <MyMessageSpeachBubble
-          key={timestamp}
-          content={content}
-          timestamp={timestamp}
-        />
-      )
-    }
-    if (message instanceof YourMessage) {
-      const { content, timestamp } = message
-      return (
-        <YourMessageSpeachBubble
-          key={timestamp}
-          content={content}
-          timestamp={timestamp}
-          image={profileImg}
-        />
-      )
-    }
-    return null
+
+    loadMoreMessages()
   }
 
   useEffect(() => {
-    innerRef.current.scrollTo({
-      behavior: 'smooth',
-      top: innerRef.current.scrollHeight,
-    })
+    if (stateRef.current === 'pending') {
+      return
+    }
+
+    scrollDown('smooth')
   }, [messages.length])
+
+  useEffect(() => {
+    stateRef.current = state
+  }, [state])
+
+  useEffect(() => {
+    scrollDown()
+    innerRef.current.addEventListener('scroll', onScroll)
+
+    return () => innerRef.current?.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
     <section className={styles.container}>
       <section ref={innerRef} className={styles.inner}>
-        <div className={styles.list}>{messages?.map(getMessage)}</div>
+        <div className={styles.list}>
+          {messages?.map((props, index, array) => {
+            if (index > 0) {
+              const currentDate = new Date(props.timestamp).getDate()
+              const previousDate = new Date(array[index - 1].timestamp).getDate()
+              if (currentDate !== previousDate) {
+                return (
+                  <div key={props.id}>
+                    <DateDivider timestamp={props.timestamp} />
+                    <Message message={props} />
+                  </div>
+                )
+              }
+            }
+            return <Message key={props.id} message={props} />
+          })}
+        </div>
       </section>
-      <form className={styles.form} onSubmit={onSubmit}>
-        <label className={styles.imagePicker} htmlFor="image-picker">
-          <Icon src="camera.png" size={25} />
-          <input
-            id="image-picker"
-            type="file"
-            accept="image/png, image/jpeg, image/jpg"
-            onChange={upload}
-            style={{ display: 'none' }}
-          />
-        </label>
-        <input
-          ref={inputRef}
-          className={styles.input}
-          type="text"
-          placeholder="문의할 내용을 입력해 주세요"
-          autoComplete="off"
-        />
-        <input className={styles.submit} type="submit" value="보내기" />
-      </form>
+      <Form />
     </section>
   )
 }

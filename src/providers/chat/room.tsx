@@ -1,4 +1,5 @@
 import Room, { Other, RecieveMessageProps } from 'lib/model/room'
+import { useAuth } from 'providers/auth'
 import {
   ReactNode, useState, useEffect, useContext, createContext,
 } from 'react'
@@ -26,27 +27,35 @@ export default function RoomProvider({
   id,
   data,
 } : Props) {
+  const { user } = useAuth()
+
   const { rooms, open } = useChat()
 
   const [room, setRoom] = useState<Room>()
 
   useEffect(() => {
-    if (!rooms) {
-      return
-    }
+    const { targetUser, chatList } = data
 
     const roomId = parseInt(id, 10)
 
     const assigned = rooms.find((element) => element.id === roomId)
 
     if (assigned) {
+      if (assigned.messages.length === 0) {
+        assigned.appendMessage(data.chatList)
+      }
       setRoom(assigned)
       return
     }
 
-    const created = open({ id, other: data.targetUser })
+    const { userId } = user
+
+    const created = open({
+      id, userId, other: targetUser, messages: chatList,
+    })
+
     setRoom(created)
-  }, [rooms])
+  }, [])
 
   if (!room) {
     return <></>

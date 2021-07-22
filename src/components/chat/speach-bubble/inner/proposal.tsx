@@ -4,11 +4,9 @@ import styles from 'sass/components/chat/speach-bubble/inner/proposal.module.scs
 export default function Proposal({
   children,
   price,
-  owner,
 }: {
   children: ReactNode
   price: number
-  owner: 'mine' | 'yours'
 }) {
   return (
     <figure className={styles.container}>

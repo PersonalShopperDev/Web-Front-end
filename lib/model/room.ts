@@ -1,10 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 import { MutableRefObject } from 'react'
 import { Socket } from 'socket.io-client'
-import {
-  MyMessage, MyProposalMessage, YourMessage, YourProposalMessage,
-} from './entity/message'
 import Message from './entity/message/base.entity'
+import CommonMessage from './entity/message/common.entity'
+import ProposalMessage from './entity/message/proposal.entity'
 
 export interface Other {
   id: number,
@@ -14,8 +13,9 @@ export interface Other {
 
 export interface RoomProps {
   id: string | number,
+  userId: number,
   other: Other,
-  messages?: Message[]
+  messages?: RecieveMessageProps[]
   lastChat?: string,
   lastChatTime?: string,
   socketRef: MutableRefObject<Socket>,
@@ -24,6 +24,7 @@ export interface RoomProps {
 
 export interface RecieveMessageProps {
   chatId: number
+  userId: number
   chatType: number
   msg: string
   price: number
@@ -37,8 +38,9 @@ export interface RecieveMessageProps {
 
 export default class Room {
   public readonly id: number
-  public readonly messages: Message[]
+  public readonly userId: number
   public readonly other: Other
+  private _messages: Message[]
   private _lastChat: string
   private _lastChatTime: string
   private readonly socketRef: MutableRefObject<Socket>
@@ -46,8 +48,9 @@ export default class Room {
 
   constructor({
     id,
-    other,
+    userId,
     messages,
+    other,
     lastChat,
     lastChatTime,
     socketRef,
@@ -58,12 +61,20 @@ export default class Room {
     } else {
       this.id = id
     }
+    this.userId = userId
     this.other = other
     this._lastChat = lastChat
     this._lastChatTime = lastChatTime
-    this.messages = messages || []
+    this._messages = []
+    if (messages) {
+      this.appendMessage(messages)
+    }
     this.socketRef = socketRef
     this.update = update
+  }
+
+  public get messages() {
+    return this._messages
   }
 
   public get lastChat() {
@@ -74,12 +85,24 @@ export default class Room {
     return this._lastChatTime
   }
 
+  private generateMessageId() {
+    return -1 * this.messages[this.messages.length - 1].id - 1
+  }
+
+  public appendMessage(array : RecieveMessageProps[]) {
+    const messages = array.map((props) => Room.createMessage(props))
+    this._messages = [...messages, ...this._messages]
+    this.update()
+  }
+
   public sendMessage(content: string) {
     this.socketRef.current.emit('sendMsg', { roomId: this.id, msg: content })
     const timestamp = new Date().toISOString()
-    const message = new MyMessage({
-      content, timestamp,
+    const id = this.generateMessageId()
+    const message = new CommonMessage({
+      id, userId: this.userId, content, timestamp,
     })
+
     this.messages.push(message)
     this._lastChat = message.content
     this._lastChatTime = message.timestamp
@@ -95,8 +118,9 @@ export default class Room {
       bank,
     })
     const timestamp = new Date().toISOString()
-    const message = new MyProposalMessage({
-      content, price, account, bank, timestamp,
+    const id = this.generateMessageId()
+    const message = new ProposalMessage({
+      id, content, price, account, bank, timestamp, userId: this.userId, status: 0,
     })
     this.messages.push(message)
     this._lastChat = message.content
@@ -126,9 +150,22 @@ export default class Room {
     this.update()
   }
 
-  public onReceive({
+  public onReceive(props: RecieveMessageProps) {
+    const message = Room.createMessage(props)
+    this.receiveMessage(message)
+    this.update()
+  }
+
+  private receiveMessage(message: CommonMessage) {
+    this.messages.push(message)
+    this._lastChat = message.content
+    this._lastChatTime = message.timestamp
+  }
+
+  private static createMessage({
     chatId: id,
     chatType: type,
+    userId,
     msg: message,
     account,
     price,
@@ -140,26 +177,23 @@ export default class Room {
   }: RecieveMessageProps) {
     switch (type) {
       case 0:
-        this.receiveMessage(id, message, chatTime)
-        break
+        return Room.createCommon(id, userId, message, chatTime)
       case 1:
-        this.receiveEstimate(id, message, price, account, bank, chatTime, status)
-        break
+        return Room.createProposal(id, userId, message, price, account, bank, chatTime, status)
       default:
-        break
+        return null
     }
-    this.update()
   }
 
-  private receiveMessage(id: number, content: string, timestamp: string) {
-    const message = new YourMessage({ id, content, timestamp })
-    this.messages.push(message)
-    this._lastChat = message.content
-    this._lastChatTime = message.timestamp
+  private static createCommon(id: number, userId: number, content: string, timestamp: string) {
+    return new CommonMessage({
+      id, content, timestamp, userId,
+    })
   }
 
-  private receiveEstimate(
+  private static createProposal(
     id: number,
+    userId: number,
     content: string,
     price: number,
     account: string,
@@ -167,11 +201,8 @@ export default class Room {
     timestamp: string,
     status: number,
   ) {
-    const message = new YourProposalMessage({
-      id, content, price, account, bank, timestamp, status,
+    return new ProposalMessage({
+      id, userId, content, price, account, bank, timestamp, status,
     })
-    this.messages.push(message)
-    this._lastChat = '코디 견적서가 도착했습니다'
-    this._lastChatTime = message.timestamp
   }
 }

@@ -2,11 +2,10 @@ import communicate from 'lib/api'
 import useForceUpdate from 'lib/hooks/force-update'
 import Room, { RecieveMessageProps, RoomProps } from 'lib/model/room'
 import { getCookie } from 'lib/util/cookie'
-import { useRouter } from 'next/router'
-import { ACCESS_TOKEN } from 'providers/auth'
+import { ACCESS_TOKEN, useAuth } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
 import {
-  ReactNode, useContext, createContext, useRef, useEffect,
+  useState, ReactNode, useContext, createContext, useRef, useEffect,
 } from 'react'
 import io, { Socket } from 'socket.io-client'
 
@@ -36,7 +35,7 @@ const ChatContext = createContext<ChatContextProps>(null)
 export const useChat = () => useContext(ChatContext)
 
 export default function ChatProvider({ children }: { children: ReactNode }) {
-  const router = useRouter()
+  const { user } = useAuth()
 
   const { createAlert } = useAlert()
 
@@ -46,6 +45,8 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
 
   const update = useForceUpdate()
 
+  const [load, setLoad] = useState<boolean>(false)
+
   const connect = () => {
     socketRef.current = io(process.env.SOCKET_URL, {
       path: '/v1/socket/',
@@ -54,6 +55,8 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
       },
     })
   }
+
+  const isConnected = () => socketRef.current?.connected
 
   const onPayment = async ({ roomId, ...props } : OnPayment) => {
     const room = await getReceivedRoom(roomId)
@@ -115,7 +118,11 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
   }
 
   const open = (props : OpenProps) => {
-    const room = new Room({ socketRef, update, ...props })
+    const { userId } = user
+
+    const room = new Room({
+      socketRef, userId, update, ...props,
+    })
     roomsRef.current.push(room)
     return room
   }
@@ -131,38 +138,50 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
 
     const data = await res.json()
 
+    const { userId } = user
+
     roomsRef.current = data.map(({
       roomId, targetUser, lastChat, lastChatTime,
     }) => new Room({
-      id: roomId, other: targetUser, lastChat, lastChatTime, socketRef, update,
+      id: roomId, userId, other: targetUser, lastChat, lastChatTime, socketRef, update,
     }))
 
     update()
   }
 
-  useEffect(() => {
+  const initialize = async () => {
     connect()
-
     attachListener()
-    initializeRoom()
+    await initializeRoom()
+    setLoad(true)
+  }
+
+  useEffect(() => {
+    if (isConnected()) {
+      return null
+    }
+
+    if (!user) {
+      return null
+    }
+
+    initialize()
 
     return disconnect
-  }, [])
-
-  useEffect(() => {
-    if (
-      router.asPath.includes('propose')
-    || router.asPath.includes('chat')
-    || router.asPath.includes('suggestion')
-    ) {
-      initializeRoom()
-    }
-  }, [router])
+  }, [user])
 
   const value = {
     rooms: roomsRef.current,
     open,
   }
 
-  return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>
+  if (!load) {
+    return <></>
+  }
+
+  return (
+    <ChatContext.Provider value={value}>
+      {children}
+    </ChatContext.Provider>
+  )
 }
