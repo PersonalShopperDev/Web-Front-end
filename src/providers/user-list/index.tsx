@@ -26,10 +26,9 @@ export default function UserListProvider({
 }) {
   const [userLists, setUserLists] = useState([])
   const [styleType, setStyleType] = useState('')
-  const [sortType, setSortType] = useState('popular')
-  const userListsRef = useRef<userListsRefProps>({ value: [], type: '', sort: 'popular' })
+  const [sortType, setSortType] = useState('recommend')
+  const userListsRef = useRef<userListsRefProps>({ value: [], type: '', sort: 'recommend' })
   const pageNum = 20
-
   const fetchUserData = async () => {
     let res
     let newLists
@@ -37,7 +36,9 @@ export default function UserListProvider({
     const page = userListsRef.current.value.length / pageNum
     if (Math.floor(userListsRef.current.value.length / pageNum) !== page) return
     if (userListsRef.current.type !== '') {
-      res = await communicate({ url: `/supplier/search?type=${userListsRef.current.type}&sort=${userListsRef.current.sort}&page=${page}` })
+      res = await communicate({ url: `/supplier/search?styleType=${userListsRef.current.type}&sort=${userListsRef.current.sort}&page=${page}` })
+    } else if (userListsRef.current.sort === 'professional') {
+      res = await communicate({ url: `/supplier?supplierType=2&page=${page}` })
     } else {
       res = await communicate({ url: `/supplier?sort=${userListsRef.current.sort}&page=${page}` })
     }
