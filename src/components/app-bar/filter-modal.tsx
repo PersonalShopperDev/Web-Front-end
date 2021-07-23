@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Modal from 'components/modal'
 import styles from 'sass/components/filter-modal.module.scss'
 import Icon from 'widgets/icon'
-import { useUserList } from 'providers/infinityScroll/userList'
+import { useUserList } from 'providers/user-list'
 
 export default function FilterModal() {
   const { setSortType } = useUserList()
@@ -37,7 +37,7 @@ export default function FilterModal() {
         {filterLists.map((value, index) => (
           <div className={styles.eachModalContent} key={value}>
             <span className={styles.filterText}>{value}</span>
-            {currentFilter === index ? <Icon src="selectedFilterCheck.png" onClick={() => onClickFilter(index)} key="selectedFilterCheck" /> : <Icon src="filterCheck.png" onClick={() => onClickFilter(index)} key="filterCheck" /> }
+            <Icon src={currentFilter === index ? 'selectedFilterCheck.png' : 'filterCheck.png'} onClick={() => onClickFilter(index)} key="filter" />
           </div>
         ))}
       </div>

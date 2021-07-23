@@ -7,9 +7,9 @@ export default function SupplyStep3() {
     <section>
       <div>
         <h1 className={styles.title}>STEP 4</h1>
-        <h2 className={styles.content}>당신의 코디경력은 어떻게 되십니까?</h2>
+        <h2 className={styles.content}>코디경력이 어떻게 되시나요?</h2>
       </div>
-      <Career isEdit isOnboarding />
+      <Career isOnboarding />
     </section>
   )
 }

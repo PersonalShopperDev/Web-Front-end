@@ -3,11 +3,11 @@ import { useOnboarding } from 'providers/onboarding'
 import styles from 'sass/components/skin.module.scss'
 
 export default function Skin({
-  isEdit,
+  isOnboarding,
 }: {
-  isEdit?: boolean
+  isOnboarding?: boolean
 }) {
-  const { information, setData, editCheck } = useOnboarding()
+  const { information, setData, setEdit } = useOnboarding()
 
   const skinTypeLists = [{
     path: '/icons/skinA.png',
@@ -20,30 +20,20 @@ export default function Skin({
   }]
   const onSkinClick = (item) => {
     setData('skin', item)
+    if (!isOnboarding) setEdit('skin')
   }
   return (
     <div className={styles.container}>
       {skinTypeLists.map((value, index) => (
         <div key={Math.random()}>
-          {isEdit || editCheck.skin
-            ? (
-              <button
-                type="button"
-                className={information.skin === index
-                  ? styles.selectedPalette : styles.notSelectedPalette}
-                onClick={() => onSkinClick(index)}
-              >
-                <img src={value.path} alt="skintype" className={styles.palette} />
-              </button>
-            )
-            : (
-              <div
-                className={information.skin === index
-                  ? styles.selectedPalette : styles.notSelectedPalette}
-              >
-                <img src={value.path} alt="skintype" className={styles.palette} />
-              </div>
-            )}
+          <button
+            type="button"
+            className={information.skin === index
+              ? styles.selectedPalette : styles.notSelectedPalette}
+            onClick={() => onSkinClick(index)}
+          >
+            <img src={value.path} alt="skintype" className={styles.palette} />
+          </button>
         </div>
       ))}
     </div>
@@ -51,5 +41,5 @@ export default function Skin({
 }
 
 Skin.defaultProps = {
-  isEdit: false,
+  isOnboarding: false,
 }

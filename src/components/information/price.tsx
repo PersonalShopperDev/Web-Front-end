@@ -10,10 +10,8 @@ interface PriceLists {
   key: string
 }
 export default function Price({
-  isEdit,
   isOnboarding,
 }: {
-  isEdit?: boolean
   isOnboarding?: boolean
 }) {
   const { information } = useOnboarding()
@@ -99,7 +97,7 @@ export default function Price({
             && (
             <InputRange
               priceLists={item}
-              isEdit={isEdit}
+              isOnboarding={isOnboarding}
             />
             )}
         </div>
@@ -110,5 +108,4 @@ export default function Price({
 
 Price.defaultProps = {
   isOnboarding: false,
-  isEdit: false,
 }

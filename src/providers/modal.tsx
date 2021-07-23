@@ -32,7 +32,7 @@ export default function ModalProvider({
   const zIndexHandlerRef = useRef(null)
   const [active, setActive] = useState(false)
 
-  const defaultTransitionDelay = 300
+  const defaultTransitionDelay = 250
 
   const appendToContainer = (component: React.ReactNode): React.ReactPortal => createPortal(
     component,
@@ -62,6 +62,11 @@ export default function ModalProvider({
     }
   }
 
+  const closeOnRouterChange = () => {
+    scrimRef.current.style.transition = ''
+    setActive(false)
+  }
+
   const fixBody = () => {
     document.body.style.cssText = `position:fixed; top:${-1 * window.scrollY}px; left: 0; right: 0; margin: 0 auto;`
   }
@@ -74,16 +79,20 @@ export default function ModalProvider({
 
   const getDelay = () => transitionDelayRef.current || defaultTransitionDelay
 
-  const onStage = () => {
+  const setDelay = () => {
     const delay = getDelay()
     scrimRef.current.style.transition = `opacity ${delay}ms`
+    return delay
+  }
+
+  const onStage = () => {
+    setDelay()
     clearTimeout(zIndexHandlerRef.current)
     containerRef.current.style.zIndex = '98'
   }
 
   const offStage = () => {
-    const delay = getDelay()
-    scrimRef.current.style.transition = `opacity ${delay}ms`
+    const delay = setDelay()
     zIndexHandlerRef.current = setTimeout(() => {
       containerRef.current.style.zIndex = '-1'
     }, delay)
@@ -100,7 +109,7 @@ export default function ModalProvider({
   }, [active])
 
   useEffect(() => {
-    checkClose()
+    closeOnRouterChange()
   }, [router])
 
   const value = {

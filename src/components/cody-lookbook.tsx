@@ -3,8 +3,8 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/swiper-bundle.css'
 import styles from 'sass/components/cody-lookbook.module.scss'
 import Icon from 'widgets/icon'
-import { useLookBook } from 'providers/infinityScroll/lookBook'
-import { useInfinityScroll } from 'providers/infinityScroll'
+import { useInfinityScroll } from 'providers/infinity-scroll'
+import { useLookBook } from 'providers/look-book'
 
 export default function CodyLookBook({
   id,
@@ -15,8 +15,8 @@ export default function CodyLookBook({
   const [imageIndex, setImageIndex] = useState(1)
   const [initialIndex, setInitialIndex] = useState(0)
   const [fixedHeight, setFixedHeight] = useState(0)
-  const { lookBookLists, setId } = useLookBook()
-  const { setScrollFunc } = useInfinityScroll()
+  const { lookBookLists, setId, fetchLookBookData } = useLookBook()
+  const { setOnScrollFunc } = useInfinityScroll()
   const imageModalRef = useRef()
 
   const slides = []
@@ -48,7 +48,7 @@ export default function CodyLookBook({
 
   useEffect(() => {
     setId(id)
-    setScrollFunc('lookBook')
+    setOnScrollFunc(fetchLookBookData)
   }, [])
 
   return (

@@ -1,10 +1,42 @@
 import styles from 'sass/components/profile-detail.module.scss'
 import Icon from 'widgets/icon'
 
+interface Data {
+  userType: string,
+  name: string,
+  introduction: string,
+  styles: Array<string>,
+  profileImg: string,
+  hopeToSupplier?: string,
+  bodyStat?: {
+    isPublic: boolean,
+    height: number,
+    weight: number,
+    id: number,
+    value: string,
+  },
+  closet?: {
+    id: number,
+    img: string
+  },
+  rating: number,
+  hireCount: number,
+  reviewCount: number,
+  careerList: [{
+    value: string,
+    type: number
+  }],
+  price: number,
+  coord: [{
+    id: number,
+    img: string,
+  }]
+}
+
 export default function ProfileDetail({
   info,
 } : {
-  info : any,
+  info : Data,
 }) {
   return (
     <div className={styles.profileDetailBox}>
@@ -16,6 +48,8 @@ export default function ProfileDetail({
         <div>
           {info.careerList.map((item) => (
             <div key={item.type}>
+              {item.type === 0
+              && (
               <div className={styles.flexContainer}>
                 <Icon src="profileIcon1.png" size={12} />
                 <span className={styles.careerText}>
@@ -23,19 +57,23 @@ export default function ProfileDetail({
                   에서 근무중
                 </span>
               </div>
+              ) }
+              {item.type === 1
+              && (
               <div className={styles.flexContainer}>
                 <Icon src="profileIcon2.png" size={12} />
                 <span className={styles.careerText}>
                   경력
                   {' '}
-                  {item.type}
+                  {item.value}
                   년차 스타일리스트
                 </span>
               </div>
+              ) }
             </div>
           ))}
         </div>
-        <div>
+        <div className={styles.indicatorContainer}>
           <span className={styles.indicatorText}>
             {info.rating}
             점
@@ -60,7 +98,7 @@ export default function ProfileDetail({
         <div className={styles.titleText}>대표 코디</div>
         <div className={styles.coordContainer}>
           {info.coord.map((item) => (
-            <img src={item.img} width="164" height="171" className={styles.clothImage} alt="대표 코디" key={item} />
+            <img src={item.img} width="164" height="171" className={styles.clothImage} alt="대표 코디" key={item.id} />
           ))}
         </div>
       </div>

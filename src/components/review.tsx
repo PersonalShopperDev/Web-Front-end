@@ -18,7 +18,7 @@ export default function Review({
   const [imageModal, setImageModal] = useState(false)
   const [initialIndex, setInitialIndex] = useState(0)
   const [fixedHeight, setFixedHeight] = useState(0)
-  const imageModalRef = useRef()
+  const imageModalRef = useRef<HTMLDivElement>()
   const onClickCoord = (img, index) => {
     if (!imageModal) {
       setFixedHeight(document.documentElement.scrollTop)
@@ -42,7 +42,7 @@ export default function Review({
     }
     setImageModal(!imageModal)
   }
-  const closeModal = (e) => {
+  const closeModal = (e: React.MouseEvent) => {
     if (imageModalRef.current === e.target) {
       document.body.style.cssText = `position: relative; top:${-1 * window.scrollY}px;`
       setImageModal(false)
@@ -52,6 +52,7 @@ export default function Review({
   useEffect(() => {
     async function fetchReviewData() {
       const res = await communicate({ url: `/profile/${id}/review` })
+      if (res.status !== 200) return
       const reviews = await res.json()
       setReview(reviews)
     }
@@ -76,7 +77,7 @@ export default function Review({
         <div className={styles.userBox} key={item.id}>
           <div className={styles.userNameBox}>
             <div>
-              <Icon src={item.profileImg} size={25} key="profile" />
+              <img src={item.profileImg} width={25} height={25} alt="프로필" className={styles.profileImg} />
               <span className={styles.nameText}>
                 {item.name}
                 님
@@ -105,7 +106,7 @@ export default function Review({
             {item.img.map((value, index) => (
               <div>
                 <button type="button" onClick={() => onClickCoord(item.img, index)} className={styles.img}>
-                  <img src={value} width="124" height="130" alt="코디" />
+                  <img src={value} width="124" height="130" alt="코디" className={styles.img} />
                 </button>
               </div>
             ))}

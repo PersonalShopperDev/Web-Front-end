@@ -1,17 +1,22 @@
 import Layout from 'layouts/default'
 import { useAuth } from 'providers/auth'
 import { useEffect } from 'react'
+import ErrorContainer from 'templates/error-container'
 
 export default function Page() {
   const { signOut } = useAuth()
 
   useEffect(() => {
-    signOut('/')
+    setTimeout(() => {
+      signOut('/')
+    }, 1000)
   }, [])
 
   return (
     <Layout>
-      <p>login failed</p>
+      <ErrorContainer>
+        Login failed
+      </ErrorContainer>
     </Layout>
   )
 }

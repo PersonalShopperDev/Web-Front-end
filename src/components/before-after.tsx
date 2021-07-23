@@ -14,6 +14,10 @@ export interface BeforeAfterData {
 export default function BeforeAfter({ data } : {data: BeforeAfterData[]}) {
   const description = '리뷰 사진 클릭 시 스타일리스트 프로필로 이동합니다'
 
+  if (!data || data?.length === 0) {
+    return <></>
+  }
+
   return (
     <section className={styles.container}>
       <section className={styles.header}>
@@ -27,8 +31,8 @@ export default function BeforeAfter({ data } : {data: BeforeAfterData[]}) {
           afterImg,
           title,
         }) => (
-          <>
-            <section key={stylistId} className={styles.photozone}>
+          <section key={`${stylistId}${title}`}>
+            <div className={styles.photozone}>
               <figure className={cn(styles.figure, styles.before)}>
                 <figcaption className={styles.figcaption}>Before</figcaption>
                 <img src={beforeImg} alt="Before" />
@@ -37,9 +41,9 @@ export default function BeforeAfter({ data } : {data: BeforeAfterData[]}) {
                 <figcaption className={styles.figcaption}>After</figcaption>
                 <img src={afterImg} alt="After" />
               </figure>
-            </section>
+            </div>
             <h3 className={styles.caption}>{title}</h3>
-          </>
+          </section>
         ))}
       </Carousel>
     </section>

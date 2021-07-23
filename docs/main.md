@@ -53,6 +53,7 @@
 |landings|`ReactNode[]`|`null`|컴포넌트를 좌측 컨테이너에 포함시킵니다.|
 |actions|`ReactNode[]`|`null`|컴포넌트를 우측 컨테이너에 포함시킵니다.|
 |back|`boolean`|`false`|뒤로가기를 활성화합니다. `landings !== null`인 경우 무시됩니다.|
+|backUrl|`string`|`null`|뒤로가기 시 url을 지정합니다.|
 ### __Usage__
 ```
 <AppBar
@@ -359,6 +360,37 @@ export default function Comment() {
     <button type="button" onClick={onDeleteClick}>삭제</button>
     ...
   )
+}
+```
+
+<br />
+
+## __`InfinityScrollProvider`__
+`<main />`dom에 대해서 무한스크롤을 제공합니다.
+
+|Context Prop|Type|Remark|
+|---|---|---|
+|setOnScrollFunc|`(callback: FetchDataFunc) => void`|데이터 fetching에 필요한 함수를 설정합니다.|
+
+### __Interface__
+```
+type FetchDataFunc = () => void
+
+interface InfinityScrollProps {
+  setOnScrollFunc: (callback: FetchDataFunc) => void
+}
+```
+
+### __Usage__
+```
+export default function List() {
+  const { fetchUserData } = useUserList() // 데이터 fetching을 위한 함수
+  const { setOnScrollFunc } = useInfinityScroll()
+  ...
+  useEffect(() => {
+    setOnScrollFunc(fetchUserData)
+  }, [])
+  ...
 }
 ```
 

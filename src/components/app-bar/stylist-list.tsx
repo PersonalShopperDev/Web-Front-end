@@ -10,20 +10,18 @@ export default function StylistListAppBar() {
   )
 
   return (
-    <>
-      <AppBar
-        title="스타일리스트"
-        back
-        actions={[
-          <Icon
-            key="search"
-            src="search.png"
-            size={24}
-            onClick={onClickSearch}
-          />,
-          <FilterModal key="filterModal" />,
-        ]}
-      />
-    </>
+    <AppBar
+      title="스타일리스트"
+      back
+      actions={[
+        <Icon
+          key="search"
+          src="search.png"
+          size={24}
+          onClick={onClickSearch}
+        />,
+        <FilterModal key="filterModal" />,
+      ]}
+    />
   )
 }
