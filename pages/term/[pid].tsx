@@ -7,15 +7,16 @@ import { ACCESS_TOKEN } from 'providers/auth'
 import TermAppBar from 'components/app-bar/term'
 
 interface Props {
+  isLogined: boolean,
   title: string,
   data: string
 }
 
-export default function Page({ title, data } : Props) {
+export default function Page({ isLogined, title, data } : Props) {
   return (
     <Layout
       header={(
-        <TermAppBar title={title} />
+        <TermAppBar title={title} isLogined={isLogined} />
       )}
     >
       <Term>
@@ -28,14 +29,7 @@ export default function Page({ title, data } : Props) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const token = context.req.cookies[ACCESS_TOKEN]
 
-  if (!token) {
-    return {
-      redirect: {
-        destination: '/500',
-        permanent: false,
-      },
-    }
-  }
+  const isLogined = token !== undefined
 
   const { pid } = context.params
   const enables = [{
@@ -61,6 +55,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
+      isLogined,
       title: target.title,
       data,
     },

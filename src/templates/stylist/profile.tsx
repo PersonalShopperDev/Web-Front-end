@@ -20,7 +20,7 @@ export default function Profile({
   const menuLists = ['프로필', '코디룩북', '리뷰']
   const menuComponent = [<ProfileDetail info={info} />,
     <CodyLookBook id={id} />, <Review id={id} />]
-  const { userId } = parseJwt(getCookie(ACCESS_TOKEN))
+  const [userId, setUserId] = useState()
   const onMatchingClick = () => {
   }
   const onMenuClick = (index) => {
@@ -35,6 +35,10 @@ export default function Profile({
     }
     fetchProfileData()
   }, [id])
+
+  useEffect(() => {
+    setUserId(parseJwt(getCookie(ACCESS_TOKEN)))
+  }, [])
 
   return (
     <>

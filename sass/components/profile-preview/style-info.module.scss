@@ -1,0 +1,23 @@
+@use '../../lib/colors.scss' as colors;
+
+.container {
+    margin-top: 15px;
+}
+
+.row {
+    display: flex;
+    font-size: 12px;
+    & + & {
+       margin-top: 10px;
+    }
+}
+
+.property {
+    width: 60px;
+    color: colors.$primary-500
+}
+
+.value {
+    font-weight: bold;
+}
+

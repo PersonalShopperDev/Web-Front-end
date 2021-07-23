@@ -11,13 +11,23 @@ import HeightWeight from 'components/profile/height-weight'
 import Divider from 'widgets/divider'
 import Review from 'components/profile/review'
 import Represent from 'components/profile/represents'
+import LookBook, { LookBookData } from 'components/profile/look-book'
 import { GetServerSideProps } from 'next'
 import { communicateWithContext } from 'lib/api'
-import { ACCESS_TOKEN, User } from 'providers/auth'
+import { ACCESS_TOKEN, useAuth, User } from 'providers/auth'
 import CodyStyle from 'components/profile/cody-style'
+import { useEffect } from 'react'
+import parseJwt from 'lib/util/jwt'
+import TemporarySubmit from 'components/profile/temporary-submit'
 
-export default function Page({ data } : { data: User }) {
+interface Props {
+  userId: string
+  data : User & { lookbook : LookBookData }
+}
+
+export default function Page({ userId, data } : Props) {
   const {
+    lookbook,
     userType,
     careerList,
     styles,
@@ -30,6 +40,12 @@ export default function Page({ data } : { data: User }) {
     bodyStat,
     hopeToSupplier,
   } = data
+
+  const { fetchUser } = useAuth()
+
+  useEffect(() => {
+    fetchUser()
+  }, [])
 
   return (
     <Layout
@@ -66,6 +82,9 @@ export default function Page({ data } : { data: User }) {
           <Price data={{ price }} />
           <Divider />
           <Represent data={{ coord }} />
+          <Divider />
+          <LookBook data={lookbook} userId={userId} />
+          <TemporarySubmit />
         </>
       )}
     </Layout>
@@ -83,23 +102,43 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
-  const res = await communicateWithContext({
-    context,
-    url: '/profile',
-  })
+  const { userId } = parseJwt(token)
 
-  if (res.status !== 200) {
+  const [profileResponse, lookbookResponse] = await Promise.all([
+    communicateWithContext({
+      context,
+      url: '/profile',
+    }),
+    communicateWithContext({
+      context,
+      url: `/profile/${userId}/lookbook`,
+    }),
+  ])
+
+  if (profileResponse.status !== 200) {
     if (context.res) {
-      context.res.statusCode = res.status
+      context.res.statusCode = profileResponse.status
     }
-    throw new Error()
+    throw new Error(`Api server responsed ${profileResponse.status} :: /profile`)
   }
 
-  const data = await res.json()
+  if (lookbookResponse.status !== 200) {
+    if (context.res) {
+      context.res.statusCode = profileResponse.status
+    }
+    throw new Error(`Api server responsed ${lookbookResponse.status} :: /profile/${userId}/lookbook`)
+  }
+
+  const profileData = await profileResponse.json()
+  const lookbookData = await lookbookResponse.json()
 
   return {
     props: {
-      data,
+      userId,
+      data: {
+        lookbook: lookbookData,
+        ...profileData,
+      },
     },
   }
 }

@@ -1,5 +1,6 @@
 import HorizontalList from 'components/horizontal-list'
 import communicate from 'lib/api'
+import resizeImageFile from 'lib/util/image'
 import { useAuth } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
 import { ChangeEvent } from 'react'
@@ -25,8 +26,10 @@ export default function Wardrobe({ data } : { data: WardrobeData }) {
       return
     }
 
+    const file = await resizeImageFile(e.target.files[0])
+
     const formData = new FormData()
-    formData.append('img', e.target.files[0])
+    formData.append('img', file)
 
     await communicate({
       url: '/profile/closet',

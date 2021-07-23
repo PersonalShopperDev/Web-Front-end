@@ -1,0 +1,7 @@
+@use '../../lib/colors.scss' as colors;
+
+.paragraph {
+    margin-top: 9px;
+    font-size: 12px;
+    color: colors.$primary-500;
+}

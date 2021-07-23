@@ -10,7 +10,7 @@ export default function ProfileAppBar() {
   const { user } = useAuth()
   const [id, setId] = useState()
 
-  const previewLink = user?.userType === 'S' ? `/stylist/profile/${id}` : '/profile/preview'
+  const previewLink = user?.userType === 'S' ? `/stylist/profile?id=${id}` : '/profile/preview'
 
   useEffect(() => {
     const token = getCookie(ACCESS_TOKEN)

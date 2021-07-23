@@ -31,7 +31,7 @@ export default function Page({ data } : Props) {
   return (
     <Layout
       header={(
-        <StylistHomeAppBar />
+        <StylistHomeAppBar title={!userType ? '퍼스널쇼퍼' : '스타일매칭'} />
       )}
     >
       { !userType ? <LoginBanner /> : <Banner data={banners} />}
@@ -51,7 +51,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     if (context.res) {
       context.res.statusCode = res.status
     }
-    throw new Error()
+    throw new Error(`Api server responsed ${res.status} :: /home`)
   }
 
   const data = await res.json()

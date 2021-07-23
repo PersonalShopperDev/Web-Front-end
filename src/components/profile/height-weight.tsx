@@ -1,4 +1,5 @@
 import communicate from 'lib/api'
+import ERROR_MESSAGE from 'lib/constants/error'
 import { cn } from 'lib/util'
 import { useAuth } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
@@ -66,7 +67,7 @@ function Inner({ data } : { data: HeightWeightData}) {
       }
       fetchUser()
     }).catch(async () => {
-      await createAlert({ text: '에러가 발생했습니다' })
+      await createAlert({ text: ERROR_MESSAGE })
     })
 
     setState('default')
