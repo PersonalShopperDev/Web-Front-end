@@ -11,7 +11,7 @@ export default function Page() {
     <Layout
       header={<HomeAppBar title="채팅" />}
     >
-      <ChatBanner src="/images/sample-avatar.jpg" />
+      <ChatBanner src="/images/chat-banner.png" />
       <ChatList />
     </Layout>
   )
