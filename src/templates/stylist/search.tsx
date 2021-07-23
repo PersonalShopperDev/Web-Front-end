@@ -5,9 +5,6 @@ import { useOnboarding } from 'providers/onboarding'
 import Link from 'next/link'
 import StyleList from 'components/style-list'
 import communicate from 'lib/api'
-import { useOnboarding } from 'providers/onboarding'
-import { useRouter } from 'next/router'
-import { useUserList } from 'providers/infinityScroll/userList'
 
 export default function Search() {
   const [styleLists, setStyleLists] = useState([])
