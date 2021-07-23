@@ -1,0 +1,36 @@
+@use '../lib/colors.scss' as colors;
+
+.modalBox {
+    width: 230px;
+    border-radius: 7px;
+    background-color: colors.$background;
+    font-weight: 700;
+    font-size: 14px;
+    color: colors.$accent;
+    text-align: center;
+    padding-top: 24px;
+    display: block;
+    .content {
+        font-size: 12px;
+        font-weight: 500;
+        color: colors.$primary-700;
+        line-height: 16px;
+        width: 181px;
+        display: inline-block;
+        margin-top: 12px;
+    }
+    .bold { 
+        font-weight: 700;
+    }
+    .exit { 
+        width: 197px;
+        height: 36px;
+        background-color: colors.$accent;
+        color: colors.$background;
+        margin-bottom: 17px;
+        border-radius: 5px;
+        margin-top: 14px;
+        font-weight: 600;
+        font-size: 11px;
+    }
+}
