@@ -41,9 +41,8 @@ export default function RoomProvider({
     const assigned = rooms.find((element) => element.id === roomId)
 
     if (assigned) {
-      if (assigned.messages.length === 0) {
-        assigned.appendMessage(data.chatList)
-      }
+      assigned.initializeMessage(chatList)
+      assigned.read()
       setRoom(assigned)
       return
     }
@@ -51,7 +50,7 @@ export default function RoomProvider({
     const { userId } = user
 
     const created = open({
-      id, userId, other: targetUser, messages: chatList,
+      id, userId, unreadCount: 0, other: targetUser, messages: chatList,
     })
 
     setRoom(created)

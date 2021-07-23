@@ -2,6 +2,7 @@
 import CommonMessage, { CommonMessageProps } from './common.entity'
 
 export interface ProposalMessageProps extends CommonMessageProps {
+  estimateId: number
   price: number
   account: string
   bank: string
@@ -9,15 +10,17 @@ export interface ProposalMessageProps extends CommonMessageProps {
 }
 
 export default class ProposalMessage extends CommonMessage {
+  public readonly estimateId: number
   public readonly price : number
   public readonly account: string
   public readonly bank: string
   private _status: number
 
   constructor({
-    price, account, bank, status, ...props
+    estimateId, price, account, bank, status, ...props
   } : ProposalMessageProps) {
     super(props)
+    this.estimateId = estimateId
     this.price = price
     this.account = account
     this.bank = bank

@@ -4,22 +4,24 @@ import { Socket } from 'socket.io-client'
 import Message from './entity/message/base.entity'
 import CommonMessage from './entity/message/common.entity'
 import ProposalMessage from './entity/message/proposal.entity'
+import CoordMessage from './entity/message/coord.entity'
 
 export interface Other {
-  id: number,
-  profileImg: string,
-  name: string,
+  id: number
+  profileImg: string
+  name: string
 }
 
 export interface RoomProps {
-  id: string | number,
-  userId: number,
-  other: Other,
+  id: string | number
+  userId: number
+  other: Other
   messages?: RecieveMessageProps[]
-  lastChat?: string,
-  lastChatTime?: string,
-  socketRef: MutableRefObject<Socket>,
-  update: () => void,
+  unreadCount: number
+  lastChat?: string
+  lastChatTime?: string
+  socketRef: MutableRefObject<Socket>
+  update: () => void
 }
 
 export interface RecieveMessageProps {
@@ -30,6 +32,8 @@ export interface RecieveMessageProps {
   price: number
   account: string
   bank: string
+  estimateId: number
+  coordId: number
   coordTitle: string
   coordImg: string
   chatTime: string
@@ -41,6 +45,7 @@ export default class Room {
   public readonly userId: number
   public readonly other: Other
   private _messages: Message[]
+  private _unreadCount: number
   private _lastChat: string
   private _lastChatTime: string
   private readonly socketRef: MutableRefObject<Socket>
@@ -51,11 +56,12 @@ export default class Room {
     userId,
     messages,
     other,
+    unreadCount,
     lastChat,
     lastChatTime,
     socketRef,
     update,
-  } : RoomProps) {
+  }: RoomProps) {
     if (typeof id === 'string') {
       this.id = parseInt(id, 10)
     } else {
@@ -63,6 +69,7 @@ export default class Room {
     }
     this.userId = userId
     this.other = other
+    this._unreadCount = unreadCount
     this._lastChat = lastChat
     this._lastChatTime = lastChatTime
     this._messages = []
@@ -77,6 +84,10 @@ export default class Room {
     return this._messages
   }
 
+  public get unreadCount() {
+    return this._unreadCount
+  }
+
   public get lastChat() {
     return this._lastChat
   }
@@ -86,10 +97,21 @@ export default class Room {
   }
 
   private generateMessageId() {
-    return -1 * this.messages[this.messages.length - 1].id - 1
+    return this._messages.length * Math.random()
   }
 
-  public appendMessage(array : RecieveMessageProps[]) {
+  public initializeMessage(array: RecieveMessageProps[]) {
+    if (!array) {
+      return
+    }
+    if (array.length === 0) {
+      return
+    }
+    this._messages = array.map((props) => Room.createMessage(props))
+    this.update()
+  }
+
+  public appendMessage(array: RecieveMessageProps[]) {
     const messages = array.map((props) => Room.createMessage(props))
     this._messages = [...messages, ...this._messages]
     this.update()
@@ -100,16 +122,22 @@ export default class Room {
     const timestamp = new Date().toISOString()
     const id = this.generateMessageId()
     const message = new CommonMessage({
-      id, userId: this.userId, content, timestamp,
+      id,
+      userId: this.userId,
+      content,
+      timestamp,
     })
 
-    this.messages.push(message)
-    this._lastChat = message.content
-    this._lastChatTime = message.timestamp
+    this.syncMessage(message)
     this.update()
   }
 
-  public sendEstimate(content: string, price: number, account: string, bank: string) {
+  public sendEstimate(
+    content: string,
+    price: number,
+    account: string,
+    bank: string,
+  ) {
     this.socketRef.current.emit('sendEstimate', {
       roomId: this.id,
       msg: content,
@@ -120,25 +148,57 @@ export default class Room {
     const timestamp = new Date().toISOString()
     const id = this.generateMessageId()
     const message = new ProposalMessage({
-      id, content, price, account, bank, timestamp, userId: this.userId, status: 0,
+      id,
+      estimateId: -1,
+      content,
+      price,
+      account,
+      bank,
+      timestamp,
+      userId: this.userId,
+      status: 0,
     })
+    this.syncMessage(message)
+    this.update()
+  }
+
+  private syncMessage(message: Message) {
     this.messages.push(message)
-    this._lastChat = message.content
+    if (message instanceof CommonMessage) {
+      this._lastChat = message.content
+    }
     this._lastChatTime = message.timestamp
+  }
+
+  // public sendCoord(title: string, image: ArrayBuffer) {
+  //   this.socketRef.current.emit('sendCoord', {
+  //     roomId: this.id,
+  //     coordTitle: title,
+  //     coordImg: image,
+  //   })
+  //   this.update()
+  // }
+
+  public responseEstimate(id: number, value: boolean) {
+    this.socketRef.current.emit('responseEstimate', { estimateId: id, value })
+    if (value) {
+      this.sendMessage('수락되었습니다')
+    } else {
+      this.sendMessage('거절되었습니다')
+    }
     this.update()
   }
 
-  public sendCoord(title: string, image: ArrayBuffer) {
-    this.socketRef.current.emit('sendCoord', {
-      roomId: this.id,
-      coordTitle: title,
-      coordImg: image,
+  public read() {
+    this.socketRef.current.emit('readMsg', { roomId: this.id })
+    this.messages.forEach((message) => {
+      if (message.userId === this.userId) {
+        return
+      }
+      // eslint-disable-next-line no-param-reassign
+      message._isRead = true
     })
-    this.update()
-  }
-
-  public responseEstimate(value: boolean) {
-    this.socketRef.current.emit('responseEstimate', { roomId: this.id, value })
+    this._unreadCount = 0
     this.update()
   }
 
@@ -146,32 +206,40 @@ export default class Room {
     this.update()
   }
 
-  public onResponseEstimate({ value }: { value: boolean }) {
+  public onResponseEstimate({ estimateId, value }: { estimateId: number; value: boolean }) {
     this.update()
   }
 
   public onReceive(props: RecieveMessageProps) {
     const message = Room.createMessage(props)
-    this.receiveMessage(message)
+    this.syncMessage(message)
+    this._unreadCount += 1
     this.update()
   }
 
-  private receiveMessage(message: CommonMessage) {
-    this.messages.push(message)
-    this._lastChat = message.content
-    this._lastChatTime = message.timestamp
+  public onRead() {
+    this.messages.forEach((message) => {
+      if (message.userId !== this.userId) {
+        return
+      }
+      // eslint-disable-next-line no-param-reassign
+      message._isRead = true
+    })
+    this.update()
   }
 
   private static createMessage({
     chatId: id,
     chatType: type,
     userId,
+    estimateId,
     msg: message,
     account,
     price,
     bank,
-    coordTitle: title,
-    coordImg: img,
+    coordId,
+    coordTitle,
+    coordImg,
     chatTime,
     status,
   }: RecieveMessageProps) {
@@ -179,20 +247,48 @@ export default class Room {
       case 0:
         return Room.createCommon(id, userId, message, chatTime)
       case 1:
-        return Room.createProposal(id, userId, message, price, account, bank, chatTime, status)
+        return Room.createProposal(
+          id,
+          userId,
+          estimateId,
+          message,
+          price,
+          account,
+          bank,
+          chatTime,
+          status,
+        )
+      case 2:
+        return Room.createCoord(
+          id,
+          userId,
+          coordId,
+          coordImg,
+          coordTitle,
+          chatTime,
+        )
       default:
         return null
     }
   }
 
-  private static createCommon(id: number, userId: number, content: string, timestamp: string) {
+  private static createCommon(
+    id: number,
+    userId: number,
+    content: string,
+    timestamp: string,
+  ) {
     return new CommonMessage({
-      id, content, timestamp, userId,
+      id,
+      content,
+      timestamp,
+      userId,
     })
   }
 
   private static createProposal(
     id: number,
+    estimateId: number,
     userId: number,
     content: string,
     price: number,
@@ -202,7 +298,33 @@ export default class Room {
     status: number,
   ) {
     return new ProposalMessage({
-      id, userId, content, price, account, bank, timestamp, status,
+      id,
+      estimateId,
+      userId,
+      content,
+      price,
+      account,
+      bank,
+      timestamp,
+      status,
+    })
+  }
+
+  private static createCoord(
+    id: number,
+    userId: number,
+    coordId: number,
+    coordImg: string,
+    coordTitle: string,
+    timestamp: string,
+  ) {
+    return new CoordMessage({
+      id,
+      userId,
+      coordId,
+      coordImg,
+      coordTitle,
+      timestamp,
     })
   }
 }

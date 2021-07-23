@@ -16,6 +16,7 @@ interface OnPayment {
 
 interface OnResponseEstimate {
   roomId: number
+  estimateId: number
   value: boolean
 }
 
@@ -66,7 +67,6 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
     }
 
     room.onPayment(props)
-    update()
   }
 
   const onResponseEstimate = async ({ roomId, ...props } : OnResponseEstimate) => {
@@ -77,7 +77,6 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
     }
 
     room.onResponseEstimate(props)
-    update()
   }
 
   const onReceive = async ({ roomId, ...props } : OnReceive) => {
@@ -88,7 +87,16 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
     }
 
     room.onReceive(props)
-    update()
+  }
+
+  const onRead = async ({ roomId } : { roomId: number}) => {
+    const room = await getReceivedRoom(roomId)
+
+    if (!room) {
+      return
+    }
+
+    room.onRead()
   }
 
   const disconnect = () => {
@@ -99,6 +107,7 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
     socketRef.current.on('payment', onPayment)
     socketRef.current.on('responseEstimate', onResponseEstimate)
     socketRef.current.on('receiveMsg', onReceive)
+    socketRef.current.on('readMsg', onRead)
   }
 
   const getReceivedRoom = async (id: number, fail : number = 0) : Promise<Room> => {
@@ -141,9 +150,9 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
     const { userId } = user
 
     roomsRef.current = data.map(({
-      roomId, targetUser, lastChat, lastChatTime,
+      roomId, targetUser, unreadCount, lastChat, lastChatTime,
     }) => new Room({
-      id: roomId, userId, other: targetUser, lastChat, lastChatTime, socketRef, update,
+      id: roomId, unreadCount, userId, other: targetUser, lastChat, lastChatTime, socketRef, update,
     }))
 
     update()

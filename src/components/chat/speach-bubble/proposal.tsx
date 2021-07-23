@@ -3,10 +3,12 @@ import SpeachBubbleContainer, { SpeachBubbleContainerProps } from './container'
 import { CommonSpeachBubbleProps } from './common'
 
 interface ProposalSpeachBubbleProps extends CommonSpeachBubbleProps {
+  id: number
   price: number
 }
 
 export default function ProposalSpeachBubble({
+  id,
   userId,
   image,
   content,
@@ -15,7 +17,7 @@ export default function ProposalSpeachBubble({
 } : SpeachBubbleContainerProps & ProposalSpeachBubbleProps) {
   return (
     <SpeachBubbleContainer userId={userId} image={image} timestamp={timestamp}>
-      <Proposal price={price}>
+      <Proposal id={id} price={price}>
         {content}
       </Proposal>
     </SpeachBubbleContainer>

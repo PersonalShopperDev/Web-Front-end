@@ -72,6 +72,10 @@ export default function ChatRoom() {
       return
     }
 
+    if (messages[messages.length - 1].id !== room.userId) {
+      room.read()
+    }
+
     scrollDown('smooth')
   }, [messages.length])
 

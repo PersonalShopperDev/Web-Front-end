@@ -1,18 +1,21 @@
 import Avatar from 'widgets/avatar'
-import styles from 'sass/components/chat/list/friend.module.scss'
+import styles from 'sass/components/chat/list/room.module.scss'
 import Link from 'next/link'
 import convertTimestamp from 'lib/util/date'
+import { cn } from 'lib/util'
 
 export default function Room({
   id,
   img,
   name,
+  unreadCount,
   lastChat,
   lastChatTime,
 } : {
   id: number,
   img: string,
   name: string,
+  unreadCount: number,
   lastChat: string,
   lastChatTime: string,
 }) {
@@ -27,7 +30,7 @@ export default function Room({
             <h3 className={styles.name}>{name}</h3>
             <time className={styles.timestamp}>{convertTimestamp(lastChatTime)}</time>
           </div>
-          <p className={styles.message}>{lastChat}</p>
+          <p className={cn(styles.message, unreadCount > 0 && styles.unread)}>{lastChat}</p>
         </div>
       </a>
     </Link>

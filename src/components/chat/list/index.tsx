@@ -8,7 +8,7 @@ export default function ChatList() {
   return (
     <section className={styles.container}>
       {rooms?.map(({
-        id, other, lastChat, lastChatTime,
+        id, other, lastChat, lastChatTime, unreadCount,
       }) => {
         const { profileImg, name } = other
         return (
@@ -16,6 +16,7 @@ export default function ChatList() {
             key={id}
             id={id}
             img={profileImg}
+            unreadCount={unreadCount}
             name={name}
             lastChat={lastChat}
             lastChatTime={lastChatTime}

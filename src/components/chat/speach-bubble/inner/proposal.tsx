@@ -1,13 +1,26 @@
+import { useRoom } from 'providers/chat/room'
 import { ReactNode } from 'react'
 import styles from 'sass/components/chat/speach-bubble/inner/proposal.module.scss'
 
 export default function Proposal({
+  id,
   children,
   price,
 }: {
+  id: number
   children: ReactNode
   price: number
 }) {
+  const { room } = useRoom()
+
+  const response = (value: boolean) => {
+    room.responseEstimate(id, value)
+  }
+
+  const resolve = () => response(true)
+
+  const reject = () => response(false)
+
   return (
     <figure className={styles.container}>
       <h3 className={styles.caption}>코디견적 제안</h3>
@@ -21,8 +34,8 @@ export default function Proposal({
         진행해주세요.
       </p>
       <div className={styles.selection}>
-        <button className={styles.resolve} type="button">수락하기</button>
-        <button className={styles.reject} type="button">거절하기</button>
+        <button className={styles.resolve} type="button" onClick={resolve}>수락하기</button>
+        <button className={styles.reject} type="button" onClick={reject}>거절하기</button>
       </div>
     </figure>
   )
