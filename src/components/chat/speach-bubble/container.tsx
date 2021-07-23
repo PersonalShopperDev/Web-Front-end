@@ -7,6 +7,7 @@ import SpeachBubble from '.'
 export interface SpeachBubbleContainerProps {
   userId: number
   image?: string
+  timestamp: string
 }
 
 export default function SpeachBubbleContainer({

@@ -6,7 +6,6 @@ import SpeachBubbleContainer, { SpeachBubbleContainerProps } from './container'
 
 export interface CommonSpeachBubbleProps {
   content: string
-  timestamp: string
 }
 
 export default function CommonSpeachBubble({
