@@ -17,7 +17,6 @@ import { communicateWithContext } from 'lib/api'
 import { ACCESS_TOKEN, User } from 'providers/auth'
 import CodyStyle from 'components/profile/cody-style'
 import parseJwt from 'lib/util/jwt'
-import TemporarySubmit from 'components/profile/temporary-submit'
 import Navigation from 'components/navigation'
 
 interface Props {
@@ -79,7 +78,6 @@ export default function Page({ userId, data } : Props) {
           <Represent data={{ coord }} />
           <Divider />
           <LookBook data={lookbook} userId={userId} />
-          <TemporarySubmit />
         </>
       )}
     </Layout>
