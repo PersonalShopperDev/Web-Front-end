@@ -1,5 +1,5 @@
 import React, {
-  createContext, MutableRefObject, SetStateAction, useContext, useEffect, useState,
+  useRef, createContext, MutableRefObject, SetStateAction, useContext, useEffect, useState,
 } from 'react'
 import styles from 'sass/components/modal.module.scss'
 import { useModalProvider } from 'providers/modal'
@@ -51,11 +51,13 @@ export default function Modal({
   onClose,
   transition,
 }: Props) {
-  const intializeState = immediate ? 'ready' : 'hidden'
+  const intializeState : State = immediate ? 'ready' : 'hidden'
 
   const [state, setState] = controller
     ? [intializeState, controller]
     : useState<State>(intializeState)
+
+  const stateRef = useRef<State>(state)
 
   const transitionList = {
     ready: transition?.default,
@@ -71,6 +73,9 @@ export default function Modal({
   } = useModalProvider()
 
   const close = () => {
+    if (stateRef.current !== 'open') {
+      return
+    }
     setState('close')
   }
 
@@ -78,7 +83,7 @@ export default function Modal({
     setState('ready')
   }
 
-  const runCycle = (currentState: string) => {
+  const runCycle = (currentState: State) => {
     switch (currentState) {
       case 'ready':
         setTimeout(() => setState('open'), 16)
@@ -125,6 +130,7 @@ export default function Modal({
 
   useEffect(() => {
     runCycle(state)
+    stateRef.current = state
   }, [state])
 
   useEffect(() => {
@@ -135,8 +141,6 @@ export default function Modal({
   const value = {
     close,
   }
-
-  console.log(getStyle(state))
 
   return (
     <ModalContext.Provider value={value}>
