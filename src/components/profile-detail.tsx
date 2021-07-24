@@ -1,52 +1,25 @@
+import { User } from 'providers/auth'
 import styles from 'sass/components/profile-detail.module.scss'
 import Icon from 'widgets/icon'
 
-interface Data {
-  userType: string,
-  name: string,
-  introduction: string,
-  styles: Array<string>,
-  profileImg: string,
-  hopeToSupplier?: string,
-  bodyStat?: {
-    isPublic: boolean,
-    height: number,
-    weight: number,
-    id: number,
-    value: string,
-  },
-  closet?: {
-    id: number,
-    img: string
-  },
-  rating: number,
-  hireCount: number,
-  reviewCount: number,
-  careerList: [{
-    value: string,
-    type: number
-  }],
-  price: number,
-  coord: [{
-    id: number,
-    img: string,
-  }]
-}
-
 export default function ProfileDetail({
-  info,
+  data,
 } : {
-  info : Data,
+  data : User,
 }) {
+  const {
+    name, careerList, rating, reviewCount, hireCount, introduction, coord,
+  } = data
+
   return (
     <div className={styles.profileDetailBox}>
       <div className={styles.infoContainer}>
         <div>
-          <span className={styles.name}>{info.name}</span>
+          <span className={styles.name}>{name}</span>
           <span className={styles.stylistText}>Stylist</span>
         </div>
         <div>
-          {info.careerList.map((item) => (
+          {careerList.map((item) => (
             <div key={item.type}>
               {item.type === 0
               && (
@@ -75,30 +48,30 @@ export default function ProfileDetail({
         </div>
         <div className={styles.indicatorContainer}>
           <span className={styles.indicatorText}>
-            {info.rating}
+            {rating}
             점
           </span>
           <span className={styles.indicatorLine}>|</span>
           <span className={styles.indicatorText}>
-            {info.reviewCount}
+            {reviewCount}
             리뷰
           </span>
           <span className={styles.indicatorLine}>|</span>
           <span className={styles.indicatorText}>
-            {info.hireCount}
+            {hireCount}
             회고용
           </span>
         </div>
       </div>
       <div className={styles.introductionContainer}>
         <div className={styles.titleText}>자기소개</div>
-        <span className={styles.contentText}>{info.introduction}</span>
+        <span className={styles.contentText}>{introduction}</span>
       </div>
       <div className={styles.codyContainer}>
         <div className={styles.titleText}>대표 코디</div>
         <div className={styles.coordContainer}>
-          {info.coord.map((item) => (
-            <img src={item.img} width="164" height="171" className={styles.clothImage} alt="대표 코디" key={item.id} />
+          {coord.map(({ img, id }) => (
+            <img src={img} width="164" height="171" className={styles.clothImage} alt="대표 코디" key={id} />
           ))}
         </div>
       </div>

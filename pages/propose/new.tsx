@@ -40,15 +40,30 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const { userId, userType } = parseJwt(token)
 
-  if (userType === 'N' || userType === 'D') {
+  if (userType === 'N') {
+    return {
+      redirect: {
+        destination: '/onboard',
+        permanent: false,
+      },
+    }
+  }
+
+  if (userType === 'D') {
     return {
       notFound: true,
     }
   }
 
-  const { id } = context.params
+  const { uid } = context.query
 
-  if (userId === id) {
+  if (!uid) {
+    return {
+      notFound: true,
+    }
+  }
+
+  if (userId === uid) {
     return {
       redirect: {
         destination: '/',
@@ -61,7 +76,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     url: '/chat',
     context,
     payload: {
-      targetId: id,
+      targetId: uid,
     },
     method: 'POST',
   })

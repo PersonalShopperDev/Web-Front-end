@@ -8,7 +8,7 @@ export default function ProfileAppBar() {
 
   const { userId } = user
 
-  const previewLink = user?.userType === 'S' ? `/profile/${userId}` : '/profile/preview'
+  const previewLink = `/profile/${userId}`
 
   return (
     <AppBar

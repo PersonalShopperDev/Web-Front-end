@@ -1,33 +1,20 @@
+import React from 'react'
 import Layout from 'layouts/default'
+import CompleteSuggestion, { CompleteSuggestionData } from 'templates/cody-suggestion/complete-suggestion'
+import CompleteSuggestionAppBar from 'components/app-bar/complete-suggestion'
+import Navigation from 'components/navigation'
 import { GetServerSideProps } from 'next'
-import parseJwt from 'lib/util/jwt'
 import { ACCESS_TOKEN } from 'providers/auth'
-import RoomAppBar from 'components/app-bar/room'
-import ChatRoom from 'components/chat/room'
 import { communicateWithContext } from 'lib/api'
-import { Other, RecieveMessageProps } from 'lib/model/room'
-import RoomProvider from 'providers/chat/room'
+import parseJwt from 'lib/util/jwt'
 
-interface Props {
-  id: string
-  data: {
-    targetUser: Other
-    chatList: RecieveMessageProps[]
-  }
-}
-
-export default function Page({ id, data } : Props) {
-  const { targetUser } = data
-
-  const { name } = targetUser
-
+export default function Page({ data } : { data : CompleteSuggestionData }) {
   return (
     <Layout
-      header={<RoomAppBar title={name} />}
+      header={<CompleteSuggestionAppBar />}
+      bottom={<Navigation />}
     >
-      <RoomProvider id={id} data={data}>
-        <ChatRoom />
-      </RoomProvider>
+      <CompleteSuggestion data={data} />
     </Layout>
   )
 }
@@ -57,17 +44,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const { id } = context.params
 
-  const res = await communicateWithContext({
-    url: `/chat/history?roomId=${id}`,
-    context,
-  })
+  const res = await communicateWithContext({ url: `/coord?coordId=${id}`, context })
 
   if (res.status !== 200) {
-    if (res.status === 403) {
-      return {
-        notFound: true,
-      }
-    }
     throw new Error()
   }
 
@@ -75,7 +54,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      id,
       data,
     },
   }

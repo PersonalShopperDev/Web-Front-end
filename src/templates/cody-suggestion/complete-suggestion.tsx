@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import styles from 'sass/templates/cody-suggestion/complete-suggestion.module.scss'
 import Link from 'next/link'
-import communicate from 'lib/api'
 
 interface Clothes {
   img: string
@@ -9,33 +8,20 @@ interface Clothes {
   price: number
   purchaseUrl: string
 }
-interface Data {
+
+export interface CompleteSuggestionData {
   mainImg: string,
   title: string,
   comment: string,
   clothes: Clothes[]
 }
-export default function CompleteSuggestion({
-  coordId,
-}: {
-   coordId: number
-}) {
-  const [data, setData] = useState<Data>(null)
 
-  useEffect(() => {
-    const fetchCoordData = async () => {
-      const res = await communicate({ url: `/coord?coordId=${coordId}` })
-      if (res.status === 200) {
-        const coordData = await res.json()
-        setData(coordData)
-      }
-    }
-    fetchCoordData()
-  }, [])
+export default function CompleteSuggestion({
+  data,
+}: {
+  data: CompleteSuggestionData
+}) {
   return (
-    <>
-      {data
-    && (
     <div className={styles.container}>
       <div className={styles.styleBoard}>
         <img src={data.mainImg} width={342} height={359} alt="mainImg" />
@@ -70,7 +56,5 @@ export default function CompleteSuggestion({
         <span className={styles.contentText}>{data.comment}</span>
       </div>
     </div>
-    ) }
-    </>
   )
 }

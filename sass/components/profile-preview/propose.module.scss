@@ -1,0 +1,25 @@
+@use '../../lib/colors.scss' as colors;
+
+.container {
+    height: 100px;
+}
+
+.button {
+    position: absolute;
+    bottom: 25px;
+    left: 21px;
+    right: 21px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px 0;
+    font-size: 14px;
+    color: white;
+    background-color: colors.$accent;
+    border-radius: 5px;
+    box-shadow: 0 0 8px 0 rgba(black, .2);
+
+    &:hover {
+        text-decoration: none;
+    }
+}

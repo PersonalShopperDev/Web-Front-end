@@ -11,7 +11,7 @@ export default function Coord({
   image: string
   children: ReactNode,
 }) {
-  const href = `/suggestion?id=${id}`
+  const href = `/suggestion/${id}`
 
   return (
     <figure className={styles.container}>

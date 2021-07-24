@@ -24,27 +24,8 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-}
 
-.form {
-    border-top: 1px solid colors.$primary-200;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.imagePicker {
-    padding: 21px;
-}
-
-.input {
-    width: 100%;
-    resize: none;
-    font-size: 13px;
-}
-
-.submit {
-    padding: 19px;
-    font-size: 14px;
-    color: #969696;
+    &.ready {
+        visibility: hidden;
+    }
 }

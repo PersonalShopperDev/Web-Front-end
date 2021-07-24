@@ -288,8 +288,8 @@ export default class Room {
 
   private static createProposal(
     id: number,
-    estimateId: number,
     userId: number,
+    estimateId: number,
     content: string,
     price: number,
     account: string,
