@@ -1,7 +1,4 @@
 import communicate from 'lib/api'
-import { getCookie } from 'lib/util/cookie'
-import parseJwt from 'lib/util/jwt'
-import { ACCESS_TOKEN } from 'providers/auth'
 import React, {
   useContext, createContext, useState, useEffect, useRef,
 } from 'react'
@@ -12,6 +9,7 @@ interface ListProps {
   setStyleType: (value: any) => void
   setSortType: (value: string) => void
   setGenderType: (value: string) => void
+  setUserType: (value:string) => void
 }
 
 type userListsRefProps = {
@@ -69,7 +67,7 @@ export default function UserListProvider({
   }
   const fetchUserData = async () => {
     if (!userType) return
-    if (userType === 'S') {
+    if (userType === 'D') {
       fetchDemander()
     } else {
       fetchSupplier()
@@ -92,8 +90,6 @@ export default function UserListProvider({
     userListsRef.current.type = styleType
     userListsRef.current.sort = sortType
     userListsRef.current.gender = genderType
-    const token = getCookie(ACCESS_TOKEN)
-    setUserType(parseJwt(token).userType)
   }, [])
 
   const value = {
@@ -102,6 +98,7 @@ export default function UserListProvider({
     setStyleType,
     setSortType,
     setGenderType,
+    setUserType,
   }
   return <UserListContext.Provider value={value}>{children}</UserListContext.Provider>
 }

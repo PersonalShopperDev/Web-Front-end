@@ -8,7 +8,9 @@ import Supplier from 'components/user-list/supplier'
 
 export default function List({ userType }) {
   const [gender, setGender] = useState('M')
-  const { fetchUserData, setStyleType, setGenderType } = useUserList()
+  const {
+    fetchUserData, setStyleType, setGenderType, setUserType,
+  } = useUserList()
   const { setOnScrollFunc } = useInfinityScroll()
   const router = useRouter()
 
@@ -18,6 +20,7 @@ export default function List({ userType }) {
     setGenderType(type)
   }
   useEffect(() => {
+    setUserType(userType)
     setOnScrollFunc(fetchUserData)
     if (router.query.type !== undefined && userType === 'S') {
       const params = router.query.type.split('|')
@@ -26,7 +29,7 @@ export default function List({ userType }) {
   }, [])
   return (
     <div className={styles.listContainer}>
-      {userType === 'S'
+      {userType === 'D'
         ? (
           <>
             <div className={styles.header}>

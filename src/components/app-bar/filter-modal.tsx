@@ -37,7 +37,7 @@ export default function FilterModal({
         },
       }}
     >
-      {userType === 'D'
+      {userType === 'S'
         ? (
           <div className={styles.modalBox}>
             {filterLists.map((value, index) => (
