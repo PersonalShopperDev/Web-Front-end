@@ -94,21 +94,16 @@ export default function ChatRoom() {
     <section className={styles.container}>
       <section ref={innerRef} className={styles.inner}>
         <div className={styles.list}>
-          {messages?.map((props, index, array) => {
-            if (index > 0) {
-              const currentDate = new Date(props.timestamp).getDate()
-              const previousDate = new Date(array[index - 1].timestamp).getDate()
+          {messages?.reduce((acc, cur, i, arr) => {
+            if (i > 0) {
+              const currentDate = new Date(cur.timestamp).getDate()
+              const previousDate = new Date(arr[i - 1].timestamp).getDate()
               if (currentDate !== previousDate) {
-                return (
-                  <div key={props.id}>
-                    <DateDivider timestamp={props.timestamp} />
-                    <Message message={props} />
-                  </div>
-                )
+                acc.push(<DateDivider key={`${cur.id}-t`} timestamp={cur.timestamp} />)
               }
             }
-            return <Message key={props.id} message={props} />
-          })}
+            return [...acc, <Message key={`${cur.id}-${1}`} message={cur} />]
+          }, [])}
         </div>
       </section>
       <Form />
