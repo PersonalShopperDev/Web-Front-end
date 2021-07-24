@@ -81,7 +81,7 @@ export default function Modal({
   const runCycle = (currentState: string) => {
     switch (currentState) {
       case 'ready':
-        setState('open')
+        setTimeout(() => setState('open'), 16)
         break
       case 'open':
         update(true, transition?.onActive?.duration)
@@ -135,6 +135,8 @@ export default function Modal({
   const value = {
     close,
   }
+
+  console.log(getStyle(state))
 
   return (
     <ModalContext.Provider value={value}>
