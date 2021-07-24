@@ -9,7 +9,7 @@ export default function UserListAppBar({ userType }) {
   const { createAlert } = useAlert()
 
   const onClickSearch = async () => {
-    if (userType === 'D') {
+    if (userType === 'S') {
       router.push('/users/search')
     } else {
       await createAlert({ text: '준비중입니다' })
@@ -18,7 +18,7 @@ export default function UserListAppBar({ userType }) {
 
   return (
     <AppBar
-      title={userType === 'D' ? '스타일리스트' : '쇼퍼'}
+      title={userType === 'S' ? '스타일리스트' : '쇼퍼'}
       back
       actions={[
         <Icon
