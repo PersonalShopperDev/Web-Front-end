@@ -166,8 +166,6 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
   }
 
   useEffect(() => {
-    setLoad(false)
-
     if (isConnected()) {
       setLoad(true)
       return null
@@ -177,6 +175,7 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
       setLoad(true)
       return null
     }
+    setLoad(false)
 
     initialize()
 

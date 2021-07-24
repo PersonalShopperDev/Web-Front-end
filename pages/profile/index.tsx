@@ -14,9 +14,8 @@ import Represent from 'components/profile/represents'
 import LookBook, { LookBookData } from 'components/profile/look-book'
 import { GetServerSideProps } from 'next'
 import { communicateWithContext } from 'lib/api'
-import { ACCESS_TOKEN, useAuth, User } from 'providers/auth'
+import { ACCESS_TOKEN, User } from 'providers/auth'
 import CodyStyle from 'components/profile/cody-style'
-import { useEffect } from 'react'
 import parseJwt from 'lib/util/jwt'
 import TemporarySubmit from 'components/profile/temporary-submit'
 import Navigation from 'components/navigation'
@@ -41,12 +40,6 @@ export default function Page({ userId, data } : Props) {
     bodyStat,
     hopeToSupplier,
   } = data
-
-  const { fetchUser } = useAuth()
-
-  useEffect(() => {
-    fetchUser()
-  }, [])
 
   return (
     <Layout
