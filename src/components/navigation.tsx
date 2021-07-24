@@ -20,8 +20,8 @@ export default function Navigation() {
       {navLists.map(({
         href, title, selectedPath, notSelectedPath,
       }) => (
-        <Link href={href}>
-          <a className={styles.itemContainer} href={href}>
+        <Link key={title} href={href === 'none' ? '/' : href}>
+          <a className={styles.itemContainer} href={href === 'none' ? '/' : href}>
             <img
               src={isCurrentPath(href) ? selectedPath : notSelectedPath}
               alt={title}
@@ -47,7 +47,7 @@ const navLists = [{
   title: '패션컨텐츠',
   selectedPath: '/icons/selectedNav2.png',
   notSelectedPath: '/icons/nav2.png',
-  href: 'javascript:void(0)',
+  href: 'none',
 }, {
   title: '채팅',
   selectedPath: '/icons/selectedNav3.png',
@@ -57,7 +57,7 @@ const navLists = [{
   title: '스토어',
   selectedPath: '/icons/selectedNav4.png',
   notSelectedPath: '/icons/nav4.png',
-  href: 'javascript:void(0)',
+  href: 'none',
 }, {
   title: 'MY프로필',
   selectedPath: '/icons/selectedNav5.png',
