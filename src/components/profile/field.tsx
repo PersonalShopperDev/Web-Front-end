@@ -103,6 +103,7 @@ function Inner({
     }
 
     if (value === content) {
+      setState('default')
       return
     }
 
