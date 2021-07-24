@@ -1,22 +1,14 @@
-import { getCookie } from 'lib/util/cookie'
-import parseJwt from 'lib/util/jwt'
 import Link from 'next/dist/client/link'
-import { ACCESS_TOKEN, useAuth } from 'providers/auth'
-import { useEffect, useState } from 'react'
+import { useAuth } from 'providers/auth'
 import styles from 'sass/components/profile-app-bar.module.scss'
 import AppBar from '.'
 
 export default function ProfileAppBar() {
   const { user } = useAuth()
-  const [id, setId] = useState()
 
-  const previewLink = user?.userType === 'S' ? `/stylist/profile?id=${id}` : '/profile/preview'
+  const { userId } = user
 
-  useEffect(() => {
-    const token = getCookie(ACCESS_TOKEN)
-    const { userId } = parseJwt(token)
-    setId(userId)
-  }, [])
+  const previewLink = user?.userType === 'S' ? `/profile/${userId}` : '/profile/preview'
 
   return (
     <AppBar
