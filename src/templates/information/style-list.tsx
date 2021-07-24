@@ -4,8 +4,11 @@ import BottomButton from 'src/components/bottom-button'
 import communicate from 'lib/api'
 import StyleList from 'components/style-list'
 import { useRouter } from 'next/router'
+import { useAuth } from 'providers/auth'
 
 export default function StyleLists() {
+  const { fetchUser } = useAuth()
+
   const [maleStyleLists, setMaleStyleLists] = useState()
   const [femaleStyleLists, setFemaleStyleLists] = useState()
   const [clickedMaleStyleList, setClickedMaleStyleList] = useState([])
@@ -59,6 +62,9 @@ export default function StyleLists() {
       list: clickedFemaleStyleList.concat(clickedMaleStyleList),
     }
     await communicate({ url: '/style', payload, method: 'PUT' })
+
+    await fetchUser()
+
     router.back()
   }
   return (

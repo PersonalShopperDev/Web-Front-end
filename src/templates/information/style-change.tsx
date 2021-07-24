@@ -3,13 +3,16 @@ import StylePicture from 'components/information/style-picture'
 import styles from 'sass/templates/information/style-change.module.scss'
 import { useOnboarding } from 'providers/onboarding'
 import { useRouter } from 'next/router'
+import { useAuth } from 'providers/auth'
 
 export default function StyleChange() {
+  const { fetchUser } = useAuth()
   const { setEdit } = useOnboarding()
   const router = useRouter()
 
-  const onClickEdit = (key) => {
+  const onClickEdit = async (key) => {
     setEdit(key)
+    await fetchUser()
     router.back()
   }
   return (
