@@ -1,5 +1,5 @@
 import Layout from 'layouts/default'
-import List from 'templates/user-list/list'
+import List from 'templates/users/list'
 // import Navigation from 'src/components/navigation'
 import UserListAppBar from 'components/app-bar/user-list'
 import InfinityScrollProvider from 'providers/infinity-scroll'
