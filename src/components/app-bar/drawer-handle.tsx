@@ -3,12 +3,15 @@ import Drawer from 'components/drawer'
 import styles from 'sass/components/drawer.module.scss'
 import { useEffect, useState } from 'react'
 import { deleteCookie, getCookie } from 'lib/util/cookie'
+import { useAuth } from 'providers/auth'
 import { DRAWER_SHOULD_BE_OPEN } from './term'
 import Avatar from './avatar'
 
 export default function DrawerHandle() {
   const [shouldOpen, setShouldOpen] = useState<boolean>(false)
   const [load, setLoad] = useState(false)
+
+  const { user } = useAuth()
 
   useEffect(() => {
     const drawerShouldBeOpen = getCookie(DRAWER_SHOULD_BE_OPEN)
@@ -19,7 +22,7 @@ export default function DrawerHandle() {
     setLoad(true)
   }, [])
 
-  if (!load) {
+  if (!load || !user) {
     return <Avatar />
   }
 
