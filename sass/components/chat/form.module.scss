@@ -1,0 +1,76 @@
+@use '../../lib/colors' as colors;
+
+.form {
+    border-top: 1px solid colors.$primary-200;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px;
+}
+
+.plus {
+    padding: 7px;
+    transform: translateY(-2px);
+}
+
+.imagePicker {
+    padding: 7px;
+}
+
+.input {
+    padding: 0 7px;
+    width: 100%;
+    resize: none;
+    font-size: 13px;
+}
+
+.submit {
+    padding: 5px;
+    font-size: 14px;
+    color: #969696;
+}
+
+.dialog {
+  background-color: #f5f3f2;
+  width: 246px;
+  border-radius: 7px;
+  padding: 24px 20px 21px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .title {
+      font-size: 14px;
+  }
+
+  .options {
+    margin-top: 17px;
+    display: flex;
+  }
+}
+
+.button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 94px;
+    height: 94px;
+    color: colors.$primary-700;
+    background-color: white;
+
+    & + & {
+        margin-left: 15px;
+    }
+
+    &:hover {
+        background-color: colors.$accent;
+        text-decoration: none;
+    }
+
+    div {
+        margin-top: 6px;
+        font-size: 10px;
+        font-weight: bold;
+    }
+}
