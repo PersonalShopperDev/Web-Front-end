@@ -14,7 +14,11 @@
 }
 
 .figure {
+    color: inherit;
     display: block;
+    &:hover {
+        text-decoration: none;
+    }
 }
 
 .figcaption {
