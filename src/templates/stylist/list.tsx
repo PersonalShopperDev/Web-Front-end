@@ -11,7 +11,10 @@ export default function List() {
   const router = useRouter()
   useEffect(() => {
     setOnScrollFunc(fetchUserData)
-    if (router.query.type !== undefined) setStyleType(router.query.type)
+    if (router.query.type !== undefined) {
+      const params = router.query.type.split('|')
+      setStyleType(`${params.join('&styleType=')}`)
+    }
   }, [])
   return (
     <div className={styles.listContainer}>
