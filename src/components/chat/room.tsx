@@ -1,3 +1,4 @@
+import { cn } from 'lib/util'
 import communicate from 'lib/api'
 import { useRoom } from 'providers/chat/room'
 import {
@@ -8,12 +9,12 @@ import DateDivider from './date-divider'
 import Message from './message'
 import Form from './form'
 
-type State = 'default' | 'pending'
+type State = 'ready' | 'default' | 'pending'
 
 export default function ChatRoom() {
   const { room } = useRoom()
 
-  const [state, setState] = useState<State>('default')
+  const [state, setState] = useState<State>('ready')
 
   const stateRef = useRef<State>(state)
 
@@ -22,6 +23,10 @@ export default function ChatRoom() {
   const { messages } = room
 
   const loadMoreMessages = async () => {
+    if (stateRef.current === 'ready') {
+      return
+    }
+
     setState('pending')
 
     const roomId = room.id
@@ -87,13 +92,14 @@ export default function ChatRoom() {
     scrollDown()
     innerRef.current.addEventListener('scroll', onScroll)
 
+    setState('default')
     return () => innerRef.current?.removeEventListener('scroll', onScroll)
   }, [])
 
   return (
     <section className={styles.container}>
       <section ref={innerRef} className={styles.inner}>
-        <div className={styles.list}>
+        <div className={cn(styles.list, state === 'ready' && styles.ready)}>
           {messages?.reduce((acc, cur, i, arr) => {
             if (i > 0) {
               const currentDate = new Date(cur.timestamp).getDate()
