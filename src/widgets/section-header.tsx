@@ -13,7 +13,7 @@ export default function SectionHeader({
   return (
     <section className={styles.container}>
       <h2 className={styles.title}>{title}</h2>
-      <Link href="/">
+      <Link href={moreHref}>
         <a className={styles.more} href={moreHref}>
           <span>more</span>
           <Icon size={7} src="back-small.png" />
