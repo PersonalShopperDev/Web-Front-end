@@ -28,7 +28,7 @@ export default function Information() {
   }, [])
   useEffect(() => {
     if (tokenInfo !== null) {
-      if (tokenInfo.userType === 'W' && tokenInfo.gender === 'F') {
+      if (tokenInfo.userType === 'D' && tokenInfo.gender === 'F') {
         setEachBoxLists([{
           title: '선호스타일',
           information: <StyleText />,
@@ -50,7 +50,7 @@ export default function Information() {
           information: <Price />,
           key: 'price',
         }])
-      } else if (tokenInfo.userType === 'W' && tokenInfo.gender === 'M') {
+      } else if (tokenInfo.userType === 'D' && tokenInfo.gender === 'M') {
         setEachBoxLists([{
           title: '선호스타일',
           information: <StyleText />,
