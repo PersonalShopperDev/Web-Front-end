@@ -4,7 +4,7 @@ import styles from 'sass/components/drawer.module.scss'
 import { useEffect, useState } from 'react'
 import { deleteCookie, getCookie } from 'lib/util/cookie'
 import { useAuth } from 'providers/auth'
-import { DRAWER_SHOULD_BE_OPEN } from './term'
+import { DRAWER_SHOULD_BE_OPEN } from './drawer'
 import Avatar from './avatar'
 
 export default function DrawerHandle() {
