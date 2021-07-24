@@ -73,11 +73,11 @@ export default class Room {
     this._lastChat = lastChat
     this._lastChatTime = lastChatTime
     this._messages = []
+    this.socketRef = socketRef
+    this.update = update
     if (messages) {
       this.appendMessage(messages)
     }
-    this.socketRef = socketRef
-    this.update = update
   }
 
   public get messages() {

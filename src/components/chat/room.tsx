@@ -77,6 +77,10 @@ export default function ChatRoom() {
       return
     }
 
+    if (messages.length === 0) {
+      return
+    }
+
     if (messages[messages.length - 1].id !== room.userId) {
       room.read()
     }

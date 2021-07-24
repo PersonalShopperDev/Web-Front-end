@@ -132,6 +132,7 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
     const room = new Room({
       socketRef, userId, update, ...props,
     })
+
     roomsRef.current.push(room)
     return room
   }
