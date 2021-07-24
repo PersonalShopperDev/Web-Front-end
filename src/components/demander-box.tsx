@@ -19,7 +19,7 @@ export default function DemanderBox({
   info: Info,
 }) {
   return (
-    <Link href={{ pathname: '/users/profile', query: { id: info.id } }}>
+    <Link href={`/users/profile/${info.id}`}>
       <div className={styles.listBox}>
         <img src={info.img} alt={info.name} className={styles.profileImg} />
         <div className={styles.infoBox}>

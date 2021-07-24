@@ -94,7 +94,7 @@ export default function StylistGridView({
             )}
           </>
         )}
-        moreHref="/users"
+        moreHref={state === 'supplier' ? '/users/stylist' : '/users/shopper'}
       />
       <section className={styles.grid}>
         {isSelected('supplier') && suppliers.map(({
