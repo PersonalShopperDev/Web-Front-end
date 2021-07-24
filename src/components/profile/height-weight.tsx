@@ -65,7 +65,7 @@ function Inner({ data } : { data: HeightWeightData}) {
       if (!res.ok) {
         throw new Error()
       }
-      fetchUser()
+      return fetchUser()
     }).catch(async () => {
       await createAlert({ text: ERROR_MESSAGE })
     })
@@ -77,9 +77,9 @@ function Inner({ data } : { data: HeightWeightData}) {
     if (state !== 'edit') {
       return
     }
-    const { weight: weightValue, height: heightValue } = data.bodyStat
-    weightRef.current.value = weightValue.toString()
-    heightRef.current.value = heightValue.toString()
+    const { weight: weightValue, height: heightValue } = bodyStat
+    weightRef.current.value = weightValue?.toString() || ''
+    heightRef.current.value = heightValue?.toString() || ''
   }, [state])
 
   useEffect(() => {
