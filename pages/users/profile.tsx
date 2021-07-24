@@ -1,5 +1,5 @@
 import Layout from 'layouts/default'
-import Profile from 'templates/stylist/profile'
+import Profile from 'templates/users/profile'
 import StylistProfileAppBar from 'src/components/app-bar/stylist-profile'
 import { useRouter } from 'next/router'
 import LookBookProvider from 'providers/look-book'

@@ -20,6 +20,8 @@
 .category {
     flex-direction: row;
     display: flex;
+    flex-wrap: wrap;
+    width: 200px;
 }
 .styleBox {
     padding: 4px 10px;

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import styles from 'sass/templates/stylist/profile.module.scss'
+import styles from 'sass/templates/users/profile.module.scss'
 import BottomButton from 'src/components/bottom-button'
 import ProfileDetail from 'src/components/profile-detail'
 import CodyLookBook from 'src/components/cody-lookbook'

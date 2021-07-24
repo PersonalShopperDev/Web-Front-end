@@ -7,13 +7,11 @@ interface StyleLists {
   value: string
 }
 export default function StyleList({
-  isSearch,
   styleLists,
   clickedStyleList,
   isOverLength,
   styleClick,
 }: {
-  isSearch?: boolean
   isOverLength: boolean
   styleLists: StyleLists[]
   clickedStyleList: Array<number>
@@ -47,8 +45,4 @@ export default function StyleList({
         ) : null}
     </>
   )
-}
-
-StyleList.defaultProps = {
-  isSearch: false,
 }

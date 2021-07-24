@@ -1,4 +1,7 @@
 import communicate from 'lib/api'
+import { getCookie } from 'lib/util/cookie'
+import parseJwt from 'lib/util/jwt'
+import { ACCESS_TOKEN } from 'providers/auth'
 import React, {
   useContext, createContext, useState, useEffect, useRef,
 } from 'react'
@@ -8,12 +11,14 @@ interface ListProps {
   fetchUserData: (type?: string, sort?: string) => void
   setStyleType: (value: any) => void
   setSortType: (value: string) => void
+  setGenderType: (value: string) => void
 }
 
 type userListsRefProps = {
   value: any[],
   type: string,
   sort: string,
+  gender: string,
 }
 const UserListContext = createContext<ListProps>(null)
 
@@ -26,20 +31,32 @@ export default function UserListProvider({
 }) {
   const [userLists, setUserLists] = useState([])
   const [styleType, setStyleType] = useState('')
-  const [sortType, setSortType] = useState('popular')
-  const userListsRef = useRef<userListsRefProps>({ value: [], type: '', sort: 'popular' })
+  const [sortType, setSortType] = useState('recommend')
+  const [genderType, setGenderType] = useState('M')
+  const [userType, setUserType] = useState(null)
+  const userListsRef = useRef<userListsRefProps>({
+    value: [], type: '', sort: 'recommend', gender: 'M',
+  })
   const pageNum = 20
-
-  const fetchUserData = async () => {
+  const fetchDemander = async () => {
+    const page = userListsRef.current.value.length / pageNum
+    if (Math.floor(userListsRef.current.value.length / pageNum) !== page) return
+    const res = await communicate({ url: `/user/demander?gender=${userListsRef.current.gender}&page=${page}` })
+    const lists = await res.json()
+    const newLists = userListsRef.current.value.concat(lists)
+    setUserLists(newLists)
+  }
+  const fetchSupplier = async () => {
     let res
     let newLists
-    if (userListsRef.current.value === undefined) return
     const page = userListsRef.current.value.length / pageNum
     if (Math.floor(userListsRef.current.value.length / pageNum) !== page) return
     if (userListsRef.current.type !== '') {
-      res = await communicate({ url: `/supplier/search?type=${userListsRef.current.type}&sort=${userListsRef.current.sort}&page=${page}` })
+      res = await communicate({ url: `/user/supplier/filter?styleType=${userListsRef.current.type}&sort=${userListsRef.current.sort}&page=${page}` })
+    } else if (userListsRef.current.sort === 'professional') {
+      res = await communicate({ url: `/user/supplier?supplierType=2&page=${page}` })
     } else {
-      res = await communicate({ url: `/supplier?sort=${userListsRef.current.sort}&page=${page}` })
+      res = await communicate({ url: `/user/supplier?sort=${userListsRef.current.sort}&page=${page}` })
     }
     const lists = await res.json()
     if (userListsRef.current.type !== '') {
@@ -50,6 +67,14 @@ export default function UserListProvider({
     }
     setUserLists(newLists)
   }
+  const fetchUserData = async () => {
+    if (!userType) return
+    if (userType === 'S') {
+      fetchDemander()
+    } else {
+      fetchSupplier()
+    }
+  }
 
   useEffect(() => {
     userListsRef.current.value = userLists
@@ -58,19 +83,25 @@ export default function UserListProvider({
   useEffect(() => {
     userListsRef.current.type = styleType
     userListsRef.current.sort = sortType
+    userListsRef.current.gender = genderType
     userListsRef.current.value = []
     fetchUserData()
-  }, [styleType, sortType])
+  }, [styleType, sortType, genderType, userType])
 
   useEffect(() => {
     userListsRef.current.type = styleType
     userListsRef.current.sort = sortType
+    userListsRef.current.gender = genderType
+    const token = getCookie(ACCESS_TOKEN)
+    setUserType(parseJwt(token).userType)
   }, [])
+
   const value = {
     userLists,
     fetchUserData,
     setStyleType,
     setSortType,
+    setGenderType,
   }
   return <UserListContext.Provider value={value}>{children}</UserListContext.Provider>
 }

@@ -1,14 +1,28 @@
 import React from 'react'
-import styles from 'sass/components/list-box.module.scss'
+import styles from 'sass/components/stylist-box.module.scss'
 import Link from 'next/link'
 
-export default function ListBox({
+interface StyleType {
+  id: number
+  value: string
+}
+interface Info {
+  id: number
+  img: string
+  name: string
+  price: number
+  rating: number
+  hireCount: number
+  reviewCount: number
+  styleType: StyleType[]
+}
+export default function StylistBox({
   info,
 } : {
-  info: any,
+  info: Info,
 }) {
   return (
-    <Link href={{ pathname: '/stylist/profile', query: { id: info.id } }}>
+    <Link href={{ pathname: '/users/profile', query: { id: info.id } }}>
       <div className={styles.listBox}>
         <img src={info.img} alt={info.name} className={styles.profileImg} />
         <div className={styles.infoBox}>

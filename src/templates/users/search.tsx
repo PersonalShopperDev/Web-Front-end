@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import styles from 'sass/templates/stylist/search.module.scss'
+import styles from 'sass/templates/users/search.module.scss'
 import BottomButton from 'src/components/bottom-button'
 import { useOnboarding } from 'providers/onboarding'
 import Link from 'next/link'
@@ -46,7 +46,7 @@ export default function Search() {
         clickedStyleList={clickedStyleList}
         styleClick={styleClick}
       />
-      <Link href={{ pathname: '/stylist', query: { type: clickedStyleList.join('|') } }}>
+      <Link href={{ pathname: '/users', query: { type: clickedStyleList.join('|') } }}>
         <BottomButton text="검색하기" />
       </Link>
     </div>

@@ -1,5 +1,5 @@
 import Layout from 'layouts/default'
-import Search from 'templates/stylist/search'
+import Search from 'templates/users/search'
 import StylistSearchAppBar from 'src/components/app-bar/stylist-search'
 import OnboardingProvider from 'providers/onboarding'
 import { GetServerSideProps } from 'next'
