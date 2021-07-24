@@ -8,6 +8,8 @@ import StyleBoardItem from 'components/cody-suggestion/style-board-item'
 import { useRouter } from 'next/router'
 import * as htmlToImage from 'html-to-image'
 import communicate from 'lib/api'
+import { useAlert } from 'providers/dialog/alert/inner'
+import ERROR_MESSAGE from 'lib/constants/error'
 
 export interface ProductInformation {
   url: string,
@@ -92,13 +94,20 @@ const resizeAndBlob = async (url: string): Promise<Blob> => new Promise((resolve
 export default function CodySuggetsion({
   id,
 }: {
-  id: number
+  id: string
 }) {
   const [productCount, setProductCount] = useState(1)
+
   const [products, setProducts] = useState<Array<ProductInformation>>()
+
   const [description, setDescription] = useState<ProductDescription>()
+
+  const { createAlert } = useAlert()
+
   const router = useRouter()
+
   const styleBoardRef = useRef<HTMLDivElement>()
+
   const onClickPlus = () => {
     const currentTempData = localStorage.getItem(`cody${id}`)
     const parsedData: TempData = JSON.parse(currentTempData)
@@ -108,6 +117,7 @@ export default function CodySuggetsion({
     }
     setProductCount((prevCount) => prevCount + 1)
   }
+
   const onClickSend = async () => {
     const currentTempData = localStorage.getItem(`cody${id}`)
     const parsedData = JSON.parse(currentTempData)
@@ -154,11 +164,32 @@ export default function CodySuggetsion({
         })
       })
       .catch((error) => {
-        console.error('oops, something went wrong!', error)
+        createAlert({ text: ERROR_MESSAGE })
       })
+
     localStorage.removeItem(`cody${id}`)
-    router.back()
+
+    await redirect()
   }
+
+  const redirect = async () => {
+    const res = await communicate({
+      url: '/chat',
+      payload: {
+        targetId: parseInt(id, 10),
+      },
+      method: 'POST',
+    })
+
+    if (res.status !== 200) {
+      return
+    }
+
+    const { roomId } = await res.json()
+
+    router.push(`/chat/${roomId}`)
+  }
+
   useEffect(() => {
     const currentTempData = localStorage.getItem(`cody${id}`)
     const parsedData: TempData = JSON.parse(currentTempData)
@@ -168,6 +199,7 @@ export default function CodySuggetsion({
       if (parsedData.products !== undefined) setProductCount(parsedData.products.length)
     }
   }, [])
+
   return (
     <>
       <div className={styles.container}>
@@ -190,7 +222,7 @@ export default function CodySuggetsion({
           </div>
           {[...Array(productCount)].map((value, index) => (
             <Product
-              id={id}
+              id={parseInt(id, 10)}
               index={index}
               item={products !== undefined ? products[index] : null}
               setProducts={setProducts}
@@ -202,7 +234,7 @@ export default function CodySuggetsion({
           <div className={styles.section_header}>
             <span>코디설명</span>
           </div>
-          <Description id={id} description={description} />
+          <Description id={parseInt(id, 10)} description={description} />
         </section>
       </div>
       <div className={styles.gradient}>

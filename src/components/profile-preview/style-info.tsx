@@ -2,15 +2,18 @@ import Section from 'components/profile/section'
 import styles from 'sass/components/profile-preview/style-info.module.scss'
 
 interface Data {
-  isPublic: boolean,
-  height: number,
-  weight: number,
-  value: string,
+  isPublic: boolean
+  height: number
+  weight: number
+  body: {
+    id: number
+    value: string
+  }
 }
 
 export default function StyleInfo({ data } : { data : Data }) {
   const {
-    isPublic, height, weight, value,
+    isPublic, height, weight, body,
   } = data
   return (
     <Section
@@ -29,10 +32,10 @@ export default function StyleInfo({ data } : { data : Data }) {
             <span className={styles.value}>{`${weight}kg`}</span>
           </div>
         )}
-        {value && (
+        {body && (
           <div className={styles.row}>
             <span className={styles.property}>체형</span>
-            <span className={styles.value}>{value}</span>
+            <span className={styles.value}>{body.value}</span>
           </div>
         )}
       </div>
