@@ -27,7 +27,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
-  const { userType } = parseJwt(token)
+  const { userId, userType } = parseJwt(token)
 
   if (userType === 'N') {
     return {
@@ -45,6 +45,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const { uid } = context.query
+
+  if (userId === uid) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
+
   return {
     props: {
       uid,
