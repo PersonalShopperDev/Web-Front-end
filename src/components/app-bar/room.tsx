@@ -9,6 +9,7 @@ export default function RoomAppBar({
     <AppBar
       title={title}
       back
+      backUrl="/chat"
     />
   )
 }
