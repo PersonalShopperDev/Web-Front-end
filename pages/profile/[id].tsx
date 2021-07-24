@@ -7,6 +7,7 @@ import { ACCESS_TOKEN, User } from 'providers/auth'
 import { communicateWithContext } from 'lib/api'
 import DemanderProfile from 'templates/profile/demander'
 import ProfilePreviewAppBar from 'components/app-bar/profile-preview'
+import parseJwt from 'lib/util/jwt'
 
 export default function Page({ id, data: other } : { id: string; data: User }) {
   return (
@@ -42,6 +43,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       redirect: {
         destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
+  const { userType } = parseJwt(token)
+
+  if (userType === 'N') {
+    return {
+      redirect: {
+        destination: '/onboard',
         permanent: false,
       },
     }

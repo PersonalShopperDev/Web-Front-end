@@ -4,6 +4,7 @@ import Information from 'templates/information/index'
 import OnboardingProvider from 'providers/onboarding'
 import { GetServerSideProps } from 'next'
 import { ACCESS_TOKEN } from 'providers/auth'
+import parseJwt from 'lib/util/jwt'
 
 export default function Page() {
   return (
@@ -23,6 +24,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       redirect: {
         destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
+  const { userType } = parseJwt(token)
+
+  if (userType === 'N') {
+    return {
+      redirect: {
+        destination: '/onboard',
         permanent: false,
       },
     }

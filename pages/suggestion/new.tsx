@@ -1,25 +1,23 @@
 import Layout from 'layouts/default'
-import Search from 'templates/stylist/search'
-import StylistSearchAppBar from 'src/components/app-bar/stylist-search'
-import OnboardingProvider from 'providers/onboarding'
+import CodySuggestionAppBar from 'components/app-bar/cody-suggestion'
+import CodySuggetsion from 'templates/cody-suggestion'
 import { GetServerSideProps } from 'next'
 import { ACCESS_TOKEN } from 'providers/auth'
 import parseJwt from 'lib/util/jwt'
 
-export default function Page() {
+export default function Page({ uid } : { uid: string}) {
   return (
     <Layout
-      header={<StylistSearchAppBar />}
+      header={<CodySuggestionAppBar />}
     >
-      <OnboardingProvider>
-        <Search />
-      </OnboardingProvider>
+      <CodySuggetsion id={uid} />
     </Layout>
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const token = context.req.cookies[ACCESS_TOKEN]
+
   if (!token) {
     return {
       redirect: {
@@ -40,7 +38,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
+  if (userType === 'D') {
+    return {
+      notFound: true,
+    }
+  }
+
+  const { uid } = context.query
   return {
-    props: {},
+    props: {
+      uid,
+    },
   }
 }

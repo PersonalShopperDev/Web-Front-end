@@ -95,7 +95,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
-  const { userId } = parseJwt(token)
+  const { userType, userId } = parseJwt(token)
+
+  if (userType === 'N') {
+    return {
+      redirect: {
+        destination: '/onboard',
+        permanent: false,
+      },
+    }
+  }
 
   const [profileResponse, lookbookResponse] = await Promise.all([
     communicateWithContext({

@@ -41,7 +41,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     }
   }
+
   const { userType } = parseJwt(token)
+
+  if (userType === 'N') {
+    return {
+      redirect: {
+        destination: '/onboard',
+        permanent: false,
+      },
+    }
+  }
+
   return {
     props: {
       data: {
