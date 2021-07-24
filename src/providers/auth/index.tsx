@@ -20,6 +20,9 @@ export interface User {
   img: string
   closet: {id: number, img: string}[]
   careerList: { value: string, type: number }[]
+  reviewCount: number,
+  hireCount: number,
+  rating: number,
   price: number
   coord: {id: number, img: string}[]
   hopeToSupplier: string
@@ -27,6 +30,10 @@ export interface User {
     isPublic: boolean
     height: number
     weight: number
+    body: {
+      id: number
+      value: string
+    }
   }
 }
 
