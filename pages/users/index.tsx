@@ -1,6 +1,6 @@
 import Layout from 'layouts/default'
 import UserListAppBar from 'components/app-bar/user-list'
-import List from 'templates/stylist/list'
+import List from 'templates/users/list'
 import Navigation from 'src/components/navigation'
 import InfinityScrollProvider from 'providers/infinity-scroll'
 import UserListProvider from 'providers/user-list'
