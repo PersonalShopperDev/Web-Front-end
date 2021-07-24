@@ -26,7 +26,7 @@ export default function List({ userType }) {
   }, [])
   return (
     <div className={styles.listContainer}>
-      {userType === 'D'
+      {userType === 'S'
         ? (
           <>
             <div className={styles.header}>
