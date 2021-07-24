@@ -23,7 +23,7 @@ export default function List({ userType }) {
     setUserType(userType)
     setOnScrollFunc(fetchUserData)
     if (router.query.type !== undefined && userType === 'S') {
-      const params = router.query.type.split('|')
+      const params = (router.query.type as string).split('|')
       setStyleType(`${params.join('&styleType=')}`)
     }
   }, [])
