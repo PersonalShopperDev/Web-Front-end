@@ -22,7 +22,7 @@ export default function StylistBox({
   info: Info,
 }) {
   return (
-    <Link href={`/users/profile/${info.id}`}>
+    <Link href={`/profile/${info.id}`}>
       <div className={styles.listBox}>
         <img src={info.img} alt={info.name} className={styles.profileImg} />
         <div className={styles.infoBox}>
