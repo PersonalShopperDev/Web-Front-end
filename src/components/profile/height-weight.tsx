@@ -29,6 +29,9 @@ function Inner({ data } : { data: HeightWeightData}) {
   const { createAlert } = useAlert()
 
   const { bodyStat } = user || data || {}
+
+  const bodyStatRef = useRef(bodyStat)
+
   const { isPublic, height, weight } = bodyStat || {}
 
   const [publicState, setPublicState] = useState(isPublic)
@@ -77,7 +80,7 @@ function Inner({ data } : { data: HeightWeightData}) {
     if (state !== 'edit') {
       return
     }
-    const { weight: weightValue, height: heightValue } = bodyStat
+    const { weight: weightValue, height: heightValue } = bodyStatRef.current || {}
     weightRef.current.value = weightValue?.toString() || ''
     heightRef.current.value = heightValue?.toString() || ''
   }, [state])
@@ -85,6 +88,10 @@ function Inner({ data } : { data: HeightWeightData}) {
   useEffect(() => {
     publicStateRef.current = publicState
   }, [publicState])
+
+  useEffect(() => {
+    bodyStatRef.current = bodyStat
+  }, [bodyStat])
 
   useEffect(() => {
     setOnEdit(onEdit)
