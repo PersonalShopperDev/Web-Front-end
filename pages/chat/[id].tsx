@@ -2,8 +2,8 @@ import Layout from 'layouts/default'
 import { GetServerSideProps } from 'next'
 import parseJwt from 'lib/util/jwt'
 import { ACCESS_TOKEN } from 'providers/auth'
-import ProposeForm from 'templates/propose/form'
-import AppBar from 'components/app-bar'
+import RoomAppBar from 'components/app-bar/room'
+import ChatRoom from 'components/chat/room'
 import { communicateWithContext } from 'lib/api'
 import { Other, RecieveMessageProps } from 'lib/model/room'
 import RoomProvider from 'providers/chat/room'
@@ -16,11 +16,17 @@ interface Props {
   }
 }
 
-export default function Page({ id, data }: Props) {
+export default function Page({ id, data } : Props) {
+  const { targetUser } = data
+
+  const { name } = targetUser
+
   return (
-    <Layout header={<AppBar title="견적서" back />}>
+    <Layout
+      header={<RoomAppBar title={name} />}
+    >
       <RoomProvider id={id} data={data}>
-        <ProposeForm />
+        <ChatRoom />
       </RoomProvider>
     </Layout>
   )
@@ -38,54 +44,33 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
-  const { userId, userType } = parseJwt(token)
+  const { userType } = parseJwt(token)
 
-  if (userType === 'N' || userType === 'D') {
-    return {
-      notFound: true,
-    }
-  }
-
-  const { id } = context.params
-
-  if (userId === id) {
+  if (userType === 'N') {
     return {
       redirect: {
-        destination: '/',
+        destination: '/onboarding',
         permanent: false,
       },
     }
   }
 
-  const chatResponse = await communicateWithContext({
-    url: '/chat',
-    context,
-    payload: {
-      targetId: id,
-    },
-    method: 'POST',
-  })
+  const { id } = context.params
 
-  if (chatResponse.status !== 200) {
-    throw new Error()
-  }
-
-  const { roomId } = await chatResponse.json()
-
-  const historyResponse = await communicateWithContext({
-    url: `/chat/history?roomId=${roomId}`,
+  const res = await communicateWithContext({
+    url: `/chat/history?roomId=${id}`,
     context,
   })
 
-  if (historyResponse.status !== 200) {
+  if (res.status !== 200) {
     throw new Error()
   }
 
-  const data = await historyResponse.json()
+  const data = await res.json()
 
   return {
     props: {
-      id: roomId,
+      id,
       data,
     },
   }

@@ -1,7 +1,7 @@
 import AppBar from '.'
 import DrawerHandle from './drawer-handle'
 
-export default function StylistHomeAppBar({
+export default function HomeAppBar({
   title,
 } : {
   title: string,

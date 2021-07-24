@@ -1,0 +1,22 @@
+@use '../../lib/colors.scss' as colors;
+
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 32px 0;
+}
+
+.line {
+    border: 0;
+    border-top: 1px solid colors.$primary-300;
+    width: 100%;
+}
+
+.timestamp {
+    flex-shrink: 0;
+    font-size: 13px;
+    color: #969696;
+    padding: 0 18px;
+}

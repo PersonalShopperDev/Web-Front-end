@@ -1,5 +1,6 @@
 import communicate from 'lib/api'
 import { deleteCookie, getCookie, setCookie } from 'lib/util/cookie'
+import parseJwt from 'lib/util/jwt'
 import { useRouter } from 'next/dist/client/router'
 import React, {
   createContext, useContext, useEffect, useState,
@@ -12,6 +13,7 @@ export type UserType = 'N' | 'D' | 'S' | 'W'
 
 export interface User {
   userType: UserType
+  userId: number
   name: string
   introduction: string
   styles: string[]
@@ -48,6 +50,8 @@ export default function AuthProvider({
   const router = useRouter()
 
   const [user, setUser] = useState<User>(null)
+
+  const [load, setLoad] = useState<boolean>()
 
   const tokenExpiration = 1000 * 60 * 30
   const refreshTokenExpiration = 1000 * 60 * 60 * 24 * 7
@@ -131,7 +135,8 @@ export default function AuthProvider({
 
     if (res.status === 200) {
       const data = await res.json()
-      setUser(data)
+      const { userId } = parseJwt(getCookie(ACCESS_TOKEN))
+      setUser({ ...data, userId: parseInt(userId, 10) })
       return true
     }
     return false
@@ -154,9 +159,18 @@ export default function AuthProvider({
     router.reload()
   }
 
+  const initialize = async () => {
+    await requestAccessToken()
+    setLoad(true)
+  }
+
   useEffect(() => {
-    requestAccessToken()
+    initialize()
   }, [])
+
+  if (!load) {
+    return <></>
+  }
 
   const value = {
     user,
