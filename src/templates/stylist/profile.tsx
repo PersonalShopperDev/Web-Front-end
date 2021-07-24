@@ -35,11 +35,9 @@ export default function Profile({
     }
     fetchProfileData()
   }, [id])
-
   useEffect(() => {
     setUserId(parseJwt(getCookie(ACCESS_TOKEN)))
   }, [])
-
   return (
     <>
       {info != null
