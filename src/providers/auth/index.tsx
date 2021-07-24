@@ -3,7 +3,7 @@ import { deleteCookie, getCookie, setCookie } from 'lib/util/cookie'
 import parseJwt from 'lib/util/jwt'
 import { useRouter } from 'next/dist/client/router'
 import React, {
-  createContext, useContext, useEffect, useState,
+  createContext, useContext, useEffect, useState, useRef,
 } from 'react'
 
 export const ACCESS_TOKEN = 'personalshopper_accessToken'
@@ -58,6 +58,8 @@ export default function AuthProvider({
 
   const [user, setUser] = useState<User>(null)
 
+  const userRef = useRef<User>(user)
+
   const [load, setLoad] = useState<boolean>()
 
   const tokenExpiration = 1000 * 60 * 30
@@ -77,7 +79,7 @@ export default function AuthProvider({
     })
 
     if (res.status !== 200) {
-      onFail('/login/error')
+      await onFail('/login/error')
       return
     }
 
@@ -91,7 +93,7 @@ export default function AuthProvider({
     const refreshToken = getCookie(REFRESH_TOKEN)
 
     if (!isValidToken(refreshToken)) {
-      if (user) {
+      if (userRef.current) {
         await signOut()
       }
       return
@@ -108,7 +110,7 @@ export default function AuthProvider({
     })
 
     if (res.status !== 200) {
-      await onFail()
+      await onFail('/login')
       return
     }
 
@@ -150,6 +152,9 @@ export default function AuthProvider({
   }
 
   const onFail = async (redirect?: string) : Promise<void> => {
+    if (userRef.current) {
+      await signOut()
+    }
     if (redirect) {
       router.push(redirect)
     }
@@ -170,6 +175,10 @@ export default function AuthProvider({
     await requestAccessToken()
     setLoad(true)
   }
+
+  useEffect(() => {
+    userRef.current = user
+  }, [user])
 
   useEffect(() => {
     initialize()
