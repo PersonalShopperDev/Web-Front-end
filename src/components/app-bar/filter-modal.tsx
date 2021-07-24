@@ -4,7 +4,11 @@ import styles from 'sass/components/filter-modal.module.scss'
 import Icon from 'widgets/icon'
 import { useUserList } from 'providers/user-list'
 
-export default function FilterModal() {
+export default function FilterModal({
+  userType,
+}: {
+  userType:string
+}) {
   const { setSortType } = useUserList()
   const filterLists = ['고용순', '저가순', '전문 스타일리스트']
   const sortType = ['popular', 'priceLow', 'professional']
@@ -33,14 +37,27 @@ export default function FilterModal() {
         },
       }}
     >
-      <div className={styles.modalBox}>
-        {filterLists.map((value, index) => (
-          <div className={styles.eachModalContent} key={value}>
-            <span className={styles.filterText}>{value}</span>
-            <Icon src={currentFilter === index ? 'selectedFilterCheck.png' : 'filterCheck.png'} onClick={() => onClickFilter(index)} key="filter" />
+      {userType === 'D'
+        ? (
+          <div className={styles.modalBox}>
+            {filterLists.map((value, index) => (
+              <div className={styles.eachModalContent} key={value}>
+                <button type="button" onClick={() => onClickFilter(index)}>
+                  <span className={currentFilter === index
+                    ? styles.selectedFilterText : styles.notSelectedFilterText}
+                  >
+                    {value}
+                  </span>
+                </button>
+                {currentFilter === index && <Icon src="selectedFilterCheck.png" key="filter" />}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        ) : (
+          <div className={styles.demanderContainer}>
+            기능 준비중입니다
+          </div>
+        ) }
     </Modal>
   )
 }
