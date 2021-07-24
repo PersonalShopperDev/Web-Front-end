@@ -1,6 +1,6 @@
 import convertDataURLToBlob from './file'
 
-export default async function resizeImageFile(file: File): Promise<Blob> {
+export default async function resizeImageFile(file: File, maxSize = 512): Promise<Blob> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onload = (e) => {
@@ -8,7 +8,6 @@ export default async function resizeImageFile(file: File): Promise<Blob> {
       image.src = e.target.result as string
       image.onload = () => {
         const canvas = document.createElement('canvas')
-        const maxSize = 1024
 
         let { width, height } = image
 
