@@ -45,7 +45,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     }
   }
-  const { userType } = parseJwt(token)
 
   return {
     props: {
