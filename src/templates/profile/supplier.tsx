@@ -23,7 +23,7 @@ export default function SupplierProfile({
   const [menu, setMenu] = useState(0)
 
   const { user } = useAuth()
-  const { userId } = user
+  const { userId, userType } = user
 
   const menuLists = ['프로필', '코디룩북', '리뷰']
 
@@ -95,7 +95,7 @@ export default function SupplierProfile({
           ))}
         </div>
         { menuComponent[menu] }
-        {(menu === 0 && userId !== id) && (
+        {(menu === 0 && userId !== id && userType === 'D') && (
           <div className={styles.gradient}>
             <BottomButton text="채팅하기" onClick={onMatchingClick} />
           </div>
