@@ -2,7 +2,7 @@ import Link from 'next/link'
 import styles from 'sass/components/profile-preview/propose.module.scss'
 
 export default function Propose({ id }: { id: string }) {
-  const href = `/propose/new/${id}`
+  const href = `/propose/new?uid=${id}`
 
   return (
     <section className={styles.container}>

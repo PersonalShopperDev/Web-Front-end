@@ -46,9 +46,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
-  const { id } = context.params
+  const { uid } = context.query
 
-  if (userId === id) {
+  if (!uid) {
+    return {
+      notFound: true,
+    }
+  }
+
+  if (userId === uid) {
     return {
       redirect: {
         destination: '/',
@@ -61,7 +67,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     url: '/chat',
     context,
     payload: {
-      targetId: id,
+      targetId: uid,
     },
     method: 'POST',
   })
