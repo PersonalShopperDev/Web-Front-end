@@ -10,7 +10,7 @@ export default function Navigation() {
   const isCurrentPath = (href: string) => {
     const { asPath } = router
     if (href === '/') {
-      return asPath === href
+      return asPath === href || asPath.includes('users')
     }
     return asPath.includes(href)
   }
