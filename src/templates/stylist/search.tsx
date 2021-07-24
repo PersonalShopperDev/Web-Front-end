@@ -32,8 +32,8 @@ export default function Search() {
     const styleList = await res.json()
     setStyleLists(styleList[gender])
   }
-  useEffect(() => {
 
+  useEffect(() => {
     if (information === null) return
     const gender = information.gender === 'F' ? 'female' : 'male'
     fetchStylistData(gender)

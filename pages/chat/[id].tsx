@@ -63,6 +63,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   })
 
   if (res.status !== 200) {
+    if (res.status === 403) {
+      return {
+        notFound: true,
+      }
+    }
     throw new Error()
   }
 
