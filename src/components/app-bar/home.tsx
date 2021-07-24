@@ -1,10 +1,14 @@
 import AppBar from '.'
 import DrawerHandle from './drawer-handle'
 
-export default function StylistHomeAppBar() {
+export default function HomeAppBar({
+  title,
+} : {
+  title: string,
+}) {
   return (
     <AppBar
-      title="스타일리스트"
+      title={title}
       actions={[
         <DrawerHandle key="drawerHandle" />,
       ]}

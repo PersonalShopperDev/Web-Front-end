@@ -25,12 +25,14 @@ export default function Search() {
     }
     setIsOverLength(true)
   }
+
   const fetchStylistData = async (gender) => {
     const res = await communicate({ url: `/style?${gender}=${true}` })
     if (res.status !== 200) return
     const styleList = await res.json()
     setStyleLists(styleList[gender])
   }
+
   useEffect(() => {
     if (information === null) return
     const gender = information.gender === 'F' ? 'female' : 'male'

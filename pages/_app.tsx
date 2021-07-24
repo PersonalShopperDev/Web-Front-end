@@ -4,6 +4,7 @@ import AuthProvider from 'providers/auth'
 import ModalProvider from 'providers/modal'
 import IntegratedDialogProvider from 'providers/dialog/integrated'
 import 'sass/global.scss'
+import ChatProvider from 'providers/chat'
 
 const title = '퍼스널 쇼퍼'
 
@@ -17,7 +18,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <ModalProvider>
         <IntegratedDialogProvider>
           <AuthProvider>
-            <Component {...pageProps} />
+            <ChatProvider>
+              <Component {...pageProps} />
+            </ChatProvider>
           </AuthProvider>
         </IntegratedDialogProvider>
       </ModalProvider>

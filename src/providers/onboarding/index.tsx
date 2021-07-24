@@ -2,7 +2,6 @@ import communicate from 'lib/api'
 import React, {
   createContext, useContext, useEffect, useState, Dispatch, SetStateAction, useRef,
 } from 'react'
-import { useAlert } from 'providers/dialog/alert/inner'
 
 interface Information {
     userType: 'N' | 'D' | 'S' | 'W'
@@ -56,7 +55,7 @@ interface OnboardingProps {
         min?: boolean, max?: boolean) => void
     setEdit: (key: string) => void
     setStylePicture: Dispatch<SetStateAction<any>>
-    putOnboardingInfo: () => void
+    putOnboardingInfo: () => Promise<void>
 }
 
 const OnboardingContext = createContext<OnboardingProps>(null)
@@ -71,7 +70,6 @@ export default function OnboardingProvider({
   const [information, setInformation] = useState<Information>(null)
   const [stylePicture, setStylePicture] = useState([])
   const informationRef = useRef<any>()
-  const { createAlert } = useAlert()
 
   const setData = (key: string, value: string | number | boolean,
     min?: boolean, max?: boolean) => {
@@ -154,7 +152,6 @@ export default function OnboardingProvider({
       if (information.userType === 'D') {
         await communicate({ url: '/style/img', payload, method: 'PUT' })
       }
-      await createAlert({ text: '등록완료! 정식 오픈날은 7.29일입니다' })
     })
   }
 

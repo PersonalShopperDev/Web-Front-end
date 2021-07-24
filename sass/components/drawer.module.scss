@@ -60,6 +60,7 @@
 .link {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     color: colors.$primary-500;
     &:hover{
         text-decoration: none;

@@ -9,7 +9,23 @@
 }
 
 .figure {
-    aspect-ratio: 1;
-    object-fit: cover;
+    position: relative;
     border-radius: 7px;
+    overflow: hidden;
+    &::before {
+        content: "";
+        padding-bottom: 100%;
+        display: block;
+    }
+}
+
+.image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }

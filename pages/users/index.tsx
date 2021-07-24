@@ -1,7 +1,7 @@
 import Layout from 'layouts/default'
-import List from 'templates/users/list'
-// import Navigation from 'src/components/navigation'
 import UserListAppBar from 'components/app-bar/user-list'
+import List from 'templates/stylist/list'
+import Navigation from 'src/components/navigation'
 import InfinityScrollProvider from 'providers/infinity-scroll'
 import UserListProvider from 'providers/user-list'
 import { GetServerSideProps } from 'next'
@@ -13,6 +13,7 @@ export default function Page({ userType }) {
     <UserListProvider>
       <Layout
         header={<UserListAppBar userType={userType} />}
+        bottom={<Navigation />}
       >
         <InfinityScrollProvider>
           <List userType={userType} />
@@ -28,7 +29,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (!token) {
     return {
       redirect: {
-        destination: '/',
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
+  const { userType } = parseJwt(token)
+
+  if (userType === 'N') {
+    return {
+      redirect: {
+        destination: '/onboard',
         permanent: false,
       },
     }

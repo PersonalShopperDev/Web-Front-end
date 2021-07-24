@@ -3,11 +3,12 @@ import LoginBanner from 'components/login-banner'
 import Banner, { BannerData } from 'components/banner'
 import BeforeAfter, { BeforeAfterData } from 'components/before-after'
 import StylistGridView, { SupplierData, DemanderData } from 'components/stylist-grid-view'
-import StylistHomeAppBar from 'components/app-bar/stylist-home'
+import HomeAppBar from 'components/app-bar/home'
 import { GetServerSideProps } from 'next'
 import { communicateWithContext } from 'lib/api'
 import parseJwt from 'lib/util/jwt'
 import { ACCESS_TOKEN, useAuth, UserType } from 'providers/auth'
+import Navigation from 'components/navigation'
 
 interface Props {
   data: Data
@@ -31,8 +32,9 @@ export default function Page({ data } : Props) {
   return (
     <Layout
       header={(
-        <StylistHomeAppBar />
+        <HomeAppBar title={!userType ? '퍼스널쇼퍼' : '스타일매칭'} />
       )}
+      bottom={<Navigation />}
     >
       { !userType ? <LoginBanner /> : <Banner data={banners} />}
       <BeforeAfter data={reviews} />
@@ -51,7 +53,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     if (context.res) {
       context.res.statusCode = res.status
     }
-    throw new Error()
+    throw new Error(`Api server responsed ${res.status} :: /home`)
   }
 
   const data = await res.json()
@@ -71,7 +73,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (userType === 'N') {
     return {
       redirect: {
-        destination: '/onboarding',
+        destination: '/onboard',
         permanent: false,
       },
     }
