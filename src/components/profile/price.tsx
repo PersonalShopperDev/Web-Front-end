@@ -46,7 +46,7 @@ function Inner({
     <>
       {state === 'default' ? (
         <>
-          {price && <p className={styles.content}>{price}</p>}
+          {price && <p className={styles.content}>{`${price.toLocaleString('ko-KR')}원`}</p>}
         </>
       ) : (
         <input ref={inputRef} className={styles.input} type="number" onChange={onChange} onKeyUp={onKeyUp} pattern="\d*" />
