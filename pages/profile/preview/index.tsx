@@ -10,6 +10,7 @@ import parseJwt from 'lib/util/jwt'
 import { GetServerSideProps } from 'next'
 import { ACCESS_TOKEN } from 'providers/auth'
 import { communicateWithContext } from 'lib/api'
+import Navigation from 'components/navigation'
 
 export default function Page({ data } : any) {
   const {
@@ -19,6 +20,7 @@ export default function Page({ data } : any) {
   return (
     <Layout
       header={<ProfilePreviewAppBar />}
+      bottom={<Navigation />}
     >
       <PreviewSlide data={closet} />
       <PreviewName name={name} />

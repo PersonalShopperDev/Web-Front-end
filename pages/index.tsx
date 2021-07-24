@@ -8,6 +8,7 @@ import { GetServerSideProps } from 'next'
 import { communicateWithContext } from 'lib/api'
 import parseJwt from 'lib/util/jwt'
 import { ACCESS_TOKEN, useAuth, UserType } from 'providers/auth'
+import Navigation from 'components/navigation'
 
 interface Props {
   data: Data
@@ -33,6 +34,7 @@ export default function Page({ data } : Props) {
       header={(
         <HomeAppBar title={!userType ? '퍼스널쇼퍼' : '스타일매칭'} />
       )}
+      bottom={<Navigation />}
     >
       { !userType ? <LoginBanner /> : <Banner data={banners} />}
       <BeforeAfter data={reviews} />

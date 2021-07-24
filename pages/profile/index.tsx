@@ -19,6 +19,7 @@ import CodyStyle from 'components/profile/cody-style'
 import { useEffect } from 'react'
 import parseJwt from 'lib/util/jwt'
 import TemporarySubmit from 'components/profile/temporary-submit'
+import Navigation from 'components/navigation'
 
 interface Props {
   userId: string
@@ -50,6 +51,7 @@ export default function Page({ userId, data } : Props) {
   return (
     <Layout
       header={<ProfileAppBar />}
+      bottom={<Navigation />}
     >
       <AvatarInput data={{ img, name }} />
       <Name data={{ name }} />
