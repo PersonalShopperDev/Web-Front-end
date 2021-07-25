@@ -16,9 +16,11 @@ export interface ProductInformation {
   name: string,
   price: string,
   buyLink: string,
+  isEdit?: boolean
 }
 
 export interface ProductDescription {
+  current?: any
   title: string,
   content: string,
 }
@@ -98,38 +100,42 @@ export default function CodySuggetsion({
 }) {
   const [productCount, setProductCount] = useState(1)
 
-  const [products, setProducts] = useState<Array<ProductInformation>>()
-
-  const [description, setDescription] = useState<ProductDescription>()
-
+  const [products, setProducts] = useState<Array<string>>([])
+  const [description, setDescription] = useState<ProductDescription>({
+    title: '', content: '',
+  })
   const { createAlert } = useAlert()
 
   const router = useRouter()
-
   const styleBoardRef = useRef<HTMLDivElement>()
-
+  const productRef = useRef <Array<ProductInformation>>([{
+    name: '', price: '', buyLink: '', url: null, isEdit: true,
+  }])
+  const descriptionRef = useRef<ProductDescription>({
+    title: '', content: '',
+  })
   const onClickPlus = () => {
-    const currentTempData = localStorage.getItem(`cody${id}`)
-    const parsedData: TempData = JSON.parse(currentTempData)
-    if (parsedData) {
-      setProducts(parsedData.products)
-      setDescription(parsedData.description)
-    }
+    productRef.current.push({
+      name: '', price: '', buyLink: '', url: null, isEdit: true,
+    })
     setProductCount((prevCount) => prevCount + 1)
   }
 
   const onClickSend = async () => {
-    const currentTempData = localStorage.getItem(`cody${id}`)
-    const parsedData = JSON.parse(currentTempData)
     const formData = new FormData()
-
+    if (descriptionRef.current.title === '' || descriptionRef.current.content === ''
+        || productRef.current[0].name === '' || productRef.current[0].price === ''
+        || productRef.current[0].buyLink === '' || productRef.current[0].url === null) {
+      await createAlert({ text: '항목을 전부 채워주세요' })
+      return
+    }
     await htmlToImage.toPng(styleBoardRef.current)
       .then(async (dataUrl) => {
         const img = await resizeAndBlob(dataUrl)
         formData.append('mainImg', img)
         formData.append('demanderId', id.toString())
-        formData.append('title', parsedData.description.title)
-        formData.append('comment', parsedData.description.content)
+        formData.append('title', descriptionRef.current.title)
+        formData.append('comment', descriptionRef.current.content)
         const res = await communicate({
           url: '/coord',
           options: {
@@ -142,7 +148,7 @@ export default function CodySuggetsion({
         }
         const data = await res.json()
         const { coordId } = data
-        parsedData.products.forEach(async (item) => {
+        productRef.current.forEach(async (item) => {
           const clothForm = new FormData()
           const clothImg = await resizeAndBlob(item.url)
           clothForm.append('coordId', coordId)
@@ -166,9 +172,7 @@ export default function CodySuggetsion({
       .catch((error) => {
         createAlert({ text: ERROR_MESSAGE })
       })
-
     localStorage.removeItem(`cody${id}`)
-
     await redirect()
   }
 
@@ -189,17 +193,47 @@ export default function CodySuggetsion({
 
     router.push(`/chat/${roomId}`)
   }
-
+  const ClickEventListner = () => {
+    localStorage.removeItem(`cody${id}`)
+    const descroptionCookie: ProductDescription = {
+      title: descriptionRef.current.title,
+      content: descriptionRef.current.content,
+    }
+    productRef.current = productRef.current.filter((item) => item.name !== '' && item.price !== '' && item.buyLink !== '' && item.url !== null)
+    productRef.current.forEach((item) => {
+      // eslint-disable-next-line no-param-reassign
+      item.isEdit = true
+    })
+    const productsCookie: ProductInformation[] = productRef.current
+    if (productsCookie.length !== 0) {
+      localStorage.setItem(`cody${id}`, JSON.stringify({ products: productsCookie, description: descroptionCookie }))
+    } else {
+      localStorage.setItem(`cody${id}`, JSON.stringify({ description: descroptionCookie }))
+    }
+  }
   useEffect(() => {
+    // localStorage.removeItem(`cody${id}`)
     const currentTempData = localStorage.getItem(`cody${id}`)
     const parsedData: TempData = JSON.parse(currentTempData)
     if (parsedData) {
-      setProducts(parsedData.products)
-      setDescription(parsedData.description)
-      if (parsedData.products !== undefined) setProductCount(parsedData.products.length)
+      descriptionRef.current = parsedData.description
+      setDescription({
+        title: descriptionRef.current.title,
+        content: descriptionRef.current.content,
+      })
+      if (parsedData.products !== undefined) {
+        setProductCount(parsedData.products.length)
+        productRef.current = parsedData.products
+        parsedData.products.forEach(({ url }) => {
+          setProducts((prev) => [...prev, url])
+        })
+      }
+    }
+    document.getElementById('storage').addEventListener('click', ClickEventListner)
+    return () => {
+      document.getElementById('storage').removeEventListener('click', ClickEventListner)
     }
   }, [])
-
   return (
     <>
       <div className={styles.container}>
@@ -209,7 +243,7 @@ export default function CodySuggetsion({
             : (
               <div className={styles.removedBox}>
                 {products.map((value, index) => (
-                  <StyleBoardItem url={value.url} key={value.url} />
+                  <StyleBoardItem url={value} key={value} />
                 ))}
               </div>
             ) }
@@ -224,9 +258,9 @@ export default function CodySuggetsion({
             <Product
               id={parseInt(id, 10)}
               index={index}
-              item={products !== undefined ? products[index] : null}
-              setProducts={setProducts}
               key={Math.random()}
+              productRef={productRef}
+              setProducts={setProducts}
             />
           ))}
         </section>
@@ -234,7 +268,10 @@ export default function CodySuggetsion({
           <div className={styles.section_header}>
             <span>코디설명</span>
           </div>
-          <Description id={parseInt(id, 10)} description={description} />
+          <Description
+            descriptionRef={descriptionRef}
+            description={description}
+          />
         </section>
       </div>
       <div className={styles.gradient}>
