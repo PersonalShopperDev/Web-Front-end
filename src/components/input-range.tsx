@@ -115,14 +115,22 @@ export default function InputRange({
         <div className={styles.thumb_right} ref={thumbRightRef} />
       </div>
       <div className={styles.flexContainer}>
-        <span>
-          {minPrice}
-          원
-        </span>
-        <span>
-          {maxPrice}
-          원
-        </span>
+        {minPrice === priceLists.minPrice
+          ? <span>무조건 저렴</span>
+          : (
+            <span>
+              {minPrice}
+              원
+            </span>
+          ) }
+        {maxPrice === priceLists.maxPrice
+          ? <span>럭셔리 선호</span>
+          : (
+            <span>
+              {maxPrice}
+              원
+            </span>
+          ) }
       </div>
     </div>
   )
