@@ -14,6 +14,7 @@ export default function StyleBoardItem({
         width: 100,
         height: 100,
       }}
+      bounds="parent"
     >
       <img src={url} width="100%" height="100%" alt="removed_item" draggable="false" />
     </Rnd>
