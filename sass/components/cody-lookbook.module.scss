@@ -4,6 +4,7 @@
     border-radius: 12px;
     margin-right: 11px;
     margin-bottom: 11px;
+    object-fit: cover;
 }
 
 .container {
@@ -29,6 +30,7 @@
     top: 0px;
     .img {
         margin-top: 115px;
+        object-fit: cover;
     }
     .exit {
         position: absolute;
