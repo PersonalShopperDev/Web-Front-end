@@ -19,7 +19,7 @@ export default function StyleChange() {
         <StylePicture />
       </div>
       <footer>
-        <section className={styles.tmp}>
+        <section className={styles.bottom}>
           <div className={styles.gradient}>
             <button type="button" className={styles.completeButton} onClick={() => onClickEdit('style')}>
               <span className={styles.nextText}>수정하기</span>

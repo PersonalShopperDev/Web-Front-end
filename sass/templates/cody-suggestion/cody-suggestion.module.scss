@@ -3,6 +3,7 @@
 .container {
     padding-left: 17px;
     padding-right: 17px;
+    padding-bottom: 120px;
 }
 
 .styleBoard {
@@ -53,7 +54,7 @@
 }
 
 .removedBox {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    position: relative;
+    width: 100%;
+    height: 100%;
 }

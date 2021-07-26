@@ -10,7 +10,6 @@ export default function ProfileDetail({
   const {
     name, careerList, rating, reviewCount, hireCount, introduction, coord,
   } = data
-
   return (
     <div className={styles.profileDetailBox}>
       <div className={styles.infoContainer}>
@@ -19,7 +18,7 @@ export default function ProfileDetail({
           <span className={styles.stylistText}>Stylist</span>
         </div>
         <div>
-          {careerList.map((item) => (
+          {careerList !== undefined && careerList.map((item) => (
             <div key={item.type}>
               {item.type === 0
               && (

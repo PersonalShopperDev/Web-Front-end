@@ -28,12 +28,16 @@
     border-radius: 15px;
     margin-top: 10px;
     margin-right: 6px;
-    border: 1px solid colors.$primary-300
+    border: 1px solid colors.$primary-300;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .styleBox > span {
     font-size: 9px;
     color: colors.$primary-600;
     font-weight: 500;
+    text-align: center;
 }
 .menuContainer {
     border-bottom: 1px solid #e5e5e5;
