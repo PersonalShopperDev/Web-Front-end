@@ -25,6 +25,11 @@ export default function CompleteSuggestion({
     <div className={styles.container}>
       <div className={styles.styleBoard}>
         <img src={data.mainImg} width={342} height={359} alt="mainImg" />
+        <Link href="https://photoroom.com">
+          <a href="https://photoroom.com" target="_blank" rel="noreferrer">
+            <div className={styles.photoRoom} />
+          </a>
+        </Link>
       </div>
       <div className={styles.productContainer}>
         <span className={styles.title}>이 코디의 상품</span>
