@@ -231,7 +231,7 @@ export default function CodySuggetsion({
     }
     document.getElementById('storage').addEventListener('click', ClickEventListner)
     return () => {
-      document.getElementById('storage').removeEventListener('click', ClickEventListner)
+      if (document.getElementById('storage') !== null) document.getElementById('storage').removeEventListener('click', ClickEventListner)
     }
   }, [])
   return (
