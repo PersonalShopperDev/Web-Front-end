@@ -1,6 +1,7 @@
+/* eslint-disable no-param-reassign */
 import React, {
-  ChangeEvent, useRef, useState, useCallback, useEffect, SetStateAction,
-  Dispatch,
+  ChangeEvent, useRef, useState, useCallback, SetStateAction,
+  Dispatch, useEffect,
 } from 'react'
 import styles from 'sass/components/product.module.scss'
 import Icon from 'widgets/icon'
@@ -17,31 +18,29 @@ interface Cropped {
 }
 
 export default function Product({
-  id,
   index,
-  item,
   setProducts,
+  productRef,
 }: {
-  id: number
   index: number
-  item?: ProductInformation
   setProducts: Dispatch<SetStateAction<any>>
+  productRef: Array<ProductInformation>
 }) {
   const { createAlert } = useAlert()
   const NameRef = useRef<HTMLInputElement>()
   const PriceRef = useRef<HTMLInputElement>()
   const UrlRef = useRef<HTMLInputElement>()
-  const [name, setName] = useState<string>()
-  const [price, setPrice] = useState<string>()
-  const [buyLink, setBuyLink] = useState<string>()
+  const [name, setName] = useState<string>(productRef.current[index].name)
+  const [price, setPrice] = useState<string>(productRef.current[index].price)
+  const [buyLink, setBuyLink] = useState<string>(productRef.current[index].buyLink)
   const [imageUrl, setImageUrl] = useState(null)
   const [cropModal, setCropModal] = useState(false)
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
   const [croppedImage, setCroppedImage] = useState(null)
-  const [removedImage, setRemovedImage] = useState(null)
-  const [isEdit, setIsEdit] = useState(false)
+  const [removedImage, setRemovedImage] = useState(productRef.current[index].url)
+  const [isEdit, setIsEdit] = useState(productRef.current[index].isEdit)
   const onModalClose = () => {
     setImageUrl(null)
     setCropModal(false)
@@ -88,37 +87,26 @@ export default function Product({
     })
   }
   const onClickComplete = async () => {
-    if (NameRef.current.value === '' || PriceRef.current.value === '' || UrlRef.current.value === '') {
+    productRef.current[index].url = removedImage
+    if (NameRef.current.value === '' || PriceRef.current.value === '' || UrlRef.current.value === '' || !removedImage) {
       await createAlert({ text: '항목을 채워주세요' })
       return
     }
+    productRef.current[index].isEdit = false
+    setIsEdit(productRef.current[index].isEdit)
     setName(NameRef.current.value)
     setPrice(PriceRef.current.value)
     setBuyLink(UrlRef.current.value)
-    const cookieData: ProductInformation = {
-      url: removedImage,
-      name: NameRef.current.value,
-      price: PriceRef.current.value,
-      buyLink: UrlRef.current.value,
-    }
-    setIsEdit(true)
-    const currentTempData = localStorage.getItem(`cody${id}`)
-    const parsedData = JSON.parse(currentTempData)
-    if (!parsedData) {
-      setProducts([cookieData])
-      localStorage.setItem(`cody${id}`, JSON.stringify({ products: [cookieData] }))
-      return
-    }
-    if (parsedData.products === undefined) {
-      localStorage.setItem(`cody${id}`, JSON.stringify({ products: [cookieData], description: parsedData.description }))
-    } else {
-      if (parsedData.products[index] === undefined) setProducts((prev) => [...prev, cookieData])
-      parsedData.products[index] = cookieData
-      localStorage.setItem(`cody${id}`, JSON.stringify({ products: parsedData.products, description: parsedData.description }))
-    }
+    setProducts((prev) => {
+      if (!prev.includes(removedImage)) {
+        return [...prev, removedImage]
+      }
+      return prev
+    })
   }
   const onClickEdit = () => {
-    setIsEdit(false)
+    productRef.current[index].isEdit = true
+    setIsEdit(productRef.current[index].isEdit)
   }
   const onCropComplete = useCallback((Area, pixels) => {
     setCroppedAreaPixels(pixels)
@@ -171,39 +159,35 @@ export default function Product({
       resolve(canvas.toDataURL())
     })
   }
-  useEffect(() => {
-    if (item !== null && NameRef.current && PriceRef.current && UrlRef.current) {
-      NameRef.current.value = item.name
-      PriceRef.current.value = item.price
-      UrlRef.current.value = item.buyLink
-      setRemovedImage(item.url)
-    }
-  }, [item])
-
-  useEffect(() => {
-    if (name !== undefined && NameRef.current) NameRef.current.value = name
-    if (price !== undefined && PriceRef.current) PriceRef.current.value = price
-    if (buyLink !== undefined && UrlRef.current) UrlRef.current.value = buyLink
-  }, [name, price, buyLink, isEdit])
+  const update = (e: ChangeEvent<HTMLInputElement>, key: string) => {
+    productRef.current[index][key] = e.target.value
+  }
   const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.id === `name${index}`) {
-      setName(e.target.value)
+      update(e, 'name')
     } else if (e.target.id === `price${index}`) {
-      setPrice(e.target.value)
+      update(e, 'price')
     } else if (e.target.id === `buylink${index}`) {
-      setBuyLink(e.target.value)
+      update(e, 'buyLink')
     }
   }
+  useEffect(() => {
+    if (isEdit) {
+      NameRef.current.value = productRef.current[index].name
+      PriceRef.current.value = productRef.current[index].price
+      UrlRef.current.value = productRef.current[index].buyLink
+    }
+  }, [isEdit])
   return (
     <>
       <div className={styles.container}>
-        <label className={styles.cameraBox} htmlFor="productPicker">
+        <label className={styles.cameraBox} htmlFor={`productPicker${index}`}>
           {removedImage ? <img src={removedImage} width={73} height={73} alt="removed" className={styles.removed} />
             : (
               <>
                 <Icon src="product-camera.png" size={27} />
                 <input
-                  id="productPicker"
+                  id={`productPicker${index}`}
                   type="file"
                   accept="image/png, image/jpeg, image/jpg"
                   onChange={onClickCamera}
@@ -214,13 +198,12 @@ export default function Product({
         </label>
         <div className={styles.inputContainer}>
           <div className={styles.inputBox}>
-            {!isEdit ? (
+            {isEdit ? (
               <input
                 type="text"
                 placeholder="상품이름"
                 ref={NameRef}
                 autoComplete="off"
-                value={name}
                 onChange={onChangeInput}
                 id={`name${index}`}
                 className={styles.input}
@@ -228,34 +211,32 @@ export default function Product({
             ) : <p className={styles.input}>{name}</p> }
             <div className={styles.flexContainer}>
               ₩
-              {!isEdit ? (
+              {isEdit ? (
                 <input
                   type="number"
                   placeholder="가격"
                   ref={PriceRef}
                   autoComplete="off"
-                  value={price}
                   onChange={onChangeInput}
                   id={`price${index}`}
                   className={styles.input}
                 />
               ) : <p className={styles.input}>{price}</p> }
             </div>
-            {!isEdit ? (
+            {isEdit ? (
               <input
                 type="url"
                 placeholder="구매링크"
                 ref={UrlRef}
                 autoComplete="off"
-                value={buyLink}
                 onChange={onChangeInput}
                 id={`buylink${index}`}
                 className={styles.input}
               />
             ) : <p className={styles.input}>{buyLink}</p> }
           </div>
-          <button type="button" className={styles.confirm} onClick={isEdit ? onClickEdit : onClickComplete}>
-            <span>{isEdit ? '수정' : '확정'}</span>
+          <button type="button" className={styles.confirm} onClick={isEdit ? onClickComplete : onClickEdit}>
+            <span>{isEdit ? '확정' : '수정'}</span>
           </button>
         </div>
       </div>
@@ -311,8 +292,4 @@ export default function Product({
       )}
     </>
   )
-}
-
-Product.defaultProps = {
-  item: null,
 }
