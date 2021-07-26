@@ -18,7 +18,7 @@ export default function StylePicture() {
   }
   useEffect(() => {
     async function fetchStylistData() {
-      const res = await communicate({ url: `/style/img?gender=${information.gender}` })
+      const res = await communicate({ url: '/style/img' })
       const styleImage = await res.json()
       setStyleImageLists(styleImage)
     }
