@@ -1,0 +1,23 @@
+@use '../../../lib/colors.scss' as colors;
+
+.container {
+    margin-top: 51px;
+    padding: 18px;
+    min-height: 271px;
+    border-radius: 5px;
+    background-color: #fafafa;
+    color: colors.$primary-700;
+}
+
+.title {
+    font-size: 14px;
+}
+
+.content {
+    margin-top: 21px;
+    font-size: 12px;
+    line-height: 1.7;
+    color: #2d2d2d;
+    display: flex;
+    flex-direction: column;
+}

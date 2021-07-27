@@ -1,0 +1,17 @@
+@use '../../../lib/colors.scss' as colors;
+
+.button {
+    align-self: flex-end;
+    padding: 10px 0px;
+    margin-top: 25px;
+    width: 102px;
+    font-size: 10px;
+    color: colors.$accent;
+    background-color: white;
+    border: 1px solid colors.$accent;
+}
+
+.link {
+    color: #3165EE;
+    text-decoration: underline;
+}

@@ -1,9 +1,22 @@
 import styles from 'sass/templates/progress/index.module.scss'
 import { useState } from 'react'
 import Step from 'components/progress/step'
+import { useAuth } from 'providers/auth'
+import Steps from 'components/progress/steps'
 
 export default function Progress() {
-  const [step, setStep] = useState(0)
+  const { userType } = useAuth().user
+
+  const [step, setStep] = useState(3)
+
+  const defaultSteps = [
+    '입금 요청',
+    '입금 확인 중',
+  ]
+
+  const steps = userType === 'D'
+    ? defaultSteps.concat('코디 진행', '리뷰 작성')
+    : defaultSteps.concat('입금 확정')
 
   return (
     <section className={styles.container}>
@@ -14,15 +27,7 @@ export default function Progress() {
           </Step>
         ))}
       </ol>
-      <div className={styles.container}></div>
+      <Steps index={step} />
     </section>
   )
 }
-
-const steps = [
-  '입금 요청',
-  '입금 확인 중',
-  '입금 확정',
-  '코디 진행 중',
-  '리뷰 작성',
-]
