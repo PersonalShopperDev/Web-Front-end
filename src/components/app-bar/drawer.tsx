@@ -5,7 +5,7 @@ import AppBar from '.'
 
 export const DRAWER_SHOULD_BE_OPEN = 'ps-drawer-should-be-open'
 
-export default function TermAppBar({
+export default function DrawerAppBar({
   title,
   isLogined,
 } : {

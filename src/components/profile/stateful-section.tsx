@@ -60,7 +60,7 @@ export default function StatefulSection({
         >
           {state === 'default'
             ? <Icon src="edit.png" size={17} />
-            : '수정'}
+            : '완료'}
         </button>
       )}
     >

@@ -43,7 +43,7 @@ export default function Represent({ data }: { data: RepresentData }) {
         if (!res.ok) {
           throw new Error()
         }
-        fetchUser()
+        return fetchUser()
       })
       .catch(async () => {
         await createAlert({ text: ERROR_MESSAGE })

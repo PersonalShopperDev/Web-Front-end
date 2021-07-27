@@ -4,7 +4,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import Term from 'templates/term'
 import { ACCESS_TOKEN } from 'providers/auth'
-import TermAppBar from 'components/app-bar/term'
+import DrawerAppBar from 'components/app-bar/drawer'
 
 interface Props {
   isLogined: boolean,
@@ -16,7 +16,7 @@ export default function Page({ isLogined, title, data } : Props) {
   return (
     <Layout
       header={(
-        <TermAppBar title={title} isLogined={isLogined} />
+        <DrawerAppBar title={title} isLogined={isLogined} />
       )}
     >
       <Term>

@@ -103,6 +103,7 @@ function Inner({
     }
 
     if (value === content) {
+      setState('default')
       return
     }
 
@@ -116,7 +117,7 @@ function Inner({
       if (!res.ok) {
         throw new Error('error')
       }
-      fetchUser()
+      return fetchUser()
     }).catch(async () => {
       await createAlert({ text: ERROR_MESSAGE })
     })

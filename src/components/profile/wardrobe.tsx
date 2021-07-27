@@ -1,5 +1,6 @@
 import HorizontalList from 'components/horizontal-list'
 import communicate from 'lib/api'
+import ERROR_MESSAGE from 'lib/constants/error'
 import resizeImageFile from 'lib/util/image'
 import { useAuth } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
@@ -41,9 +42,9 @@ export default function Wardrobe({ data } : { data: WardrobeData }) {
       if (!res.ok) {
         throw new Error()
       }
-      fetchUser()
+      return fetchUser()
     }).catch(async () => {
-      await createAlert({ text: 'error' })
+      await createAlert({ text: ERROR_MESSAGE })
     })
   }
 

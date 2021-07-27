@@ -42,7 +42,7 @@
     margin-top: 2px;
     color: #767474;
     font-size: 13px;
-
+    word-break: break-all;
     &.unread {
         color: colors.$accent;
         font-weight: bold;

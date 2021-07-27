@@ -41,7 +41,7 @@ export default function AvatarInput({ data } : { data: AvatarInputData}) {
       if (!res.ok) {
         throw new Error()
       }
-      fetchUser()
+      return fetchUser()
     }).catch(async () => {
       await createAlert({ text: ERROR_MESSAGE })
     })

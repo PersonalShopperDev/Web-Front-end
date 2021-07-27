@@ -75,7 +75,7 @@ function Inner({
         if (!res.ok) {
           throw new Error()
         }
-        fetchUser()
+        return fetchUser()
       })
       .catch(async () => {
         await createAlert({ text: ERROR_MESSAGE })
