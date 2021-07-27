@@ -1,4 +1,6 @@
 import communicate from 'lib/api'
+import ERROR_MESSAGE from 'lib/constants/error'
+import resizeImageFile from 'lib/util/image'
 import { useAuth } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
 import { ChangeEvent } from 'react'
@@ -24,8 +26,10 @@ export default function Represent({ data }: { data: RepresentData }) {
       return
     }
 
+    const file = await resizeImageFile(e.target.files[0])
+
     const formData = new FormData()
-    formData.append('img', e.target.files[0])
+    formData.append('img', file)
     formData.append('represent', 'true')
 
     await communicate({
@@ -39,10 +43,10 @@ export default function Represent({ data }: { data: RepresentData }) {
         if (!res.ok) {
           throw new Error()
         }
-        fetchUser()
+        return fetchUser()
       })
       .catch(async () => {
-        await createAlert({ text: '에러가 발생했습니다' })
+        await createAlert({ text: ERROR_MESSAGE })
       })
   }
 
@@ -56,12 +60,16 @@ export default function Represent({ data }: { data: RepresentData }) {
       {(coord && coord.length > 0) && (
         <section className={styles.container}>
           {coord.map(({ id, img }) => (
-            <img
+            <div
               key={id}
               className={styles.figure}
-              src={img}
-              alt=""
-            />
+            >
+              <img
+                className={styles.image}
+                src={img}
+                alt=""
+              />
+            </div>
           ))}
         </section>
       )}

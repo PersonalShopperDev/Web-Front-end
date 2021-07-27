@@ -1,7 +1,8 @@
 import SectionHeader from 'widgets/section-header'
 import styles from 'sass/components/stylist-grid-view.module.scss'
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 import { cn } from 'lib/util'
+import Link from 'next/link'
 
 type State = 'supplier' | 'demander'
 
@@ -52,6 +53,20 @@ export default function StylistGridView({
     setState(selected)
   }
 
+  const isEmpty = (array: any[]) => {
+    if (!array) {
+      return true
+    }
+    if (array.length === 0) {
+      return true
+    }
+    return false
+  }
+
+  if (isEmpty(suppliers) && isEmpty(demanders)) {
+    return <></>
+  }
+
   return (
     <section className={styles.container}>
       <SectionHeader
@@ -79,13 +94,13 @@ export default function StylistGridView({
             )}
           </>
         )}
-        moreHref="/"
+        moreHref={state === 'supplier' ? '/users/stylist' : '/users/shopper'}
       />
       <section className={styles.grid}>
         {isSelected('supplier') && suppliers.map(({
-          img, name, hire = 0, review = 0,
+          id, img, name, hire = 0, review = 0,
         }) => (
-          <figure key={Math.random()} className={styles.figure}>
+          <LinkWrapper key={id} id={id}>
             <div className={styles.imageWrapper}>
               <img src={img} alt="stylist" />
             </div>
@@ -97,25 +112,39 @@ export default function StylistGridView({
                 {`고용 ${hire}회 | 리뷰 ${review}`}
               </span>
             </figcaption>
-          </figure>
+          </LinkWrapper>
         ))}
         {isSelected('demander') && demanders.map(({
-          img, name, styles: demanderStyles,
+          id, img, name, styles: demanderStyles,
         }) => (
-          <figure key={Math.random()} className={styles.figure}>
+          <LinkWrapper key={id} id={id}>
             <div className={styles.imageWrapper}>
               <img src={img} alt="stylist" />
             </div>
             <figcaption className={styles.figcaption}>
               <h4 className={styles.stylist}>{`${name} 스타일리스트`}</h4>
-              {demanderStyles.map((value, index) => (
-                <span className={styles.info}>{`${index > 0 ? '/' : ''}${value}`}</span>
+              {demanderStyles?.map((value, index) => (
+                <span key={value} className={styles.info}>{`${index > 0 ? '/' : ''}${value}`}</span>
               ))}
             </figcaption>
-          </figure>
+          </LinkWrapper>
         ))}
       </section>
     </section>
+  )
+}
+
+function LinkWrapper({
+  children, id,
+} : {
+  children : ReactNode, id : number,
+}) {
+  return (
+    <Link href={`/profile/${id}`}>
+      <a href={`/profile/${id}`} className={styles.figure}>
+        {children}
+      </a>
+    </Link>
   )
 }
 

@@ -1,0 +1,67 @@
+@use '../../lib/colors.scss' as colors;
+@use '../../lib/util.scss' as util;
+
+.container {
+    margin-top: 16px;
+    padding: 0 17px;
+}
+
+.title {
+    font-size: 24px;
+    line-height: 1.4;
+}
+
+.fieldset {
+    margin-top: 16px;
+}
+
+.legend {
+    font-size: 13px;
+    color: #757372;
+}
+
+.textarea {
+    height: 175px;
+    font-size: 12px;
+    line-height: 1.5;
+    resize: none;
+    @include util.no-scroll();
+
+    &::placeholder {
+        color: colors.$primary-300;
+    }
+}
+
+.price {
+    color: colors.$accent;
+    font-weight: bold;
+}
+
+.textarea,
+.bank,
+.price,
+.account {
+    margin-top: 14px;
+    padding: 16px;
+    width: 100%;
+    background-color: #FBF8F7;
+    border: 1px solid #ECECEC;
+    border-radius: 7px;
+}
+
+.bank,
+.price,
+.account {
+    font-size: 16px;
+}
+
+.submit {
+    margin-top: 29px;
+    padding: 16px 0;
+    width: 100%;
+    font-size: 14px;
+    color: white;
+    background-color: colors.$accent;
+    border-radius: 5px;
+}
+

@@ -8,7 +8,7 @@ export default function Career({
   isOnboarding?: boolean
 }) {
   const { information, setData, setEdit } = useOnboarding()
-  const careerLists = ['일반인', '스타일리스트(패션경력자)', '인플루언서(팔로우 만명이상)']
+  const careerLists = ['일반인', '스타일리스트(패션경력자)', '인플루언서(팔로우 천명이상)']
   const onClick = (index) => {
     setData('career', index)
     if (!isOnboarding) setEdit('career')
@@ -17,18 +17,18 @@ export default function Career({
     <div className={isOnboarding ? styles.container : styles.infoContainer}>
       {careerLists.map((item, index) => (
         <div key={Math.random()}>
-          <div className={isOnboarding ? styles.careerListsContainer : styles.infoCareerLists}>
-            <button type="button" onClick={() => onClick(index)}>
+          <button className={isOnboarding ? styles.careerListsContainer : styles.infoCareerLists} type="button" onClick={() => onClick(index)}>
+            < >
               { information.career === index
                 ? <img src="/icons/selectedCheck.png" alt="selectedCheck" width="22" height="22" />
                 : <img src="/icons/check.png" alt="check" width="22" height="22" /> }
-            </button>
+            </>
             <span className={information.career === index
               ? styles.selectedText : null}
             >
               {item}
             </span>
-          </div>
+          </button>
         </div>
       ))}
     </div>

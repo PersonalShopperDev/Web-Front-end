@@ -9,6 +9,7 @@
 .container::-webkit-scrollbar {
     display: none;
 }
+
 .stepContainer {
     flex: 1;
     overflow: auto;
@@ -25,4 +26,5 @@
 .bottomBarContainer {
     position: fixed;
     bottom: 0px;
+    z-index: 98;
 }

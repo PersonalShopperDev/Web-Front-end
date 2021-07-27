@@ -24,7 +24,6 @@ export default function Drawer() {
     }
     return null
   }
-
   const onSignOut = () => {
     signOut()
   }
@@ -67,16 +66,16 @@ export default function Drawer() {
 const categories = [
   {
     title: '내 정보 변경하기',
-    link: '/profile',
+    link: '/profile/information',
   },
-  {
-    title: '내 스크랩 보기',
-    link: '/scrap',
-  },
-  {
-    title: '결제내역',
-    link: '/account',
-  },
+  // {
+  //   title: '내 스크랩 보기',
+  //   link: '/scrap',
+  // },
+  // {
+  //   title: '결제내역',
+  //   link: '/account',
+  // },
   {
     title: '서비스 이용약관',
     link: '/term/service',
@@ -85,12 +84,12 @@ const categories = [
     title: '개인정보처리방침',
     link: '/term/privacy',
   },
-  {
-    title: '공지사항',
-    link: '/notice',
-  },
-  {
-    title: 'FAQ',
-    link: '/faq',
-  },
+  // {
+  //   title: '공지사항',
+  //   link: '/notice',
+  // },
+  // {
+  //   title: 'FAQ',
+  //   link: '/faq',
+  // },
 ]

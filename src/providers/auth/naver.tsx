@@ -32,7 +32,7 @@ export default function NaverAuthProvider({
     const { naver } = window
     const loginHandler = new naver.LoginWithNaverId({
       clientId: process.env.NAVER_CLIENT_ID,
-      callbackUrl: `${window.location.origin}${callbackUrl}`,
+      callbackUrl: `${process.env.DOMAIN}${callbackUrl}`,
       callbackHandle: true,
       isPopup: false,
       loginButton: {

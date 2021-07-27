@@ -13,6 +13,14 @@
     margin-top: 16px;
 }
 
+.figure {
+    color: inherit;
+    display: block;
+    &:hover {
+        text-decoration: none;
+    }
+}
+
 .figcaption {
     padding: 12px 0;
 }

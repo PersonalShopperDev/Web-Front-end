@@ -1,8 +1,9 @@
 import communicate from 'lib/api'
 import { deleteCookie, getCookie, setCookie } from 'lib/util/cookie'
+import parseJwt from 'lib/util/jwt'
 import { useRouter } from 'next/dist/client/router'
 import React, {
-  createContext, useContext, useEffect, useState,
+  createContext, useContext, useEffect, useState, useRef,
 } from 'react'
 
 export const ACCESS_TOKEN = 'personalshopper_accessToken'
@@ -12,12 +13,16 @@ export type UserType = 'N' | 'D' | 'S' | 'W'
 
 export interface User {
   userType: UserType
+  userId: number
   name: string
   introduction: string
   styles: string[]
   img: string
   closet: {id: number, img: string}[]
   careerList: { value: string, type: number }[]
+  reviewCount: number,
+  hireCount: number,
+  rating: number,
   price: number
   coord: {id: number, img: string}[]
   hopeToSupplier: string
@@ -25,6 +30,10 @@ export interface User {
     isPublic: boolean
     height: number
     weight: number
+    body: {
+      id: number
+      value: string
+    }
   }
 }
 
@@ -33,6 +42,7 @@ interface AuthProps {
   fetchUser: () => Promise<boolean>
   authenticate: (provider: string, token: string) => Promise<void>
   signOut: (redirect?: string) => Promise<void>
+  requestAccessToken: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthProps>(null)
@@ -47,6 +57,10 @@ export default function AuthProvider({
   const router = useRouter()
 
   const [user, setUser] = useState<User>(null)
+
+  const userRef = useRef<User>(user)
+
+  const [load, setLoad] = useState<boolean>()
 
   const tokenExpiration = 1000 * 60 * 30
   const refreshTokenExpiration = 1000 * 60 * 60 * 24 * 7
@@ -65,7 +79,7 @@ export default function AuthProvider({
     })
 
     if (res.status !== 200) {
-      onFail()
+      await onFail('/login/error')
       return
     }
 
@@ -75,12 +89,12 @@ export default function AuthProvider({
 
   const isValidToken = (token : string) : boolean => token !== null && typeof token !== 'undefined' && token !== 'undefined'
 
-  const silentRefresh = async () : Promise<void> => {
+  const requestAccessToken = async () : Promise<void> => {
     const refreshToken = getCookie(REFRESH_TOKEN)
 
     if (!isValidToken(refreshToken)) {
-      if (user) {
-        signOut()
+      if (userRef.current) {
+        await signOut()
       }
       return
     }
@@ -95,12 +109,20 @@ export default function AuthProvider({
       method: 'POST',
     })
 
-    if (res.status === 200) {
-      onResponse(res)
+    if (res.status !== 200) {
+      await onFail('/login')
       return
     }
 
-    onFail()
+    await onResponse(res)
+  }
+
+  const onResponse = async (res: Response) : Promise<void> => {
+    const { accessToken, refreshToken } = await res.json()
+    setAccessToken(accessToken)
+    setRefreshToken(refreshToken)
+    await fetchUser()
+    setTimeout(requestAccessToken, silentRefreshInterval)
   }
 
   const setAccessToken = (token: string) => {
@@ -115,14 +137,6 @@ export default function AuthProvider({
     }
   }
 
-  const onResponse = async (res: Response) : Promise<void> => {
-    const { accessToken, refreshToken } = await res.json()
-    setAccessToken(accessToken)
-    setRefreshToken(refreshToken)
-    fetchUser()
-    setTimeout(silentRefresh, silentRefreshInterval)
-  }
-
   const fetchUser = async () : Promise<boolean> => {
     const res = await communicate({
       url: '/profile',
@@ -130,14 +144,20 @@ export default function AuthProvider({
 
     if (res.status === 200) {
       const data = await res.json()
-      setUser(data)
+      const { userId } = parseJwt(getCookie(ACCESS_TOKEN))
+      setUser({ ...data, userId: parseInt(userId, 10) })
       return true
     }
     return false
   }
 
-  const onFail = () : void => {
-    router.push('/login/error')
+  const onFail = async (redirect?: string) : Promise<void> => {
+    if (userRef.current) {
+      await signOut()
+    }
+    if (redirect) {
+      router.push(redirect)
+    }
   }
 
   const signOut = async (redirect?: string) : Promise<void> => {
@@ -151,15 +171,29 @@ export default function AuthProvider({
     router.reload()
   }
 
+  const initialize = async () => {
+    await requestAccessToken()
+    setLoad(true)
+  }
+
   useEffect(() => {
-    silentRefresh()
+    userRef.current = user
+  }, [user])
+
+  useEffect(() => {
+    initialize()
   }, [])
+
+  if (!load) {
+    return <></>
+  }
 
   const value = {
     user,
     fetchUser,
     authenticate,
     signOut,
+    requestAccessToken,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

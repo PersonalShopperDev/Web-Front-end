@@ -1,16 +1,17 @@
 import Modal from 'components/modal'
 import Drawer from 'components/drawer'
 import styles from 'sass/components/drawer.module.scss'
-import { useAuth } from 'providers/auth'
 import { useEffect, useState } from 'react'
 import { deleteCookie, getCookie } from 'lib/util/cookie'
-import { DRAWER_SHOULD_BE_OPEN } from './term'
+import { useAuth } from 'providers/auth'
+import { DRAWER_SHOULD_BE_OPEN } from './drawer'
 import Avatar from './avatar'
 
 export default function DrawerHandle() {
-  const { user } = useAuth()
   const [shouldOpen, setShouldOpen] = useState<boolean>(false)
   const [load, setLoad] = useState(false)
+
+  const { user } = useAuth()
 
   useEffect(() => {
     const drawerShouldBeOpen = getCookie(DRAWER_SHOULD_BE_OPEN)

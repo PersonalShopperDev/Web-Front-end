@@ -21,14 +21,14 @@ export default function Information() {
 
   const onClickEdit = (key) => {
     setEdit(key)
-    if (key === 'style') router.push('/information/style')
+    if (key === 'style') router.push('/profile/information/style')
   }
   useEffect(() => {
     setTokenInfo(parseJwt(getCookie(ACCESS_TOKEN)))
   }, [])
   useEffect(() => {
     if (tokenInfo !== null) {
-      if (tokenInfo.userType === 'S' && tokenInfo.gender === 'F') {
+      if (tokenInfo.userType === 'D' && tokenInfo.gender === 'F') {
         setEachBoxLists([{
           title: '선호스타일',
           information: <StyleText />,
@@ -50,7 +50,7 @@ export default function Information() {
           information: <Price />,
           key: 'price',
         }])
-      } else if (tokenInfo.userType === 'S' && tokenInfo.gender === 'M') {
+      } else if (tokenInfo.userType === 'D' && tokenInfo.gender === 'M') {
         setEachBoxLists([{
           title: '선호스타일',
           information: <StyleText />,

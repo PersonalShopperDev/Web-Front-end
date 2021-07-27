@@ -1,4 +1,5 @@
 import communicate from 'lib/api'
+import ERROR_MESSAGE from 'lib/constants/error'
 import { cn } from 'lib/util'
 import { useAuth } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
@@ -28,6 +29,9 @@ function Inner({ data } : { data: HeightWeightData}) {
   const { createAlert } = useAlert()
 
   const { bodyStat } = user || data || {}
+
+  const bodyStatRef = useRef(bodyStat)
+
   const { isPublic, height, weight } = bodyStat || {}
 
   const [publicState, setPublicState] = useState(isPublic)
@@ -64,17 +68,30 @@ function Inner({ data } : { data: HeightWeightData}) {
       if (!res.ok) {
         throw new Error()
       }
-      fetchUser()
+      return fetchUser()
     }).catch(async () => {
-      await createAlert({ text: '에러가 발생했습니다' })
+      await createAlert({ text: ERROR_MESSAGE })
     })
 
     setState('default')
   }
 
   useEffect(() => {
+    if (state !== 'edit') {
+      return
+    }
+    const { weight: weightValue, height: heightValue } = bodyStatRef.current || {}
+    weightRef.current.value = weightValue?.toString() || ''
+    heightRef.current.value = heightValue?.toString() || ''
+  }, [state])
+
+  useEffect(() => {
     publicStateRef.current = publicState
   }, [publicState])
+
+  useEffect(() => {
+    bodyStatRef.current = bodyStat
+  }, [bodyStat])
 
   useEffect(() => {
     setOnEdit(onEdit)

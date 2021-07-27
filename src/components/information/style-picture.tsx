@@ -7,7 +7,7 @@ import communicate from 'lib/api/index'
 import { useOnboarding } from 'providers/onboarding'
 
 export default function StylePicture() {
-  const { stylePicture, setStylePicture } = useOnboarding()
+  const { stylePicture, setStylePicture, information } = useOnboarding()
   const [styleImageLists, setStyleImageLists] = useState([])
   const onClick = (id) => {
     if (!stylePicture.includes(id)) {

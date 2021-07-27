@@ -6,6 +6,8 @@ import Icon from 'widgets/icon'
 import communicate from 'lib/api'
 import { useAuth } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
+import ERROR_MESSAGE from 'lib/constants/error'
+import resizeImageFile from 'lib/util/image'
 
 interface AvatarInputData {
   name: string
@@ -22,8 +24,12 @@ export default function AvatarInput({ data } : { data: AvatarInputData}) {
     if (!e.target.files[0]) {
       return
     }
+
+    const file = await resizeImageFile(e.target.files[0])
+
     const formData = new FormData()
-    formData.append('img', e.target.files[0])
+
+    formData.append('img', file)
 
     await communicate({
       url: '/profile/img',
@@ -35,9 +41,9 @@ export default function AvatarInput({ data } : { data: AvatarInputData}) {
       if (!res.ok) {
         throw new Error()
       }
-      fetchUser()
+      return fetchUser()
     }).catch(async () => {
-      await createAlert({ text: '에러가 발생했습니다' })
+      await createAlert({ text: ERROR_MESSAGE })
     })
   }
 

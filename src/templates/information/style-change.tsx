@@ -3,13 +3,16 @@ import StylePicture from 'components/information/style-picture'
 import styles from 'sass/templates/information/style-change.module.scss'
 import { useOnboarding } from 'providers/onboarding'
 import { useRouter } from 'next/router'
+import { useAuth } from 'providers/auth'
 
 export default function StyleChange() {
+  const { fetchUser } = useAuth()
   const { setEdit } = useOnboarding()
   const router = useRouter()
 
-  const onClickEdit = (key) => {
+  const onClickEdit = async (key) => {
     setEdit(key)
+    await fetchUser()
     router.back()
   }
   return (
@@ -19,7 +22,7 @@ export default function StyleChange() {
         <StylePicture />
       </div>
       <footer>
-        <section className={styles.tmp}>
+        <section className={styles.bottom}>
           <div className={styles.gradient}>
             <button type="button" className={styles.completeButton} onClick={() => onClickEdit('style')}>
               <span className={styles.nextText}>수정하기</span>

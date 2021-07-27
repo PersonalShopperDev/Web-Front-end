@@ -1,0 +1,48 @@
+@use '../../../lib/colors.scss' as colors;
+
+.container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    &.my {
+        align-self: flex-end;
+    }
+
+    &.your {
+        align-self: flex-start;
+    }
+
+    & + & {
+        margin-top: 31px;
+    }
+}
+
+.inner {
+    display: flex;
+}
+
+.header {
+    margin-right: 14px;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+
+    word-wrap: break-word;
+
+    &.my {
+        align-items: flex-end;
+    }
+
+    &.your {
+        align-items: flex-start;
+    }
+}
+
+.timestamp {
+    margin-top: 6px;
+    color: colors.$primary-300; 
+    font-size: 11px;
+}
+

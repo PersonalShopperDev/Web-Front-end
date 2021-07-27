@@ -1,0 +1,71 @@
+@use '../../lib/colors.scss' as colors;
+
+.profileContainer {
+    display: flex;
+    border-bottom: 6px solid colors.$background-shade;
+    padding-left: 15px;
+    padding-bottom: 35px;
+}
+.profileImg {
+    border-radius: 122px;
+}
+.infoBox {
+    margin-left: 22px;
+}
+.name {
+    font-size: 26px;
+    font-weight: 700;
+    margin-right: 5px;
+}
+.category {
+    flex-direction: row;
+    display: flex;
+    flex-wrap: wrap;
+    width: 200px;
+}
+.styleBox {
+    padding: 4px 10px;
+    border-radius: 15px;
+    margin-top: 10px;
+    margin-right: 6px;
+    border: 1px solid colors.$primary-300;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.styleBox > span {
+    font-size: 9px;
+    color: colors.$primary-600;
+    font-weight: 500;
+    text-align: center;
+}
+.menuContainer {
+    border-bottom: 1px solid #e5e5e5;
+    display: flex;
+}
+@mixin menuText {
+    padding-top: 18px;
+    padding-bottom: 18px;
+    font-size: 12px;
+    font-weight: 700;
+    color: colors.$primary-300;
+    display: block;
+    width: 125px;
+}
+
+.notSelectedMenu {
+    @include menuText();
+}
+
+.selectedMenu {
+    @include menuText();
+    color: black;
+    border-bottom: 3px solid colors.$accent;
+}
+.gradient {
+    height: 98px;
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,0.5), rgba(255,255,255,1));
+}
