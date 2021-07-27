@@ -1,4 +1,4 @@
-import Room, { Other, RecieveMessageProps } from 'lib/model/room'
+import Room, { LatestEstimate, Other, RecieveMessageProps } from 'lib/model/room'
 import { useAuth } from 'providers/auth'
 import {
   ReactNode, useState, useEffect, useContext, createContext,
@@ -16,10 +16,13 @@ export const useRoom = () => useContext(RoomContext)
 interface Props {
   children: ReactNode
   id: string
-  data: {
-    targetUser: Other
-    chatList: RecieveMessageProps[]
-  }
+  data: RoomProviderData
+}
+
+export interface RoomProviderData {
+  latestEstimate: LatestEstimate
+  targetUser: Other
+  chatList: RecieveMessageProps[]
 }
 
 export default function RoomProvider({
@@ -34,7 +37,7 @@ export default function RoomProvider({
   const [room, setRoom] = useState<Room>()
 
   useEffect(() => {
-    const { targetUser, chatList } = data
+    const { targetUser, chatList, latestEstimate } = data
 
     const roomId = parseInt(id, 10)
 
@@ -42,6 +45,8 @@ export default function RoomProvider({
 
     if (assigned) {
       assigned.initializeMessage(chatList)
+      assigned.initializeLatestEstimate(latestEstimate)
+
       assigned.read()
       setRoom(assigned)
       return
@@ -50,7 +55,7 @@ export default function RoomProvider({
     const { userId } = user
 
     const created = open({
-      id, userId, unreadCount: 0, other: targetUser, messages: chatList,
+      id, userId, unreadCount: 0, other: targetUser, messages: chatList, latestEstimate,
     })
 
     setRoom(created)

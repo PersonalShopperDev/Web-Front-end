@@ -3,17 +3,13 @@ import { GetServerSideProps } from 'next'
 import parseJwt from 'lib/util/jwt'
 import { ACCESS_TOKEN } from 'providers/auth'
 import { communicateWithContext } from 'lib/api'
-import { Other, RecieveMessageProps } from 'lib/model/room'
-import RoomProvider from 'providers/chat/room'
+import RoomProvider, { RoomProviderData } from 'providers/chat/room'
 import ProgressAppBar from 'components/app-bar/progress'
 import Progress from 'templates/progress'
 
 interface Props {
   id: string
-  data: {
-    targetUser: Other
-    chatList: RecieveMessageProps[]
-  }
+  data: RoomProviderData
 }
 
 export default function Page({ id, data } : Props) {

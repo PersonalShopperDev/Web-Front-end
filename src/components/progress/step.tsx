@@ -13,7 +13,11 @@ export default function Step({
 }) {
   return (
     <li className={styles.container}>
-      <i className={cn(styles.index, active && styles.active)}>{index}</i>
+      <i className={cn(styles.index, active && styles.active)}>
+        <span className={styles.number}>
+          {index}
+        </span>
+      </i>
       <span className={cn(styles.text, active && styles.active)}>{children}</span>
     </li>
   )

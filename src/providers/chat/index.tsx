@@ -9,15 +9,10 @@ import {
 } from 'react'
 import io, { Socket } from 'socket.io-client'
 
-interface OnPayment {
-  roomId: number
-  value: boolean
-}
-
-interface OnResponseEstimate {
+interface OnChangeEstimateStatus {
   roomId: number
   estimateId: number
-  value: boolean
+  status: number
 }
 
 interface OnReceive extends RecieveMessageProps {
@@ -59,24 +54,14 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
 
   const isConnected = () => socketRef.current?.connected
 
-  const onPayment = async ({ roomId, ...props } : OnPayment) => {
+  const onChangeEstimateStatus = async ({ roomId, ...props } : OnChangeEstimateStatus) => {
     const room = await getReceivedRoom(roomId)
 
     if (!room) {
       return
     }
 
-    room.onPayment(props)
-  }
-
-  const onResponseEstimate = async ({ roomId, ...props } : OnResponseEstimate) => {
-    const room = await getReceivedRoom(roomId)
-
-    if (!room) {
-      return
-    }
-
-    room.onResponseEstimate(props)
+    room.onChangeEstimateStatus(props)
   }
 
   const onReceive = async ({ roomId, ...props } : OnReceive) => {
@@ -104,8 +89,7 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
   }
 
   const attachListener = () => {
-    socketRef.current.on('payment', onPayment)
-    socketRef.current.on('responseEstimate', onResponseEstimate)
+    socketRef.current.on('onChangeEstimateStatus', onChangeEstimateStatus)
     socketRef.current.on('receiveMsg', onReceive)
     socketRef.current.on('readMsg', onRead)
   }

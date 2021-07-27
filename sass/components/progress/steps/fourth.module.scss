@@ -12,4 +12,8 @@
     color: colors.$accent;
     background-color: white;
     border: 1px solid colors.$accent;
+
+    &:hover {
+      text-decoration: none; 
+    }
 }

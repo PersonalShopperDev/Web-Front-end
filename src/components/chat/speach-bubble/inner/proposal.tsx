@@ -1,3 +1,4 @@
+import { useAuth } from 'providers/auth'
 import { useRoom } from 'providers/chat/room'
 import { ReactNode } from 'react'
 import styles from 'sass/components/chat/speach-bubble/inner/proposal.module.scss'
@@ -5,21 +6,39 @@ import styles from 'sass/components/chat/speach-bubble/inner/proposal.module.scs
 export default function Proposal({
   id,
   children,
+  status,
   price,
 }: {
   id: number
   children: ReactNode
+  status: number,
   price: number
 }) {
+  const { userType } = useAuth().user
+
   const { room } = useRoom()
 
   const response = (value: boolean) => {
     room.responseEstimate(id, value)
   }
 
-  const resolve = () => response(true)
+  const disabled = status !== 0 || userType !== 'D'
 
-  const reject = () => response(false)
+  const resolve = () => {
+    if (disabled) {
+      return
+    }
+
+    response(true)
+  }
+
+  const reject = () => {
+    if (disabled) {
+      return
+    }
+
+    response(false)
+  }
 
   return (
     <figure className={styles.container}>
@@ -34,8 +53,8 @@ export default function Proposal({
         진행해주세요.
       </p>
       <div className={styles.selection}>
-        <button className={styles.resolve} type="button" onClick={resolve}>수락하기</button>
-        <button className={styles.reject} type="button" onClick={reject}>거절하기</button>
+        <button className={styles.resolve} type="button" onClick={resolve} disabled={disabled}>수락하기</button>
+        <button className={styles.reject} type="button" onClick={reject} disabled={disabled}>거절하기</button>
       </div>
     </figure>
   )

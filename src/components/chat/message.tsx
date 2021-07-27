@@ -29,10 +29,13 @@ export default function Message({ message } : { message: MessageProps}) {
   }
 
   if (message instanceof ProposalMessage) {
-    const { price, content, estimateId } = message
+    const {
+      price, content, estimateId, status,
+    } = message
     return (
       <ProposalSpeachBubble
         id={estimateId}
+        status={status}
         userId={userId}
         price={price}
         content={content}

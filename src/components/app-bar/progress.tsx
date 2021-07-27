@@ -13,7 +13,7 @@ export default function ProgressAppBar() {
     <AppBar
       title="진행사항"
       actions={[
-        <button type="button" onClick={onExit}>
+        <button key="button" type="button" onClick={onExit}>
           <Icon
             key="exit"
             src="exit.png"

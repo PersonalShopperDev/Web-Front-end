@@ -12,6 +12,12 @@ export interface Other {
   name: string
 }
 
+export interface LatestEstimate {
+  estimateId: number,
+  price: number,
+  status: number,
+}
+
 export interface RoomProps {
   id: string | number
   userId: number
@@ -20,6 +26,7 @@ export interface RoomProps {
   unreadCount: number
   lastChat?: string
   lastChatTime?: string
+  latestEstimate?: LatestEstimate
   socketRef: MutableRefObject<Socket>
   update: () => void
 }
@@ -44,6 +51,7 @@ export default class Room {
   public readonly id: number
   public readonly userId: number
   public readonly other: Other
+  public readonly latestEstimate: LatestEstimate
   private _messages: Message[]
   private _unreadCount: number
   private _lastChat: string
@@ -59,6 +67,7 @@ export default class Room {
     unreadCount,
     lastChat,
     lastChatTime,
+    latestEstimate,
     socketRef,
     update,
   }: RoomProps) {
@@ -69,6 +78,9 @@ export default class Room {
     }
     this.userId = userId
     this.other = other
+    this.latestEstimate = latestEstimate || {
+      estimateId: undefined, price: undefined, status: undefined,
+    }
     this._unreadCount = unreadCount
     this._lastChat = lastChat
     this._lastChatTime = lastChatTime
@@ -109,6 +121,12 @@ export default class Room {
     }
     this._messages = array.map((props) => Room.createMessage(props))
     this.update()
+  }
+
+  public initializeLatestEstimate({ estimateId, price, status } : LatestEstimate) {
+    this.latestEstimate.estimateId = estimateId
+    this.latestEstimate.price = price
+    this.latestEstimate.status = status
   }
 
   public appendMessage(array: RecieveMessageProps[]) {
@@ -181,12 +199,12 @@ export default class Room {
 
   public responseEstimate(id: number, value: boolean) {
     this.socketRef.current.emit('responseEstimate', { estimateId: id, value })
-    if (value) {
-      this.sendMessage('수락되었습니다')
-    } else {
-      this.sendMessage('거절되었습니다')
-    }
-    this.update()
+    // if (value) {
+    //   this.sendMessage('수락되었습니다')
+    // } else {
+    //   this.sendMessage('거절되었습니다')
+    // }
+    // this.update()
   }
 
   public read() {
@@ -202,11 +220,41 @@ export default class Room {
     this.update()
   }
 
-  public onPayment({ value }: { value: boolean }) {
+  public pay(estimateId: number) {
+    if (this.latestEstimate.estimateId !== estimateId) {
+      return
+    }
+
+    let status : number
+
+    for (let i = 0; i < this.messages.length; i++) {
+      const message = this.messages[i]
+      if (message instanceof ProposalMessage) {
+        if (message.estimateId === estimateId) {
+          status = message.status + 1
+          message.setStatus(status)
+          break
+        }
+      }
+    }
+
+    this.latestEstimate.status = status
     this.update()
   }
 
-  public onResponseEstimate({ estimateId, value }: { estimateId: number; value: boolean }) {
+  public onChangeEstimateStatus({ estimateId, status }: { estimateId: number; status: number }) {
+    for (let i = 0; i < this.messages.length; i++) {
+      const message = this.messages[i]
+      if (message instanceof ProposalMessage) {
+        if (message.estimateId === estimateId) {
+          message.setStatus(status)
+          break
+        }
+      }
+    }
+
+    this.latestEstimate.estimateId = estimateId
+    this.latestEstimate.status = status
     this.update()
   }
 
