@@ -40,7 +40,7 @@ export default function ChatRoom() {
               <Link href={`/propose/new?uid=${room.other.id}`}>
                 <a className={styles.button} href={`/propose/new?uid=${room.other.id}`}>
                   <Icon src="credit.png" size={24} />
-                  <div>코디 보내기</div>
+                  <div>견적 보내기</div>
                 </a>
               </Link>
               <Link href={`/suggestion/new?uid=${room.other.id}`}>

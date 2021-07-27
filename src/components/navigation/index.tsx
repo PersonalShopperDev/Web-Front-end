@@ -1,38 +1,19 @@
 /* eslint-disable no-script-url */
+import { cn } from 'lib/util'
+import { useChat } from 'providers/chat'
 import React from 'react'
 import styles from 'sass/components/navigation.module.scss'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
+import Menu from './menu'
 
 export default function Navigation() {
-  const router = useRouter()
+  const { rooms } = useChat()
 
-  const isCurrentPath = (href: string) => {
-    const { asPath } = router
-    if (href === '/') {
-      return asPath === href || asPath.includes('users')
-    }
-    return asPath.includes(href)
-  }
+  const isUnread = rooms.some((room) => room.unreadCount > 0)
 
   return (
     <div className={styles.container}>
-      {navLists.map(({
-        href, title, selectedPath, notSelectedPath,
-      }) => (
-        <Link key={title} href={href === 'none' ? '/' : href}>
-          <a className={styles.itemContainer} href={href === 'none' ? '/' : href}>
-            <img
-              src={isCurrentPath(href) ? selectedPath : notSelectedPath}
-              alt={title}
-              width={18}
-              height={18}
-            />
-            <span className={isCurrentPath(href) ? styles.selectedText : styles.notSelectedText}>
-              {title}
-            </span>
-          </a>
-        </Link>
+      {navLists.map((props) => (
+        <Menu key={props.title} className={cn(styles.itemContainer, (props.title === '채팅' && isUnread) && styles.unread)} {...props} />
       ))}
     </div>
   )
