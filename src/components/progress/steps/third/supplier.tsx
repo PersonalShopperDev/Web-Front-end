@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import COORD_MANUAL from 'lib/constants/manual'
 import styles from 'sass/components/progress/steps/third.module.scss'
 
 export default function ThirdStepForSupplier() {
@@ -10,11 +10,9 @@ export default function ThirdStepForSupplier() {
       <br />
       <p>
         다시 한 번,&nbsp;
-        <Link href="/">
-          <a className={styles.link} href="/">
-            코디매뉴얼
-          </a>
-        </Link>
+        <a className={styles.link} href={COORD_MANUAL} target="_blank" rel="noreferrer">
+          코디매뉴얼
+        </a>
         을 꼭 참고해주세요!
       </p>
       <br />
