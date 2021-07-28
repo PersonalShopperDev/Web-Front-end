@@ -46,7 +46,7 @@ export default function ChatRoom() {
   const { latestEstimate } = room
 
   const proposalDisabled = latestEstimate.status === SUPPLIER_MAX_PROGRESS
-    || latestEstimate.status < MIN_PROGRESS
+    || latestEstimate.status > MIN_PROGRESS
 
   const suggestionDisabled = latestEstimate.status !== 3
 
@@ -57,9 +57,9 @@ export default function ChatRoom() {
       {(user.userType === 'S' || user.userType === 'W') && (
         <Modal
           initializer={(
-            <button className={styles.plus} type="button">
+            <div className={styles.plus}>
               <Icon src="chat-plus.png" size={18} />
-            </button>
+            </div>
           )}
         >
           <section className={styles.dialog}>
