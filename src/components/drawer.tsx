@@ -72,10 +72,10 @@ const categories = [
   //   title: '내 스크랩 보기',
   //   link: '/scrap',
   // },
-  // {
-  //   title: '결제내역',
-  //   link: '/account',
-  // },
+  {
+    title: '결제내역',
+    link: '/history',
+  },
   {
     title: '서비스 이용약관',
     link: '/term/service',
