@@ -30,4 +30,8 @@ export default class ProposalMessage extends CommonMessage {
   public get status() {
     return this._status
   }
+
+  public setStatus(value: number) {
+    this._status = value
+  }
 }

@@ -2,10 +2,10 @@ import Layout from 'layouts/default'
 import { GetServerSideProps } from 'next'
 import parseJwt from 'lib/util/jwt'
 import { ACCESS_TOKEN } from 'providers/auth'
-import RoomAppBar from 'components/app-bar/room'
-import ChatRoom from 'components/chat/room'
 import { communicateWithContext } from 'lib/api'
 import RoomProvider, { RoomProviderData } from 'providers/chat/room'
+import ProgressAppBar from 'components/app-bar/progress'
+import Progress from 'templates/progress'
 
 interface Props {
   id: string
@@ -13,16 +13,12 @@ interface Props {
 }
 
 export default function Page({ id, data } : Props) {
-  const { targetUser } = data
-
-  const { name } = targetUser
-
   return (
     <Layout
-      header={<RoomAppBar title={name} />}
+      header={<ProgressAppBar />}
     >
       <RoomProvider id={id} data={data}>
-        <ChatRoom />
+        <Progress />
       </RoomProvider>
     </Layout>
   )

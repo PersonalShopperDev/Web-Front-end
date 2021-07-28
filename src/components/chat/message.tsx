@@ -1,10 +1,12 @@
 import MessageProps from 'lib/model/entity/message/base.entity'
 import CommonMessage from 'lib/model/entity/message/common.entity'
 import CoordMessage from 'lib/model/entity/message/coord.entity'
+import NoticeMessage from 'lib/model/entity/message/notice.entity'
 import ProposalMessage from 'lib/model/entity/message/proposal.entity'
 import { useRoom } from 'providers/chat/room'
 import CommonSpeachBubble from './speach-bubble/common'
 import CoordSpeachBubble from './speach-bubble/coord'
+import NoticeSpeachBubble from './speach-bubble/notice'
 import ProposalSpeachBubble from './speach-bubble/proposal'
 
 export default function Message({ message } : { message: MessageProps}) {
@@ -13,6 +15,15 @@ export default function Message({ message } : { message: MessageProps}) {
   const { profileImg } = room.other
 
   const { userId, timestamp } = message
+
+  if (message instanceof NoticeMessage) {
+    const { content } = message
+    return (
+      <NoticeSpeachBubble
+        content={content}
+      />
+    )
+  }
 
   if (message instanceof CoordMessage) {
     const { coordId, coordTitle, coordImg } = message
@@ -29,10 +40,13 @@ export default function Message({ message } : { message: MessageProps}) {
   }
 
   if (message instanceof ProposalMessage) {
-    const { price, content, estimateId } = message
+    const {
+      price, content, estimateId, status,
+    } = message
     return (
       <ProposalSpeachBubble
         id={estimateId}
+        status={status}
         userId={userId}
         price={price}
         content={content}

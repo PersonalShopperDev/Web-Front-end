@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { cn } from 'lib/util'
 import communicate from 'lib/api'
 import { useRoom } from 'providers/chat/room'
@@ -5,13 +6,20 @@ import {
   useState, useEffect, useRef,
 } from 'react'
 import styles from 'sass/components/chat/room.module.scss'
+import { useAuth } from 'providers/auth'
 import DateDivider from './date-divider'
 import Message from './message'
 import Form from './form'
 
 type State = 'ready' | 'default' | 'pending'
 
+export const DEMANDER_MAX_PROGRESS = 5
+export const SUPPLIER_MAX_PROGRESS = 4
+export const MIN_PROGRESS = 2
+
 export default function ChatRoom() {
+  const { userType } = useAuth().user
+
   const { room } = useRoom()
 
   const [state, setState] = useState<State>('ready')
@@ -100,8 +108,22 @@ export default function ChatRoom() {
     return () => innerRef.current?.removeEventListener('scroll', onScroll)
   }, [])
 
+  const maxProgress = userType === 'D' ? DEMANDER_MAX_PROGRESS : SUPPLIER_MAX_PROGRESS
+
+  const inProgress = room.latestEstimate.status >= MIN_PROGRESS
+    && room.latestEstimate.status <= maxProgress
+
   return (
     <section className={styles.container}>
+      {inProgress && (
+      <section className={styles.notice}>
+        <Link href={`/chat/progress/${room.id}`}>
+          <a className={styles.progress} href={`/chat/progress/${room.id}`}>
+            진행사항 보기
+          </a>
+        </Link>
+      </section>
+      )}
       <section ref={innerRef} className={styles.inner}>
         <div className={cn(styles.list, state === 'ready' && styles.ready)}>
           {messages?.reduce((acc, cur, i, arr) => {

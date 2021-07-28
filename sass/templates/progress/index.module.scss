@@ -1,0 +1,27 @@
+@use '../../lib/colors.scss' as colors;
+
+.container {
+    padding: 0 24px;
+}
+
+.list {
+    margin-top: 24px;
+    list-style: none;
+
+    li + li {
+        margin-top: 28px;
+    
+        i {
+            position: relative;
+        }
+    
+        i::after {
+            position: absolute;
+            content: '';
+            width: 0px;
+            border-left: 2px dotted colors.$primary-200;
+            height: 28px;
+            bottom: 100%;
+        }
+    }
+}
