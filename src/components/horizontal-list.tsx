@@ -118,7 +118,7 @@ export default function HorizontalList({
         className={cn(styles.list, className)}
         ref={listRef}
       >
-        {children.map((child, index) => (
+        {children.filter((child) => child).map((child, index) => (
           <div
             key={Math.random()}
             className={styles.wrapper}

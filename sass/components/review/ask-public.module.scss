@@ -1,0 +1,11 @@
+@use '../../lib/colors.scss' as colors;
+
+.notice {
+    margin-top: 5px;
+    font-size: 10px;
+    color: colors.$primary-400;
+}
+
+.container {
+    margin-top: 4px;
+}
