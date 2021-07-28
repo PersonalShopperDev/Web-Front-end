@@ -1,0 +1,15 @@
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+}
+
+.figure {
+    aspect-ratio: 1;
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
