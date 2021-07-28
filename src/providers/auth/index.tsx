@@ -11,6 +11,23 @@ export const REFRESH_TOKEN = 'personalshopper_refreshToken'
 
 export type UserType = 'N' | 'D' | 'S' | 'W'
 
+export interface ReviewListData {
+  reviewId: number
+  supplierId: number
+  img: string
+  status: number
+}
+
+export interface BodyStat {
+  isPublic: boolean
+  height: number
+  weight: number
+  body: {
+    id: number
+    value: string
+  }
+}
+
 export interface User {
   userType: UserType
   userId: number
@@ -20,21 +37,14 @@ export interface User {
   img: string
   closet: {id: number, img: string}[]
   careerList: { value: string, type: number }[]
+  reviewList: ReviewListData[]
   reviewCount: number,
   hireCount: number,
   rating: number,
   price: number
   coord: {id: number, img: string}[]
   hopeToSupplier: string
-  bodyStat: {
-    isPublic: boolean
-    height: number
-    weight: number
-    body: {
-      id: number
-      value: string
-    }
-  }
+  bodyStat: BodyStat
 }
 
 interface AuthProps {
