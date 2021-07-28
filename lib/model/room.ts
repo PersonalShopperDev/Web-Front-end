@@ -189,23 +189,8 @@ export default class Room {
     this._lastChatTime = message.timestamp
   }
 
-  // public sendCoord(title: string, image: ArrayBuffer) {
-  //   this.socketRef.current.emit('sendCoord', {
-  //     roomId: this.id,
-  //     coordTitle: title,
-  //     coordImg: image,
-  //   })
-  //   this.update()
-  // }
-
   public responseEstimate(id: number, value: boolean) {
     this.socketRef.current.emit('responseEstimate', { estimateId: id, value })
-    // if (value) {
-    //   this.sendMessage('수락되었습니다')
-    // } else {
-    //   this.sendMessage('거절되었습니다')
-    // }
-    // this.update()
   }
 
   public read() {
