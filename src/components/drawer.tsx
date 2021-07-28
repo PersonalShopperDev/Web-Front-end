@@ -84,10 +84,10 @@ const categories = [
     title: '개인정보처리방침',
     link: '/term/privacy',
   },
-  // {
-  //   title: '공지사항',
-  //   link: '/notice',
-  // },
+  {
+    title: '공지사항',
+    link: '/notice',
+  },
   // {
   //   title: 'FAQ',
   //   link: '/faq',
