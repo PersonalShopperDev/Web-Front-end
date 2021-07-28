@@ -27,20 +27,21 @@ export default function Product({
   productRef: Array<ProductInformation>
 }) {
   const { createAlert } = useAlert()
-  const NameRef = useRef<HTMLInputElement>()
-  const PriceRef = useRef<HTMLInputElement>()
-  const UrlRef = useRef<HTMLInputElement>()
-  const [name, setName] = useState<string>(productRef.current[index].name)
-  const [price, setPrice] = useState<string>(productRef.current[index].price)
-  const [buyLink, setBuyLink] = useState<string>(productRef.current[index].buyLink)
+  const nameRef = useRef<HTMLInputElement>()
+  const priceRef = useRef<HTMLInputElement>()
+  const urlRef = useRef<HTMLInputElement>()
+  const [name, setName] = useState<string>(productRef.current[index]?.name)
+  const [price, setPrice] = useState<string>(productRef.current[index]?.price)
+  const [buyLink, setBuyLink] = useState<string>(productRef.current[index]?.buyLink)
   const [imageUrl, setImageUrl] = useState(null)
   const [cropModal, setCropModal] = useState(false)
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
   const [croppedImage, setCroppedImage] = useState(null)
-  const [removedImage, setRemovedImage] = useState(productRef.current[index].url)
-  const [isEdit, setIsEdit] = useState(productRef.current[index].isEdit)
+  const [removedImage, setRemovedImage] = useState(productRef.current[index]?.url)
+  const [isEdit, setIsEdit] = useState(productRef.current[index]?.isEdit)
+  console.log(productRef)
   const onModalClose = () => {
     setImageUrl(null)
     setCropModal(false)
@@ -88,15 +89,15 @@ export default function Product({
   }
   const onClickComplete = async () => {
     productRef.current[index].url = removedImage
-    if (NameRef.current.value === '' || PriceRef.current.value === '' || UrlRef.current.value === '' || !removedImage) {
+    if (nameRef.current.value === '' || priceRef.current.value === '' || urlRef.current.value === '' || !removedImage) {
       await createAlert({ text: '항목을 채워주세요' })
       return
     }
     productRef.current[index].isEdit = false
     setIsEdit(productRef.current[index].isEdit)
-    setName(NameRef.current.value)
-    setPrice(PriceRef.current.value)
-    setBuyLink(UrlRef.current.value)
+    setName(nameRef.current.value)
+    setPrice(priceRef.current.value)
+    setBuyLink(urlRef.current.value)
     setProducts((prev) => {
       if (!prev.includes(removedImage)) {
         return [...prev, removedImage]
@@ -173,9 +174,9 @@ export default function Product({
   }
   useEffect(() => {
     if (isEdit) {
-      NameRef.current.value = productRef.current[index].name
-      PriceRef.current.value = productRef.current[index].price
-      UrlRef.current.value = productRef.current[index].buyLink
+      nameRef.current.value = productRef.current[index].name
+      priceRef.current.value = productRef.current[index].price
+      urlRef.current.value = productRef.current[index].buyLink
     }
   }, [isEdit])
   return (
@@ -202,7 +203,7 @@ export default function Product({
               <input
                 type="text"
                 placeholder="상품이름"
-                ref={NameRef}
+                ref={nameRef}
                 autoComplete="off"
                 onChange={onChangeInput}
                 id={`name${index}`}
@@ -215,7 +216,7 @@ export default function Product({
                 <input
                   type="number"
                   placeholder="가격"
-                  ref={PriceRef}
+                  ref={priceRef}
                   autoComplete="off"
                   onChange={onChangeInput}
                   id={`price${index}`}
@@ -227,7 +228,7 @@ export default function Product({
               <input
                 type="url"
                 placeholder="구매링크"
-                ref={UrlRef}
+                ref={urlRef}
                 autoComplete="off"
                 onChange={onChangeInput}
                 id={`buylink${index}`}

@@ -193,7 +193,7 @@ export default function CodySuggetsion({
 
     router.push(`/chat/${roomId}`)
   }
-  const ClickEventListner = () => {
+  const ClickEventListener = () => {
     localStorage.removeItem(`cody${id}`)
     const descroptionCookie: ProductDescription = {
       title: descriptionRef.current.title,
@@ -224,14 +224,13 @@ export default function CodySuggetsion({
       if (parsedData.products !== undefined) {
         setProductCount(parsedData.products.length)
         productRef.current = parsedData.products
-        parsedData.products.forEach(({ url }) => {
-          setProducts((prev) => [...prev, url])
-        })
+        const productsUrl = parsedData.products.map(({ url }) => url)
+        setProducts((prev) => [...prev, ...productsUrl])
       }
     }
-    document.getElementById('storage').addEventListener('click', ClickEventListner)
+    document.getElementById('storage').addEventListener('click', ClickEventListener)
     return () => {
-      if (document.getElementById('storage') !== null) document.getElementById('storage').removeEventListener('click', ClickEventListner)
+      document.getElementById('storage')?.removeEventListener('click', ClickEventListener)
     }
   }, [])
   return (
