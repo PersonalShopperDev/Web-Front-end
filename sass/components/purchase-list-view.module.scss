@@ -77,4 +77,14 @@
         font-size: 12px;
         font-weight: normal;
     }
+
+    .reviewComplete {
+        align-self: flex-end;
+        padding: 6px 9px;
+        border-radius: 5px;
+        border: 1px solid colors.$primary-400;
+        color: colors.$primary-400;
+        font-size: 12px;
+        font-weight: normal;
+    }
 }

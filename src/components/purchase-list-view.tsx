@@ -1,55 +1,77 @@
 import Link from 'next/link'
 import styles from 'sass/components/purchase-list-view.module.scss'
+import { History } from 'providers/history'
+import { getCookie } from 'lib/util/cookie'
+import { ACCESS_TOKEN } from 'providers/auth'
+import parseJwt from 'lib/util/jwt'
+import { useAlert } from 'providers/dialog/alert/inner'
 
-export default function PurchaseListView() {
-  const data = [
-    {
-      date: '2021.05.31',
-      name: '유지원',
-      price: 21000,
-      image: 'a',
-    },
-    {
-      date: '2021.06.31',
-      name: '유지원',
-      price: 21000,
-      image: 'a',
-    },
-  ]
+export default function PurchaseListView({
+  data,
+}: {
+  data: History
+}) {
+  const {
+    estimateId, paymentTime, price, targetUser, status,
+  } = data
+  const { createAlert } = useAlert()
+  const token = getCookie(ACCESS_TOKEN)
+  const { userType } = parseJwt(token)
+  const onClickButton = async () => {
+    await createAlert({ text: '코디 진행중입니다' })
+  }
   return (
     <section className={styles.container}>
-      {data.map(({
-        date, name, price, image,
-      }) => (
-        <figure key={date} className={styles.card}>
-          <div className={styles.header}>
-            <span className={styles.label}>결제일 </span>
-            <span>{date}</span>
+      <figure key={estimateId} className={styles.card}>
+        <div className={styles.header}>
+          <span className={styles.label}>결제일 </span>
+          <span>{paymentTime.toString().substr(0, 10)}</span>
+        </div>
+        <div className={styles.body}>
+          <div className={styles.imageWrapper}>
+            <img className={styles.image} src={targetUser.img} alt="" />
           </div>
-          <div className={styles.body}>
-            <div className={styles.imageWrapper}>
-              <img className={styles.image} src={image} alt="" />
+          <div className={styles.detail}>
+            <div className={styles.identity}>
+              <span>{targetUser.name}</span>
+              <span className={styles.label}>{userType === 'D' ? '스타일리스트' : '일반인'}</span>
             </div>
-            <div className={styles.detail}>
-              <div className={styles.identity}>
-                <span>{name}</span>
-                <span className={styles.label}>스타일리스트</span>
-              </div>
-              <div className={styles.type}>
-                일반 채팅 및 코디 결제
-              </div>
-              <div className={styles.price}>
-                {price}
-              </div>
+            <div className={styles.price}>
+              {price}
+              원
             </div>
-            <Link href="/review/new">
-              <a href="/review/new" className={styles.write}>
-                리뷰 쓰기
-              </a>
-            </Link>
           </div>
-        </figure>
-      ))}
+          {userType === 'D'
+            ? (
+              <>
+                {status === 5 || status === 6
+                  ? (
+                    <div className={styles.reviewComplete}>코디 완료</div>
+                  )
+                  : <div className={styles.write}>작성중 코디</div>}
+              </>
+            )
+            : (
+              <>
+                {status === 6
+                  ? <div className={styles.reviewComplete}>리뷰 완료</div>
+                  : (
+                    <>
+                      {status === 5
+                        ? (
+                          <Link href="/review/new">
+                            <a href="/review/new" className={styles.write}>
+                              리뷰 쓰기
+                            </a>
+                          </Link>
+                        )
+                        : <button type="button" className={styles.write} onClick={onClickButton}>리뷰 쓰기</button> }
+                    </>
+                  )}
+              </>
+            ) }
+        </div>
+      </figure>
     </section>
   )
 }
