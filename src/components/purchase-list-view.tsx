@@ -20,6 +20,7 @@ export default function PurchaseListView({
   const onClickButton = async () => {
     await createAlert({ text: '코디 진행중입니다' })
   }
+
   return (
     <section className={styles.container}>
       <figure key={estimateId} className={styles.card}>
@@ -41,7 +42,7 @@ export default function PurchaseListView({
               원
             </div>
           </div>
-          {userType === 'D'
+          {userType === 'S'
             ? (
               <>
                 {status === 5 || status === 6

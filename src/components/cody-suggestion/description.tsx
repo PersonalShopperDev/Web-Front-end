@@ -19,11 +19,7 @@ export default function Description({
     descriptionRef.current[key] = e.target.value
   }
   const onChangeInput = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
-    if (e.target.id === 'title') {
-      update(e, 'title')
-    } else if (e.target.id === 'content') {
-      update(e, 'content')
-    }
+    update(e, e.target.id)
   }
 
   useEffect(() => {

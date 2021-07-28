@@ -8,11 +8,12 @@ export default function Notice({
 }: {
   data: NoticeData
 }) {
+  const { title, date, content } = data
   return (
     <div className={styles.container} id="NOTICE">
-      <span className={styles.title}>{data.title}</span>
-      <span className={styles.date}>{data.date}</span>
-      <div dangerouslySetInnerHTML={{ __html: data.content }} />
+      <span className={styles.title}>{title}</span>
+      <span className={styles.date}>{date}</span>
+      <div dangerouslySetInnerHTML={{ __html: content }} />
     </div>
   )
 }

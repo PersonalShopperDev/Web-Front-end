@@ -40,8 +40,8 @@ export default function HistoryProvider({
     const page = HistoryRef.current.value.length / pageNum
     if (Math.floor(HistoryRef.current.value.length / pageNum) !== page) return
     const res = await communicate({ url: `/estimate?page=${page}` })
-    const newAccountHistory = await res.json()
-    HistoryRef.current.value = HistoryRef.current.value.concat(newAccountHistory)
+    const newHistory = await res.json()
+    HistoryRef.current.value = HistoryRef.current.value.concat(newHistory)
     setHistoryLists(HistoryRef.current.value)
   }
   useEffect(() => {
