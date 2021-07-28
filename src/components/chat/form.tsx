@@ -5,6 +5,7 @@ import { ChangeEvent, FormEvent, useRef } from 'react'
 import styles from 'sass/components/chat/form.module.scss'
 import Icon from 'widgets/icon'
 import { useRouter } from 'next/router'
+import { MIN_PROGRESS, SUPPLIER_MAX_PROGRESS } from './room'
 
 export default function ChatRoom() {
   const router = useRouter()
@@ -44,7 +45,8 @@ export default function ChatRoom() {
 
   const { latestEstimate } = room
 
-  const proposalDisabled = latestEstimate.status !== undefined && latestEstimate.status !== 0
+  const proposalDisabled = latestEstimate.status === SUPPLIER_MAX_PROGRESS
+    || latestEstimate.status < MIN_PROGRESS
 
   const suggestionDisabled = latestEstimate.status !== 3
 

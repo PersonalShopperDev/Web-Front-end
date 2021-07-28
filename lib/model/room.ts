@@ -5,6 +5,7 @@ import Message from './entity/message/base.entity'
 import CommonMessage from './entity/message/common.entity'
 import ProposalMessage from './entity/message/proposal.entity'
 import CoordMessage from './entity/message/coord.entity'
+import NoticeMessage from './entity/message/notice.entity'
 
 export interface Other {
   id: number
@@ -315,6 +316,12 @@ export default class Room {
           coordTitle,
           chatTime,
         )
+      case 5:
+        return Room.createNotice(
+          id,
+          message,
+          chatTime,
+        )
       default:
         return null
     }
@@ -372,6 +379,18 @@ export default class Room {
       coordId,
       coordImg,
       coordTitle,
+      timestamp,
+    })
+  }
+
+  private static createNotice(
+    id: number,
+    content: string,
+    timestamp: string,
+  ) {
+    return new NoticeMessage({
+      id,
+      content,
       timestamp,
     })
   }

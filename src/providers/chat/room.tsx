@@ -44,8 +44,13 @@ export default function RoomProvider({
     const assigned = rooms.find((element) => element.id === roomId)
 
     if (assigned) {
-      assigned.initializeMessage(chatList)
-      assigned.initializeLatestEstimate(latestEstimate)
+      if (chatList) {
+        assigned.initializeMessage(chatList)
+      }
+
+      if (latestEstimate) {
+        assigned.initializeLatestEstimate(latestEstimate)
+      }
 
       assigned.read()
       setRoom(assigned)

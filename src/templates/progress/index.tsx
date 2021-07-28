@@ -3,6 +3,7 @@ import Step from 'components/progress/step'
 import { useAuth } from 'providers/auth'
 import Steps from 'components/progress/steps'
 import { useRoom } from 'providers/chat/room'
+import { DEMANDER_MAX_PROGRESS, MIN_PROGRESS, SUPPLIER_MAX_PROGRESS } from 'components/chat/room'
 
 export default function Progress() {
   const { room } = useRoom()
@@ -20,22 +21,24 @@ export default function Progress() {
     ? defaultSteps.concat('코디 진행', '리뷰 작성')
     : defaultSteps.concat('입금 확정')
 
-  const maxProgress = userType === 'D' ? 4 : 3
+  const maxProgress = userType === 'D' ? DEMANDER_MAX_PROGRESS : SUPPLIER_MAX_PROGRESS
 
-  if (status === 0 || status > maxProgress) {
+  if (status < MIN_PROGRESS || status > maxProgress) {
     return <></>
   }
+
+  const currentIndex = status - 2
 
   return (
     <section className={styles.container}>
       <ol className={styles.list}>
         {steps.map((value, index) => (
-          <Step key={value} index={index + 1} active={index + 1 === status}>
+          <Step key={value} index={index + 1} active={index === currentIndex}>
             {value}
           </Step>
         ))}
       </ol>
-      <Steps index={status - 1} />
+      <Steps index={currentIndex} />
     </section>
   )
 }

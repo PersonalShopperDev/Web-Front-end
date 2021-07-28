@@ -4,6 +4,7 @@ import Satisfaction from 'components/review/satisfaction'
 import Submit from 'components/review/submit'
 import Textarea from 'components/review/textarea'
 import communicate from 'lib/api'
+import ERROR_MESSAGE from 'lib/constants/error'
 import { useAlert } from 'providers/dialog/alert/inner'
 import {
   createContext, useContext, useRef, MutableRefObject,
@@ -78,7 +79,7 @@ export default function ReviewEditor({
         throw new Error()
       }
     }).catch(async () => {
-      await createAlert({ text: '에러가 발생했습니다' })
+      await createAlert({ text: ERROR_MESSAGE })
     })
   }
 
