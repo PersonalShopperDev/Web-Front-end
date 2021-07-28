@@ -8,18 +8,21 @@ import { communicateWithContext } from 'lib/api'
 import DemanderProfile from 'templates/profile/demander'
 import ProfilePreviewAppBar from 'components/app-bar/profile-preview'
 import parseJwt from 'lib/util/jwt'
+import ReviewProvider from 'providers/review'
 
-export default function Page({ id, data: other } : { id: string; data: User }) {
+export default function Page({
+  id, data: other, reviewId,
+} : { id: string; data: User, reviewId: string }) {
   return (
     <Layout
       header={<ProfilePreviewAppBar />}
     >
-      <Inner id={id} data={other} />
+      <Inner id={id} data={other} reviewId={reviewId} />
     </Layout>
   )
 }
 
-function Inner({ id, data }: { id: string; data: User }) {
+function Inner({ id, data, reviewId }: { id: string; data: User, reviewId: string }) {
   const { userType } = data
   if (userType === 'N') {
     return <></>
@@ -31,7 +34,9 @@ function Inner({ id, data }: { id: string; data: User }) {
   return (
     <InfinityScrollProvider>
       <LookBookProvider>
-        <SupplierProfile id={parseInt(id, 10)} data={data} />
+        <ReviewProvider>
+          <SupplierProfile id={parseInt(id, 10)} data={data} reviewId={parseInt(reviewId, 10)} />
+        </ReviewProvider>
       </LookBookProvider>
     </InfinityScrollProvider>
   )
@@ -59,7 +64,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
-  const { id } = context.params
+  const { id, reviewId } = context.query
 
   const res = await communicateWithContext({ url: `/profile/${id}`, context })
 
@@ -73,6 +78,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       id,
       data,
+      reviewId: reviewId === undefined ? null : reviewId,
     },
   }
 }

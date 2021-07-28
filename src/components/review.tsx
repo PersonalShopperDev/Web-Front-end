@@ -1,24 +1,31 @@
+/* eslint-disable no-shadow */
 import React, {
   useEffect, useState, useRef,
 } from 'react'
 import styles from 'sass/components/review.module.scss'
-import communicate from 'lib/api'
 import Icon from 'widgets/icon'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/swiper-bundle.css'
+import { useReview } from 'providers/review'
+import { useInfinityScroll } from 'providers/infinity-scroll'
 
 export default function Review({
   id,
+  reviewId,
 }: {
   id: number,
+  reviewId?: number,
 }) {
-  const [review, setReview] = useState(null)
   const [slides, setSlids] = useState([])
   const [imageIndex, setImageIndex] = useState(1)
   const [imageModal, setImageModal] = useState(false)
   const [initialIndex, setInitialIndex] = useState(0)
   const [fixedHeight, setFixedHeight] = useState(0)
   const imageModalRef = useRef<HTMLDivElement>()
+  const {
+    review, reviewLists, setId, fetchReviewData, setTargetId,
+  } = useReview()
+  const { setOnScrollFunc } = useInfinityScroll()
   const onClickCoord = (img, index) => {
     if (!imageModal) {
       setFixedHeight(document.documentElement.scrollTop)
@@ -50,103 +57,99 @@ export default function Review({
     }
   }
   useEffect(() => {
-    async function fetchReviewData() {
-      const res = await communicate({ url: `/profile/${id}/review` })
-      if (res.status !== 200) return
-      const reviews = await res.json()
-      setReview(reviews)
-    }
-    fetchReviewData()
+    setOnScrollFunc(fetchReviewData)
+    setId(id)
+    if (reviewId) setTargetId(reviewId)
   }, [])
+
   return (
     <>
-      {review !== null
-    && (
-    <div className={styles.reviewContainer}>
-      <div className={styles.reviewBox}>
-        <div className={styles.leftItem}>
-          <div className={styles.keyText}>평점</div>
-          <span className={styles.valueText}>{review.rating}</span>
+      <div className={styles.reviewContainer}>
+        <div className={styles.reviewBox}>
+          <div className={styles.leftItem}>
+            <div className={styles.keyText}>평점</div>
+            <span className={styles.valueText}>{review.rating}</span>
+          </div>
+          <div className={styles.rightItem}>
+            <div className={styles.keyText}>리뷰</div>
+            <span className={styles.valueText}>{review.totalCount}</span>
+          </div>
         </div>
-        <div className={styles.rightItem}>
-          <div className={styles.keyText}>리뷰</div>
-          <span className={styles.valueText}>{review.totalCount}</span>
-        </div>
-      </div>
-      {review.list.map((item) => (
-        <div className={styles.userBox} key={item.id}>
-          <div className={styles.userNameBox}>
-            <div>
-              <img src={item.profileImg} width={25} height={25} alt="프로필" className={styles.profileImg} />
-              <span className={styles.nameText}>
-                {item.name}
-                님
+        {reviewLists.map(({
+          id, profileImg, name, date, rating, img, height, weight, body, styleTypeList, content,
+        }) => (
+          <div className={styles.userBox} key={id}>
+            <div className={styles.userNameBox}>
+              <div>
+                <img src={profileImg} width={25} height={25} alt="프로필" className={styles.profileImg} />
+                <span className={styles.nameText}>
+                  {name}
+                  님
+                </span>
+              </div>
+              <span className={styles.dateText}>{date}</span>
+            </div>
+            <div className={styles.starBox}>
+              <span>평점:</span>
+              {[...Array(Math.round(rating))].map((value) => (
+                <div key={Math.random()}>
+                  <Icon src="filledStar.png" size={15} />
+                </div>
+              ))}
+              {[...Array(5 - Math.round(rating))].map(() => (
+                <div key={Math.random()}>
+                  <Icon src="Star.png" size={15} />
+                </div>
+              ))}
+              <span>
+                {rating.toFixed(1)}
+                점
               </span>
             </div>
-            <span className={styles.dateText}>{item.date}</span>
-          </div>
-          <div className={styles.starBox}>
-            <span>평점:</span>
-            {[...Array(Math.round(item.rating))].map((value) => (
-              <div key={Math.random()}>
-                <Icon src="filledStar.png" size={15} />
-              </div>
-            ))}
-            {[...Array(5 - Math.round(item.rating))].map(() => (
-              <div key={Math.random()}>
-                <Icon src="Star.png" size={15} />
-              </div>
-            ))}
-            <span>
-              {item.rating.toFixed(1)}
-              점
-            </span>
-          </div>
-          <div className={styles.coordContainer}>
-            {item.img.map((value, index) => (
-              <div>
-                <button type="button" onClick={() => onClickCoord(item.img, index)} className={styles.img}>
-                  <img src={value} width="124" height="130" alt="코디" className={styles.img} />
-                </button>
-              </div>
-            ))}
-          </div>
-          <div className={styles.infoBox}>
-            {item.height !== undefined && (
-            <div>
-              <span>키</span>
-              {item.height}
-              cm
-            </div>
-            )}
-            {item.weight !== undefined && (
-            <div>
-              <span>몸무게</span>
-              {item.weight}
-              kg
-            </div>
-            )}
-            <div>
-              <span>체형</span>
-              {item.body.value}
-            </div>
-            <div>
-              <span>선호스타일</span>
-              {item.styleTypeList.map((style) => (
-                <div className={styles.styleHashtag} key={style.id}>
-                  #
-                  {style.value}
+            <div className={styles.coordContainer}>
+              {img.map((value, index) => (
+                <div key={value}>
+                  <button type="button" onClick={() => onClickCoord(img, index)} className={styles.img}>
+                    <img src={value} width="124" height="130" alt="코디" className={styles.img} />
+                  </button>
                 </div>
               ))}
             </div>
+            <div className={styles.infoBox}>
+              {height !== undefined && (
+              <div>
+                <span>키</span>
+                {height}
+                cm
+              </div>
+              )}
+              {weight !== undefined && (
+              <div>
+                <span>몸무게</span>
+                {weight}
+                kg
+              </div>
+              )}
+              <div>
+                <span>체형</span>
+                {body.value}
+              </div>
+              <div>
+                <span>선호스타일</span>
+                {styleTypeList.map((style) => (
+                  <div className={styles.styleHashtag} key={style.id}>
+                    #
+                    {style.value}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className={styles.contentBox}>
+              <span>{content}</span>
+            </div>
           </div>
-          <div className={styles.contentBox}>
-            <span>{item.content}</span>
-          </div>
-        </div>
-      ))}
-    </div>
-    )}
+        ))}
+      </div>
       {imageModal
       && (
       <div className={styles.modalContainer} ref={imageModalRef} onClick={closeModal} aria-hidden="true">
@@ -170,4 +173,8 @@ export default function Review({
       )}
     </>
   )
+}
+
+Review.defaultProps = {
+  reviewId: null,
 }

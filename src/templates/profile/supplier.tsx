@@ -14,9 +14,11 @@ import { useRouter } from 'next/router'
 export default function SupplierProfile({
   id,
   data,
+  reviewId,
 } : {
   id : number,
-  data : User
+  data : User,
+  reviewId?: number
 }) {
   const router = useRouter()
 
@@ -28,7 +30,7 @@ export default function SupplierProfile({
   const menuLists = ['프로필', '코디룩북', '리뷰']
 
   const menuComponent = [<ProfileDetail data={data} />,
-    <CodyLookBook id={id} />, <Review id={id} />]
+    <CodyLookBook id={id} />, <Review id={id} reviewId={reviewId} />]
 
   const { createAlert } = useAlert()
 
@@ -103,4 +105,8 @@ export default function SupplierProfile({
       </div>
     </>
   )
+}
+
+SupplierProfile.defaultProps = {
+  reviewId: null,
 }
