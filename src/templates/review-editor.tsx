@@ -5,6 +5,7 @@ import Submit from 'components/review/submit'
 import Textarea from 'components/review/textarea'
 import communicate from 'lib/api'
 import ERROR_MESSAGE from 'lib/constants/error'
+import { useRouter } from 'next/router'
 import { useAlert } from 'providers/dialog/alert/inner'
 import {
   createContext, useContext, useRef, MutableRefObject,
@@ -31,9 +32,13 @@ export const useReviewEditor = () => useContext(ReviewEditorContext)
 
 export default function ReviewEditor({
   id,
+  supplier,
 } : {
   id: number
+  supplier: number
 }) {
+  const router = useRouter()
+
   const dataRef = useRef<Data>({
     statisfaction: undefined,
     textarea: null,
@@ -78,6 +83,7 @@ export default function ReviewEditor({
       if (!res.ok) {
         throw new Error()
       }
+      router.push(`/profile/${supplier}?reviewId=${id}`)
     }).catch(async () => {
       await createAlert({ text: ERROR_MESSAGE })
     })

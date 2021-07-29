@@ -12,12 +12,14 @@ interface Props {
 }
 
 export default function Page({ id, data } : Props) {
+  const { supplierId } = data
+
   return (
     <Layout
       header={<SubProfileAppBar title="리뷰 작성" />}
     >
       <Preview data={data} />
-      <ReviewEditor id={id} />
+      <ReviewEditor id={id} supplier={supplierId} />
     </Layout>
   )
 }
