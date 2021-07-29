@@ -28,7 +28,7 @@ export default function DrawerAppBar({
       back={isLogined}
       onBack={onBack}
       actions={[
-        <button type="button" onClick={onExit}>
+        <button key="button" type="button" onClick={onExit}>
           <Icon
             key="exit"
             src="exit.png"
