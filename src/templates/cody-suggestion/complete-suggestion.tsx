@@ -35,7 +35,7 @@ export default function CompleteSuggestion({
         <span className={styles.title}>이 코디의 상품</span>
         <div className={styles.flexContainer}>
           {data.clothes.map((value) => (
-            <Link href={value.purchaseUrl}>
+            <Link key={value.purchaseUrl} href={value.purchaseUrl}>
               <a href={value.purchaseUrl} target="_blank" rel="noreferrer">
                 <div className={styles.eachProduct}>
                   <img
