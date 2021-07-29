@@ -5,17 +5,14 @@ import { ACCESS_TOKEN } from 'providers/auth'
 import Notice from 'templates/notice'
 import InfinityScrollProvider from 'providers/infinity-scroll'
 import NoticeProvider from 'providers/notice'
+import parseJwt from 'lib/util/jwt'
 
-interface Props {
-    isLogined: boolean,
-}
-
-export default function Page({ isLogined }: Props) {
+export default function Page() {
   const title = '공지사항'
   return (
     <Layout
       header={(
-        <DrawaerAppBar title={title} isLogined={isLogined} />
+        <DrawaerAppBar title={title} isLogined />
       )}
     >
       <InfinityScrollProvider>
@@ -29,10 +26,28 @@ export default function Page({ isLogined }: Props) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const token = context.req.cookies[ACCESS_TOKEN]
-  const isLogined = token !== undefined
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
+  const { userType } = parseJwt(token)
+
+  if (userType === 'N') {
+    return {
+      redirect: {
+        destination: '/onboard',
+        permanent: false,
+      },
+    }
+  }
+
   return {
-    props: {
-      isLogined,
-    },
+    props: {},
   }
 }

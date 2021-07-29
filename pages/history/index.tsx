@@ -8,12 +8,12 @@ import InfinityScrollProvider from 'providers/infinity-scroll'
 import HistoryProvider from 'providers/history'
 import parseJwt from 'lib/util/jwt'
 
-export default function Page({ isLogined, userType }: { isLogined: boolean, userType: string }) {
+export default function Page({ userType }: { userType: string }) {
   const title = userType === 'D' ? '결제내역' : '코디내역'
   return (
     <Layout
       header={(
-        <DrawerAppBar title={title} isLogined={isLogined} />
+        <DrawerAppBar title={title} isLogined />
       )}
     >
       <InfinityScrollProvider>
@@ -27,12 +27,29 @@ export default function Page({ isLogined, userType }: { isLogined: boolean, user
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const token = context.req.cookies[ACCESS_TOKEN]
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
   const { userType } = parseJwt(token)
-  const isLogined = token !== undefined
+
+  if (userType === 'N') {
+    return {
+      redirect: {
+        destination: '/onboard',
+        permanent: false,
+      },
+    }
+  }
 
   return {
     props: {
-      isLogined,
       userType,
     },
   }
