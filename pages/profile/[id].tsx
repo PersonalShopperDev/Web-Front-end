@@ -78,7 +78,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       id,
       data,
-      reviewId: reviewId === undefined ? null : reviewId,
+      reviewId: reviewId || null,
     },
   }
 }
