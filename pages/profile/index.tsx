@@ -14,14 +14,17 @@ import Represent from 'components/profile/represents'
 import LookBook, { LookBookData } from 'components/profile/look-book'
 import { GetServerSideProps } from 'next'
 import { communicateWithContext } from 'lib/api'
-import { ACCESS_TOKEN, User } from 'providers/auth'
+import { ACCESS_TOKEN, ReviewListData, User } from 'providers/auth'
 import CodyStyle from 'components/profile/cody-style'
 import parseJwt from 'lib/util/jwt'
 import Navigation from 'components/navigation'
 
 interface Props {
   userId: string
-  data : User & { lookbook : LookBookData }
+  data : User & {
+    reviewList: ReviewListData[]
+    lookbook : LookBookData
+  }
 }
 
 export default function Page({ userId, data } : Props) {
@@ -38,6 +41,7 @@ export default function Page({ userId, data } : Props) {
     closet,
     bodyStat,
     hopeToSupplier,
+    reviewList,
   } = data
 
   return (
@@ -66,7 +70,7 @@ export default function Page({ userId, data } : Props) {
           <Divider />
           <Hope data={{ hopeToSupplier }} />
           <Divider />
-          <Review data={null} />
+          <Review data={{ reviewList }} />
         </>
       )}
       {userType === 'S' && (
