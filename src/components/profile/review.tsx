@@ -18,7 +18,7 @@ export default function Review({ data }: { data: ReviewData }) {
           reviewId, img, supplierId, status,
         }) => {
           const isWritten = status === 1
-          const href = isWritten ? `/profile/${supplierId}?section=review&reviewId=${reviewId}` : `/review/new/${reviewId}`
+          const href = isWritten ? `/profile/${supplierId}?reviewId=${reviewId}` : `/review/new/${reviewId}`
 
           return (
             <Link key={reviewId} href={href}>
