@@ -47,8 +47,9 @@ export default function ChatRoom() {
 
   const proposalDisabled = latestEstimate.status === SUPPLIER_MAX_PROGRESS
     || latestEstimate.status > MIN_PROGRESS
+    || latestEstimate.status === 0
 
-  const suggestionDisabled = latestEstimate.status !== 3
+  const suggestionDisabled = latestEstimate.status !== 4
 
   const inputDisabled = false
 
