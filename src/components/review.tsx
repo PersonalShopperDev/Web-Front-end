@@ -68,11 +68,11 @@ export default function Review({
         <div className={styles.reviewBox}>
           <div className={styles.leftItem}>
             <div className={styles.keyText}>평점</div>
-            <span className={styles.valueText}>{review.rating}</span>
+            <span className={styles.valueText}>{review && review.rating}</span>
           </div>
           <div className={styles.rightItem}>
             <div className={styles.keyText}>리뷰</div>
-            <span className={styles.valueText}>{review.totalCount}</span>
+            <span className={styles.valueText}>{review && review.totalCount}</span>
           </div>
         </div>
         {reviewLists.map(({

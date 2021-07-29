@@ -22,7 +22,7 @@ export default function SupplierProfile({
 }) {
   const router = useRouter()
 
-  const [menu, setMenu] = useState(0)
+  const [menu, setMenu] = useState(reviewId ? 2 : 0)
 
   const { user } = useAuth()
   const { userId, userType } = user
