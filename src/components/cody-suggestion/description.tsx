@@ -1,5 +1,7 @@
 /* eslint-disable no-param-reassign */
-import React, { ChangeEvent, useRef, useEffect } from 'react'
+import React, {
+  ChangeEvent, useRef, useEffect, MutableRefObject,
+} from 'react'
 import styles from 'sass/components/description.module.scss'
 import { ProductDescription } from 'templates/cody-suggestion/index'
 
@@ -7,7 +9,7 @@ export default function Description({
   descriptionRef,
   description,
 }: {
-  descriptionRef: ProductDescription
+  descriptionRef: MutableRefObject<ProductDescription>
   description: ProductDescription
 }) {
   const titleRef = useRef<HTMLInputElement>()

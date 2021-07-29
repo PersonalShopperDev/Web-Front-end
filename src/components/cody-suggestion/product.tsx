@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import React, {
   ChangeEvent, useRef, useState, useCallback, SetStateAction,
-  Dispatch, useEffect,
+  Dispatch, useEffect, MutableRefObject,
 } from 'react'
 import styles from 'sass/components/product.module.scss'
 import Icon from 'widgets/icon'
@@ -24,7 +24,7 @@ export default function Product({
 }: {
   index: number
   setProducts: Dispatch<SetStateAction<any>>
-  productRef: Array<ProductInformation>
+  productRef: MutableRefObject<ProductInformation[]>
 }) {
   const { createAlert } = useAlert()
   const nameRef = useRef<HTMLInputElement>()
@@ -41,7 +41,7 @@ export default function Product({
   const [croppedImage, setCroppedImage] = useState(null)
   const [removedImage, setRemovedImage] = useState(productRef.current[index]?.url)
   const [isEdit, setIsEdit] = useState(productRef.current[index]?.isEdit)
-  console.log(productRef)
+
   const onModalClose = () => {
     setImageUrl(null)
     setCropModal(false)
@@ -59,11 +59,11 @@ export default function Product({
     setRemovedImage(null)
   }
   const onLoadEventListner = (url: string| ArrayBuffer) => {
-    setImageUrl(url)
+    setImageUrl(url as string)
     setCropModal(true)
   }
   const onLoadRemovedEventListener = (url: string| ArrayBuffer) => {
-    setRemovedImage(url)
+    setRemovedImage(url as string)
   }
   const onClickDelete = async () => {
     const resizedImage = await loadImage(croppedImage, {

@@ -108,7 +108,7 @@ export default function CodySuggetsion({
 
   const router = useRouter()
   const styleBoardRef = useRef<HTMLDivElement>()
-  const productRef = useRef <Array<ProductInformation>>([{
+  const productRef = useRef<ProductInformation[]>([{
     name: '', price: '', buyLink: '', url: null, isEdit: true,
   }])
   const descriptionRef = useRef<ProductDescription>({
@@ -255,7 +255,6 @@ export default function CodySuggetsion({
           </div>
           {[...Array(productCount)].map((value, index) => (
             <Product
-              id={parseInt(id, 10)}
               index={index}
               key={Math.random()}
               productRef={productRef}
