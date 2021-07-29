@@ -8,7 +8,7 @@ export default async function resizeImageFile(file: File): Promise<Blob> {
       image.src = e.target.result as string
       image.onload = () => {
         const canvas = document.createElement('canvas')
-        const maxSize = 1024
+        const maxSize = 512
 
         let { width, height } = image
 
