@@ -5,6 +5,10 @@ import styles from 'sass/components/banner.module.scss'
 
 export interface BannerData {
   img: string,
+  action: {
+    type: string
+    id: number
+  }
 }
 
 export default function Banner({ data }: { data: BannerData[] }) {
@@ -62,16 +66,28 @@ export default function Banner({ data }: { data: BannerData[] }) {
   return (
     <section className={styles.container}>
       <section className={styles.carousel} ref={carouselRef}>
-        {figureArray.map(({ img }) => (
-          <Link href="/" key={img}>
-            <a
-              href="/"
+        {figureArray.map(({ action, img }) => {
+          if (action.type === 'notice') {
+            const href = `/notice/${action.id}`
+            return (
+              <Link href={href} key={img}>
+                <a
+                  href={href}
+                  className={styles.figure}
+                >
+                  <img src={img} alt="banner" />
+                </a>
+              </Link>
+            )
+          }
+          return (
+            <figure
               className={styles.figure}
             >
               <img src={img} alt="banner" />
-            </a>
-          </Link>
-        ))}
+            </figure>
+          )
+        })}
       </section>
       <div className={styles.indicator}>
         {[...Array(figureArray.length)].map((_, index) => (
