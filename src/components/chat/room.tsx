@@ -53,7 +53,7 @@ export default function ChatRoom() {
 
     const previousHeight = innerRef.current.scrollHeight
 
-    room.appendMessage(chatList)
+    await room.appendMessage(chatList)
 
     scrollTo(innerRef.current.scrollHeight - previousHeight)
 

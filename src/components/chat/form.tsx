@@ -5,6 +5,10 @@ import { ChangeEvent, FormEvent, useRef } from 'react'
 import styles from 'sass/components/chat/form.module.scss'
 import Icon from 'widgets/icon'
 import { useRouter } from 'next/router'
+import communicate from 'lib/api'
+import { useAlert } from 'providers/dialog/alert/inner'
+import ERROR_MESSAGE from 'lib/constants/error'
+import resizeImageFile from 'lib/util/image'
 import { MIN_PROGRESS, SUPPLIER_MAX_PROGRESS } from './room'
 
 export default function ChatRoom() {
@@ -13,6 +17,8 @@ export default function ChatRoom() {
   const { user } = useAuth()
 
   const { room } = useRoom()
+
+  const { createAlert } = useAlert()
 
   const inputRef = useRef<HTMLInputElement>()
 
@@ -25,7 +31,33 @@ export default function ChatRoom() {
     inputRef.current.value = ''
   }
 
-  const uploadImage = (e: ChangeEvent<HTMLInputElement>) => {}
+  const uploadImage = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files[0]
+
+    if (!file) {
+      return
+    }
+
+    const image = await resizeImageFile(file)
+
+    const formData = new FormData()
+
+    formData.append('img', image)
+
+    await communicate({
+      url: `/chat/${room.id}/img`,
+      options: {
+        body: formData,
+      },
+      method: 'POST',
+    }).then((res) => {
+      if (!res.ok) {
+        throw new Error()
+      }
+    }).catch(async () => {
+      await createAlert({ text: ERROR_MESSAGE })
+    })
+  }
 
   const uploadProposal = () => {
     if (proposalDisabled) {

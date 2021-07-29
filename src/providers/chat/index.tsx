@@ -1,4 +1,5 @@
 import communicate from 'lib/api'
+import ERROR_MESSAGE from 'lib/constants/error'
 import useForceUpdate from 'lib/hooks/force-update'
 import Room, { RecieveMessageProps, RoomProps } from 'lib/model/room'
 import { getCookie } from 'lib/util/cookie'
@@ -96,7 +97,7 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
 
   const getReceivedRoom = async (id: number, fail : number = 0) : Promise<Room> => {
     if (fail === 5) {
-      await createAlert({ text: '오류가 발생했습니다' })
+      await createAlert({ text: ERROR_MESSAGE })
       return null
     }
 

@@ -1,4 +1,6 @@
+import { cn } from 'lib/util'
 import { ReactNode } from 'react'
+import styles from 'sass/components/chat/speach-bubble/inner/message.module.scss'
 
 export default function CommonMessage({
   children,
@@ -7,5 +9,5 @@ export default function CommonMessage({
   children: ReactNode,
   className: string,
 }) {
-  return <p className={className}>{children}</p>
+  return <p className={cn(className, styles.container)}>{children}</p>
 }

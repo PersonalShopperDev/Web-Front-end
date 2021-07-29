@@ -36,7 +36,7 @@ export default function RoomProvider({
 
   const [room, setRoom] = useState<Room>()
 
-  useEffect(() => {
+  const initialize = async () => {
     const { targetUser, chatList, latestEstimate } = data
 
     const roomId = parseInt(id, 10)
@@ -45,7 +45,7 @@ export default function RoomProvider({
 
     if (assigned) {
       if (chatList) {
-        assigned.initializeMessage(chatList)
+        await assigned.initializeMessage(chatList)
       }
 
       if (latestEstimate) {
@@ -64,6 +64,10 @@ export default function RoomProvider({
     })
 
     setRoom(created)
+  }
+
+  useEffect(() => {
+    initialize()
   }, [])
 
   if (!room) {

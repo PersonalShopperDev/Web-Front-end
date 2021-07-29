@@ -6,6 +6,7 @@ import CommonMessage from './entity/message/common.entity'
 import ProposalMessage from './entity/message/proposal.entity'
 import CoordMessage from './entity/message/coord.entity'
 import NoticeMessage from './entity/message/notice.entity'
+import PictureMessage from './entity/message/picture.entity'
 
 export interface Other {
   id: number
@@ -113,14 +114,14 @@ export default class Room {
     return this._messages.length * Math.random()
   }
 
-  public initializeMessage(array: RecieveMessageProps[]) {
+  public async initializeMessage(array: RecieveMessageProps[]) {
     if (!array) {
       return
     }
     if (array.length === 0) {
       return
     }
-    this._messages = array.map((props) => Room.createMessage(props))
+    this._messages = await Promise.all(array.map((props) => Room.createMessage(props)))
     this.update()
   }
 
@@ -130,8 +131,8 @@ export default class Room {
     this.latestEstimate.status = status
   }
 
-  public appendMessage(array: RecieveMessageProps[]) {
-    const messages = array.map((props) => Room.createMessage(props))
+  public async appendMessage(array: RecieveMessageProps[]) {
+    const messages = await Promise.all(array.map((props) => Room.createMessage(props)))
     this._messages = [...messages, ...this._messages]
     this.update()
   }
@@ -244,8 +245,8 @@ export default class Room {
     this.update()
   }
 
-  public onReceive(props: RecieveMessageProps) {
-    const message = Room.createMessage(props)
+  public async onReceive(props: RecieveMessageProps) {
+    const message = await Room.createMessage(props)
     this.syncMessage(message)
     this._unreadCount += 1
     this.update()
@@ -262,7 +263,7 @@ export default class Room {
     this.update()
   }
 
-  private static createMessage({
+  private static async createMessage({
     chatId: id,
     chatType: type,
     userId,
@@ -307,12 +308,19 @@ export default class Room {
           message,
           chatTime,
         )
+      case 6:
+        return Room.createPicture(
+          id,
+          userId,
+          message,
+          chatTime,
+        )
       default:
         return null
     }
   }
 
-  private static createCommon(
+  private static async createCommon(
     id: number,
     userId: number,
     content: string,
@@ -326,7 +334,31 @@ export default class Room {
     })
   }
 
-  private static createProposal(
+  private static async createPicture(
+    id: number,
+    userId: number,
+    content: string,
+    timestamp: string,
+  ) : Promise<PictureMessage> {
+    return new Promise((resolve, reject) => {
+      const image = new Image()
+      image.onload = () => {
+        const { width, height } = image
+        resolve(new PictureMessage({
+          id,
+          width,
+          height,
+          content,
+          timestamp,
+          userId,
+        }))
+      }
+      image.onerror = reject
+      image.src = content
+    })
+  }
+
+  private static async createProposal(
     id: number,
     userId: number,
     estimateId: number,
@@ -350,7 +382,7 @@ export default class Room {
     })
   }
 
-  private static createCoord(
+  private static async createCoord(
     id: number,
     userId: number,
     coordId: number,
@@ -368,7 +400,7 @@ export default class Room {
     })
   }
 
-  private static createNotice(
+  private static async createNotice(
     id: number,
     content: string,
     timestamp: string,
