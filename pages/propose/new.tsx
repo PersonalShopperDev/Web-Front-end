@@ -84,7 +84,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { roomId } = await chatResponse.json()
 
   const historyResponse = await communicateWithContext({
-    url: `/chat/history?roomId=${roomId}`,
+    url: `/chat/${roomId}`,
     context,
   })
 

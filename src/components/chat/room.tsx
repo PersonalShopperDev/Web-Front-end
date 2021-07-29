@@ -41,7 +41,7 @@ export default function ChatRoom() {
     const olderChatId = room.messages[0].id
 
     const res = await communicate({
-      url: `/chat/history?roomId=${roomId}&olderChatId=${olderChatId}`,
+      url: `/chat/${roomId}?olderChatId=${olderChatId}`,
     })
 
     if (res.status !== 200) {
