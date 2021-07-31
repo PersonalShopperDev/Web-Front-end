@@ -65,44 +65,43 @@ export default function SupplierProfile({
 
   return (
     <>
-      <div className={styles.container}>
-        <div className={styles.profileContainer}>
-          <Avatar src={img} size={122} />
-          <div className={styles.infoBox}>
-            <span className={styles.name}>스타일리스트</span>
-            <br />
-            <span className={styles.name}>{name}</span>
-            <div className={styles.category}>
-              {styleList.map((item) => (
-                <div className={styles.styleBox} key={item}>
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
+      <div className={styles.profileContainer}>
+        <Avatar src={img} size={122} />
+        <div className={styles.infoBox}>
+          <span className={styles.name}>스타일리스트</span>
+          <br />
+          <span className={styles.name}>{name}</span>
+          <div className={styles.category}>
+            {styleList.map((item) => (
+              <div className={styles.styleBox} key={item}>
+                <span>{item}</span>
+              </div>
+            ))}
           </div>
         </div>
-        <div className={styles.menuContainer}>
-          {menuLists.map((item, index) => (
-            <button
-              type="button"
-              onClick={() => onMenuClick(index)}
-              key={item}
-            >
-              <span className={menu === index
-                ? styles.selectedMenu : styles.notSelectedMenu}
-              >
-                {item}
-              </span>
-            </button>
-          ))}
-        </div>
-        { menuComponent[menu] }
-        {(menu === 0 && userId !== id && userType === 'D') && (
-          <div className={styles.gradient}>
-            <BottomButton text="채팅하기" onClick={onMatchingClick} />
-          </div>
-        )}
       </div>
+      <div className={styles.menuContainer}>
+        {menuLists.map((item, index) => (
+          <button
+            type="button"
+            onClick={() => onMenuClick(index)}
+            key={item}
+            className={styles.button}
+          >
+            <span className={menu === index
+              ? styles.selectedMenu : styles.notSelectedMenu}
+            >
+              {item}
+            </span>
+          </button>
+        ))}
+      </div>
+      { menuComponent[menu] }
+      {(menu === 0 && userId !== id && userType === 'D') && (
+        <div className={styles.gradient}>
+          <BottomButton text="채팅하기" onClick={onMatchingClick} />
+        </div>
+      )}
     </>
   )
 }
