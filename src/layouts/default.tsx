@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from 'sass/layouts/default.module.scss'
 
 export default function Layout({
@@ -10,6 +10,22 @@ export default function Layout({
   header?: React.ReactNode
   bottom?: React.ReactNode
 }) {
+  useEffect(() => {
+    const root = document.getElementById('__next')
+
+    const resize = () => {
+      root.style.height = `${window.innerHeight}px`
+    }
+
+    resize()
+
+    window.addEventListener('resize', resize)
+
+    return () => {
+      window.removeEventListener('resize', resize)
+    }
+  }, [])
+
   return (
     <>
       {header && <header className={styles.header}>{header}</header>}
