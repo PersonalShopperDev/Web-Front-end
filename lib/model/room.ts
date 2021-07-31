@@ -61,6 +61,8 @@ export default class Room {
   private readonly socketRef: MutableRefObject<Socket>
   private readonly update: () => void
 
+  public static readonly PICTURE_LAST_CHAT = '사진'
+
   constructor({
     id,
     userId,
@@ -184,10 +186,13 @@ export default class Room {
 
   private syncMessage(message: Message) {
     this.messages.push(message)
+    this._lastChatTime = message.timestamp
+    if (message instanceof PictureMessage) {
+      this._lastChat = Room.PICTURE_LAST_CHAT
+    }
     if (message instanceof CommonMessage) {
       this._lastChat = message.content
     }
-    this._lastChatTime = message.timestamp
   }
 
   public responseEstimate(id: number, value: boolean) {

@@ -58,31 +58,19 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
   const onChangeEstimateStatus = async ({ roomId, ...props } : OnChangeEstimateStatus) => {
     const room = await getReceivedRoom(roomId)
 
-    if (!room) {
-      return
-    }
-
-    room.onChangeEstimateStatus(props)
+    room?.onChangeEstimateStatus(props)
   }
 
   const onReceive = async ({ roomId, ...props } : OnReceive) => {
     const room = await getReceivedRoom(roomId)
 
-    if (!room) {
-      return
-    }
-
-    room.onReceive(props)
+    room?.onReceive(props)
   }
 
   const onRead = async ({ roomId } : { roomId: number}) => {
     const room = await getReceivedRoom(roomId)
 
-    if (!room) {
-      return
-    }
-
-    room.onRead()
+    room?.onRead()
   }
 
   const disconnect = () => {
@@ -128,6 +116,7 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
     })
 
     if (res.status !== 200) {
+      createAlert({ text: ERROR_MESSAGE })
       return
     }
 
@@ -136,9 +125,21 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
     const { userId } = user
 
     roomsRef.current = data.map(({
-      roomId, targetUser, unreadCount, lastChat, lastChatTime,
+      roomId,
+      targetUser,
+      unreadCount,
+      lastChat,
+      lastChatTime,
+      lastChatType,
     }) => new Room({
-      id: roomId, unreadCount, userId, other: targetUser, lastChat, lastChatTime, socketRef, update,
+      id: roomId,
+      unreadCount,
+      userId,
+      other: targetUser,
+      lastChat: lastChatType === 6 ? Room.PICTURE_LAST_CHAT : lastChat,
+      lastChatTime,
+      socketRef,
+      update,
     }))
 
     update()
