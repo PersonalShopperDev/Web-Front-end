@@ -1,5 +1,8 @@
 @use '../lib/colors.scss' as colors;
 
 .container {
-    padding-left: 17px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 14px;
 }

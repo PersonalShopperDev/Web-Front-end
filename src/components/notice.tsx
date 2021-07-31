@@ -12,8 +12,8 @@ export default function Notice({
   return (
     <div className={styles.container} id="NOTICE">
       <span className={styles.title}>{title}</span>
-      <span className={styles.date}>{date}</span>
-      <div dangerouslySetInnerHTML={{ __html: content }} />
+      <span className={styles.date}>{date.substr(0, 10)}</span>
+      <div dangerouslySetInnerHTML={{ __html: content }} className={styles.html}/>
     </div>
   )
 }

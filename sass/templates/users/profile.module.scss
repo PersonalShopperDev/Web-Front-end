@@ -50,7 +50,10 @@
     font-weight: 700;
     color: colors.$primary-300;
     display: block;
-    width: 125px;
+}
+
+.button {
+    flex: 1;
 }
 
 .notSelectedMenu {
