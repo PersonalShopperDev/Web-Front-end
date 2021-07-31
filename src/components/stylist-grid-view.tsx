@@ -89,7 +89,7 @@ export default function StylistGridView({
                 style={{ cursor: hasOption() ? 'pointer' : 'text' }}
                 onClick={() => select('demander')}
               >
-                코디수요자
+                쇼퍼
               </button>
             )}
           </>
