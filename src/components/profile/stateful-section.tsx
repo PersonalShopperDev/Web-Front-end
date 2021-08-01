@@ -1,5 +1,5 @@
 import React, {
-  useState, useRef, createContext, useContext, SetStateAction, Dispatch,
+  useState, useRef, createContext, useContext, SetStateAction, Dispatch, ReactNode,
 } from 'react'
 import styles from 'sass/components/profile/field.module.scss'
 import Icon from 'widgets/icon'
@@ -23,7 +23,7 @@ export default function StatefulSection({
   head,
   children,
 } : {
-  head: string
+  head: ReactNode
   children: React.ReactNode
 }) {
   const [state, setState] = useState<State>('default')

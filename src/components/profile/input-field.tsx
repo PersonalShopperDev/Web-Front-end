@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { ReactNode, useEffect, useRef } from 'react'
 import styles from 'sass/components/profile/input-field.module.scss'
 import Field, { useField } from './field'
 import { useStatefulSection } from './stateful-section'
@@ -8,7 +8,7 @@ export default function InputField({
   name,
   content,
 }: {
-  head: string
+  head: ReactNode
   name: string
   content?: string
 }) {
