@@ -19,6 +19,7 @@ export default function StyleChange() {
     <>
       <div className={styles.container}>
         <span className={styles.title}>다음 사진 중 마음에 드는 스타일을 골라주세요</span>
+        <span className={styles.text}>(최대 3개)</span>
         <StylePicture />
       </div>
       <footer>

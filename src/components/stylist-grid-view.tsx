@@ -122,7 +122,7 @@ export default function StylistGridView({
               <img src={img} alt="stylist" />
             </div>
             <figcaption className={styles.figcaption}>
-              <h4 className={styles.stylist}>{`${name} 스타일리스트`}</h4>
+              <h4 className={styles.stylist}>{`${name}`}</h4>
               {demanderStyles?.map((value, index) => (
                 <span key={value} className={styles.info}>{`${index > 0 ? '/' : ''}${value}`}</span>
               ))}

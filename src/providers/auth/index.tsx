@@ -89,7 +89,7 @@ export default function AuthProvider({
     })
 
     if (res.status !== 200) {
-      await onFail('/login/error')
+      await signOut('/login/error')
       return
     }
 
@@ -120,7 +120,7 @@ export default function AuthProvider({
     })
 
     if (res.status !== 200) {
-      await onFail('/login')
+      await signOut()
       return
     }
 
@@ -159,15 +159,6 @@ export default function AuthProvider({
       return true
     }
     return false
-  }
-
-  const onFail = async (redirect?: string) : Promise<void> => {
-    if (userRef.current) {
-      await signOut()
-    }
-    if (redirect) {
-      router.push(redirect)
-    }
   }
 
   const signOut = async (redirect?: string) : Promise<void> => {

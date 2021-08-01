@@ -11,7 +11,7 @@ export default function ProfileDetail({
     name, careerList, rating, reviewCount, hireCount, introduction, coord,
   } = data
   return (
-    <div className={styles.profileDetailBox}>
+    <div className={styles.container}>
       <div className={styles.infoContainer}>
         <div>
           <span className={styles.name}>{name}</span>
@@ -70,7 +70,9 @@ export default function ProfileDetail({
         <div className={styles.titleText}>대표 코디</div>
         <div className={styles.coordContainer}>
           {coord.map(({ img, id }) => (
-            <img src={img} width="164" height="171" className={styles.clothImage} alt="대표 코디" key={id} />
+            <div className={styles.clothImage}>
+              <img src={img} width="164" height="171" alt="대표 코디" key={id} />
+            </div>
           ))}
         </div>
       </div>

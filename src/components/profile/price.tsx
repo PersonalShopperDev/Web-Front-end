@@ -15,7 +15,6 @@ export default function Price({
 }) {
   const { user } = useAuth()
   const { price } = user || data || {}
-
   return (
     <Field head="코디가격" name="price" type="number" content={price?.toString()}>
       <Inner price={price} />
