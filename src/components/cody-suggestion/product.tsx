@@ -39,6 +39,7 @@ export default function Product({
   const [zoom, setZoom] = useState(1)
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
   const [croppedImage, setCroppedImage] = useState(null)
+  const [tmpRemovedImage, setTmpRemovedImage] = useState(null)
   const [removedImage, setRemovedImage] = useState(productRef.current[index]?.url)
   const [isEdit, setIsEdit] = useState(productRef.current[index]?.isEdit)
 
@@ -56,7 +57,7 @@ export default function Product({
   }
   const onClickBack = () => {
     setCroppedImage(null)
-    setRemovedImage(null)
+    setTmpRemovedImage(null)
   }
   const onLoadEventListner = (url: string| ArrayBuffer) => {
     setImageUrl(url as string)
@@ -64,6 +65,7 @@ export default function Product({
   }
   const onLoadRemovedEventListener = (url: string| ArrayBuffer) => {
     setRemovedImage(url as string)
+    setTmpRemovedImage(url as string)
   }
   const onClickDelete = async () => {
     const resizedImage = await loadImage(croppedImage, {
@@ -87,8 +89,8 @@ export default function Product({
       reader.addEventListener('load', () => onLoadRemovedEventListener(reader.result))
     })
   }
+
   const onClickComplete = async () => {
-    productRef.current[index].url = removedImage
     if (nameRef.current.value === '' || priceRef.current.value === '' || urlRef.current.value === '' || !removedImage) {
       await createAlert({ text: '항목을 채워주세요' })
       return
@@ -99,11 +101,15 @@ export default function Product({
     setPrice(priceRef.current.value)
     setBuyLink(urlRef.current.value)
     setProducts((prev) => {
+      if (removedImage !== productRef.current[index].url) {
+        return [...prev.filter((item) => item !== productRef.current[index].url), removedImage]
+      }
       if (!prev.includes(removedImage)) {
         return [...prev, removedImage]
       }
       return prev
     })
+    productRef.current[index].url = removedImage
   }
   const onClickEdit = () => {
     productRef.current[index].isEdit = true
@@ -118,6 +124,8 @@ export default function Product({
   }
   const checkDeleteImage = () => {
     setCropModal(false)
+    setCroppedImage(null)
+    setTmpRemovedImage(null)
   }
   const getCroppedImg = async (imageSrc: string, pixelCrop: Cropped) => {
     const image = new Image()
@@ -179,11 +187,27 @@ export default function Product({
       urlRef.current.value = productRef.current[index].buyLink
     }
   }, [isEdit])
+
   return (
     <>
       <div className={styles.container}>
         <label className={styles.cameraBox} htmlFor={`productPicker${index}`}>
-          {removedImage ? <img src={removedImage} width={73} height={73} alt="removed" className={styles.removed} />
+          {removedImage
+            ? (
+              <>
+                <img src={removedImage} width={73} height={73} alt="removed" className={styles.removed} />
+                {isEdit
+                && (
+                <input
+                  id={`productPicker${index}`}
+                  type="file"
+                  accept="image/png, image/jpeg, image/jpg"
+                  onChange={onClickCamera}
+                  style={{ display: 'none' }}
+                />
+                ) }
+              </>
+            )
             : (
               <>
                 <Icon src="product-camera.png" size={27} />
@@ -249,7 +273,7 @@ export default function Product({
               ? <Icon src="cropExit.png" size={20} onClick={onModalClose} />
               : <Icon src="cropBack.png" size={14} onClick={onClickBack} /> }
             <span>크롭하기</span>
-            <Icon src="cropCheck.png" size={20} onClick={() => (removedImage ? checkDeleteImage() : showCroppedImage())} />
+            <Icon src="cropCheck.png" size={20} onClick={() => (croppedImage ? checkDeleteImage() : showCroppedImage())} />
           </div>
           {!croppedImage
             ? (
@@ -279,11 +303,11 @@ export default function Product({
                 <button className={styles.deleteBox} type="button" onClick={onClickDelete}>
                   <span className={styles.deleteText}>배경제거</span>
                 </button>
-                {removedImage
+                {tmpRemovedImage
                 && (
                 <div>
                   <span className={styles.removedText}>배경제거</span>
-                  <img src={removedImage} width={341} height={341} alt="removedImg" className={styles.removedImg} />
+                  <img src={tmpRemovedImage} width={341} height={341} alt="removedImg" className={styles.removedImg} />
                 </div>
                 )}
               </>
