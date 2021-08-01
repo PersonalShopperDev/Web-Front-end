@@ -52,18 +52,18 @@ export default function CodyLookBook({
   }, [])
 
   return (
-    <>
-      <div className={styles.container}>
+    <div className={styles.container}>
+      <div className={styles.grid}>
         {lookBookLists.map((item, index) => (
           <button
             type="button"
             onClick={() => onButtonClick(index)}
             key={Math.random()}
+            className={styles.figure}
           >
-            <img src={item.img} width="104" height="104" className={styles.clothImage} alt="코디 룩북" />
+            <img src={item.img} alt="코디 룩북" />
           </button>
         ))}
-
       </div>
       {imageModal
       && (
@@ -79,6 +79,6 @@ export default function CodyLookBook({
         </Swiper>
       </div>
       )}
-    </>
+    </div>
   )
 }

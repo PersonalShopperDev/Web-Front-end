@@ -24,12 +24,15 @@ export default function DemanderBox({
         <img src={info.img} alt={info.name} className={styles.profileImg} />
         <div className={styles.infoBox}>
           <span className={styles.name}>{info.name}</span>
+          {info.styleType.length !== 0
+          && (
           <div className={styles.flexContainer}>
             <span>선호스타일:</span>
             {info.styleType.map(({ id, value }) => (
-              <div className={styles.styleBox} key={id}>{value}</div>
+              <span className={styles.styleBox} key={id}>{value}</span>
             ))}
           </div>
+          )}
         </div>
       </div>
     </Link>

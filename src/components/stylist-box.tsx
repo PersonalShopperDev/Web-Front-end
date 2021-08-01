@@ -30,10 +30,15 @@ export default function StylistBox({
             <span className={styles.name}>{info.name}</span>
             <span className={styles.stylistText}>스타일리스트</span>
           </div>
+          {info.price
+          && (
           <span className={styles.priceText}>
             {info.price}
             원
           </span>
+          ) }
+          {info.rating && info.reviewCount && info.hireCount
+          && (
           <span className={styles.indicatorText}>
             {info.rating}
             점
@@ -44,6 +49,7 @@ export default function StylistBox({
             {info.hireCount}
             고용
           </span>
+          ) }
           <div>
             {info.styleType.map((item) => (
               <span className={styles.style} key={item.id}>

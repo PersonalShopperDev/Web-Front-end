@@ -1,13 +1,10 @@
 @use '../lib/colors.scss' as colors;
+@use '../lib/util.scss' as util;
 
-.profileDetailBox {
-    height: 59vh;
-    overflow: scroll;
+.container {
+    @include util.no-scroll();
 }
 
-.profileDetailBox::-webkit-scrollbar {
-    display: none;
-}
 .flexContainer { 
     display: flex;
     flex-direction: row;
@@ -88,13 +85,20 @@
     padding-top: 24px;
 }
 .clothImage {
-    border-radius: 1rem;
-    padding: 0.25rem !important;
-    object-fit: cover
+    width: 164px;
+    height: 171px;
+    border-radius: 16px;
+    overflow: hidden;
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 }
+
 .coordContainer {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     padding-bottom: 80px;
+    gap: 11px;
 }

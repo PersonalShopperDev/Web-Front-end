@@ -9,12 +9,20 @@ import { useOnboarding } from 'providers/onboarding'
 export default function StylePicture() {
   const { stylePicture, setStylePicture, information } = useOnboarding()
   const [styleImageLists, setStyleImageLists] = useState([])
+  const [isOverLength, setIsOverLength] = useState(false)
   const onClick = (id) => {
-    if (!stylePicture.includes(id)) {
-      setStylePicture([...stylePicture, id])
-    } else {
-      setStylePicture(stylePicture.filter((item) => item !== id))
+    if (stylePicture.includes(id)) {
+      if(isOverLength) {
+        setIsOverLength(false)
+      }
+      setStylePicture((list) => list.filter((item) => item !== id))
+      return
     }
+    if (stylePicture.length < 3) {
+      setStylePicture((list) => [...list, id])
+      return
+    }
+    setIsOverLength(true)
   }
   useEffect(() => {
     async function fetchStylistData() {
