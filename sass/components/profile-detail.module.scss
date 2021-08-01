@@ -1,13 +1,10 @@
 @use '../lib/colors.scss' as colors;
+@use '../lib/util.scss' as util;
 
-.profileDetailBox {
-    height: 59vh;
-    overflow: scroll;
+.container {
+    @include util.no-scroll();
 }
 
-.profileDetailBox::-webkit-scrollbar {
-    display: none;
-}
 .flexContainer { 
     display: flex;
     flex-direction: row;

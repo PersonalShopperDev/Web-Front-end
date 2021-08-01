@@ -1,5 +1,5 @@
 @use '../lib/colors.scss' as colors;
-
+@use '../lib/util.scss' as util;
 .clothImage {
     border-radius: 12px;
     margin-right: 11px;
@@ -16,11 +16,9 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    @include util.no-scroll();
 }
 
-.container::-webkit-scrollbar {
-    display: none;
-}
 
 .modalContainer {
     width: 100%;
