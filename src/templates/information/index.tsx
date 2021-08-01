@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import styles from 'sass/templates/information/information.module.scss'
-import parseJwt from 'lib/util/jwt'
-import { getCookie } from 'lib/util/cookie'
-import { ACCESS_TOKEN } from 'providers/auth'
 import { useOnboarding } from 'providers/onboarding'
 import StyleText from 'components/information/style-text'
 import Body from 'components/information/body'
@@ -12,11 +9,13 @@ import Price from 'components/information/price'
 import CodyGender from 'components/information/cody-gender'
 import Career from 'components/information/career'
 import { useRouter } from 'next/router'
+import { useAuth } from 'providers/auth'
 
 export default function Information() {
   const { information, setEdit } = useOnboarding()
-  const [tokenInfo, setTokenInfo] = useState(null)
   const [eachBoxLists, setEachBoxLists] = useState([])
+  const { user } = useAuth()
+  const { userType } = user
   const router = useRouter()
 
   const onClickEdit = (key) => {
@@ -24,11 +23,8 @@ export default function Information() {
     if (key === 'style') router.push('/profile/information/style')
   }
   useEffect(() => {
-    setTokenInfo(parseJwt(getCookie(ACCESS_TOKEN)))
-  }, [])
-  useEffect(() => {
-    if (tokenInfo !== null) {
-      if (tokenInfo.userType === 'D' && tokenInfo.gender === 'F') {
+    if (information !== null) {
+      if (userType === 'D' && information.gender === 'F') {
         setEachBoxLists([{
           title: '선호스타일',
           information: <StyleText />,
@@ -50,7 +46,7 @@ export default function Information() {
           information: <Price />,
           key: 'price',
         }])
-      } else if (tokenInfo.userType === 'D' && tokenInfo.gender === 'M') {
+      } else if (userType === 'D' && information.gender === 'M') {
         setEachBoxLists([{
           title: '선호스타일',
           information: <StyleText />,
@@ -80,14 +76,14 @@ export default function Information() {
         }])
       }
     }
-  }, [tokenInfo])
+  }, [information])
   return (
     <section className={styles.container} id="info_container">
       {information !== null && eachBoxLists.map((value, index) => (
         <div className={styles.eachContainer} key={value.key}>
           <div className={styles.flexContainer}>
             <span className={styles.title}>{value.title}</span>
-            {(tokenInfo.userType === 'S' && index === 0)
+            {(userType === 'D' && index === 0)
                 && (
                 <button type="button" onClick={() => onClickEdit(value.key)}>
                   <span className={styles.pictureText}>사진으로찾기</span>
