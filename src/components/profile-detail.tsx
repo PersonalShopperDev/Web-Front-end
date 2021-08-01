@@ -11,7 +11,7 @@ export default function ProfileDetail({
     name, careerList, rating, reviewCount, hireCount, introduction, coord,
   } = data
   return (
-    <div className={styles.profileDetailBox}>
+    <div className={styles.container}>
       <div className={styles.infoContainer}>
         <div>
           <span className={styles.name}>{name}</span>
