@@ -28,12 +28,14 @@ export default function Menu({
   return (
     <Link href={href === 'none' ? '/' : href}>
       <a className={className} href={href === 'none' ? '/' : href}>
-        <img
-          src={isCurrentPath() ? selectedPath : notSelectedPath}
-          alt={title}
-          width={18}
-          height={18}
-        />
+        <div className={styles.imageWrapper}>
+          <img
+            src={isCurrentPath() ? selectedPath : notSelectedPath}
+            alt={title}
+            width={18}
+            height={18}
+          />
+        </div>
         <span
           className={
             isCurrentPath() ? styles.selectedText : styles.notSelectedText

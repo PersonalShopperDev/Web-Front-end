@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import styles from 'sass/components/profile/section.module.scss'
 
 export default function Section({
@@ -6,7 +6,7 @@ export default function Section({
   action,
   children,
 } : {
-  head: string
+  head: ReactNode
   action?: React.ReactNode,
   children: React.ReactNode
 }) {

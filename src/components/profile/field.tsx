@@ -2,7 +2,7 @@ import communicate from 'lib/api'
 import ERROR_MESSAGE from 'lib/constants/error'
 import { useAuth } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
-import React, {
+import {
   useState,
   useRef,
   createContext,
@@ -12,6 +12,7 @@ import React, {
   useEffect,
   Dispatch,
   SetStateAction,
+  ReactNode,
 } from 'react'
 import StatefulSection, { useStatefulSection } from './stateful-section'
 
@@ -33,12 +34,12 @@ export default function Field({
   maxLength,
   children,
 } : {
-  head: string
+  head: ReactNode
   name: string,
   type?: 'text' | 'number'
   content?: string,
   maxLength?: number
-  children: React.ReactNode
+  children: ReactNode
 }) {
   return (
     <StatefulSection
@@ -67,7 +68,7 @@ function Inner({
   type: 'text' | 'number'
   maxLength: number
   content: string
-  children: React.ReactNode
+  children: ReactNode
 }) {
   const { setOnEdit, setState } = useStatefulSection()
   const { fetchUser } = useAuth()

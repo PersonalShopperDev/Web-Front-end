@@ -17,10 +17,10 @@
     justify-content: center;
     flex : 1;
     &.unread {
-       &::after {
+       .imageWrapper::after {
             position: absolute;
-            top: -1px;
-            right: 11px;
+            top: -6px;
+            right: -6px;
             content: '';
             width: 4px;
             height: 4px;
@@ -28,6 +28,14 @@
             background-color: colors.$accent;
         }
     }
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+.imageWrapper {
+    position: relative;
 }
 
 @mixin navText {
