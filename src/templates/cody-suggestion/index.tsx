@@ -212,7 +212,6 @@ export default function CodySuggetsion({
     }
   }
   useEffect(() => {
-    // localStorage.removeItem(`cody${id}`)
     const currentTempData = localStorage.getItem(`cody${id}`)
     const parsedData: TempData = JSON.parse(currentTempData)
     if (parsedData) {
