@@ -187,6 +187,9 @@ export default class Room {
   private syncMessage(message: Message) {
     this.messages.push(message)
     this._lastChatTime = message.timestamp
+    if (message instanceof CoordMessage) {
+      this._lastChat = message.coordTitle
+    }
     if (message instanceof PictureMessage) {
       this._lastChat = Room.PICTURE_LAST_CHAT
     }
