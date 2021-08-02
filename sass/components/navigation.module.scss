@@ -1,0 +1,56 @@
+@use '../lib/colors.scss' as colors;
+
+.container {
+    height: 75px;
+    width: 375px;
+    background-color: colors.$background;
+    border-top: 1px solid colors.$primary-300;
+    display: flex;
+    flex-direction: row;
+}
+
+.itemContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex : 1;
+    &.unread {
+       .imageWrapper::after {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            content: '';
+            width: 4px;
+            height: 4px;
+            border-radius: 2px;
+            background-color: colors.$accent;
+        }
+    }
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+.imageWrapper {
+    position: relative;
+}
+
+@mixin navText {
+    font-weight: 500;
+    font-size: 10px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.selectedText { 
+    @include navText();
+    color: colors.$primary-700;
+}
+
+.notSelectedText {
+    @include navText();
+    color: colors.$primary-300;
+}

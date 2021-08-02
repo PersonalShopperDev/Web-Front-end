@@ -1,0 +1,51 @@
+@use '../../lib/colors.scss' as colors;
+
+.container { 
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    margin-left: 21px;
+    margin-top: 37px;
+    font-weight: 600;
+    font-size: 16px;
+    display: block;
+}
+
+.text {
+    margin-left: 21px;
+    font-size: 12px;
+    color: colors.$primary-700;
+}
+
+.completeButton {
+    width: 333px;
+    height: 54px;
+    background-color: #000000;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 21px;
+}
+
+.nextText {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 25px;
+    color: colors.$background;
+}
+
+.gradient {
+    width: 375px;
+    height: 116px;
+    background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,0.5), rgba(255,255,255,1));
+    padding-top: 37px;
+}
+.bottom {
+    position: fixed;
+    bottom: 0px;
+    z-index: 98;
+}

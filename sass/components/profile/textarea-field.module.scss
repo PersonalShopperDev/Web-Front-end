@@ -1,0 +1,38 @@
+@use '../../lib/colors.scss' as colors;
+
+.content,
+.inputWrapper {
+    margin-top: 9px;
+    font-size: 12px;
+    color: colors.$primary-500;
+}
+
+.inputWrapper {
+    width: 100%;
+    height: 129px;
+    padding-top: 15px;
+    padding-bottom: 11px;
+    border: 1px solid colors.$primary-200;
+    border-radius: 7px;
+    display: flex;
+    flex-direction: column;
+}
+
+.input {
+    resize: none;
+    padding: 0 15px;
+    width: 100%;
+    height: 100%;
+}
+
+.limit {
+    text-align: right;
+    margin-right: 14px;
+    color: colors.$primary-300;
+    font-size: 10px;
+    .strong {
+        color: colors.$accent;
+        font-weight: normal;
+    }
+}
+

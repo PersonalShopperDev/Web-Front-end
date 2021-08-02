@@ -1,0 +1,30 @@
+@use '../lib/colors.scss' as colors;
+
+.container {
+    padding-left: 17px;
+    padding-right: 17px;
+    >span {
+        display: block;
+    }
+}
+
+.date {
+    color: colors.$primary-300;
+    font-size: 11px;
+    font-weight: 500;
+    margin-top: 18px;
+    display: block;
+}
+
+.btn {
+    width: 100%;
+    border-bottom: 1px solid colors.$primary-200;
+    padding-bottom: 21px;
+    margin-top: 10px;
+    text-align: start;
+}
+.content {
+    font-size: 16px;
+    font-weight: 600;
+    color: colors.$primary-700;
+}

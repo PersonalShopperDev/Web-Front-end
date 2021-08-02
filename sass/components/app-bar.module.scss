@@ -1,0 +1,23 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 61px;
+}
+
+.title {
+    font-size: 18px;
+}
+
+.landings, .actions {
+    position: absolute;
+    display: flex;
+}
+
+.landings {
+    left: 15px;
+}
+
+.actions {
+    right: 15px;
+}

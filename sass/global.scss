@@ -1,0 +1,120 @@
+@use './lib/variables.scss' as variables;
+@use './lib/colors.scss' as colors;
+@use './lib/util.scss' as util;
+@import './lib/fonts.scss';
+
+* {
+  margin : 0;
+  padding : 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'Montserrat', 'Noto Sans KR';
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  background-color: rgba(244, 244, 244);
+  @include util.no-scroll();
+}
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+* {
+  margin : 0;
+  padding : 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+fieldset {
+  border: 0;
+}
+
+button {
+  border: 0;
+  font-size: inherit;
+  font-family: inherit;
+  color: inherit;
+  background: none;
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+}
+
+address {
+  font-style: normal;
+}
+
+strong,
+b {
+  color: inherit;
+  font-size: inherit;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+input, textarea {
+  font-size: inherit;
+  font-family: inherit;
+  color: inherit;
+  background-color: transparent;
+  border: none;
+  &:focus {
+    outline: none;
+  }
+}
+
+input[type=submit] {
+  cursor: pointer;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input,
+button {
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+i {
+  display: block;
+  font-style: normal;
+}
+
+#__next {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-width: variables.$width-default;
+  width: 100%;
+  color: colors.$primary-700;
+  background-color: colors.$background;
+  overflow-x: hidden;
+}

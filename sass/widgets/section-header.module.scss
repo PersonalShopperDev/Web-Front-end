@@ -1,0 +1,22 @@
+@use '../lib/colors.scss' as colors;
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.title {
+    font-size: 18px;
+}
+
+.more {
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+    color: colors.$primary-600;
+    
+    span {
+        margin-right: 1px;
+    }
+}

@@ -1,0 +1,29 @@
+@use '../lib/colors.scss' as colors;
+
+.container {
+    padding-left: 17px;
+    padding-right: 17px;
+    font-size: 14px;
+    font-weight: 500;
+    color: colors.$primary-700;
+    line-height: 24px;
+}
+
+.title {
+    font-weight: 600;
+    font-size: 16px;
+    color: colors.$primary-700;
+}
+.date {
+    font-weight: 500;
+    font-size: 11px;
+    color: colors.$primary-300;
+    display: block;
+    margin-top: 11px;
+    margin-bottom: 20px;
+}
+.html {
+    >ol {
+        margin-left: 17px;
+    }
+}

@@ -1,0 +1,14 @@
+@use '../lib/util.scss' as util;
+
+.header,
+.main,
+.bottom {
+    width: inherit;
+}
+
+.main {
+    flex: 1;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    @include util.no-scroll();
+}

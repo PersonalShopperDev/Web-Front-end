@@ -1,0 +1,38 @@
+@use '../../lib/colors.scss' as colors;
+
+.container {
+    display: flex;
+    align-items: center;
+    line-height: 0;
+}
+
+.index {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 22px;
+    height: 22px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    background-color: colors.$primary-200;
+
+    &.active {
+        background-color: colors.$accent;
+    }
+}
+
+.number {
+    transform: translateY(-1px);
+}
+
+.text {
+    margin-left: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    color: colors.$primary-400;
+
+    &.active {
+        color: colors.$primary-700;
+    }
+}

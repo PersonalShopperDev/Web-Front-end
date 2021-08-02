@@ -1,0 +1,7 @@
+@use '../lib/colors.scss' as colors;
+
+.tempStorage {
+    color: colors.$accent;
+    font-size: 12px;
+    transform: translateY(2px);
+}

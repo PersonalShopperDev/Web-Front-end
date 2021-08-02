@@ -1,0 +1,22 @@
+@use '../lib/colors.scss' as colors;
+
+.container {
+    margin-left: 21px;
+    padding-bottom: 120px;
+}
+
+.priceListContainer {
+    display: flex;
+    align-items: center;
+    margin-top: 19px;
+    >span {
+        margin-left: 10px;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 26px;
+        color: colors.$primary-300;
+    }
+    .selectedText {
+        color: #000000
+    }
+}

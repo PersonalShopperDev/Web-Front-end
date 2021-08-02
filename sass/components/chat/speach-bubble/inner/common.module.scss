@@ -1,0 +1,17 @@
+@use '../../../../lib/colors' as colors;
+
+.message {
+    max-width: 232px;
+    font-size: 15px;
+
+    &.my {
+        background-color: colors.$accent;
+        border-radius: 15px 0 15px 15px;
+        color: white;
+    }
+
+    &.your {
+        background-color: white;
+        border-radius: 0 15px 15px 15px;
+    }
+}

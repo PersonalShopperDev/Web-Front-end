@@ -1,0 +1,58 @@
+@use '../../lib/colors.scss' as colors;
+
+.section { 
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 120px;
+}
+
+.section::-webkit-scrollbar {
+    display: none;
+}
+
+.title {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    color: colors.$accent;
+    margin-top: 37px;
+    margin-left: 21px;
+}
+
+.content {
+    margin-top: 9px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+    color: colors.$primary-700;
+    margin-left: 21px;
+}
+
+.container {
+    margin-top: 149px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 26px;
+    color: colors.$primary-300;
+    .button {
+        margin-right: 17px;
+        margin-left: 17px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        >span {
+            margin-top: 19px;
+        }
+    }
+    .selectedText {
+        color: colors.$primary-700
+    }
+    .image {
+        width: 118px;
+        height: 118px;
+    }
+}

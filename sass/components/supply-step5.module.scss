@@ -1,0 +1,30 @@
+@use '../lib/colors.scss' as colors;
+
+.section { 
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 120px;
+}
+
+.section::-webkit-scrollbar {
+    display: none;
+}
+
+.box {
+    position: relative;
+    text-align: center;
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 24px;
+    color: colors.$accent;
+}
+.text {
+    margin-top: 450px;
+}
+
+.image {
+    position: absolute;
+    left: -60px;
+}
