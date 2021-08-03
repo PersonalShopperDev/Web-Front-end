@@ -11,7 +11,9 @@ export default function StylistEscort() {
           <b>코디실력</b>
           을 보여줘요!
         </p>
-        <img className={styles.firstImage} src="/images/stylist-escort-0.png" alt="" />
+        <div className={styles.firstImageWrapper}>
+          <img className={styles.firstImage} src="/images/stylist-escort-0.png" alt="" />
+        </div>
       </li>
       <li className={styles.step}>
         <p>
