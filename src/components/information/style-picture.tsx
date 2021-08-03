@@ -12,7 +12,7 @@ export default function StylePicture() {
   const [isOverLength, setIsOverLength] = useState(false)
   const onClick = (id) => {
     if (stylePicture.includes(id)) {
-      if(isOverLength) {
+      if (isOverLength) {
         setIsOverLength(false)
       }
       setStylePicture((list) => list.filter((item) => item !== id))
@@ -26,12 +26,12 @@ export default function StylePicture() {
   }
   useEffect(() => {
     async function fetchStylistData() {
-      const res = await communicate({ url: '/style/img' })
+      const res = await communicate({ url: `/style/img?gender=${information.gender}` })
       const styleImage = await res.json()
       setStyleImageLists(styleImage)
     }
-    fetchStylistData()
-  }, [])
+    if (information) fetchStylistData()
+  }, [information])
   return (
     <div className={styles.container}>
       {styleImageLists.map((value, index) => (
