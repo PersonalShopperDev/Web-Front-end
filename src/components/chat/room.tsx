@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { cn } from 'lib/util'
 import communicate from 'lib/api'
 import { useRoom } from 'providers/chat/room'
 import {
@@ -116,16 +115,16 @@ export default function ChatRoom() {
   return (
     <section className={styles.container}>
       {inProgress && (
-      <section className={styles.notice}>
-        <Link href={`/chat/progress/${room.id}`}>
-          <a className={styles.progress} href={`/chat/progress/${room.id}`}>
-            진행사항 보기
-          </a>
-        </Link>
-      </section>
+        <section className={styles.notice}>
+          <Link href={`/chat/progress/${room.id}`}>
+            <a className={styles.progress} href={`/chat/progress/${room.id}`}>
+              진행사항 보기
+            </a>
+          </Link>
+        </section>
       )}
       <section ref={innerRef} className={styles.inner}>
-        <div className={cn(styles.list, state === 'ready' && styles.ready)}>
+        <div className={styles.list}>
           {messages?.reduce((acc, cur, i, arr) => {
             if (i > 0) {
               const currentDate = new Date(cur.timestamp).getDate()
