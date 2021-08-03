@@ -9,6 +9,7 @@ import { communicateWithContext } from 'lib/api'
 import parseJwt from 'lib/util/jwt'
 import { ACCESS_TOKEN, useAuth, UserType } from 'providers/auth'
 import Navigation from 'components/navigation'
+import AreYouNoob from 'components/are-you-noob'
 
 interface Props {
   data: Data
@@ -37,6 +38,7 @@ export default function Page({ data } : Props) {
       bottom={<Navigation />}
     >
       { !userType ? <LoginBanner /> : <Banner data={banners} />}
+      <AreYouNoob />
       <BeforeAfter data={reviews} />
       <StylistGridView suppliers={suppliers} demanders={userType !== 'D' && demanders} />
     </Layout>
