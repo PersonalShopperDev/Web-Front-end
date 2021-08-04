@@ -2,25 +2,15 @@ import Layout from 'layouts/default'
 import { GetServerSideProps } from 'next'
 import parseJwt from 'lib/util/jwt'
 import { ACCESS_TOKEN } from 'providers/auth'
-import ChatBanner from 'components/chat/banner'
-import ChatList from 'components/chat/list'
-import HomeAppBar from 'components/app-bar/home'
-import Navigation from 'components/navigation'
-import PushLink from 'components/chat/push-link'
+import ChatPush from 'templates/chat-push'
+import AppBar from 'components/app-bar'
 
 export default function Page() {
   return (
     <Layout
-      header={(
-        <>
-          <HomeAppBar title="채팅" />
-          <PushLink />
-        </>
-      )}
-      bottom={<Navigation />}
+      header={<AppBar back />}
     >
-      <ChatBanner src="/images/chat-banner.png" />
-      <ChatList />
+      <ChatPush />
     </Layout>
   )
 }

@@ -32,8 +32,8 @@ export default function Menu({
           <img
             src={isCurrentPath() ? selectedPath : notSelectedPath}
             alt={title}
-            width={18}
-            height={18}
+            width={37}
+            height={37}
           />
         </div>
         <span
