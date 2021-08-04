@@ -11,7 +11,9 @@ export default function StylistEscort() {
           <b>코디실력</b>
           을 보여줘요!
         </p>
-        <img className={styles.firstImage} src="/images/stylist-escort-0.png" alt="" />
+        <div className={styles.firstImageWrapper}>
+          <img className={styles.firstImage} src="/images/stylist-escort-0.png" alt="" />
+        </div>
       </li>
       <li className={styles.step}>
         <p>
@@ -31,7 +33,6 @@ export default function StylistEscort() {
           <b>쉽게 코디북을 제공</b>
           하여 쇼퍼에게 전달해보세요!
         </p>
-        <p className={styles.blue}>이미지 클릭 시 링크로 연결됩니다.</p>
         <img className={styles.thirdImage} src="/images/stylist-escort-2.png" alt="" />
       </li>
     </ol>

@@ -1,0 +1,19 @@
+@use '../../lib/colors.scss' as colors;
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: colors.$accent;
+    padding: 17px;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+.message {
+    color: white;
+    font-size: 14px;
+}
