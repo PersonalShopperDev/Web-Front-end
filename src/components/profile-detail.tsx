@@ -10,6 +10,7 @@ export default function ProfileDetail({
   const {
     name, careerList, rating, reviewCount, hireCount, introduction, coord,
   } = data
+
   return (
     <div className={styles.container}>
       <div className={styles.infoContainer}>
@@ -45,6 +46,8 @@ export default function ProfileDetail({
             </div>
           ))}
         </div>
+        {rating
+        && (
         <div className={styles.indicatorContainer}>
           <span className={styles.indicatorText}>
             {rating}
@@ -61,6 +64,7 @@ export default function ProfileDetail({
             회고용
           </span>
         </div>
+        ) }
       </div>
       <div className={styles.introductionContainer}>
         <div className={styles.titleText}>자기소개</div>
