@@ -61,10 +61,11 @@ export default function Review({
     setId(id)
     if (reviewId) setTargetId(reviewId)
   }, [])
-
   return (
     <>
       <div className={styles.reviewContainer}>
+        {review.rating
+        && (
         <div className={styles.reviewBox}>
           <div className={styles.leftItem}>
             <div className={styles.keyText}>평점</div>
@@ -75,6 +76,7 @@ export default function Review({
             <span className={styles.valueText}>{review && review.totalCount}</span>
           </div>
         </div>
+        ) }
         {reviewLists.map(({
           id, profileImg, name, date, rating, img, height, weight, body, styleTypeList, content,
         }) => (
