@@ -17,6 +17,7 @@ type userListsRefProps = {
   type: string,
   sort: string,
   gender: string,
+  user: string,
 }
 const UserListContext = createContext<ListProps>(null)
 
@@ -33,7 +34,7 @@ export default function UserListProvider({
   const [genderType, setGenderType] = useState('M')
   const [userType, setUserType] = useState(null)
   const userListsRef = useRef<userListsRefProps>({
-    value: [], type: '', sort: 'recommend', gender: 'M',
+    value: [], type: '', sort: 'recommend', gender: 'M', user: null,
   })
   const pageNum = 20
   const fetchDemander = async () => {
@@ -66,8 +67,8 @@ export default function UserListProvider({
     setUserLists(newLists)
   }
   const fetchUserData = async () => {
-    if (!userType) return
-    if (userType === 'D') {
+    if (!userListsRef.current.user) return
+    if (userListsRef.current.user === 'D') {
       fetchDemander()
     } else {
       fetchSupplier()
@@ -83,6 +84,7 @@ export default function UserListProvider({
     userListsRef.current.sort = sortType
     userListsRef.current.gender = genderType
     userListsRef.current.value = []
+    userListsRef.current.user = userType
     fetchUserData()
   }, [styleType, sortType, genderType, userType])
 
