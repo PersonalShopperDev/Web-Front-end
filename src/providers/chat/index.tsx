@@ -25,6 +25,7 @@ type OpenProps = Omit<RoomProps, 'socketRef' | 'update'>
 interface ChatContextProps {
   rooms: Room[]
   open: (props : OpenProps) => Room
+  appendRooms: (page: number) => Promise<boolean>
 }
 
 const ChatContext = createContext<ChatContextProps>(null)
@@ -33,6 +34,8 @@ export const useChat = () => useContext(ChatContext)
 
 export default function ChatProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth()
+
+  const { userId } = user
 
   const { createAlert } = useAlert()
 
@@ -100,8 +103,6 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
   }
 
   const open = (props : OpenProps) => {
-    const { userId } = user
-
     const room = new Room({
       socketRef, userId, update, ...props,
     })
@@ -109,6 +110,24 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
     roomsRef.current.push(room)
     return room
   }
+
+  const assignRoom = ({
+    roomId,
+    targetUser,
+    unreadCount,
+    lastChat,
+    lastChatTime,
+    lastChatType,
+  }) => new Room({
+    id: roomId,
+    unreadCount,
+    userId,
+    other: targetUser,
+    lastChat: lastChatType === 6 ? Room.PICTURE_LAST_CHAT : lastChat,
+    lastChatTime,
+    socketRef,
+    update,
+  })
 
   const initializeRoom = async () => {
     const res = await communicate({
@@ -122,27 +141,32 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
 
     const data = await res.json()
 
-    const { userId } = user
-
-    roomsRef.current = data.map(({
-      roomId,
-      targetUser,
-      unreadCount,
-      lastChat,
-      lastChatTime,
-      lastChatType,
-    }) => new Room({
-      id: roomId,
-      unreadCount,
-      userId,
-      other: targetUser,
-      lastChat: lastChatType === 6 ? Room.PICTURE_LAST_CHAT : lastChat,
-      lastChatTime,
-      socketRef,
-      update,
-    }))
+    roomsRef.current = data.map(assignRoom)
 
     update()
+  }
+
+  const appendRooms = async (page: number) => {
+    const res = await communicate({
+      url: `/chat?page=${page}`,
+    })
+
+    if (res.status !== 200) {
+      createAlert({ text: ERROR_MESSAGE })
+      return false
+    }
+
+    const data = await res.json()
+
+    if (data.length === 0) {
+      return false
+    }
+
+    roomsRef.current = [...roomsRef.current, ...data.map(assignRoom)]
+
+    update()
+
+    return true
   }
 
   const initialize = async () => {
@@ -170,6 +194,7 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
 
   const value = {
     rooms: roomsRef.current,
+    appendRooms,
     open,
   }
 
