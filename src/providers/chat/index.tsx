@@ -35,8 +35,6 @@ export const useChat = () => useContext(ChatContext)
 export default function ChatProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth()
 
-  const { userId } = user
-
   const { createAlert } = useAlert()
 
   const socketRef = useRef<Socket>()
@@ -103,6 +101,7 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
   }
 
   const open = (props : OpenProps) => {
+    const { userId } = user
     const room = new Room({
       socketRef, userId, update, ...props,
     })
@@ -118,16 +117,19 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
     lastChat,
     lastChatTime,
     lastChatType,
-  }) => new Room({
-    id: roomId,
-    unreadCount,
-    userId,
-    other: targetUser,
-    lastChat: lastChatType === 6 ? Room.PICTURE_LAST_CHAT : lastChat,
-    lastChatTime,
-    socketRef,
-    update,
-  })
+  }) => {
+    const { userId } = user
+    return new Room({
+      id: roomId,
+      unreadCount,
+      userId,
+      other: targetUser,
+      lastChat: lastChatType === 6 ? Room.PICTURE_LAST_CHAT : lastChat,
+      lastChatTime,
+      socketRef,
+      update,
+    })
+  }
 
   const initializeRoom = async () => {
     const res = await communicate({
