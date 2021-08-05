@@ -3,8 +3,11 @@ import { useRef, FormEvent, ChangeEvent } from 'react'
 import styles from 'sass/templates/chat-push.module.scss'
 import communicate from 'lib/api'
 import ERROR_MESSAGE from 'lib/constants/error'
+import { useRouter } from 'next/router'
 
 export default function ChatPush() {
+  const router = useRouter()
+
   const inputRef = useRef<string>()
 
   const { createAlert } = useAlert()
@@ -33,6 +36,8 @@ export default function ChatPush() {
     }
 
     await createAlert({ text: '문자 알림 수신이 확인되었습니다.' })
+
+    router.back()
   }
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
