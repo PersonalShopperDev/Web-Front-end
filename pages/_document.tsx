@@ -57,11 +57,11 @@ export default class RootDocument extends Document {
         <body>
           <noscript
             dangerouslySetInnerHTML={{
-              __html: `<noscript><iframe
+              __html: `<iframe
               src="https://www.googletagmanager.com/ns.html?id=GTM-M5G3WBR"
               height="0"
               width="0"
-              style="display:none;visibility:hidden"></iframe></noscript>`,
+              style="display:none;visibility:hidden"></iframe>`,
             }}
           />
           <Main />
