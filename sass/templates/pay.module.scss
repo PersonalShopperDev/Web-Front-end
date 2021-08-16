@@ -1,0 +1,103 @@
+@use '../lib/colors.scss' as colors;
+
+.container {
+    padding: 17px;
+}
+
+.priceLabel {
+    font-size: 18px;
+}
+
+.price {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.receiverInfo {
+    margin-top: 40px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid colors.$primary-200;
+}
+
+.infoRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+
+    & + & {
+        margin-top: 6px;
+    }
+}
+
+.infoLabel {
+    color: #757372;
+}
+
+.infoValue {
+    font-weight: bold;
+}
+
+.inputLabel {
+    display: flex;
+    flex-direction: column;
+    margin-top: 18px;
+    font-size: 13px;
+    color: #757372;
+}
+
+.input {
+    margin-top: 12px;
+    padding: 12px 16px;
+    font-size: 16px;
+    background-color: #FAFAFA;
+    border-radius: 7px;
+    border: 1px solid #ECECEC;
+    color: colors.$primary-600;
+    &::placeholder {
+        color: #767474;
+    }
+}
+
+.notice {
+    margin-top: 112px;
+    padding: 18px;
+    min-height: 112px;
+    border-radius: 5px;
+    background-color: #FAFAFA;
+}
+
+.noticeLabel {
+    font-size: 14px;
+}
+
+.noticeMessage {
+    margin-top: 21px;
+    font-size: 12px;
+    color: #2D2D2D;
+}
+
+.enoughSpace {
+    height: 72px;
+}
+
+.submitWrapper {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 17px;
+}
+
+.submit {
+    padding: 15px;
+    width: 100%;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    background-color: colors.$accent;
+    border-radius: 5px;
+}
