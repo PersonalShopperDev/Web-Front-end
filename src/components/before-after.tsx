@@ -4,16 +4,21 @@ import styles from 'sass/components/before-after.module.scss'
 import SectionHeader from 'widgets/section-header'
 
 export interface BeforeAfterData {
-  stylistId: string,
-  beforeImg: string,
-  afterImg: string,
-  title: string,
-  name: string,
+  supplierId: number,
+  demanderId: number,
+  img: string,
+  content: string,
+  styleList: {
+    id: number,
+    value: string,
+  }[]
+  body : {
+    id: number,
+    value: string,
+  }
 }
 
 export default function BeforeAfter({ data } : {data: BeforeAfterData[]}) {
-  const description = '리뷰 사진 클릭 시 스타일리스트 프로필로 이동합니다'
-
   if (!data || data?.length === 0) {
     return <></>
   }
@@ -21,28 +26,39 @@ export default function BeforeAfter({ data } : {data: BeforeAfterData[]}) {
   return (
     <section className={styles.container}>
       <section className={styles.header}>
-        <SectionHeader title="Before&After" moreHref="/" />
-        <span className={styles.description}>{description}</span>
+        <SectionHeader title="Before&After" />
+        <p className={styles.notice}>이미지를 누르면 코디받은 유저의 후기를 자세히 볼 수 있습니다.</p>
       </section>
       <Carousel className={styles.articleContainer}>
         {data.map(({
-          stylistId,
-          beforeImg,
-          afterImg,
-          title,
+          body,
+          styleList,
+          content,
+          img,
         }) => (
-          <section key={`${stylistId}${title}`}>
-            <div className={styles.photozone}>
-              <figure className={cn(styles.figure, styles.before)}>
-                <figcaption className={styles.figcaption}>Before</figcaption>
-                <img src={beforeImg} alt="Before" />
-              </figure>
-              <figure className={cn(styles.figure, styles.after)}>
-                <figcaption className={styles.figcaption}>After</figcaption>
-                <img src={afterImg} alt="After" />
-              </figure>
+          <section className={styles.childContainer} key={img}>
+            <figure className={cn(styles.figure)}>
+              <img src={img} alt="Before" />
+            </figure>
+            <div className={styles.detail}>
+              <div className={styles.row}>
+                <span className={styles.label}>
+                  체형
+                </span>
+                <span className={styles.value}>
+                  {body.value}
+                </span>
+              </div>
+              <div className={styles.row}>
+                <span className={styles.label}>
+                  선호스타일
+                </span>
+                {styleList.map((style) => <span key={style.id} className={styles.value}>{`#${style.value}`}</span>)}
+              </div>
+              <p className={styles.content}>
+                {content}
+              </p>
             </div>
-            <h3 className={styles.caption}>{title}</h3>
           </section>
         ))}
       </Carousel>
