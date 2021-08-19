@@ -26,7 +26,7 @@ export default function BeforeAfter({ data } : {data: BeforeAfterData[]}) {
   return (
     <section className={styles.container}>
       <section className={styles.header}>
-        <SectionHeader title="Before&After" />
+        <SectionHeader title="Styling Reivew" />
         <p className={styles.notice}>이미지를 누르면 코디받은 유저의 후기를 자세히 볼 수 있습니다.</p>
       </section>
       <Carousel className={styles.articleContainer}>
