@@ -8,17 +8,23 @@ export default function SectionHeader({
   moreHref,
 } : {
   title : React.ReactNode,
-  moreHref : string,
+  moreHref? : string,
 }) {
   return (
     <section className={styles.container}>
       <h2 className={styles.title}>{title}</h2>
+      {moreHref && (
       <Link href={moreHref}>
         <a className={styles.more} href={moreHref}>
           <span>more</span>
           <Icon size={7} src="back-small.png" />
         </a>
       </Link>
+      )}
     </section>
   )
+}
+
+SectionHeader.defaultProps = {
+  moreHref: null,
 }
