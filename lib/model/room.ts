@@ -28,7 +28,7 @@ export interface RoomProps {
   unreadCount: number
   lastChat?: string
   lastChatTime?: string
-  latestEstimate?: LatestEstimate
+  status?: number,
   socketRef: MutableRefObject<Socket>
   update: () => void
 }
@@ -58,6 +58,7 @@ export default class Room {
   private _unreadCount: number
   private _lastChat: string
   private _lastChatTime: string
+  private _status: number
   private readonly socketRef: MutableRefObject<Socket>
   private readonly update: () => void
 
@@ -71,8 +72,8 @@ export default class Room {
     unreadCount,
     lastChat,
     lastChatTime,
-    latestEstimate,
     socketRef,
+    status,
     update,
   }: RoomProps) {
     if (typeof id === 'string') {
@@ -82,9 +83,7 @@ export default class Room {
     }
     this.userId = userId
     this.other = other
-    this.latestEstimate = latestEstimate || {
-      estimateId: undefined, price: undefined, status: undefined,
-    }
+    this._status = status
     this._unreadCount = unreadCount
     this._lastChat = lastChat
     this._lastChatTime = lastChatTime
@@ -94,6 +93,10 @@ export default class Room {
     if (messages) {
       this.appendMessage(messages)
     }
+  }
+
+  public get status() {
+    return this._status
   }
 
   public get messages() {
@@ -114,6 +117,10 @@ export default class Room {
 
   private generateMessageId() {
     return this._messages.length * Math.random()
+  }
+
+  public initializeStatus(status: number) {
+    this._status = status
   }
 
   public async initializeMessage(array: RecieveMessageProps[]) {
