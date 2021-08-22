@@ -36,7 +36,7 @@ export interface RoomProps {
 export interface RecieveMessageProps {
   chatId: number
   userId: number
-  chatType: number
+  chatType: String
   msg: string
   price: number
   account: string
@@ -287,9 +287,9 @@ export default class Room {
     status,
   }: RecieveMessageProps) {
     switch (type) {
-      case 0:
+      case 'plain':
         return Room.createCommon(id, userId, message, chatTime)
-      case 1:
+      case '1':
         return Room.createProposal(
           id,
           userId,
@@ -301,7 +301,7 @@ export default class Room {
           chatTime,
           status,
         )
-      case 2:
+      case 'coord':
         return Room.createCoord(
           id,
           userId,
@@ -310,13 +310,13 @@ export default class Room {
           coordTitle,
           chatTime,
         )
-      case 5:
+      case 'notice':
         return Room.createNotice(
           id,
           message,
           chatTime,
         )
-      case 6:
+      case 'img':
         return Room.createPicture(
           id,
           userId,
