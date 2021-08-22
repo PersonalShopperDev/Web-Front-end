@@ -6,10 +6,10 @@ import Description from 'components/cody-suggestion/description'
 import BottomButton from 'components/bottom-button'
 import StyleBoardItem from 'components/cody-suggestion/style-board-item'
 import { useRouter } from 'next/router'
-import * as htmlToImage from 'html-to-image'
 import communicate from 'lib/api'
 import { useAlert } from 'providers/dialog/alert/inner'
 import ERROR_MESSAGE from 'lib/constants/error'
+import html2canvas from 'html2canvas';
 
 export interface ProductInformation {
   url: string,
@@ -129,51 +129,52 @@ export default function CodySuggetsion({
       await createAlert({ text: '항목을 전부 채워주세요' })
       return
     }
-    await htmlToImage.toPng(styleBoardRef.current)
-      .then(async (dataUrl) => {
-        const img = await resizeAndBlob(dataUrl)
-        formData.append('mainImg', img)
-        formData.append('demanderId', id.toString())
-        formData.append('title', descriptionRef.current.title)
-        formData.append('comment', descriptionRef.current.content)
-        const res = await communicate({
-          url: '/coord',
+
+    html2canvas(styleBoardRef.current).then(async (canvas) => {
+      const dataUrl = canvas.toDataURL()
+      const img = await resizeAndBlob(dataUrl)
+      formData.append('mainImg', img)
+      formData.append('demanderId', id.toString())
+      formData.append('title', descriptionRef.current.title)
+      formData.append('comment', descriptionRef.current.content)
+      const res = await communicate({
+        url: '/coord',
+        options: {
+          body: formData,
+        },
+        method: 'POST',
+      })
+      if (res.status !== 200) {
+        return
+      }
+      const data = await res.json()
+      const { coordId } = data
+      productRef.current.forEach(async (item) => {
+        const clothForm = new FormData()
+        const clothImg = await resizeAndBlob(item.url)
+        clothForm.append('coordId', coordId)
+        clothForm.append('img', clothImg)
+        clothForm.append('name', item.name)
+        clothForm.append('price', item.price)
+        clothForm.append('purchaseUrl', item.buyLink)
+        await communicate({
+          url: '/coord/cloth',
           options: {
-            body: formData,
+            body: clothForm,
           },
           method: 'POST',
-        })
-        if (res.status !== 200) {
-          return
-        }
-        const data = await res.json()
-        const { coordId } = data
-        productRef.current.forEach(async (item) => {
-          const clothForm = new FormData()
-          const clothImg = await resizeAndBlob(item.url)
-          clothForm.append('coordId', coordId)
-          clothForm.append('img', clothImg)
-          clothForm.append('name', item.name)
-          clothForm.append('price', item.price)
-          clothForm.append('purchaseUrl', item.buyLink)
-          await communicate({
-            url: '/coord/cloth',
-            options: {
-              body: clothForm,
-            },
-            method: 'POST',
-          }).then((response) => {
-            if (!response.ok) {
-              throw new Error()
-            }
-          })
+        }).then((response) => {
+          if (!response.ok) {
+            throw new Error()
+          }
         })
       })
-      .catch((error) => {
-        createAlert({ text: ERROR_MESSAGE })
-      })
+    }).catch((error) => {
+      createAlert({ text: ERROR_MESSAGE })
+    })
     localStorage.removeItem(`cody${id}`)
     await redirect()
+
   }
 
   const redirect = async () => {
@@ -231,6 +232,7 @@ export default function CodySuggetsion({
     return () => {
       document.getElementById('storage')?.removeEventListener('click', ClickEventListener)
     }
+    
   }, [])
   return (
     <>
