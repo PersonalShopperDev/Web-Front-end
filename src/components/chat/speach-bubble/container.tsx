@@ -1,4 +1,5 @@
 import { useAuth } from 'providers/auth'
+import { useRoom } from 'providers/chat/room'
 import { ReactNode } from 'react'
 import styles from 'sass/components/chat/speach-bubble/index.module.scss'
 import Avatar from 'widgets/avatar'
@@ -32,11 +33,15 @@ export default function SpeachBubbleContainer({
     )
   }
 
+  const { room } = useRoom()
+
+  const { other } = room
+
   return (
     <SpeachBubble
       header={(
         <div className={styles.header}>
-          <Avatar src={image} size={35} />
+          <Avatar src={image} size={35} href={`/profile/${other.id}`} />
         </div>
       )}
       ownerClassName={styles.your}
