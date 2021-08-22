@@ -1,4 +1,4 @@
-import Room, { Other, RecieveMessageProps } from 'lib/model/room'
+import Room, { Other, OnRecieveMessageProps } from 'lib/model/room'
 import { useAuth } from 'providers/auth'
 import {
   ReactNode, useState, useEffect, useContext, createContext,
@@ -22,7 +22,7 @@ interface Props {
 export interface RoomProviderData {
   paymentStatus: number,
   targetUser: Other
-  chatList: RecieveMessageProps[]
+  chatList: OnRecieveMessageProps[]
 }
 
 export default function RoomProvider({

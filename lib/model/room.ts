@@ -24,7 +24,7 @@ export interface RoomProps {
   id: string | number
   userId: number
   other: Other
-  messages?: RecieveMessageProps[]
+  messages?: OnRecieveMessageProps[]
   unreadCount: number
   lastChat?: string
   lastChatTime?: string
@@ -33,7 +33,7 @@ export interface RoomProps {
   update: () => void
 }
 
-export interface RecieveMessageProps {
+export interface OnRecieveMessageProps {
   chatId: number
   userId: number
   chatType: String
@@ -47,6 +47,11 @@ export interface RecieveMessageProps {
   coordImg: string
   chatTime: string
   status: number
+}
+
+export interface OnChangePaymentStatusProps {
+  estimateId: number,
+  status: number,
 }
 
 export default class Room {
@@ -122,7 +127,7 @@ export default class Room {
     this._status = status
   }
 
-  public async initializeMessage(array: RecieveMessageProps[]) {
+  public async initializeMessage(array: OnRecieveMessageProps[]) {
     if (!array) {
       return
     }
@@ -133,7 +138,7 @@ export default class Room {
     this.update()
   }
 
-  public async appendMessage(array: RecieveMessageProps[]) {
+  public async appendMessage(array: OnRecieveMessageProps[]) {
     const messages = await Promise.all(array.map((props) => Room.createMessage(props)))
     this._messages = [...messages, ...this._messages]
     this.update()
@@ -215,11 +220,12 @@ export default class Room {
     this.update()
   }
 
-  public pay(estimateId: number) {
+  public onChangePaymentStatus({ status }: OnChangePaymentStatusProps) {
+    this._status = status
     this.update()
   }
 
-  public async onReceive(props: RecieveMessageProps) {
+  public async onReceive(props: OnRecieveMessageProps) {
     const message = await Room.createMessage(props)
     this.syncMessage(message)
     this._unreadCount += 1
@@ -251,7 +257,7 @@ export default class Room {
     coordImg,
     chatTime,
     status,
-  }: RecieveMessageProps) {
+  }: OnRecieveMessageProps) {
     switch (type) {
       case 'plain':
         return Room.createCommon(id, userId, message, chatTime)

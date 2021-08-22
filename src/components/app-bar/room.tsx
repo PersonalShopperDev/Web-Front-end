@@ -3,6 +3,9 @@ import styles from 'sass/components/app-bar/room.module.scss'
 import { useRoom } from 'providers/chat/room'
 import { cn } from 'lib/util'
 import { useAuth } from 'providers/auth'
+import communicate from 'lib/api'
+import { useAlert } from 'providers/dialog/alert/inner'
+import ERROR_MESSAGE from 'lib/constants/error'
 import AppBar from '.'
 
 export default function RoomAppBar({
@@ -11,6 +14,8 @@ export default function RoomAppBar({
   title: string,
 }) {
   const { userType } = useAuth().user
+
+  const { createAlert } = useAlert()
 
   const { room } = useRoom()
 
@@ -24,8 +29,15 @@ export default function RoomAppBar({
 
   const sendCoordEnabled = sendNewEnabled || sendFixedEnabled
 
-  const requestPayment = () => {
+  const requestPayment = async () => {
+    const res = await communicate({
+      url: `/payment/${room.id}/account`,
+      method: 'POST',
+    })
 
+    if (res.status !== 201) {
+      await createAlert({ text: ERROR_MESSAGE })
+    }
   }
 
   const sendCoord = () => {

@@ -1,13 +1,10 @@
 import styles from 'sass/components/chat/notice.module.scss'
-import Child from './child'
+import BuiltInNotice from './built-in'
 
-export default function Notice({ status }: { status: number }) {
+export default function Notice() {
   return (
     <section className={styles.container}>
-      <Child>
-        <b>안내:&nbsp;</b>
-        <span>결제 요청중</span>
-      </Child>
+      <BuiltInNotice />
     </section>
   )
 }
