@@ -106,7 +106,7 @@ export default function ChatRoom() {
 
   return (
     <section className={styles.container}>
-      <Notice status={room.latestEstimate.status} />
+      <Notice status={room.status} />
       <section ref={innerRef} className={styles.inner}>
         <div className={styles.list}>
           {messages?.reduce((acc, cur, i, arr) => {

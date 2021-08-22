@@ -53,7 +53,6 @@ export default class Room {
   public readonly id: number
   public readonly userId: number
   public readonly other: Other
-  public readonly latestEstimate: LatestEstimate
   private _messages: Message[]
   private _unreadCount: number
   private _lastChat: string
@@ -132,12 +131,6 @@ export default class Room {
     }
     this._messages = await Promise.all(array.map((props) => Room.createMessage(props)))
     this.update()
-  }
-
-  public initializeLatestEstimate({ estimateId, price, status } : LatestEstimate) {
-    this.latestEstimate.estimateId = estimateId
-    this.latestEstimate.price = price
-    this.latestEstimate.status = status
   }
 
   public async appendMessage(array: RecieveMessageProps[]) {
@@ -223,40 +216,6 @@ export default class Room {
   }
 
   public pay(estimateId: number) {
-    if (this.latestEstimate.estimateId !== estimateId) {
-      return
-    }
-
-    let status : number
-
-    for (let i = 0; i < this.messages.length; i++) {
-      const message = this.messages[i]
-      if (message instanceof ProposalMessage) {
-        if (message.estimateId === estimateId) {
-          status = message.status + 1
-          message.setStatus(status)
-          break
-        }
-      }
-    }
-
-    this.latestEstimate.status = status
-    this.update()
-  }
-
-  public onChangeEstimateStatus({ estimateId, status }: { estimateId: number; status: number }) {
-    for (let i = 0; i < this.messages.length; i++) {
-      const message = this.messages[i]
-      if (message instanceof ProposalMessage) {
-        if (message.estimateId === estimateId) {
-          message.setStatus(status)
-          break
-        }
-      }
-    }
-
-    this.latestEstimate.estimateId = estimateId
-    this.latestEstimate.status = status
     this.update()
   }
 

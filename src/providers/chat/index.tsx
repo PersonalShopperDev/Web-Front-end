@@ -10,12 +10,6 @@ import {
 } from 'react'
 import io, { Socket } from 'socket.io-client'
 
-interface OnChangeEstimateStatus {
-  roomId: number
-  estimateId: number
-  status: number
-}
-
 interface OnReceive extends RecieveMessageProps {
   roomId: number
 }
@@ -56,12 +50,6 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
 
   const isConnected = () => socketRef.current?.connected
 
-  const onChangeEstimateStatus = async ({ roomId, ...props } : OnChangeEstimateStatus) => {
-    const room = await getReceivedRoom(roomId)
-
-    room?.onChangeEstimateStatus(props)
-  }
-
   const onReceive = async ({ roomId, ...props } : OnReceive) => {
     const room = await getReceivedRoom(roomId)
 
@@ -79,7 +67,6 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
   }
 
   const attachListener = () => {
-    socketRef.current.on('onChangeEstimateStatus', onChangeEstimateStatus)
     socketRef.current.on('receiveMsg', onReceive)
     socketRef.current.on('readMsg', onRead)
   }
