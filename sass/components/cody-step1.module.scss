@@ -1,0 +1,36 @@
+@use '../lib/colors.scss' as colors;
+
+.title {
+    font-weight: 700;
+    font-size: 22px;
+    display: block;
+    margin-bottom: 20px;
+}
+
+@mixin plusBox {
+    border-radius: 5px;
+    background-color: colors.$primary-200;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin: 0.5px;
+}
+
+.bigPlusBox {
+    @include plusBox();
+    width: 169px;
+    height: 169px;
+}
+
+.smallPlusBox {
+    @include plusBox();
+    width: 113px;
+    height: 113px;
+}
+
+.gridContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
