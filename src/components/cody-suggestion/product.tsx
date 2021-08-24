@@ -2,7 +2,7 @@
 import React, {
   useRef, ChangeEvent, useEffect, useState,
 } from 'react'
-import styles from 'sass/components/tmp.module.scss'
+import styles from 'sass/components/product.module.scss'
 import { useCodySuggestion } from 'providers/cody-suggestion'
 import Icon from 'widgets/icon'
 import resizeImageFile from 'lib/util/image'
