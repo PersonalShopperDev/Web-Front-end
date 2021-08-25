@@ -1,4 +1,4 @@
-import Room, { Other, OnRecieveMessageProps } from 'lib/model/room'
+import Room, { Other, OnRecieveMessageProps, Payment } from 'lib/model/room'
 import { useAuth } from 'providers/auth'
 import {
   ReactNode, useState, useEffect, useContext, createContext,
@@ -20,7 +20,7 @@ interface Props {
 }
 
 export interface RoomProviderData {
-  paymentStatus: number,
+  payment: Payment,
   targetUser: Other
   chatList: OnRecieveMessageProps[]
 }
@@ -37,8 +37,7 @@ export default function RoomProvider({
   const [room, setRoom] = useState<Room>()
 
   const initialize = async () => {
-    const { targetUser, chatList, paymentStatus } = data
-
+    const { targetUser, chatList, payment } = data
     const roomId = parseInt(id, 10)
 
     const assigned = rooms.find((element) => element.id === roomId)
@@ -48,7 +47,7 @@ export default function RoomProvider({
         await assigned.initializeMessage(chatList)
       }
 
-      assigned.initializeStatus(paymentStatus)
+      assigned.initializeStatus(payment)
 
       assigned.read()
       setRoom(assigned)
@@ -58,7 +57,7 @@ export default function RoomProvider({
     const { userId } = user
 
     const created = open({
-      id, userId, unreadCount: 0, other: targetUser, messages: chatList, status: paymentStatus,
+      id, userId, unreadCount: 0, other: targetUser, messages: chatList, payment,
     })
 
     setRoom(created)

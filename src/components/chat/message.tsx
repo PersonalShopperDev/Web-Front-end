@@ -28,13 +28,13 @@ export default function Message({ message } : { message: MessageProps}) {
   }
 
   if (message instanceof CoordMessage) {
-    const { coordId, coordTitle, coordImg } = message
+    const { coordId, coordTitle, coordImgList } = message
     return (
       <CoordSpeachBubble
         id={coordId}
         userId={userId}
         title={coordTitle}
-        coordImg={coordImg}
+        coordImgList={coordImgList}
         timestamp={timestamp}
         image={profileImg}
       />

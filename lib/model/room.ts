@@ -14,10 +14,10 @@ export interface Other {
   name: string
 }
 
-export interface LatestEstimate {
-  estimateId: number,
-  price: number,
-  status: number,
+export interface Payment {
+  status: number
+  lastestCoordId: number
+  requestEditCoordId: number
 }
 
 export interface RoomProps {
@@ -28,7 +28,7 @@ export interface RoomProps {
   unreadCount: number
   lastChat?: string
   lastChatTime?: string
-  status?: number,
+  payment?: Payment
   socketRef: MutableRefObject<Socket>
   update: () => void
 }
@@ -44,7 +44,7 @@ export interface OnRecieveMessageProps {
   estimateId: number
   coordId: number
   coordTitle: string
-  coordImg: string
+  coordImgList: string[]
   chatTime: string
   status: number
 }
@@ -62,7 +62,7 @@ export default class Room {
   private _unreadCount: number
   private _lastChat: string
   private _lastChatTime: string
-  private _status: number
+  private _payment: Payment
   private readonly socketRef: MutableRefObject<Socket>
   private readonly update: () => void
 
@@ -77,7 +77,7 @@ export default class Room {
     lastChat,
     lastChatTime,
     socketRef,
-    status,
+    payment,
     update,
   }: RoomProps) {
     if (typeof id === 'string') {
@@ -87,7 +87,7 @@ export default class Room {
     }
     this.userId = userId
     this.other = other
-    this._status = status
+    this._payment = payment
     this._unreadCount = unreadCount
     this._lastChat = lastChat
     this._lastChatTime = lastChatTime
@@ -99,8 +99,8 @@ export default class Room {
     }
   }
 
-  public get status() {
-    return this._status
+  public get payment() {
+    return this._payment
   }
 
   public get messages() {
@@ -123,8 +123,8 @@ export default class Room {
     return this._messages.length * Math.random()
   }
 
-  public initializeStatus(status: number) {
-    this._status = status
+  public initializeStatus(payment: Payment) {
+    this._payment = payment
   }
 
   public async initializeMessage(array: OnRecieveMessageProps[]) {
@@ -221,7 +221,7 @@ export default class Room {
   }
 
   public onChangePaymentStatus({ status }: OnChangePaymentStatusProps) {
-    this._status = status
+    this._payment.status = status
     this.update()
   }
 
@@ -254,7 +254,7 @@ export default class Room {
     bank,
     coordId,
     coordTitle,
-    coordImg,
+    coordImgList,
     chatTime,
     status,
   }: OnRecieveMessageProps) {
@@ -278,7 +278,7 @@ export default class Room {
           id,
           userId,
           coordId,
-          coordImg,
+          coordImgList,
           coordTitle,
           chatTime,
         )
@@ -366,7 +366,7 @@ export default class Room {
     id: number,
     userId: number,
     coordId: number,
-    coordImg: string,
+    coordImgList: string[],
     coordTitle: string,
     timestamp: string,
   ) {
@@ -374,7 +374,7 @@ export default class Room {
       id,
       userId,
       coordId,
-      coordImg,
+      coordImgList,
       coordTitle,
       timestamp,
     })

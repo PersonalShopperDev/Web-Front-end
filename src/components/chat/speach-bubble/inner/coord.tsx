@@ -4,14 +4,26 @@ import styles from 'sass/components/chat/speach-bubble/inner/coord.module.scss'
 
 export default function Coord({
   id,
-  image,
+  imageList,
   children,
 } : {
   id: number,
-  image: string
+  imageList: string[]
   children: ReactNode,
 }) {
   const href = `/suggestion/${id}`
+
+  const getImage = () => {
+    if (imageList.length > 4) {
+      return [...Array(4)].map((_, index) => (
+        <img key={imageList[index]} className={styles.image} src={imageList[index]} alt="" />
+      ))
+    }
+
+    return imageList.map((image) => (
+      <img key={image} className={styles.image} src={image} alt="" />
+    ))
+  }
 
   return (
     <figure className={styles.container}>
@@ -19,7 +31,7 @@ export default function Coord({
         {children}
       </h3>
       <div className={styles.imageWrapper}>
-        <img className={styles.image} src={image} alt="" />
+        {getImage()}
       </div>
       <Link href={href}>
         <a className={styles.button} href={href}>

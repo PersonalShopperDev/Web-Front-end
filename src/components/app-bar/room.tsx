@@ -6,28 +6,29 @@ import { useAuth } from 'providers/auth'
 import communicate from 'lib/api'
 import { useAlert } from 'providers/dialog/alert/inner'
 import ERROR_MESSAGE from 'lib/constants/error'
+import { useRouter } from 'next/router'
 import AppBar from '.'
 
 export default function RoomAppBar({
+  roomId,
   title,
 } : {
+  roomId: string,
   title: string,
 }) {
+  const router = useRouter()
+
   const { userType } = useAuth().user
 
   const { createAlert } = useAlert()
 
   const { room } = useRoom()
 
-  const { status } = room
+  const { status: paymentStatus, requestEditCoordId } = room.payment
 
-  const paymentRequestEnabled = status === 0
+  const paymentRequestEnabled = paymentStatus === 0
 
-  const sendNewEnabled = status === 2
-
-  const sendFixedEnabled = status === 4
-
-  const sendCoordEnabled = sendNewEnabled || sendFixedEnabled
+  const sendCoordEnabled = paymentStatus === 2
 
   const requestPayment = async () => {
     const res = await communicate({
@@ -41,13 +42,14 @@ export default function RoomAppBar({
   }
 
   const sendCoord = () => {
-
+    router.push(`/suggestion/new?uid=${roomId}`)
   }
 
   const isStylist = userType === 'S' || userType === 'W'
 
   const actions = [
     <button
+      key="request-payment"
       className={styles.action}
       type="button"
       onClick={requestPayment}
@@ -64,6 +66,7 @@ export default function RoomAppBar({
       </p>
     </button>,
     <button
+      key="send-coord"
       className={styles.action}
       type="button"
       onClick={sendCoord}
@@ -76,7 +79,7 @@ export default function RoomAppBar({
         size={23}
       />
       <p className={cn(styles.label, sendCoordEnabled && styles.enabled)}>
-        코디보내기
+        {sendCoordEnabled && requestEditCoordId ? '코디 수정하기' : '코디보내기'}
       </p>
     </button>,
   ]
