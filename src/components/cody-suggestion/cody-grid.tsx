@@ -22,7 +22,9 @@ export default function CodyGrid({
   index: number,
   isBigGrid: boolean
 }) {
-  const { onClickProducts, selectedProduct, productRef } = useCodySuggestion()
+  const {
+    onClickProducts, selectedProduct, productRef,
+  } = useCodySuggestion()
   const isFocus = selectedProduct === index - 1
   const [removedImage, setRemovedImage] = useState(null)
   const [imageUrl, setImageUrl] = useState(null)
@@ -30,9 +32,7 @@ export default function CodyGrid({
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
   const [zoom, setZoom] = useState(1)
-
   const [croppedImage, setCroppedImage] = useState(null)
-  const [tmpRemovedImage, setTmpRemovedImage] = useState(null)
 
   // eslint-disable-next-line no-shadow
   const onClickCamera = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -56,7 +56,6 @@ export default function CodyGrid({
 
   const onClickBack = () => {
     setCroppedImage(null)
-    setTmpRemovedImage(null)
   }
 
   const onCropComplete = useCallback((Area, pixels) => {
@@ -89,17 +88,12 @@ export default function CodyGrid({
   const onLoadRemovedEventListener = (url: string| ArrayBuffer) => {
     productRef.current[selectedProduct].img = url as string
     setRemovedImage(url as string)
-    setTmpRemovedImage(url as string)
+    setCropModal(false)
   }
 
   const showCroppedImage = async () => {
     const croppedImg = await getCroppedImg(imageUrl, croppedAreaPixels)
     setCroppedImage(croppedImg)
-  }
-  const checkDeleteImage = () => {
-    setCropModal(false)
-    setCroppedImage(null)
-    setTmpRemovedImage(null)
   }
 
   const getCroppedImg = async (imageSrc: string, pixelCrop: Cropped) => {
@@ -162,7 +156,7 @@ export default function CodyGrid({
           ? (
             <div className={styles.removedImg}>
               <label
-                className={styles.removeBtn}
+                className={isBigGrid ? styles.bigBtn : styles.smallBtn}
                 htmlFor={`removeBtn${index - 1}`}
               >
                 <input
@@ -205,8 +199,9 @@ export default function CodyGrid({
             {!croppedImage
               ? <Icon src="cropExit.png" size={20} onClick={onModalClose} />
               : <Icon src="cropBack.png" size={14} onClick={onClickBack} /> }
-            <span>크롭하기</span>
-            <Icon src="cropCheck.png" size={20} onClick={() => (croppedImage ? checkDeleteImage() : showCroppedImage())} />
+            <span className={styles.cropTitle}>크롭하기</span>
+            {!croppedImage
+            && <Icon src="cropCheck.png" size={20} onClick={showCroppedImage} className={styles.check} /> }
           </div>
           {!croppedImage
             ? (
@@ -216,7 +211,7 @@ export default function CodyGrid({
                     image={imageUrl}
                     crop={crop}
                     zoom={zoom}
-                    aspect={4 / 3}
+                    aspect={1 / 1}
                     onCropChange={setCrop}
                     onCropComplete={onCropComplete}
                     onZoomChange={setZoom}
@@ -236,13 +231,6 @@ export default function CodyGrid({
                 <button className={styles.deleteBox} type="button" onClick={onClickDelete}>
                   <span className={styles.deleteText}>배경제거</span>
                 </button>
-                {tmpRemovedImage
-                && (
-                <div>
-                  <span className={styles.removedText}>배경제거</span>
-                  <img src={tmpRemovedImage} width={341} height={341} alt="removedImg" className={styles.removedImg} />
-                </div>
-                )}
               </>
             ) }
         </div>
