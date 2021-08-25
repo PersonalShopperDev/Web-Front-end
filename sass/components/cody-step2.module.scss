@@ -1,0 +1,15 @@
+@use '../lib/colors.scss' as colors;
+
+.title {
+    font-weight: 700;
+    font-size: 22px;
+    display: block;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.sub {
+    font-size: 18px;
+    margin-top: 33px;
+    font-weight: 700;
+}

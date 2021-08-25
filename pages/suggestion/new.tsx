@@ -4,14 +4,17 @@ import CodySuggetsion from 'templates/cody-suggestion'
 import { GetServerSideProps } from 'next'
 import { ACCESS_TOKEN } from 'providers/auth'
 import parseJwt from 'lib/util/jwt'
+import CodySuggestionProvider from 'providers/cody-suggestion'
 
 export default function Page({ uid } : { uid: string}) {
   return (
-    <Layout
-      header={<CodySuggestionAppBar />}
-    >
-      <CodySuggetsion id={uid} />
-    </Layout>
+    <CodySuggestionProvider>
+      <Layout
+        header={<CodySuggestionAppBar />}
+      >
+        <CodySuggetsion id={uid} />
+      </Layout>
+    </CodySuggestionProvider>
   )
 }
 
