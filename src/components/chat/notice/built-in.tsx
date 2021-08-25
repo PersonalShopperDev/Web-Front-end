@@ -7,7 +7,9 @@ import Child from './child'
 export default function BuiltInNotice() {
   const { userType } = useAuth().user
   const { room } = useRoom()
-  const { status } = room
+  const { payment, other } = room
+  const { status, requestEditCoordId } = payment
+  const { name } = other
 
   if (status === 1) {
     if (userType === 'D') {
@@ -35,7 +37,25 @@ export default function BuiltInNotice() {
   }
 
   if (status === 2) {
-    return <></>
+    if (userType === 'D') {
+      <Child>
+        <span>코디 진행 중</span>
+      </Child>
+    }
+
+    if (requestEditCoordId) {
+      return (
+        <Child>
+          <span>{`${name}님께서 코디 수정을 요청하셨습니다.`}</span>
+        </Child>
+      )
+    }
+
+    return (
+      <Child>
+        <span>결제 완료</span>
+      </Child>
+    )
   }
 
   if (status === 3) {
