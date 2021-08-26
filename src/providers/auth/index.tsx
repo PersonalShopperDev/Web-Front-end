@@ -45,6 +45,9 @@ export interface User {
   coord: {id: number, img: string}[]
   hopeToSupplier: string
   bodyStat: BodyStat
+  account: string,
+  bank: string,
+  accountUser: string,
 }
 
 interface AuthProps {

@@ -18,13 +18,13 @@ export default function Page({ id, data } : Props) {
   const { name } = targetUser
 
   return (
-    <Layout
-      header={<RoomAppBar title={name} />}
-    >
-      <RoomProvider id={id} data={data}>
+    <RoomProvider id={id} data={data}>
+      <Layout
+        header={<RoomAppBar title={name} />}
+      >
         <ChatRoom />
-      </RoomProvider>
-    </Layout>
+      </Layout>
+    </RoomProvider>
   )
 }
 

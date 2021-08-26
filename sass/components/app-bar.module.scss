@@ -6,7 +6,16 @@
 }
 
 .title {
+    width: 100%;
+    padding-left: 45px;
+    line-height: 0;
+
     font-size: 18px;
+
+    &.centerTitle {
+        width: unset;
+        padding-left: unset;
+    }
 }
 
 .landings, .actions {

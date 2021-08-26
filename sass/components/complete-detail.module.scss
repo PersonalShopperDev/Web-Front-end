@@ -1,0 +1,221 @@
+@use '../lib/colors.scss' as colors;
+@use '../lib/util.scss' as util;
+.container {
+    padding-left: 17px;
+    padding-bottom: 160px;
+}
+
+.styleList{
+    text-align: center;
+    font-weight: 700;
+    font-size: 12px;
+    margin-top: 21px;
+    display: block;
+    margin-right: 17px;
+}
+
+@mixin flexRow { 
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.coordContainer { 
+    @include flexRow();
+}
+
+.infoBox {
+    @include flexRow();
+    >span {
+        font-weight: 700;
+        font-size: 12px;
+        margin-left: 7px;
+    }
+    margin-top: 34px;
+}
+
+.infoDetail {
+    @include flexRow();
+    margin-bottom: 23px;
+    margin-right: 17px;
+    justify-content: space-between;
+}
+
+.elemContainer {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    font-weight: 500;
+    color: colors.$primary-700;
+    text-align: center;
+    margin-right: 55px;
+    >span {
+        font-size: 12px;
+        color: colors.$primary-400;
+        text-align: center;
+    }
+}
+
+.purchaseLink {
+    width: 53px;
+    height: 53px;
+    border-radius: 53px;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    >span {
+        font-size: 10px;
+        font-weight: 700;
+        color: white;
+        display: block;
+        text-align: center;
+    }
+}
+
+.title {
+    font-weight: 100;
+    font-size: 22px;
+    color: colors.$primary-700;
+    margin-top: 15px;
+    display: block;
+}
+
+.accent {
+    font-weight: 900;
+    font-size: 22px;
+    color: colors.$accent;
+}
+
+.coordImg {
+    width: 300px;
+    height: 300px;
+    margin-left: 21px;
+}
+
+.tipContainer { 
+    line-height: 22px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-right: 17px;
+    border-top: 1px solid colors.$primary-200;
+    padding-top: 20px;
+}
+
+.tipTitle {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 11px;
+    display: block;
+}
+
+.imgContainer { 
+    @include flexRow();
+    overflow-x: scroll;
+    @include util.no-scroll();
+    margin-top: 41px;
+}
+
+.refImg {
+    width: 106px;
+    height: 106px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-right: 11px;
+    flex-shrink: 0;
+
+}
+
+.bottomBarContainer {
+    position: fixed;
+    bottom: 0px;
+    z-index: 98;
+    display: flex;
+    flex-direction: column;
+    width: 375px;
+    align-items: center;
+    height: 160px;
+    background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,0.5), rgba(255,255,255,1));
+    padding-top: 15px;
+}
+
+@mixin button { 
+    width: 333px;
+    height: 54px;
+    border-radius: 5px;
+}
+
+.editBtn {
+    @include button();
+    background-color: #000000;
+}
+
+.confirmBtn {
+    @include button();
+    background-color: colors.$accent;
+    position: absolute;
+    bottom: 27px;
+}
+
+.buttonText {
+    color:colors.$background;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.productBar { 
+    width: 248px;
+    border: 1.3px solid colors.$primary-200;
+}
+
+.currentBar {
+    @include flexRow();
+    justify-content: space-between;
+    margin-right: 48px;
+    margin-left: 31px;
+    margin-top: 28px;
+    margin-bottom: 20px;
+    >span {
+        font-size: 12px;
+        font-weight: 700;
+        color: colors.$primary-700;
+    }
+}
+
+.relative {
+    position: relative;
+}
+
+.current { 
+    position: absolute;
+    border: 1.3px solid colors.$accent;
+    top: 0;
+    width: 128px;
+}
+
+.modalContainer {
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    position: absolute;
+    top: 0px;
+    z-index: 98;
+    .img {
+        margin-top: 115px;
+        object-fit: cover;
+    }
+    .exit {
+        position: absolute;
+        top: 57px;
+        right: 12px;
+        z-index: 2;
+    }
+    .text {
+        color: colors.$background;
+        font-size: 18px;
+        font-weight: 700;
+        display: block;
+        margin-top: 60px;
+        text-align: center;
+    }
+}

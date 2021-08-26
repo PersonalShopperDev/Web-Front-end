@@ -1,62 +1,76 @@
+import communicate from 'lib/api'
+import ERROR_MESSAGE from 'lib/constants/error'
 import { useRouter } from 'next/router'
 import { useAuth } from 'providers/auth'
-import { useRoom } from 'providers/chat/room'
 import { useAlert } from 'providers/dialog/alert/inner'
-import { FormEvent, useRef } from 'react'
+import { FormEvent, useRef, useEffect } from 'react'
 import styles from 'sass/templates/propose/form.module.scss'
 
-export default function ProposeForm() {
-  const { room } = useRoom()
-
+export default function AccountForm() {
   const router = useRouter()
 
   const { user } = useAuth()
 
+  const { account, accountUser, bank } = user
+
   const { createAlert } = useAlert()
 
-  const { price } = user || {}
-
-  const messageRef = useRef<HTMLTextAreaElement>()
+  const nameRef = useRef<HTMLInputElement>()
   const bankRef = useRef<HTMLInputElement>()
   const accoutRef = useRef<HTMLInputElement>()
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
-    const message = messageRef.current.value
-    const bank = bankRef.current.value
-    const account = accoutRef.current.value
+    const nameValue = nameRef.current.value
+    const bankValue = bankRef.current.value
+    const accountValue = accoutRef.current.value
 
-    if (!message || !bank || !account) {
+    if (!nameValue || !bankValue || !accountValue) {
       await createAlert({ text: '빈칸을 채워 주세요' })
       return
     }
 
-    room.sendEstimate(message, price, account, bank)
+    const res = await communicate({
+      url: '/profile',
+      method: 'PATCH',
+      payload: {
+        accountUser: nameValue,
+        bank: bankValue,
+        account: accountValue,
+      },
+    })
 
-    router.push(`/chat/${room.id}`)
+    if (!res.ok) {
+      await createAlert({ text: ERROR_MESSAGE })
+      return
+    }
+
+    router.back()
   }
+
+  useEffect(() => {
+    nameRef.current.value = accountUser || ''
+    bankRef.current.value = bank || ''
+    accoutRef.current.value = account || ''
+  }, [])
 
   return (
     <section className={styles.container} onSubmit={onSubmit}>
       <h2 className={styles.title}>
-        {`${room.other.name}님에게 코디제안을 진행합니다`}
+        계좌 정보를 입력해주세요
       </h2>
       <form className={styles.form}>
-        <fieldset className={styles.fieldset}>
-          <legend className={styles.legend}>제안하고 싶은 내용을 작성하세요.</legend>
-          <textarea ref={messageRef} className={styles.textarea} placeholder="제안 내용을 입력하세요" />
-        </fieldset>
         <div className={styles.fieldset}>
-          <p className={styles.legend}>코디가격</p>
-          <div className={styles.price}>{`${price?.toLocaleString('ko-KR')}원`}</div>
+          <p className={styles.legend}>예금주</p>
+          <input ref={nameRef} className={styles.bank} type="text" placeholder="이름" />
         </div>
         <fieldset className={styles.fieldset}>
-          <legend className={styles.legend}>계좌번호</legend>
-          <input ref={bankRef} className={styles.bank} type="text" placeholder="은행이름" />
+          <legend className={styles.legend}>계좌정보</legend>
+          <input ref={bankRef} className={styles.bank} type="text" placeholder="은행" />
           <input ref={accoutRef} className={styles.account} type="text" placeholder="계좌번호" />
         </fieldset>
-        <input className={styles.submit} type="submit" value="견적보내기" />
+        <input className={styles.submit} type="submit" value="확인" />
       </form>
     </section>
   )

@@ -1,3 +1,4 @@
+import { cn } from 'lib/util'
 import { NextRouter, useRouter } from 'next/dist/client/router'
 import React from 'react'
 import styles from 'sass/components/app-bar.module.scss'
@@ -5,6 +6,7 @@ import Icon from 'widgets/icon'
 
 export default function AppBar({
   title,
+  centerTitle,
   landings,
   actions,
   back,
@@ -12,6 +14,7 @@ export default function AppBar({
   onBack,
 } : {
   title? : React.ReactNode
+  centerTitle? : boolean,
   landings? : React.ReactNode[]
   actions? : React.ReactNode[]
   back? : boolean,
@@ -37,7 +40,7 @@ export default function AppBar({
         {landings?.map((landing) => landing)
         || (back && <Icon src="back.png" size={17} onClick={onClickBack} />)}
       </div>
-      {title && <h1 className={styles.title}>{title}</h1>}
+      {title && <h1 className={cn(styles.title, centerTitle && styles.centerTitle)}>{title}</h1>}
       <div className={styles.actions}>
         {actions?.map((action) => action)}
       </div>
@@ -48,6 +51,7 @@ export default function AppBar({
 AppBar.defaultProps = {
   title: null,
   landings: null,
+  centerTitle: true,
   actions: null,
   back: false,
   backUrl: null,

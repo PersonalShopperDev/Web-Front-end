@@ -1,7 +1,7 @@
 import communicate from 'lib/api'
 import ERROR_MESSAGE from 'lib/constants/error'
 import useForceUpdate from 'lib/hooks/force-update'
-import Room, { RecieveMessageProps, RoomProps } from 'lib/model/room'
+import Room, { OnRecieveMessageProps, RoomProps, Payment } from 'lib/model/room'
 import { getCookie } from 'lib/util/cookie'
 import { ACCESS_TOKEN, useAuth } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
@@ -10,13 +10,7 @@ import {
 } from 'react'
 import io, { Socket } from 'socket.io-client'
 
-interface OnChangeEstimateStatus {
-  roomId: number
-  estimateId: number
-  status: number
-}
-
-interface OnReceive extends RecieveMessageProps {
+interface OnReceive extends OnRecieveMessageProps {
   roomId: number
 }
 
@@ -56,15 +50,8 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
 
   const isConnected = () => socketRef.current?.connected
 
-  const onChangeEstimateStatus = async ({ roomId, ...props } : OnChangeEstimateStatus) => {
-    const room = await getReceivedRoom(roomId)
-
-    room?.onChangeEstimateStatus(props)
-  }
-
   const onReceive = async ({ roomId, ...props } : OnReceive) => {
     const room = await getReceivedRoom(roomId)
-
     room?.onReceive(props)
   }
 
@@ -74,14 +61,21 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
     room?.onRead()
   }
 
+  const onChangePayment = async ({
+    roomId, latestPayment, ...props
+  } : { roomId: number, latestPayment: Payment}) => {
+    const room = await getReceivedRoom(roomId)
+    room?.onChangePayment(latestPayment)
+  }
+
   const disconnect = () => {
     socketRef.current.disconnect()
   }
 
   const attachListener = () => {
-    socketRef.current.on('onChangeEstimateStatus', onChangeEstimateStatus)
     socketRef.current.on('receiveMsg', onReceive)
     socketRef.current.on('readMsg', onRead)
+    socketRef.current.on('onChangePayment', onChangePayment)
   }
 
   const getReceivedRoom = async (id: number, fail : number = 0) : Promise<Room> => {

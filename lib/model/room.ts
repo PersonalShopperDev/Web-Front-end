@@ -14,29 +14,31 @@ export interface Other {
   name: string
 }
 
-export interface LatestEstimate {
-  estimateId: number,
+export interface Payment {
+  paymentId: number,
   price: number,
-  status: number,
+  status: number
+  latestCoordId: number
+  requestEditCoordId: number
 }
 
 export interface RoomProps {
   id: string | number
   userId: number
   other: Other
-  messages?: RecieveMessageProps[]
+  messages?: OnRecieveMessageProps[]
   unreadCount: number
   lastChat?: string
   lastChatTime?: string
-  latestEstimate?: LatestEstimate
+  payment?: Payment
   socketRef: MutableRefObject<Socket>
   update: () => void
 }
 
-export interface RecieveMessageProps {
+export interface OnRecieveMessageProps {
   chatId: number
   userId: number
-  chatType: number
+  chatType: String
   msg: string
   price: number
   account: string
@@ -44,7 +46,7 @@ export interface RecieveMessageProps {
   estimateId: number
   coordId: number
   coordTitle: string
-  coordImg: string
+  coordImgList: string[]
   chatTime: string
   status: number
 }
@@ -53,11 +55,11 @@ export default class Room {
   public readonly id: number
   public readonly userId: number
   public readonly other: Other
-  public readonly latestEstimate: LatestEstimate
   private _messages: Message[]
   private _unreadCount: number
   private _lastChat: string
   private _lastChatTime: string
+  private _payment: Payment
   private readonly socketRef: MutableRefObject<Socket>
   private readonly update: () => void
 
@@ -71,8 +73,8 @@ export default class Room {
     unreadCount,
     lastChat,
     lastChatTime,
-    latestEstimate,
     socketRef,
+    payment,
     update,
   }: RoomProps) {
     if (typeof id === 'string') {
@@ -82,9 +84,7 @@ export default class Room {
     }
     this.userId = userId
     this.other = other
-    this.latestEstimate = latestEstimate || {
-      estimateId: undefined, price: undefined, status: undefined,
-    }
+    this._payment = payment
     this._unreadCount = unreadCount
     this._lastChat = lastChat
     this._lastChatTime = lastChatTime
@@ -94,6 +94,10 @@ export default class Room {
     if (messages) {
       this.appendMessage(messages)
     }
+  }
+
+  public get payment() {
+    return this._payment
   }
 
   public get messages() {
@@ -116,7 +120,11 @@ export default class Room {
     return this._messages.length * Math.random()
   }
 
-  public async initializeMessage(array: RecieveMessageProps[]) {
+  public initializeStatus(payment: Payment) {
+    this._payment = payment
+  }
+
+  public async initializeMessage(array: OnRecieveMessageProps[]) {
     if (!array) {
       return
     }
@@ -127,13 +135,7 @@ export default class Room {
     this.update()
   }
 
-  public initializeLatestEstimate({ estimateId, price, status } : LatestEstimate) {
-    this.latestEstimate.estimateId = estimateId
-    this.latestEstimate.price = price
-    this.latestEstimate.status = status
-  }
-
-  public async appendMessage(array: RecieveMessageProps[]) {
+  public async appendMessage(array: OnRecieveMessageProps[]) {
     const messages = await Promise.all(array.map((props) => Room.createMessage(props)))
     this._messages = [...messages, ...this._messages]
     this.update()
@@ -215,45 +217,12 @@ export default class Room {
     this.update()
   }
 
-  public pay(estimateId: number) {
-    if (this.latestEstimate.estimateId !== estimateId) {
-      return
-    }
-
-    let status : number
-
-    for (let i = 0; i < this.messages.length; i++) {
-      const message = this.messages[i]
-      if (message instanceof ProposalMessage) {
-        if (message.estimateId === estimateId) {
-          status = message.status + 1
-          message.setStatus(status)
-          break
-        }
-      }
-    }
-
-    this.latestEstimate.status = status
+  public onChangePayment(props : Payment) {
+    this._payment = props
     this.update()
   }
 
-  public onChangeEstimateStatus({ estimateId, status }: { estimateId: number; status: number }) {
-    for (let i = 0; i < this.messages.length; i++) {
-      const message = this.messages[i]
-      if (message instanceof ProposalMessage) {
-        if (message.estimateId === estimateId) {
-          message.setStatus(status)
-          break
-        }
-      }
-    }
-
-    this.latestEstimate.estimateId = estimateId
-    this.latestEstimate.status = status
-    this.update()
-  }
-
-  public async onReceive(props: RecieveMessageProps) {
+  public async onReceive(props: OnRecieveMessageProps) {
     const message = await Room.createMessage(props)
     this.syncMessage(message)
     this._unreadCount += 1
@@ -282,14 +251,14 @@ export default class Room {
     bank,
     coordId,
     coordTitle,
-    coordImg,
+    coordImgList,
     chatTime,
     status,
-  }: RecieveMessageProps) {
+  }: OnRecieveMessageProps) {
     switch (type) {
-      case 0:
+      case 'plain':
         return Room.createCommon(id, userId, message, chatTime)
-      case 1:
+      case '1':
         return Room.createProposal(
           id,
           userId,
@@ -301,22 +270,22 @@ export default class Room {
           chatTime,
           status,
         )
-      case 2:
+      case 'coord':
         return Room.createCoord(
           id,
           userId,
           coordId,
-          coordImg,
+          coordImgList,
           coordTitle,
           chatTime,
         )
-      case 5:
+      case 'notice':
         return Room.createNotice(
           id,
           message,
           chatTime,
         )
-      case 6:
+      case 'img':
         return Room.createPicture(
           id,
           userId,
@@ -394,7 +363,7 @@ export default class Room {
     id: number,
     userId: number,
     coordId: number,
-    coordImg: string,
+    coordImgList: string[],
     coordTitle: string,
     timestamp: string,
   ) {
@@ -402,7 +371,7 @@ export default class Room {
       id,
       userId,
       coordId,
-      coordImg,
+      coordImgList,
       coordTitle,
       timestamp,
     })
