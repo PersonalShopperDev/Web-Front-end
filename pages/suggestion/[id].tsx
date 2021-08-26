@@ -8,13 +8,13 @@ import { communicateWithContext } from 'lib/api'
 import parseJwt from 'lib/util/jwt'
 import CodySuggestionProvider from 'providers/cody-suggestion'
 
-export default function Page({ data } : { data : CompleteSuggestionData }) {
+export default function Page({ id, data } : { id: string, data : CompleteSuggestionData }) {
   return (
     <CodySuggestionProvider>
       <Layout
         header={<CompleteSuggestionAppBar />}
       >
-        <CompleteSuggestion data={data} />
+        <CompleteSuggestion id={id} data={data} />
       </Layout>
     </CodySuggestionProvider>
   )
@@ -55,6 +55,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
+      id,
       data,
     },
   }

@@ -7,12 +7,18 @@ import 'swiper/swiper-bundle.css'
 import { CompleteSuggestionData } from 'templates/cody-suggestion/complete-suggestion'
 import Link from 'next/link'
 import Icon from 'widgets/icon'
+import { useRouter } from 'next/router'
+import communicate from 'lib/api'
 
 export default function CompleteDetail({
+  id,
   data,
 }: {
+  id: string,
   data: CompleteSuggestionData
 }) {
+  const router = useRouter()
+
   const {
     title, comment, clothes, referenceImgList, needRequest, supplier,
   } = data
@@ -137,17 +143,19 @@ export default function CompleteDetail({
   }
 
   const onClickEdit = async () => {
-    // await communicate({
-    //  url: `/coord/:${coordId}/edit`,
-    //  method: 'POST',
-    // })
+    await communicate({
+      url: `/coord/${id}/edit`,
+      method: 'POST',
+    })
+    router.back()
   }
 
   const onClickConfirm = async () => {
-    // await communicate({
-    //  url: `/coord/:${coordId}/confirm`,
-    //  method: 'POST',
-    // })
+    await communicate({
+      url: `/coord/${id}/confirm`,
+      method: 'POST',
+    })
+    router.back()
   }
   return (
     <>

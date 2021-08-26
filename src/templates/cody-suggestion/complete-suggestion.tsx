@@ -27,8 +27,10 @@ export interface CompleteSuggestionData {
 }
 
 export default function CompleteSuggestion({
+  id,
   data,
 }: {
+  id: string,
   data: CompleteSuggestionData
 }) {
   const { detailType } = useCodySuggestion()
@@ -74,7 +76,7 @@ export default function CompleteSuggestion({
   return (
     <>
       {detailType === 0
-        ? <CompleteDetail data={data} /> : <CompleteAll clothes={clothes} /> }
+        ? <CompleteDetail id={id} data={data} /> : <CompleteAll clothes={clothes} /> }
     </>
   )
 }

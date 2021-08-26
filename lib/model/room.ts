@@ -15,6 +15,8 @@ export interface Other {
 }
 
 export interface Payment {
+  paymentId: number,
+  price: number,
   status: number
   lastestCoordId: number
   requestEditCoordId: number

@@ -63,11 +63,11 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
   }
 
   const onChangePayment = async ({
-    roomId, ...props
-  } : { roomId: number } & Payment) => {
+    roomId, latestPayment,
+  } : { roomId: number } & { latestPayment: Payment}) => {
     const room = await getReceivedRoom(roomId)
 
-    room?.onChangePayment(props)
+    room?.onChangePayment(latestPayment)
   }
 
   const disconnect = () => {
