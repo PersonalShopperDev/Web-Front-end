@@ -10,10 +10,8 @@ import { useRouter } from 'next/router'
 import AppBar from '.'
 
 export default function RoomAppBar({
-  roomId,
   title,
 } : {
-  roomId: string,
   title: string,
 }) {
   const router = useRouter()
@@ -42,7 +40,7 @@ export default function RoomAppBar({
   }
 
   const sendCoord = () => {
-    router.push(`/suggestion/new?uid=${roomId}`)
+    router.push(`/suggestion/new?uid=${room.other.id}`)
   }
 
   const isStylist = userType === 'S' || userType === 'W'

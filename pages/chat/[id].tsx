@@ -20,7 +20,7 @@ export default function Page({ id, data } : Props) {
   return (
     <RoomProvider id={id} data={data}>
       <Layout
-        header={<RoomAppBar roomId={id} title={name} />}
+        header={<RoomAppBar title={name} />}
       >
         <ChatRoom />
       </Layout>

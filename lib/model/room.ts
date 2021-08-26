@@ -49,11 +49,6 @@ export interface OnRecieveMessageProps {
   status: number
 }
 
-export interface OnChangePaymentStatusProps {
-  estimateId: number,
-  status: number,
-}
-
 export default class Room {
   public readonly id: number
   public readonly userId: number
@@ -220,8 +215,8 @@ export default class Room {
     this.update()
   }
 
-  public onChangePaymentStatus({ status }: OnChangePaymentStatusProps) {
-    this._payment.status = status
+  public onChangePayment(props : Payment) {
+    this._payment = props
     this.update()
   }
 

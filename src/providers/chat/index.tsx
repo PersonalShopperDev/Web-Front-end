@@ -1,7 +1,7 @@
 import communicate from 'lib/api'
 import ERROR_MESSAGE from 'lib/constants/error'
 import useForceUpdate from 'lib/hooks/force-update'
-import Room, { OnRecieveMessageProps, OnChangePaymentStatusProps, RoomProps } from 'lib/model/room'
+import Room, { OnRecieveMessageProps, RoomProps, Payment } from 'lib/model/room'
 import { getCookie } from 'lib/util/cookie'
 import { ACCESS_TOKEN, useAuth } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
@@ -62,12 +62,12 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
     room?.onRead()
   }
 
-  const onChangePaymentStatus = async ({
+  const onChangePayment = async ({
     roomId, ...props
-  } : { roomId: number } & OnChangePaymentStatusProps) => {
+  } : { roomId: number } & Payment) => {
     const room = await getReceivedRoom(roomId)
 
-    room?.onChangePaymentStatus(props)
+    room?.onChangePayment(props)
   }
 
   const disconnect = () => {
@@ -77,7 +77,7 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
   const attachListener = () => {
     socketRef.current.on('receiveMsg', onReceive)
     socketRef.current.on('readMsg', onRead)
-    socketRef.current.on('onChangePaymentStatus', onChangePaymentStatus)
+    socketRef.current.on('onChangePayment', onChangePayment)
   }
 
   const getReceivedRoom = async (id: number, fail : number = 0) : Promise<Room> => {
