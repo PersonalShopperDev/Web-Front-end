@@ -7,7 +7,7 @@ import AppBar from 'components/app-bar'
 
 export default function Page() {
   return (
-    <Layout header={<AppBar title="견적서" back />}>
+    <Layout header={<AppBar back />}>
       <AccountForm />
     </Layout>
   )

@@ -58,7 +58,7 @@ export default function AccountForm() {
   return (
     <section className={styles.container} onSubmit={onSubmit}>
       <h2 className={styles.title}>
-        계좌 정보를 입력해주세요
+        계좌 정보를 입력해 주세요
       </h2>
       <form className={styles.form}>
         <div className={styles.fieldset}>
