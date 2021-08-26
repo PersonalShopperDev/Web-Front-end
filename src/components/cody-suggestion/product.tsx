@@ -54,6 +54,11 @@ export default function Product() {
     setRefTok(!refTok)
   }
 
+  const onClickRemove = (index: number) => {
+    coordRef.current.splice(index, 1)
+    setRefTok(!refTok)
+  }
+
   useEffect(() => {
     priceRef.current.value = productRef.current[selectedProduct].price
     purchaseUrlRef.current.value = productRef.current[selectedProduct].purchaseUrl
@@ -112,6 +117,7 @@ export default function Product() {
                         style={{ display: 'none' }}
                       />
                       <Icon src="product-camera.png" size={26} key="camera" />
+                      <Icon src="refDelete.png" size={24} key="refDelete" className={styles.delete} onClick={() => onClickRemove(index)} />
                     </label>
                   )}
               </div>

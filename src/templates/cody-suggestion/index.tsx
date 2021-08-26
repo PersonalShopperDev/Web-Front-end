@@ -100,13 +100,17 @@ export default function CodySuggetsion({
 
   const onClickSend = async () => {
     filterEmptyProducts()
-    productRef.current.forEach(async ({ price, img, purchaseUrl }) => {
+    for (let i = 0; i < productRef.current.length; i++) {
+      const { price, img, purchaseUrl } = productRef.current[i]
       if (price === '' || img === '' || purchaseUrl === '') {
+        // eslint-disable-next-line no-await-in-loop
         await createAlert({ text: '항목을 전부 채워주세요' })
+        return
       }
-    })
+    }
     if (descriptionRef.current.title === '' || descriptionRef.current.content === '') {
       await createAlert({ text: '항목을 전부 채워주세요' })
+      return
     }
     const roomId = await getRoomId()
     const payload: CodySuggestion = {
