@@ -11,13 +11,40 @@
     font-size: 15px;
 }
 
+.imageContainer {
+    border-radius: 6px;
+    overflow: hidden;
+    
+    &.x4 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2px;
+    }
+}
+
 .imageWrapper {
     margin-top: 10px;
     position: relative;
     width: 100%;
     padding-bottom: 100%;
-    border-radius: 6px;
-    overflow: hidden;
+    
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom : 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: rgba(black, .4);
 }
 
 .image {

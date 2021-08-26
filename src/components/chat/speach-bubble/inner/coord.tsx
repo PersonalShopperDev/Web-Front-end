@@ -1,3 +1,4 @@
+import { cn } from 'lib/util'
 import Link from 'next/link'
 import { ReactNode } from 'react'
 import styles from 'sass/components/chat/speach-bubble/inner/coord.module.scss'
@@ -15,14 +16,32 @@ export default function Coord({
 
   const getImage = () => {
     if (imageList.length > 4) {
-      return [...Array(4)].map((_, index) => (
-        <img key={imageList[index]} className={styles.image} src={imageList[index]} alt="" />
-      ))
+      return (
+        [...Array(4)].map((_, index) => {
+          if (index === 3) {
+            return (
+              <div key={imageList[index]} className={styles.imageWrapper}>
+                <img className={styles.image} src={imageList[index]} alt="" />
+                <div className={styles.background}>{`+${imageList.length - 4}`}</div>
+              </div>
+            )
+          }
+          return (
+            <div key={imageList[index]} className={styles.imageWrapper}>
+              <img className={styles.image} src={imageList[index]} alt="" />
+            </div>
+          )
+        })
+      )
     }
 
-    return imageList.map((image) => (
-      <img key={image} className={styles.image} src={image} alt="" />
-    ))
+    return (
+      imageList.map((image) => (
+        <div key={image} className={styles.imageWrapper}>
+          <img className={styles.image} src={image} alt="" />
+        </div>
+      ))
+    )
   }
 
   return (
@@ -30,7 +49,7 @@ export default function Coord({
       <h3 className={styles.title}>
         {children}
       </h3>
-      <div className={styles.imageWrapper}>
+      <div className={cn(styles.imageContainer, imageList?.length > 1 && styles.x4)}>
         {getImage()}
       </div>
       <Link href={href}>
