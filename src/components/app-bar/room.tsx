@@ -34,6 +34,12 @@ export default function RoomAppBar({
       method: 'POST',
     })
 
+    if (res.status === 351) {
+      await createAlert({ text: '계좌 정보를 입력하신 다음 다시 시도해 주세요.' })
+      router.push('/profile/account')
+      return
+    }
+
     if (res.status !== 201) {
       await createAlert({ text: ERROR_MESSAGE })
     }
