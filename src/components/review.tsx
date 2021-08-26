@@ -64,7 +64,7 @@ export default function Review({
   return (
     <>
       <div className={styles.reviewContainer}>
-        {review.rating
+        {review?.rating
         && (
         <div className={styles.reviewBox}>
           <div className={styles.leftItem}>
