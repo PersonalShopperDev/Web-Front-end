@@ -18,6 +18,7 @@ import { ACCESS_TOKEN, ReviewListData, User } from 'providers/auth'
 import CodyStyle from 'components/profile/cody-style'
 import parseJwt from 'lib/util/jwt'
 import Navigation from 'components/navigation'
+import Account from 'components/profile/account'
 
 interface Props {
   userId: string
@@ -42,6 +43,9 @@ export default function Page({ userId, data } : Props) {
     bodyStat,
     hopeToSupplier,
     reviewList,
+    account,
+    bank,
+    accountUser,
   } = data
 
   return (
@@ -79,6 +83,7 @@ export default function Page({ userId, data } : Props) {
           <Divider />
           <Price data={{ price }} />
           <Divider />
+          <Account data={{ account, bank, accountUser }} />
           <Represent data={{ coord }} />
           <Divider />
           <LookBook data={lookbook} userId={userId} />
