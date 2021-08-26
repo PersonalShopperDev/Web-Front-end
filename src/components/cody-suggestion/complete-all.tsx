@@ -1,38 +1,14 @@
-import React, { useEffect } from 'react'
-import 'swiper/swiper-bundle.css'
-import { useCodySuggestion } from 'providers/cody-suggestion'
-import CompleteDetail from 'components/cody-suggestion/complete-detail'
-import CompleteAll from 'components/cody-suggestion/complete-all'
+/* eslint-disable no-shadow */
+import React, { useState, useEffect } from 'react'
+import styles from 'sass/components/complete-all.module.scss'
+import { Clothes } from 'templates/cody-suggestion/complete-suggestion'
 
-export interface Clothes {
-  img: string
-  price: number
-  purchaseUrl: string
-  rgba: Array<number>
-}
-
-interface Supplier {
-  id: number,
-  name: string,
-  img: string,
-}
-
-export interface CompleteSuggestionData {
-  title: string,
-  comment: string,
-  clothes: Clothes[],
-  referenceImgList: Array<string>,
-  needRequest: boolean
-  supplier: Supplier
-}
-
-export default function CompleteSuggestion({
-  data,
+export default function CompleteAll({
+  clothes,
 }: {
-  data: CompleteSuggestionData
+  clothes: Clothes[]
 }) {
-  const { detailType } = useCodySuggestion()
-  const { clothes } = data
+  const [rgba, setRgba] = useState([])
   const getRgba = () => {
     for (let i = 0; i < clothes.length; i++) {
       const rgba = [0, 0, 0, 0]
@@ -47,7 +23,6 @@ export default function CompleteSuggestion({
         const ctx = canvas.getContext('2d')
         ctx.drawImage(image, 0, 0, 180, 333)
         const d = ctx.getImageData(0, 0, 180, 333)
-        // eslint-disable-next-line no-shadow
         const { data } = d
         for (let j = 0; j < data.length; j++) {
           if (j % 4 === 0) {
@@ -64,17 +39,25 @@ export default function CompleteSuggestion({
         rgba[1] /= data.length
         rgba[2] /= data.length
         rgba[3] /= data.length
-        clothes[i].rgba = rgba
+        setRgba((prev) => [...prev, rgba])
       }
     }
   }
   useEffect(() => {
     getRgba()
   }, [])
+
   return (
-    <>
-      {detailType === 0
-        ? <CompleteDetail data={data} /> : <CompleteAll clothes={clothes} /> }
-    </>
+    <div className={styles.container}>
+      {clothes.map((value, index) => {
+        const { img } = value
+        return (
+          <>
+            {rgba[index]
+          && <img src={img} alt={img} className={styles.img} id={`product${index}`} key={img} style={{ backgroundColor: `rgba(${rgba[index][0]},${rgba[index][1]},${rgba[index][2]},${rgba[index][3]})` }} />}
+          </>
+        )
+      })}
+    </div>
   )
 }
