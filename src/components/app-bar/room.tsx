@@ -22,15 +22,15 @@ export default function RoomAppBar({
 
   const { room } = useRoom()
 
-  const { status, requestEditCoordId } = room.payment
+  const { status, requestEditCoordId, latestCoordId } = room.payment
 
-  const paymentRequestEnabled = status !== 1 && status !== 2 && !requestEditCoordId
+  const paymentRequestEnabled = status !== 1 && status !== 2
 
-  const sendCoordEnabled = status === 2
+  const sendCoordEnabled = status === 2 && (!latestCoordId || requestEditCoordId)
 
   const requestPayment = async () => {
     const res = await communicate({
-      url: `/payment/${room.id}/account`,
+      url: `/payment/${room.id}/request`,
       method: 'POST',
     })
 

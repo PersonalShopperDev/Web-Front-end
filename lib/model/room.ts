@@ -18,7 +18,7 @@ export interface Payment {
   paymentId: number,
   price: number,
   status: number
-  lastestCoordId: number
+  latestCoordId: number
   requestEditCoordId: number
 }
 

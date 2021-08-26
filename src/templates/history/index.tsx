@@ -13,7 +13,7 @@ export default function History() {
   return (
     <>
       {historyLists.map((data) => (
-        <PurchaseListView data={data} key={data.estimateId} />
+        <PurchaseListView data={data} key={data.paymentId} />
       ))}
     </>
   )

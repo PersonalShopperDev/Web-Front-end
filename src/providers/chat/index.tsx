@@ -52,7 +52,6 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
 
   const onReceive = async ({ roomId, ...props } : OnReceive) => {
     const room = await getReceivedRoom(roomId)
-
     room?.onReceive(props)
   }
 
@@ -63,10 +62,9 @@ export default function ChatProvider({ children }: { children: ReactNode }) {
   }
 
   const onChangePayment = async ({
-    roomId, latestPayment,
-  } : { roomId: number } & { latestPayment: Payment}) => {
+    roomId, latestPayment, ...props
+  } : { roomId: number, latestPayment: Payment}) => {
     const room = await getReceivedRoom(roomId)
-
     room?.onChangePayment(latestPayment)
   }
 

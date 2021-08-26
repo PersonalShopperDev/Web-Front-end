@@ -4,7 +4,7 @@ import React, {
 import communicate from 'lib/api'
 
 export interface History {
-  estimateId: number
+  paymentId: number
   paymentTime: Date
   price: number
   status: number
@@ -39,7 +39,7 @@ export default function HistoryProvider({
   const fetchHistoryData = async () => {
     const page = HistoryRef.current.value.length / pageNum
     if (Math.floor(HistoryRef.current.value.length / pageNum) !== page) return
-    const res = await communicate({ url: `/estimate?page=${page}` })
+    const res = await communicate({ url: `/payment?page=${page}` })
     const newHistory = await res.json()
     HistoryRef.current.value = HistoryRef.current.value.concat(newHistory)
     setHistoryLists(HistoryRef.current.value)
