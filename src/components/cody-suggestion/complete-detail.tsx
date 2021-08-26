@@ -5,14 +5,20 @@ import Avatar from 'widgets/avatar'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/swiper-bundle.css'
 import { CompleteSuggestionData } from 'templates/cody-suggestion/complete-suggestion'
-import Link from 'next/link'
 import Icon from 'widgets/icon'
+import { useRouter } from 'next/router'
+import communicate from 'lib/api'
+import { useAuth } from 'providers/auth'
 
 export default function CompleteDetail({
+  id,
   data,
 }: {
+  id: string,
   data: CompleteSuggestionData
 }) {
+  const router = useRouter()
+  const { user } = useAuth()
   const {
     title, comment, clothes, referenceImgList, needRequest, supplier,
   } = data
@@ -96,13 +102,11 @@ export default function CompleteDetail({
                 원
               </div>
             </>
-            <Link key={purchaseUrl} href={purchaseUrl}>
-              <a href={purchaseUrl} target="_blank" rel="noreferrer">
-                <div className={styles.purchaseLink}>
-                  <span>구매링크</span>
-                </div>
-              </a>
-            </Link>
+            <a href={purchaseUrl} target="_blank" rel="noreferrer">
+              <div className={styles.purchaseLink}>
+                <span>구매링크</span>
+              </div>
+            </a>
           </div>
         </div>
       </SwiperSlide>,
@@ -137,17 +141,19 @@ export default function CompleteDetail({
   }
 
   const onClickEdit = async () => {
-    // await communicate({
-    //  url: `/coord/:${coordId}/edit`,
-    //  method: 'POST',
-    // })
+    await communicate({
+      url: `/coord/${id}/edit`,
+      method: 'POST',
+    })
+    router.back()
   }
 
   const onClickConfirm = async () => {
-    // await communicate({
-    //  url: `/coord/:${coordId}/confirm`,
-    //  method: 'POST',
-    // })
+    await communicate({
+      url: `/coord/${id}/confirm`,
+      method: 'POST',
+    })
+    router.back()
   }
   return (
     <>
@@ -184,15 +190,17 @@ export default function CompleteDetail({
         </div>
       </div>
       <div className={styles.bottomBarContainer}>
-        {needRequest
+        {(user.userType === 'D' && needRequest)
         && (
-        <button type="button" className={styles.editBtn} onClick={onClickEdit}>
-          <span className={styles.buttonText}>코디 수정 요청</span>
-        </button>
+        <>
+          <button type="button" className={styles.editBtn} onClick={onClickEdit}>
+            <span className={styles.buttonText}>코디 수정 요청</span>
+          </button>
+          <button type="button" className={styles.confirmBtn} onClick={onClickConfirm}>
+            <span className={styles.buttonText}>코디 확정</span>
+          </button>
+        </>
         ) }
-        <button type="button" className={styles.confirmBtn} onClick={onClickConfirm}>
-          <span className={styles.buttonText}>코디 확정</span>
-        </button>
       </div>
       {imageModal
       && (

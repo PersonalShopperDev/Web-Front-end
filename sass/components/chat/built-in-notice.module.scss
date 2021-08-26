@@ -1,0 +1,14 @@
+@use '../../lib/colors.scss' as colors;
+
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 12px;
+    padding: 8px 0;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 3px;
+    color: white;
+    background-color: colors.$accent;
+}

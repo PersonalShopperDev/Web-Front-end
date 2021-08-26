@@ -27,7 +27,7 @@ export default function CompleteSuggestionAppBar() {
       title="코디"
       back
       actions={[
-        <button type="button" onClick={onClickType} className={styles.container}>
+        <button key="gathering" type="button" onClick={onClickType} className={styles.container}>
           <Icon src={typeLists[detailType].path} size={20} className={styles.icon} />
           <span>{typeLists[detailType].title}</span>
         </button>,

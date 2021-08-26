@@ -1,0 +1,14 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+}
+
+.contentWrapper {
+    display: flex;
+}
+
+.content {
+    margin-left: 9px;
+    font-size: 13px;
+}

@@ -3,14 +3,14 @@ import Coord from './inner/coord'
 
 export interface CoordSpeachBubbleProps {
   id: number
-  coordImg: string
+  coordImgList: string[]
   title: string
 }
 
 export default function CoordSpeachBubble({
   userId,
   id,
-  coordImg,
+  coordImgList,
   image,
   title,
   timestamp,
@@ -19,7 +19,7 @@ export default function CoordSpeachBubble({
     <SpeachBubbleContainer userId={userId} image={image} timestamp={timestamp}>
       <Coord
         id={id}
-        image={coordImg}
+        imageList={coordImgList}
       >
         {title}
       </Coord>

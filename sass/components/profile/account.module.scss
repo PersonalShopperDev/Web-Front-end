@@ -1,0 +1,26 @@
+@use '../../lib/colors.scss' as colors;
+
+.container {
+    margin-top: 12px;
+    font-size: 12px;
+}
+
+.row {
+    display: flex;
+}
+
+.row + .row {
+    margin-top: 8px;
+}
+
+.label {
+    display: block;
+    width: 60px;
+    font-weight: bold;
+    color: colors.$primary-600;
+}
+
+.value {
+    display: block;
+    color: colors.$primary-500;
+}
