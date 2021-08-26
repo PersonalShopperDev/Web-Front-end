@@ -8,6 +8,7 @@ import { CompleteSuggestionData } from 'templates/cody-suggestion/complete-sugge
 import Icon from 'widgets/icon'
 import { useRouter } from 'next/router'
 import communicate from 'lib/api'
+import { useAuth } from 'providers/auth'
 
 export default function CompleteDetail({
   id,
@@ -17,7 +18,7 @@ export default function CompleteDetail({
   data: CompleteSuggestionData
 }) {
   const router = useRouter()
-
+  const { user } = useAuth()
   const {
     title, comment, clothes, referenceImgList, needRequest, supplier,
   } = data
@@ -189,7 +190,7 @@ export default function CompleteDetail({
         </div>
       </div>
       <div className={styles.bottomBarContainer}>
-        {needRequest
+        {(user.userType === 'D' && needRequest)
         && (
         <>
           <button type="button" className={styles.editBtn} onClick={onClickEdit}>

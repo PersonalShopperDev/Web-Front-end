@@ -1,9 +1,10 @@
 import Avatar from 'widgets/avatar'
 import styles from 'sass/components/review/preview.module.scss'
+import { cn } from 'lib/util'
 
 export interface PreviewData {
   supplierId: number
-  img: string,
+  imgList: string[],
   profile: string,
   title: string,
   styleTypeList: {
@@ -14,11 +15,23 @@ export interface PreviewData {
 
 export default function Preview({ data } : { data: PreviewData }) {
   const {
-    img, profile, title, styleTypeList,
+    imgList, profile, title, styleTypeList,
   } = data || {}
   return (
     <figure className={styles.container}>
-      <img className={styles.image} src={img} alt="" />
+      <div
+        className={cn(
+          styles.imageContainer,
+          // eslint-disable-next-line no-nested-ternary
+          imgList?.length > 4 ? styles.x9 : imgList?.length > 1 ? styles.x4 : null,
+        )}
+      >
+        {imgList?.map((img) => (
+          <div key={img} className={styles.imageWrapper}>
+            <img key={img} className={styles.image} src={img} alt="" />
+          </div>
+        ))}
+      </div>
       <div className={styles.header}>
         <div className={styles.avatarWrapper}>
           <Avatar src={profile} size={36} />

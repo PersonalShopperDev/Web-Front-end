@@ -12,8 +12,9 @@ export default function PurchaseListView({
   data: History
 }) {
   const {
-    estimateId, paymentTime, price, targetUser, status,
+    paymentId, paymentTime, price, targetUser, status,
   } = data
+
   const { createAlert } = useAlert()
   const token = getCookie(ACCESS_TOKEN)
   const { userType } = parseJwt(token)
@@ -23,10 +24,10 @@ export default function PurchaseListView({
 
   return (
     <section className={styles.container}>
-      <figure key={estimateId} className={styles.card}>
+      <figure className={styles.card}>
         <div className={styles.header}>
           <span className={styles.label}>결제일 </span>
-          <span>{paymentTime.toString().substr(0, 10)}</span>
+          <span>{paymentTime?.toString().substr(0, 10)}</span>
         </div>
         <div className={styles.body}>
           <div className={styles.imageWrapper}>
@@ -45,7 +46,7 @@ export default function PurchaseListView({
           {userType === 'S'
             ? (
               <>
-                {status === 5 || status === 6
+                {status === 2 || status === 3
                   ? (
                     <div className={styles.reviewComplete}>코디 완료</div>
                   )
@@ -54,14 +55,14 @@ export default function PurchaseListView({
             )
             : (
               <>
-                {status === 6
+                {status === 4
                   ? <div className={styles.reviewComplete}>리뷰 완료</div>
                   : (
                     <>
-                      {status === 5
+                      {status === 3
                         ? (
-                          <Link href="/review/new">
-                            <a href="/review/new" className={styles.write}>
+                          <Link href={`/review/new/${paymentId}`}>
+                            <a href={`/review/new/${paymentId}`} className={styles.write}>
                               리뷰 쓰기
                             </a>
                           </Link>
