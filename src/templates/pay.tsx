@@ -52,7 +52,7 @@ export default function Pay({
   return (
     <form className={styles.container} onSubmit={onSubmit}>
       <p className={styles.priceLabel}>코디가격</p>
-      <p className={styles.price}>{`${price.toLocaleString('ko-KR')}원`}</p>
+      <p className={styles.price}>{`${price?.toLocaleString('ko-KR') || 0}원`}</p>
       <div className={styles.receiverInfo}>
         <div className={styles.infoRow}>
           <span className={styles.infoLabel}>

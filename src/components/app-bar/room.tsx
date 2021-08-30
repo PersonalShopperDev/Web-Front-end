@@ -16,7 +16,11 @@ export default function RoomAppBar({
 }) {
   const router = useRouter()
 
-  const { userType } = useAuth().user
+  const { user } = useAuth()
+
+  const {
+    userType, price, account, accountUser, bank,
+  } = user
 
   const { createAlert } = useAlert()
 
@@ -29,16 +33,24 @@ export default function RoomAppBar({
   const sendCoordEnabled = status === 2 && (!latestCoordId || requestEditCoordId)
 
   const requestPayment = async () => {
-    const res = await communicate({
-      url: `/payment/${room.id}/request`,
-      method: 'POST',
-    })
+    const hasAccount = bank && account && accountUser
 
-    if (res.status === 351) {
+    if (!price) {
+      const text = `${hasAccount ? '코디 가격을' : '코디 가격과 계좌 정보를'} 입력하신 다음 다시 시도해 주세요.`
+      await createAlert({ text })
+      router.push('/profile')
+    }
+
+    if (!hasAccount) {
       await createAlert({ text: '계좌 정보를 입력하신 다음 다시 시도해 주세요.' })
       router.push('/profile/account')
       return
     }
+
+    const res = await communicate({
+      url: `/payment/${room.id}/request`,
+      method: 'POST',
+    })
 
     if (res.status !== 201) {
       await createAlert({ text: ERROR_MESSAGE })
