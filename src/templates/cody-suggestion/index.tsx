@@ -135,6 +135,8 @@ export default function CodySuggetsion({
           throw new Error()
         }
         return await res.json()
+      }).catch(async () => {
+        await createAlert({ text: ERROR_MESSAGE })
       })
     })
     const clothPromise = productRef.current.map((item, index) => {
@@ -153,6 +155,8 @@ export default function CodySuggetsion({
           throw new Error()
         }
         return await res.json()
+      }).catch(async () => {
+        await createAlert({ text: ERROR_MESSAGE })
       })
     })
     await Promise.all([Promise.all(coordPromise), Promise.all(clothPromise)]).then((value) => {
@@ -166,15 +170,20 @@ export default function CodySuggetsion({
         payload.clothes[index].img = path
       })
     })
+
     await communicate({
       url: '/coord',
       payload,
       method: 'POST',
-    }).catch((error) => {
-      createAlert({ text: ERROR_MESSAGE })
+    }).then(async (res) => {
+      if (res.status !== 200) {
+        throw new Error()
+      }
+      localStorage.removeItem(`cody${id}`)
+      await redirect()
+    }).catch(async () => {
+      await createAlert({ text: ERROR_MESSAGE })
     })
-    localStorage.removeItem(`cody${id}`)
-    await redirect()
   }
 
   const onClickBottomBtn = () => {
