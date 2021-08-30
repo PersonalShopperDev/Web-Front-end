@@ -165,16 +165,20 @@ export default function CodySuggetsion({
         const { path } = item
         payload.clothes[index].img = path
       })
+    }).catch(() => {
+      throw new Error()
     })
+
     await communicate({
       url: '/coord',
       payload,
       method: 'POST',
+    }).then(async () => {
+      localStorage.removeItem(`cody${id}`)
+      await redirect()
     }).catch((error) => {
       createAlert({ text: ERROR_MESSAGE })
     })
-    localStorage.removeItem(`cody${id}`)
-    await redirect()
   }
 
   const onClickBottomBtn = () => {
