@@ -39,6 +39,7 @@ export default function RoomAppBar({
       const text = `${hasAccount ? '코디 가격을' : '코디 가격과 계좌 정보를'} 입력하신 다음 다시 시도해 주세요.`
       await createAlert({ text })
       router.push('/profile')
+      return
     }
 
     if (!hasAccount) {
