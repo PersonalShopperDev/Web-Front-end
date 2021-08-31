@@ -1,5 +1,5 @@
 /* eslint-disable no-return-await */
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from 'sass/templates/cody-suggestion/cody-suggestion.module.scss'
 import BottomButton from 'components/bottom-button'
 import { useRouter } from 'next/router'
@@ -50,6 +50,7 @@ export default function CodySuggetsion({
   } = useCodySuggestion()
   const { createAlert } = useAlert()
   const router = useRouter()
+  const [modal, setModal] = useState(false)
   const ClickEventListener = () => {
     localStorage.removeItem(`cody${id}`)
     const descriptionCookie: ProductDescription = {
@@ -112,6 +113,11 @@ export default function CodySuggetsion({
       await createAlert({ text: '항목을 전부 채워주세요' })
       return
     }
+    if (descriptionRef.current.content.length > 700) {
+      await createAlert({ text: '700자 이내로 작성해주세요' })
+      return
+    }
+    setModal(true)
     const roomId = await getRoomId()
     const payload: CodySuggestion = {
       roomId,
@@ -170,7 +176,7 @@ export default function CodySuggetsion({
         payload.clothes[index].img = path
       })
     })
-
+    setModal(false)
     await communicate({
       url: '/coord',
       payload,
@@ -199,6 +205,12 @@ export default function CodySuggetsion({
       <div className={styles.container}>
         {step === 1 ? <Step1 /> : <Step2 /> }
       </div>
+      {modal
+      && (
+      <div className={styles.modalContainer}>
+        <div className={styles.box}>코디 보내는중</div>
+      </div>
+      )}
       <div className={styles.gradient}>
         <BottomButton text={step === 1 ? '다음' : '보내기'} onClick={onClickBottomBtn} />
       </div>
