@@ -1,0 +1,44 @@
+@use '../../lib/colors.scss' as colors;
+
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.bar {
+    display: flex;
+    width: 100%;
+}
+
+.tab {
+    position: relative;
+    flex: 1;
+    font-size: 14px;
+    padding: 13px 0;
+    color: colors.$primary-300;
+
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 100%;
+        width: 100%;
+        height: 1px;
+        background-color: #e5e5e5;
+    }
+
+    &.active {
+        color: colors.$primary-700;
+    }
+
+    &.active::after {
+        height: 3px;
+        background-color: colors.$accent;
+    }
+}
+
+.inner {
+    padding: 0 12px;
+    padding-top: 4px;
+}

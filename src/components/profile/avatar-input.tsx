@@ -9,16 +9,11 @@ import { useAlert } from 'providers/dialog/alert/inner'
 import ERROR_MESSAGE from 'lib/constants/error'
 import resizeImageFile from 'lib/util/image'
 
-interface AvatarInputData {
-  name: string
-  img: string
-}
-
-export default function AvatarInput({ data } : { data: AvatarInputData}) {
+export default function AvatarInput() {
   const { user, fetchUser } = useAuth()
   const { createAlert } = useAlert()
 
-  const { name, img } = user || data || {}
+  const { img } = user
 
   const upload = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files[0]) {
@@ -62,7 +57,6 @@ export default function AvatarInput({ data } : { data: AvatarInputData}) {
           />
         </label>
       </div>
-      <h2 className={styles.name}>{name}</h2>
     </section>
   )
 }

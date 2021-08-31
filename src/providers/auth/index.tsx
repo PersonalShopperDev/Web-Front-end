@@ -32,6 +32,7 @@ export interface User {
   userType: UserType
   userId: number
   name: string
+  email: string
   introduction: string
   styles: string[]
   img: string
@@ -157,8 +158,8 @@ export default function AuthProvider({
 
     if (res.status === 200) {
       const data = await res.json()
-      const { userId } = parseJwt(getCookie(ACCESS_TOKEN))
-      setUser({ ...data, userId: parseInt(userId, 10) })
+      const { email, userId } = parseJwt(getCookie(ACCESS_TOKEN))
+      setUser({ ...data, userId: parseInt(userId, 10), email })
       return true
     }
     return false

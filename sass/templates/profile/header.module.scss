@@ -1,0 +1,33 @@
+@use '../../lib/colors.scss' as colors;
+
+.container {
+    padding: 29px;
+}
+
+.inner {
+    margin-top: 12px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.detail {
+    white-space: nowrap;
+    padding-left: 21px;
+}
+
+.name {
+    font-size: 16px;
+}
+
+.userType {
+    margin-top: 4px;
+    font-size: 14px;
+    color: colors.$accent;
+}
+
+.email {
+    margin-top: 4px;
+    font-size: 12px;
+    color: colors.$primary-400;
+}

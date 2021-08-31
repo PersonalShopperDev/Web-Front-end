@@ -1,13 +1,9 @@
 import { useAuth } from 'providers/auth'
 import TextareaField from './textarea-field'
 
-interface HopeData {
-  hopeToSupplier: string
-}
-
-export default function Hope({ data }: { data: HopeData}) {
+export default function Hope() {
   const { user } = useAuth()
-  const { hopeToSupplier } = user || data || {}
+  const { hopeToSupplier } = user
 
   return (
     <TextareaField
