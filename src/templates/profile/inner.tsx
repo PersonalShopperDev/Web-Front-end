@@ -1,5 +1,6 @@
 import Hope from 'components/profile/hope'
 import Introduction from 'components/profile/introduction'
+import Phonenumber from 'components/profile/phonenumber'
 import Divider from 'widgets/divider'
 
 export default function ProfileInner() {
@@ -8,6 +9,8 @@ export default function ProfileInner() {
       <Introduction />
       <Divider />
       <Hope />
+      <Divider />
+      <Phonenumber />
     </>
   )
 }
