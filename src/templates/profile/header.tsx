@@ -1,4 +1,5 @@
 import AvatarInput from 'components/profile/avatar-input'
+import Link from 'next/link'
 import { useAuth } from 'providers/auth'
 import styles from 'sass/templates/profile/header.module.scss'
 
@@ -20,8 +21,13 @@ export default function ProfileHeader() {
         <div className={styles.detail}>
           <div className={styles.row}>
             <h2 className={styles.name}>
-              {name}
+              {name || 'ㅇㅁㄴㅇ'}
             </h2>
+            <Link href="/profile/info">
+              <a href="/profile/info" className={styles.edit}>
+                편집
+              </a>
+            </Link>
           </div>
           <div className={styles.userType}>
             {user.userType === 'S' ? '스타일리스트' : '일반쇼퍼'}
