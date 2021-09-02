@@ -1,44 +1,30 @@
 import Layout from 'layouts/default'
-import SupplierProfile from 'templates/profile/supplier'
-import LookBookProvider from 'providers/look-book'
-import InfinityScrollProvider from 'providers/infinity-scroll'
 import { GetServerSideProps } from 'next'
-import { ACCESS_TOKEN, User } from 'providers/auth'
 import { communicateWithContext } from 'lib/api'
-import DemanderProfile from 'templates/profile/demander'
-import ProfilePreviewAppBar from 'components/app-bar/profile-preview'
+import { ACCESS_TOKEN, User } from 'providers/auth'
 import parseJwt from 'lib/util/jwt'
-import ReviewProvider from 'providers/review'
+import Navigation from 'components/navigation'
+import { LookBookData } from 'templates/profile/look-book'
+import ProfileProvider from 'providers/profile'
+import Profile from 'templates/profile'
+import AppBar from 'components/app-bar'
 
-export default function Page({
-  id, data: other, reviewId,
-} : { id: string; data: User, reviewId: string }) {
-  return (
-    <Layout
-      header={<ProfilePreviewAppBar />}
-    >
-      <Inner id={id} data={other} reviewId={reviewId} />
-    </Layout>
-  )
+interface Props {
+  userId: string
+  user: User
+  lookbookData : LookBookData
 }
 
-function Inner({ id, data, reviewId }: { id: string; data: User, reviewId: string }) {
-  const { userType } = data
-  if (userType === 'N') {
-    return <></>
-  }
-  if (userType === 'D') {
-    return <DemanderProfile id={id} data={data} />
-  }
-
+export default function Page({ userId, user, lookbookData } : Props) {
   return (
-    <InfinityScrollProvider>
-      <LookBookProvider>
-        <ReviewProvider>
-          <SupplierProfile id={parseInt(id, 10)} data={data} reviewId={parseInt(reviewId, 10)} />
-        </ReviewProvider>
-      </LookBookProvider>
-    </InfinityScrollProvider>
+    <Layout
+      header={<AppBar title="프로필" back />}
+      bottom={<Navigation />}
+    >
+      <ProfileProvider editable={false} user={user}>
+        <Profile userId={userId} lookbookData={lookbookData} />
+      </ProfileProvider>
+    </Layout>
   )
 }
 
@@ -64,21 +50,31 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
-  const { id, reviewId } = context.query
+  const { id } = context.params
 
-  const res = await communicateWithContext({ url: `/profile/${id}`, context })
+  const [profileResponse, lookbookResponse] = await Promise.all([
+    communicateWithContext({
+      context,
+      url: `/profile/${id}`,
+    }),
+    communicateWithContext({
+      context,
+      url: `/profile/${id}/lookbook`,
+    })])
 
-  if (res.status !== 200) {
+  if (profileResponse.status !== 200 || lookbookResponse.status !== 200) {
     throw new Error()
   }
 
-  const data = await res.json()
+  const [profileData, lookbookData] = await Promise.all([
+    profileResponse.json(), lookbookResponse.json(),
+  ])
 
   return {
     props: {
-      id,
-      data,
-      reviewId: reviewId || null,
+      userId: id,
+      user: profileData,
+      lookbookData,
     },
   }
 }

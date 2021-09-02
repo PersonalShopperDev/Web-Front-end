@@ -1,34 +1,27 @@
 import Layout from 'layouts/default'
 import { GetServerSideProps } from 'next'
 import { communicateWithContext } from 'lib/api'
-import { ACCESS_TOKEN } from 'providers/auth'
+import { ACCESS_TOKEN, useAuth } from 'providers/auth'
 import parseJwt from 'lib/util/jwt'
 import Navigation from 'components/navigation'
-import ProfileHeader from 'templates/profile/header'
-import ProfileTabBar from 'components/profile/tab-bar'
-import ProfileInner from 'templates/profile/inner'
-import ProfileStyle from 'templates/profile/style'
-import ProfileWardrobe from 'templates/profile/wardrobe'
+import { LookBookData } from 'templates/profile/look-book'
+import ProfileProvider from 'providers/profile'
+import Profile from 'templates/profile'
 
 interface Props {
   userId: string
+  lookbookData : LookBookData
 }
 
-export default function Page({ userId } : Props) {
+export default function Page({ userId, lookbookData } : Props) {
+  const { user } = useAuth()
   return (
     <Layout
       bottom={<Navigation />}
     >
-      <ProfileHeader />
-      <ProfileTabBar
-        tabLabels={['프로필', '스타일', '옷장']}
-      >
-        {[
-          <ProfileInner />,
-          <ProfileStyle />,
-          <ProfileWardrobe />,
-        ]}
-      </ProfileTabBar>
+      <ProfileProvider editable user={user}>
+        <Profile userId={userId} lookbookData={lookbookData} />
+      </ProfileProvider>
     </Layout>
   )
 }

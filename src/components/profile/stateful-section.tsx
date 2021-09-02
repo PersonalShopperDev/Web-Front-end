@@ -1,3 +1,4 @@
+import { useProfile } from 'providers/profile'
 import React, {
   useState, useRef, createContext, useContext, SetStateAction, Dispatch, ReactNode,
 } from 'react'
@@ -25,6 +26,7 @@ export default function StatefulSection({
   head: ReactNode
   children: React.ReactNode
 }) {
+  const { editable } = useProfile()
   const [state, setState] = useState<State>('default')
   const onEdit = useRef<OnEditCallback>()
 
@@ -32,13 +34,13 @@ export default function StatefulSection({
     onEdit.current = callback
   }
 
-  const onClick = () => {
+  const onClick = async () => {
     if (state === 'default') {
       setState('edit')
       return
     }
     if (state === 'edit') {
-      onEdit.current?.call(null)
+      await onEdit.current()
     }
   }
 
@@ -51,7 +53,7 @@ export default function StatefulSection({
   return (
     <Section
       head={head}
-      action={(
+      action={editable && (
         <button
           type="button"
           className={styles.button}

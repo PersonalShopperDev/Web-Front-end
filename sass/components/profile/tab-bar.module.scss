@@ -15,7 +15,7 @@
     position: relative;
     flex: 1;
     font-size: 14px;
-    padding: 13px 0;
+    padding-bottom: 13px;
     color: colors.$primary-300;
 
     &::after {
@@ -39,6 +39,5 @@
 }
 
 .inner {
-    padding: 0 12px;
     padding-top: 4px;
 }

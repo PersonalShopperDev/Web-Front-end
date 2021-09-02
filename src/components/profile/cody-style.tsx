@@ -1,37 +1,20 @@
 import styles from 'sass/components/profile/cody-style.module.scss'
-import Link from 'next/link'
-import Icon from 'widgets/icon'
-import { useAuth } from 'providers/auth'
-import Section from './section'
+import { useProfile } from 'providers/profile'
+import StatefulSection from './stateful-section'
 
-interface StyleData {
-  styles: string[]
+export default function CodyStyle() {
+  return (
+    <StatefulSection head="자신있는 패션스타일">
+      <Inner />
+    </StatefulSection>
+  )
 }
 
-export default function CodyStyle({
-  label,
-  data,
-}: {
-  label: string
-  data: StyleData
-}) {
-  const { user } = useAuth()
-
-  const { styles: styleList } = user || data || {}
-
+function Inner() {
+  const { user } = useProfile()
+  const { styles: styleList } = user
   return (
-    <Section
-      head={label}
-      action={
-        (
-          <Link href="/profile/information/style">
-            <a href="/profile/information/style">
-              <Icon src="edit.png" size={17} />
-            </a>
-          </Link>
-        )
-      }
-    >
+    <section>
       {styleList && styleList.length > 0 && (
         <section className={styles.container}>
           {styleList.map((value) => (
@@ -41,6 +24,6 @@ export default function CodyStyle({
           ))}
         </section>
       )}
-    </Section>
+    </section>
   )
 }

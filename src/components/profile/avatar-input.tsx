@@ -4,13 +4,15 @@ import styles from 'sass/components/profile/avatar-input.module.scss'
 import Avatar from 'widgets/avatar'
 import Icon from 'widgets/icon'
 import communicate from 'lib/api'
-import { useAuth } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
 import ERROR_MESSAGE from 'lib/constants/error'
 import resizeImageFile from 'lib/util/image'
+import { useProfile } from 'providers/profile'
+import { useAuth } from 'providers/auth'
 
 export default function AvatarInput() {
-  const { user, fetchUser } = useAuth()
+  const { user, editable } = useProfile()
+  const { fetchUser } = useAuth()
   const { createAlert } = useAlert()
 
   const { img } = user
@@ -46,6 +48,7 @@ export default function AvatarInput() {
     <section className={styles.container}>
       <div className={styles.avatarContainer}>
         <Avatar src={img} size={96} />
+        {editable && (
         <label className={styles.input} htmlFor="profilePicker">
           <Icon src="camera.png" size={17} />
           <input
@@ -56,6 +59,7 @@ export default function AvatarInput() {
             style={{ display: 'none' }}
           />
         </label>
+        )}
       </div>
     </section>
   )

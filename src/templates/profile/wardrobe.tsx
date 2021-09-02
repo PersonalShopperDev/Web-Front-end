@@ -3,6 +3,7 @@ import ERROR_MESSAGE from 'lib/constants/error'
 import resizeImageFile from 'lib/util/image'
 import { useAuth } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
+import { useProfile } from 'providers/profile'
 import { useState, ChangeEvent } from 'react'
 import styles from 'sass/templates/profile/wardrobe.module.scss'
 import Icon from 'widgets/icon'
@@ -11,7 +12,8 @@ type State = 'default' | 'edit'
 
 export default function ProfileWardrobe() {
   const [state, setState] = useState<State>('default')
-  const { user, fetchUser } = useAuth()
+  const { user } = useProfile()
+  const { fetchUser } = useAuth()
   const { createAlert } = useAlert()
 
   const { closet } = user

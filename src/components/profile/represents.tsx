@@ -3,23 +3,27 @@ import ERROR_MESSAGE from 'lib/constants/error'
 import resizeImageFile from 'lib/util/image'
 import { useAuth } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
-import { ChangeEvent } from 'react'
+import { useProfile } from 'providers/profile'
+import { ChangeEvent, useEffect } from 'react'
 import styles from 'sass/components/profile/represents.module.scss'
-import ProfileImagePicker from './image-picker'
-import Section from './section'
+import Icon from 'widgets/icon'
+import StatefulSection, { useStatefulSection } from './stateful-section'
 
-interface RepresentData {
-  coord: {
-    id: number,
-    img: string,
-  }[]
+export default function Represent() {
+  return (
+    <StatefulSection head="대표 코디">
+      <Inner />
+    </StatefulSection>
+  )
 }
 
-export default function Represent({ data }: { data: RepresentData }) {
-  const { user, fetchUser } = useAuth()
+function Inner() {
+  const { state, setState, setOnEdit } = useStatefulSection()
+  const { user } = useProfile()
+  const { fetchUser } = useAuth()
   const { createAlert } = useAlert()
 
-  const { coord } = user || data || {}
+  const { coord } = user
 
   const upload = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files[0]) {
@@ -48,17 +52,38 @@ export default function Represent({ data }: { data: RepresentData }) {
       .catch(async () => {
         await createAlert({ text: ERROR_MESSAGE })
       })
+
+    setState('default')
   }
 
+  const onDelete = () => {
+    console.log('삭제 로직 => template/wardrobe')
+  }
+
+  useEffect(() => {
+    setOnEdit(async () => {
+      setState('default')
+    })
+  }, [])
+
   return (
-    <Section
-      head="대표 코디"
-      action={(!coord || coord.length < 4) && (
-        <ProfileImagePicker id="represents-picker" upload={upload} />
-      )}
-    >
-      {(coord && coord.length > 0) && (
-        <section className={styles.container}>
+    <section className={styles.container}>
+      {(coord && coord.length > 0) ? (
+        <>
+          {(state === 'edit' && coord.length < 4) && (
+            <div className={styles.figure}>
+              <label htmlFor="image-picker" className={styles.addButton}>
+                <Icon src="add-circle.png" size={24} />
+                <input
+                  id="image-picker"
+                  type="file"
+                  accept="image/png, image/jpeg, image/jpg"
+                  onChange={(e) => upload(e)}
+                  style={{ display: 'none' }}
+                />
+              </label>
+            </div>
+          )}
           {coord.map(({ id, img }) => (
             <div
               key={id}
@@ -69,10 +94,20 @@ export default function Represent({ data }: { data: RepresentData }) {
                 src={img}
                 alt=""
               />
+              {state === 'edit' && (
+                <Icon
+                  className={styles.deleteButton}
+                  src="delete-circle.png"
+                  size={16}
+                  onClick={onDelete}
+                />
+              )}
             </div>
           ))}
-        </section>
+        </>
+      ) : (
+        <p className={styles.placeholder}>쇼퍼가 볼 수 있는 대표코디를 올려보세요.</p>
       )}
-    </Section>
+    </section>
   )
 }
