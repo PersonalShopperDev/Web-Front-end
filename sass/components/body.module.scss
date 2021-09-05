@@ -71,3 +71,9 @@
     margin-bottom: 26px;
     @include bodyFormBox();   
 }
+
+.bodyFormText { 
+    font-weight: 500;
+    font-size: 12px;
+    color: #616161;
+}

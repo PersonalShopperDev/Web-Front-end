@@ -25,12 +25,33 @@
 .selectedBox {
     @include textBox();
     color: colors.$background;
-    background-color: colors.$primary-600;
-    border: 1px solid colors.$primary-600;
-
+    background-color: colors.$accent;
+    border: 1px solid colors.$accent;
 }
 
 .notSelectedBox {
     @include textBox();
     border: 1px solid colors.$primary-300;
+}
+
+.styleText {
+    font-weight: 400;
+    font-size: 10px;
+}
+
+@mixin limitText {
+    font-size: 12px;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 9px;
+}
+
+.limit {
+    @include limitText();
+    color: #616161;
+}
+
+.over {
+    @include limitText();
+    color: colors.$accent;
 }
