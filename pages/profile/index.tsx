@@ -9,6 +9,7 @@ import ProfileTabBar from 'components/profile/tab-bar'
 import ProfileInner from 'templates/profile/inner'
 import ProfileStyle from 'templates/profile/style'
 import ProfileWardrobe from 'templates/profile/wardrobe'
+import OnboardingProvider from 'providers/onboarding'
 
 interface Props {
   userId: string
@@ -16,20 +17,22 @@ interface Props {
 
 export default function Page({ userId } : Props) {
   return (
-    <Layout
-      bottom={<Navigation />}
-    >
-      <ProfileHeader />
-      <ProfileTabBar
-        tabLabels={['프로필', '스타일', '옷장']}
+    <OnboardingProvider>
+      <Layout
+        bottom={<Navigation />}
       >
-        {[
-          <ProfileInner />,
-          <ProfileStyle />,
-          <ProfileWardrobe />,
-        ]}
-      </ProfileTabBar>
-    </Layout>
+        <ProfileHeader />
+        <ProfileTabBar
+          tabLabels={['프로필', '스타일', '옷장']}
+        >
+          {[
+            <ProfileInner />,
+            <ProfileStyle />,
+            <ProfileWardrobe />,
+          ]}
+        </ProfileTabBar>
+      </Layout>
+    </OnboardingProvider>
   )
 }
 
