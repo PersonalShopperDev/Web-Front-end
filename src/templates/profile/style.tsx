@@ -6,10 +6,11 @@ import PriceRange from 'components/profile/price-range'
 import Divider from 'widgets/divider'
 import ProfileHeader from 'components/profile/header'
 import HeightWeight from 'components/profile/height-weight'
-import { useAuth } from 'providers/auth'
+import { useProfile } from 'providers/profile'
 
 export default function ProfileStyle() {
-  const { user } = useAuth()
+  const { user } = useProfile()
+
   return (
     <>
       <ProfileHeader title="선호 스타일" type="styleText">

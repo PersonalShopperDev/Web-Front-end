@@ -4,6 +4,7 @@ import React, {
 
 import styles from 'sass/components/profile/header.module.scss'
 import { useOnboarding } from 'providers/onboarding'
+import { useProfile } from 'providers/profile'
 
 interface HeaderContextProps {
     isEdit: boolean,
@@ -23,6 +24,8 @@ export default function ProfileHeader({
 }) {
   const [isEdit, setIsEdit] = useState(false)
   const { onClickEdit } = useOnboarding()
+  const { editable } = useProfile()
+
   const value = {
     isEdit,
     setIsEdit,
@@ -37,12 +40,15 @@ export default function ProfileHeader({
     <>
       <div className={styles.container}>
         <span>{title}</span>
+        {editable
+        && (
         <button
           type="button"
           onClick={onClick}
         >
           <span className={styles.button}>{isEdit ? '확인' : '수정'}</span>
         </button>
+        ) }
       </div>
       <HeaderContext.Provider value={value}>
         {children}
