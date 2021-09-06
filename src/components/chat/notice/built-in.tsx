@@ -24,7 +24,7 @@ export default function BuiltInNotice() {
             </Link>
           )}
         >
-          <span>카카오뱅크 서유빈 3333-20-4598971로 입금 후 입금자 이름을 알려주세요.</span>
+          <span>카카오뱅크 서유빈 3333-20-4598961로 입금 후 입금자 이름을 알려주세요.</span>
         </Child>
       )
     }

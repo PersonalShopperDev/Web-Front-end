@@ -15,7 +15,7 @@ export default function Pay({
   const router = useRouter()
 
   const receiver = '서유빈'
-  const receiverAccount = '333-20-4598961'
+  const receiverAccount = '3333-20-4598961'
 
   const nameRef = useRef<HTMLInputElement>()
 
