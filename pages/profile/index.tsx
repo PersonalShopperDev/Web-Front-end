@@ -4,6 +4,7 @@ import { communicateWithContext } from 'lib/api'
 import { ACCESS_TOKEN, useAuth } from 'providers/auth'
 import parseJwt from 'lib/util/jwt'
 import Navigation from 'components/navigation'
+import OnboardingProvider from 'providers/onboarding'
 import { LookBookData } from 'templates/profile/look-book'
 import ProfileProvider from 'providers/profile'
 import Profile from 'templates/profile'
@@ -16,13 +17,15 @@ interface Props {
 export default function Page({ userId, lookbookData } : Props) {
   const { user } = useAuth()
   return (
-    <Layout
-      bottom={<Navigation />}
-    >
-      <ProfileProvider editable user={user}>
-        <Profile userId={userId} lookbookData={lookbookData} />
-      </ProfileProvider>
-    </Layout>
+    <OnboardingProvider>
+      <Layout
+        bottom={<Navigation />}
+      >
+        <ProfileProvider editable user={user}>
+          <Profile userId={userId} lookbookData={lookbookData} />
+        </ProfileProvider>
+      </Layout>
+    </OnboardingProvider>
   )
 }
 

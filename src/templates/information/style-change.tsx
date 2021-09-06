@@ -1,20 +1,31 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import StylePicture from 'components/information/style-picture'
 import styles from 'sass/templates/information/style-change.module.scss'
 import { useOnboarding } from 'providers/onboarding'
 import { useRouter } from 'next/router'
 import { useAuth } from 'providers/auth'
+import communicate from 'lib/api'
 
 export default function StyleChange() {
   const { fetchUser } = useAuth()
-  const { setEdit } = useOnboarding()
+  const { setOnEdit, fetchInformationData, stylePicture } = useOnboarding()
   const router = useRouter()
 
-  const onClickEdit = async (key) => {
-    setEdit(key)
+  const onEditStylePicture = async () => {
+    await communicate({ url: '/style/img', payload: { list: stylePicture }, method: 'PUT' })
+    fetchInformationData()
+  }
+
+  const onClickEdit = async () => {
+    onEditStylePicture()
     await fetchUser()
     router.back()
   }
+
+  useEffect(() => {
+    setOnEdit(onEditStylePicture)
+  }, [])
+
   return (
     <>
       <div className={styles.container}>
@@ -25,7 +36,7 @@ export default function StyleChange() {
       <footer>
         <section className={styles.bottom}>
           <div className={styles.gradient}>
-            <button type="button" className={styles.completeButton} onClick={() => onClickEdit('style')}>
+            <button type="button" className={styles.completeButton} onClick={onClickEdit}>
               <span className={styles.nextText}>수정하기</span>
             </button>
           </div>

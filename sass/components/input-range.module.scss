@@ -6,7 +6,6 @@
     margin-bottom: 15px;
     padding-left: 35px;
 }
-
 .rangeLeft {
     position: absolute;
     width: 306px;
@@ -15,15 +14,25 @@
     pointer-events: none;
     opacity: 0;
 }
-.rangeRight {
+@mixin right { 
     position: absolute;
     width: 306px;
     z-index: 2;
     -webkit-appearance: none;
     pointer-events: none;
-    right: 50px;
     opacity: 0;
 }
+
+.rangeRight {
+    @include right();
+    right: 50px;
+}
+
+.profileRight { 
+    @include right();
+    right: 40px;
+}
+
 .rangeLeft::-webkit-slider-thumb{
     width: 18px;
     height: 18px;
@@ -35,6 +44,16 @@
     pointer-events: all;
 }
 .rangeRight::-webkit-slider-thumb{
+    width: 18px;
+    height: 18px;
+    border-radius: 18px;
+    border: 0 none;
+    background-color: colors.$accent;
+    -webkit-appearance: none;
+    transform: translate(9px,-4.5px);   
+    pointer-events: all;
+}
+.profileRight::-webkit-slider-thumb{
     width: 18px;
     height: 18px;
     border-radius: 18px;

@@ -64,10 +64,6 @@ export default function Drawer() {
 }
 
 const categories = [
-  {
-    title: '내 정보 변경하기',
-    link: '/profile/information',
-  },
   // {
   //   title: '내 스크랩 보기',
   //   link: '/scrap',

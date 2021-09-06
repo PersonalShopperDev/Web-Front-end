@@ -11,8 +11,10 @@ interface PriceLists {
 }
 export default function Price({
   isOnboarding,
+  isEdit,
 }: {
   isOnboarding?: boolean
+  isEdit?: boolean
 }) {
   const { information } = useOnboarding()
   const [priceLists, setPriceLists] = useState([])
@@ -77,35 +79,62 @@ export default function Price({
       setPriceLists(malePriceLists)
     }
   }, [])
+
   return (
-    <div className={isOnboarding ? styles.container : styles.infoContainer} id="step5_container">
-      {priceLists.map((item, index) => (
-        <div key={item.title}>
-          <div className={styles.priceListContainer}>
-            <button type="button" onClick={() => onClick(index)}>
-              { selectedItem.includes(index)
-                ? <img src="/icons/selectedCheck.png" alt="selectedCheck" width="22" height="22" />
-                : <img src="/icons/check.png" alt="check" width="22" height="22" /> }
-            </button>
-            <span className={selectedItem.includes(index)
-              ? styles.selectedText : null}
-            >
-              {item.title}
-            </span>
-          </div>
-          {selectedItem.includes(index)
+    <>
+      {isEdit
+        ? (
+          <div className={isOnboarding ? styles.container : styles.infoContainer} id="step5_container">
+            {priceLists.map((item, index) => (
+              <div key={item.title}>
+                <div className={styles.priceListContainer}>
+                  <button type="button" onClick={() => onClick(index)}>
+                    { selectedItem.includes(index)
+                      ? <img src="/icons/selectedCheck.png" alt="selectedCheck" width="22" height="22" />
+                      : <img src="/icons/check.png" alt="check" width="22" height="22" /> }
+                  </button>
+                  <span className={selectedItem.includes(index)
+                    ? styles.selectedText : null}
+                  >
+                    {item.title}
+                  </span>
+                </div>
+                {selectedItem.includes(index)
             && (
             <InputRange
               priceLists={item}
               isOnboarding={isOnboarding}
+              isEdit={isEdit}
             />
             )}
-        </div>
-      ))}
-    </div>
+              </div>
+            ))}
+          </div>
+        )
+        : (
+          <>
+            {priceLists.map((item) => {
+              const { min, max } = information.clothPrice[item.key]
+              return (
+                <div key={item.title} className={styles.itemContainer}>
+                  <span className={styles.itemTitle}>{item.title}</span>
+                  <span className={styles.itemPrice}>
+                    {min}
+                    원 -
+                    {' '}
+                    {max}
+                    원 대
+                  </span>
+                </div>
+              )
+            })}
+          </>
+        ) }
+    </>
   )
 }
 
 Price.defaultProps = {
   isOnboarding: false,
+  isEdit: true,
 }
