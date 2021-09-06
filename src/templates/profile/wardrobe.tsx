@@ -1,10 +1,9 @@
 import communicate from 'lib/api'
 import ERROR_MESSAGE from 'lib/constants/error'
 import resizeImageFile from 'lib/util/image'
-import { useAuth } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
 import { useProfile } from 'providers/profile'
-import { useState, ChangeEvent } from 'react'
+import { useState, ChangeEvent, useEffect } from 'react'
 import styles from 'sass/templates/profile/wardrobe.module.scss'
 import Icon from 'widgets/icon'
 
@@ -12,11 +11,10 @@ type State = 'default' | 'edit'
 
 export default function ProfileWardrobe() {
   const [state, setState] = useState<State>('default')
-  const { user } = useProfile()
-  const { fetchUser } = useAuth()
+  const { userId } = useProfile().user
   const { createAlert } = useAlert()
 
-  const { closet } = user
+  const [closet, setCloset] = useState<{id: number, img: string}[]>([])
 
   const upload = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files[0]) {
@@ -38,10 +36,23 @@ export default function ProfileWardrobe() {
       if (!res.ok) {
         throw new Error()
       }
-      return fetchUser()
+      return initialize()
     }).catch(async () => {
       await createAlert({ text: ERROR_MESSAGE })
     })
+  }
+
+  const onDelete = async (id: number) => {
+    const res = await communicate({
+      url: `/profile/closet/${id}`,
+      method: 'DELETE',
+    })
+
+    if (!res.ok) {
+      await createAlert({ text: ERROR_MESSAGE })
+    }
+
+    initialize()
   }
 
   const onEditClick = () => {
@@ -49,6 +60,23 @@ export default function ProfileWardrobe() {
       value === 'edit' ? 'default' : 'edit'
     ))
   }
+
+  const initialize = async () => {
+    const res = await communicate({
+      url: `/profile/${userId}/closet`,
+    })
+
+    if (res.status !== 200) {
+      return
+    }
+
+    const { list } = await res.json()
+    setCloset(list)
+  }
+
+  useEffect(() => {
+    initialize()
+  }, [])
 
   return (
     <section className={styles.container}>
@@ -88,6 +116,7 @@ export default function ProfileWardrobe() {
             />
             {state === 'edit' && (
               <Icon
+                onClick={() => onDelete(id)}
                 className={styles.deleteButton}
                 src="delete-circle.png"
                 size={27}

@@ -1,19 +1,48 @@
+import communicate from 'lib/api'
+import ERROR_MESSAGE from 'lib/constants/error'
 import { useRouter } from 'next/router'
 import { useAuth } from 'providers/auth'
+import { useAlert } from 'providers/dialog/alert/inner'
 import { FormEvent, useEffect, useRef } from 'react'
 import styles from 'sass/templates/profile/info.module.scss'
 
 export default function ProfileInfo() {
   const router = useRouter()
 
-  const { user } = useAuth()
-  const { name } = user
+  const { user, fetchUser } = useAuth()
+  const { name, email } = user
+
+  const { createAlert } = useAlert()
 
   const nicknameRef = useRef<HTMLInputElement>()
   const emailRef = useRef<HTMLInputElement>()
 
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
+
+    const nicknameValue = nicknameRef.current.value
+    const emailValue = emailRef.current.value
+
+    if (!nicknameValue || !emailValue) {
+      await createAlert({ text: '모든 항목을 채워 주세요.' })
+      return
+    }
+
+    const res = await communicate({
+      url: '/profile',
+      payload: {
+        email: emailValue,
+        name: nicknameValue,
+      },
+      method: 'PATCH',
+    })
+
+    if (res.status !== 200) {
+      await createAlert({ text: ERROR_MESSAGE })
+      return
+    }
+
+    await fetchUser()
 
     router.back()
   }
@@ -21,6 +50,7 @@ export default function ProfileInfo() {
   useEffect(() => {
     if (name) {
       nicknameRef.current.value = name
+      emailRef.current.value = email
     }
   }, [])
 

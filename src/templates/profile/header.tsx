@@ -10,7 +10,9 @@ export interface HeaderData {
 
 export default function ProfileHeader() {
   const { user, editable } = useProfile()
-  const { name, email, userType } = user
+  const {
+    name, email, userType, reviewCount, rating, hireCount,
+  } = user
 
   return (
     <section className={styles.container}>
@@ -40,19 +42,19 @@ export default function ProfileHeader() {
           </div>
         </div>
       </div>
-      {userType && (
+      {userType !== 'D' && (
         <div className={styles.stylistCounter}>
           <div className={styles.cell}>
             <div className={styles.property}>평점</div>
-            <div>0</div>
+            <div>{rating}</div>
           </div>
           <div className={styles.cell}>
             <div className={styles.property}>리뷰</div>
-            <div>0</div>
+            <div>{reviewCount}</div>
           </div>
           <div className={styles.cell}>
             <div className={styles.property}>코디</div>
-            <div>0</div>
+            <div>{hireCount}</div>
           </div>
         </div>
       )}

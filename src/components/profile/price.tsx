@@ -1,34 +1,25 @@
-import { useAuth } from 'providers/auth'
+import { useProfile } from 'providers/profile'
 import { useEffect, useRef } from 'react'
 import styles from 'sass/components/profile/price.module.scss'
 import Field, { useField } from './field'
 import { useStatefulSection } from './stateful-section'
 
-interface PriceData {
-  price: number
-}
+export default function Price() {
+  const { user } = useProfile()
+  const { price } = user
 
-export default function Price({
-  data,
-}: {
-  data: PriceData
-}) {
-  const { user } = useAuth()
-  const { price } = user || data || {}
   return (
-    <Field head="코디가격" name="price" type="number" content={price?.toString()}>
-      <Inner price={price} />
+    <Field head="코디가격" name="price" type="number" content={price.toString()}>
+      <Inner />
     </Field>
   )
 }
 
-function Inner({
-  price,
-}: {
-  price: number
-}) {
+function Inner() {
   const { state } = useStatefulSection()
   const { onChange } = useField()
+  const { user } = useProfile()
+  const { price } = user
   const inputRef = useRef<HTMLInputElement>()
 
   const onKeyUp = () => {

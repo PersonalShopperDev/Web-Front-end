@@ -66,11 +66,51 @@ function Inner({ userId, data } : { userId: string, data : LookBookData}) {
       })
   }
 
+  const onDelete = async (id: number) => {
+    const res = await communicate({
+      url: `/profile/lookbook/${id}`,
+      method: 'DELETE',
+    })
+
+    if (!res.ok) {
+      await createAlert({ text: ERROR_MESSAGE })
+    }
+
+    fetchData()
+  }
+
+  const fetchData = async () => {
+    const res = await communicate({
+      url: `/profile/${userId}/lookbook`,
+    })
+
+    if (res.status !== 200) {
+      await createAlert({ text: ERROR_MESSAGE })
+    }
+
+    const newData = await res.json()
+
+    setList(newData.list)
+  }
+
   useEffect(() => {
     setOnEdit(async () => {
       setState('default')
     })
   }, [])
+
+  if (state !== 'edit' && list.length === 0) {
+    return (
+      <section className={styles.empty}>
+        <Icon src="background-photo.png" size={72} />
+        <p>
+          나의 패션을 잘 나타내
+          <br />
+          사진을 올려주세요.
+        </p>
+      </section>
+    )
+  }
 
   return (
     <section className={styles.container}>
@@ -97,6 +137,7 @@ function Inner({ userId, data } : { userId: string, data : LookBookData}) {
           />
           {state === 'edit' && (
             <Icon
+              onClick={() => onDelete(id)}
               className={styles.deleteButton}
               src="delete-circle.png"
               size={27}

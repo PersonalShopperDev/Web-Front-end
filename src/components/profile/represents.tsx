@@ -52,12 +52,19 @@ function Inner() {
       .catch(async () => {
         await createAlert({ text: ERROR_MESSAGE })
       })
-
-    setState('default')
   }
 
-  const onDelete = () => {
-    console.log('삭제 로직 => template/wardrobe')
+  const onDelete = async (id: number) => {
+    const res = await communicate({
+      url: `/profile/lookbook/${id}`,
+      method: 'DELETE',
+    })
+
+    if (!res.ok) {
+      await createAlert({ text: ERROR_MESSAGE })
+    }
+
+    await fetchUser()
   }
 
   useEffect(() => {
@@ -66,48 +73,41 @@ function Inner() {
     })
   }, [])
 
+  if (state !== 'edit' && (coord?.length || 0) === 0) {
+    return (
+      <p className={styles.placeholder}>쇼퍼가 볼 수 있는 대표코디를 올려보세요.</p>
+    )
+  }
+
   return (
     <section className={styles.container}>
-      {(coord && coord.length > 0) ? (
-        <>
-          {(state === 'edit' && coord.length < 4) && (
-            <div className={styles.figure}>
-              <label htmlFor="image-picker" className={styles.addButton}>
-                <Icon src="add-circle.png" size={24} />
-                <input
-                  id="image-picker"
-                  type="file"
-                  accept="image/png, image/jpeg, image/jpg"
-                  onChange={(e) => upload(e)}
-                  style={{ display: 'none' }}
-                />
-              </label>
-            </div>
-          )}
-          {coord.map(({ id, img }) => (
-            <div
-              key={id}
-              className={styles.figure}
-            >
-              <img
-                className={styles.image}
-                src={img}
-                alt=""
-              />
-              {state === 'edit' && (
-                <Icon
-                  className={styles.deleteButton}
-                  src="delete-circle.png"
-                  size={16}
-                  onClick={onDelete}
-                />
-              )}
-            </div>
-          ))}
-        </>
-      ) : (
-        <p className={styles.placeholder}>쇼퍼가 볼 수 있는 대표코디를 올려보세요.</p>
+      {state === 'edit' && (coord?.length || 0) < 4 && (
+        <div className={styles.figure}>
+          <label htmlFor="image-picker" className={styles.addButton}>
+            <Icon src="add-circle.png" size={24} />
+            <input
+              id="image-picker"
+              type="file"
+              accept="image/png, image/jpeg, image/jpg"
+              onChange={(e) => upload(e)}
+              style={{ display: 'none' }}
+            />
+          </label>
+        </div>
       )}
+      {coord?.map(({ id, img }) => (
+        <div key={id} className={styles.figure}>
+          <img className={styles.image} src={img} alt="" />
+          {state === 'edit' && (
+            <Icon
+              className={styles.deleteButton}
+              src="delete-circle.png"
+              size={16}
+              onClick={() => onDelete(id)}
+            />
+          )}
+        </div>
+      ))}
     </section>
   )
 }

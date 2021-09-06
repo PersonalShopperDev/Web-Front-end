@@ -4,10 +4,10 @@ import { communicateWithContext } from 'lib/api'
 import { ACCESS_TOKEN, User } from 'providers/auth'
 import parseJwt from 'lib/util/jwt'
 import Navigation from 'components/navigation'
-import { LookBookData } from 'templates/profile/look-book'
 import ProfileProvider from 'providers/profile'
 import Profile from 'templates/profile'
 import AppBar from 'components/app-bar'
+import { LookBookData } from 'templates/profile/look-book'
 
 interface Props {
   userId: string
@@ -21,7 +21,13 @@ export default function Page({ userId, user, lookbookData } : Props) {
       header={<AppBar title="프로필" back />}
       bottom={<Navigation />}
     >
-      <ProfileProvider editable={false} user={user}>
+      <ProfileProvider
+        editable={false}
+        user={{
+          ...user,
+          userId: parseInt(userId, 10),
+        }}
+      >
         <Profile userId={userId} lookbookData={lookbookData} />
       </ProfileProvider>
     </Layout>

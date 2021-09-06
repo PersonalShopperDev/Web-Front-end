@@ -32,7 +32,7 @@ export default function Profile({
           : [
             <ProfileStylistInner />,
             <ProfileLookBook userId={userId} data={lookbookData} />,
-            <ProfileReview userId={userId} />,
+            <ProfileReview userId={parseInt(userId, 10)} />,
           ]}
       </ProfileTabBar>
     </>
