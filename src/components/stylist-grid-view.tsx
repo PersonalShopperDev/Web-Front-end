@@ -30,7 +30,7 @@ export default function StylistGridView({
   demanders?: DemanderData[]
 }) {
   const { user } = useAuth()
-  const { userType } = user
+  const { userType } = user || {}
 
   const getInitialState = (): State => {
     if (userType !== 'D') {
@@ -44,12 +44,12 @@ export default function StylistGridView({
 
   const hasOption = () => suppliers?.length > 0 && demanders?.length > 0
 
-  const isSelected = (self: State) => {
-    if (self === 'demander') {
-      return state === 'demander' && demanders?.length > 0
-    }
-    return state === 'supplier' && suppliers?.length > 0
-  }
+  // const isSelected = (self: State) => {
+  //   if (self === 'demander') {
+  //     return state === 'demander' && demanders?.length > 0
+  //   }
+  //   return state === 'supplier' && suppliers?.length > 0
+  // }
 
   const select = (selected: State) => {
     setState(selected)
@@ -69,14 +69,16 @@ export default function StylistGridView({
     return <></>
   }
 
+  const isStylist = userType === 'S' || userType === 'W'
+
   return (
     <section className={styles.container}>
       <SectionHeader
         title={(
           <>
-            {userType === 'D' && (
+            {!isStylist && (
               <button
-                className={cn(styles.title, isSelected('supplier') && styles.active)}
+                className={cn(styles.title, styles.active)}
                 type="button"
                 style={{ cursor: hasOption() ? 'pointer' : 'text' }}
                 onClick={() => select('supplier')}
@@ -84,9 +86,9 @@ export default function StylistGridView({
                 나에게 맞는 추천 스타일리스트
               </button>
             )}
-            {userType !== 'D' && (
+            {isStylist && (
               <button
-                className={cn(styles.title, isSelected('demander') && styles.active)}
+                className={cn(styles.title, styles.active)}
                 type="button"
                 style={{ cursor: hasOption() ? 'pointer' : 'text' }}
                 onClick={() => select('demander')}
@@ -99,7 +101,7 @@ export default function StylistGridView({
         moreHref={state === 'supplier' ? '/users/stylist' : '/users/shopper'}
       />
       <section className={styles.grid}>
-        {isSelected('supplier') && suppliers.map(({
+        {!isStylist && suppliers.map(({
           id, img, name, hire = 0, review = 0,
         }) => (
           <LinkWrapper key={id} id={id}>
@@ -116,7 +118,7 @@ export default function StylistGridView({
             </figcaption>
           </LinkWrapper>
         ))}
-        {isSelected('demander') && demanders.map(({
+        {isStylist && demanders.map(({
           id, img, name, styles: demanderStyles,
         }) => (
           <LinkWrapper key={id} id={id}>
