@@ -53,7 +53,10 @@ interface ClothPrice {
 interface Information {
     userType: 'N' | 'D' | 'S' | 'W'
     gender: 'M' | 'F' | ''
-    body?: number
+    body?: {
+      id: number,
+      value: string,
+    }
     skin?: Skin
     clothSize?: ClothSize
     clothPrice? : ClothPrice
