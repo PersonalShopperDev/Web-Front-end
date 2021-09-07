@@ -1,31 +1,35 @@
 import Layout from 'layouts/default'
 import { GetServerSideProps } from 'next'
 import { communicateWithContext } from 'lib/api'
-import { ACCESS_TOKEN, User } from 'providers/auth'
+import { ACCESS_TOKEN, useAuth, User } from 'providers/auth'
 import parseJwt from 'lib/util/jwt'
-import Navigation from 'components/navigation'
 import ProfileProvider from 'providers/profile'
 import Profile from 'templates/profile'
 import AppBar from 'components/app-bar'
 import { LookBookData } from 'templates/profile/look-book'
+import ProfileChatButton from 'components/profile/chat-button'
 
 interface Props {
-  userId: string
+  userId: number
   user: User
   lookbookData : LookBookData
 }
 
 export default function Page({ userId, user, lookbookData } : Props) {
+  const { user: myUser } = useAuth()
+
   return (
     <Layout
       header={<AppBar title="프로필" back />}
-      bottom={<Navigation />}
+      bottom={(myUser.userId !== userId) && (
+        <ProfileChatButton userId={userId} />
+      )}
     >
       <ProfileProvider
         editable={false}
         user={{
           ...user,
-          userId: parseInt(userId, 10),
+          userId,
         }}
       >
         <Profile userId={userId} lookbookData={lookbookData} />

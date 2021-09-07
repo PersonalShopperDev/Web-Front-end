@@ -14,7 +14,7 @@ export interface LookBookData {
     }[]
 }
 
-export default function ProfileLookBook(props : { userId: string, data : LookBookData}) {
+export default function ProfileLookBook(props : { userId: number, data : LookBookData}) {
   return (
     <StatefulSection head="코디룩북">
       <Inner {...props} />
@@ -22,7 +22,7 @@ export default function ProfileLookBook(props : { userId: string, data : LookBoo
   )
 }
 
-function Inner({ userId, data } : { userId: string, data : LookBookData}) {
+function Inner({ userId, data } : { userId: number, data : LookBookData}) {
   const { state, setState, setOnEdit } = useStatefulSection()
 
   const { createAlert } = useAlert()

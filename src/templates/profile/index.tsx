@@ -1,5 +1,6 @@
 import ProfileTabBar from 'components/profile/tab-bar'
 import { useProfile } from 'providers/profile'
+import styles from 'sass/templates/profile/index.module.scss'
 import ProfileHeader from './header'
 import ProfileInner from './inner'
 import ProfileLookBook, { LookBookData } from './look-book'
@@ -12,13 +13,12 @@ export default function Profile({
   userId,
   lookbookData,
 } : {
-  userId : string,
+  userId : number,
   lookbookData: LookBookData
 }) {
   const { userType } = useProfile().user
-
   return (
-    <>
+    <section className={styles.container}>
       <ProfileHeader />
       <ProfileTabBar
         tabLabels={
@@ -28,13 +28,17 @@ export default function Profile({
         }
       >
         {userType === 'D'
-          ? [<ProfileInner />, <ProfileStyle />, <ProfileWardrobe />]
+          ? [
+            <ProfileInner key="0" />,
+            <ProfileStyle key="1" />,
+            <ProfileWardrobe key="2" />,
+          ]
           : [
-            <ProfileStylistInner />,
-            <ProfileLookBook userId={userId} data={lookbookData} />,
-            <ProfileReview userId={parseInt(userId, 10)} />,
+            <ProfileStylistInner key="0" />,
+            <ProfileLookBook key="1" userId={userId} data={lookbookData} />,
+            <ProfileReview key="2" userId={userId} />,
           ]}
       </ProfileTabBar>
-    </>
+    </section>
   )
 }

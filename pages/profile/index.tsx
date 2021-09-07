@@ -10,7 +10,7 @@ import ProfileProvider from 'providers/profile'
 import Profile from 'templates/profile'
 
 interface Props {
-  userId: string
+  userId: number
   lookbookData : LookBookData
 }
 

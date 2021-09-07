@@ -106,9 +106,8 @@ export default function ProfileWardrobe() {
           </div>
         )}
         {closet?.map(({ id, img }) => (
-          <div className={styles.figure}>
+          <div key={id} className={styles.figure}>
             <img
-              key={id}
               className={styles.image}
               src={img}
               alt=""
