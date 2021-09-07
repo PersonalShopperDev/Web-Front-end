@@ -9,7 +9,7 @@ export default function Price() {
   const { price } = user
 
   return (
-    <Field head="코디가격" name="price" type="number" content={price.toString()}>
+    <Field head="코디가격" name="price" type="number" content={price?.toLocaleString('ko-KR') || '0'}>
       <Inner />
     </Field>
   )
@@ -36,7 +36,7 @@ function Inner() {
     <>
       {state === 'default' ? (
         <>
-          {price && <p className={styles.content}>{`${price.toLocaleString('ko-KR')}원`}</p>}
+          {price && <p className={styles.content}>{`${price?.toLocaleString('ko-KR') || 0}원`}</p>}
         </>
       ) : (
         <input ref={inputRef} className={styles.input} type="number" onChange={onChange} onKeyUp={onKeyUp} pattern="\d*" />

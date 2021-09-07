@@ -1,19 +1,13 @@
 import styles from 'sass/components/drawer.module.scss'
 import Icon from 'widgets/icon'
-import { ACCESS_TOKEN, useAuth } from 'providers/auth'
-import parseJwt from 'lib/util/jwt'
-import { getCookie } from 'lib/util/cookie'
+import { useAuth } from 'providers/auth'
 import ModalLink from 'widgets/modal-link'
 import Avatar from './app-bar/avatar'
 
 export default function Drawer() {
   const { user, signOut } = useAuth()
 
-  const { userType, name } = user || {}
-
-  const token = getCookie(ACCESS_TOKEN)
-
-  const { email } = parseJwt(token) || {}
+  const { userType, name, email } = user || {}
 
   const getType = () => {
     if (userType === 'D') {
@@ -69,7 +63,7 @@ const categories = [
   //   link: '/scrap',
   // },
   {
-    title: '결제내역',
+    title: '코디 내역',
     link: '/history',
   },
   {

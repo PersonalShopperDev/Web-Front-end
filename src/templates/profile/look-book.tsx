@@ -2,6 +2,7 @@ import StatefulSection, { useStatefulSection } from 'components/profile/stateful
 import communicate from 'lib/api'
 import ERROR_MESSAGE from 'lib/constants/error'
 import resizeImageFile from 'lib/util/image'
+import { useAuth } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
 import { ChangeEvent, useState, useEffect } from 'react'
 import styles from 'sass/templates/profile/look-book.module.scss'
@@ -24,7 +25,7 @@ export default function ProfileLookBook(props : { userId: number, data : LookBoo
 
 function Inner({ userId, data } : { userId: number, data : LookBookData}) {
   const { state, setState, setOnEdit } = useStatefulSection()
-
+  const { user: myUser } = useAuth()
   const { createAlert } = useAlert()
   const [list, setList] = useState(data.list)
 
@@ -103,11 +104,17 @@ function Inner({ userId, data } : { userId: number, data : LookBookData}) {
     return (
       <section className={styles.empty}>
         <Icon src="background-photo.png" size={72} />
-        <p>
-          나의 패션을 잘 나타내
-          <br />
-          사진을 올려주세요.
-        </p>
+        { myUser.userId === userId ? (
+          <p>
+            나의 패션을 잘 나타내
+            <br />
+            사진을 올려주세요.
+          </p>
+        ) : (
+          <p>
+            아직 등록된 패션이 없어요.
+          </p>
+        )}
       </section>
     )
   }
