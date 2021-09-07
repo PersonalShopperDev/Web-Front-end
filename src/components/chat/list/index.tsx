@@ -42,8 +42,11 @@ export default function ChatList() {
   return (
     <section className={styles.container}>
       {rooms?.map(({
-        id, other, lastChat, lastChatTime, unreadCount,
+        id, other, lastChat, lastChatTime, unreadCount, messages,
       }) => {
+        if (messages.length === 0) {
+          return <></>
+        }
         const { profileImg, name, id: otherId } = other
         return (
           <Room

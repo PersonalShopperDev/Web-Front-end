@@ -3,6 +3,7 @@ import styles from 'sass/components/stylist-grid-view.module.scss'
 import { ReactNode, useState } from 'react'
 import { cn } from 'lib/util'
 import Link from 'next/link'
+import { useAuth } from 'providers/auth'
 
 type State = 'supplier' | 'demander'
 
@@ -28,13 +29,14 @@ export default function StylistGridView({
   suppliers?: SupplierData[]
   demanders?: DemanderData[]
 }) {
+  const { user } = useAuth()
+  const { userType } = user
+
   const getInitialState = (): State => {
-    if (suppliers?.length) {
-      return 'supplier'
-    }
-    if (demanders?.length) {
+    if (userType !== 'D') {
       return 'demander'
     }
+
     return 'supplier'
   }
 
@@ -72,24 +74,24 @@ export default function StylistGridView({
       <SectionHeader
         title={(
           <>
-            {suppliers?.length > 0 && (
+            {userType === 'D' && (
               <button
                 className={cn(styles.title, isSelected('supplier') && styles.active)}
                 type="button"
                 style={{ cursor: hasOption() ? 'pointer' : 'text' }}
                 onClick={() => select('supplier')}
               >
-                스타일리스트
+                나에게 맞는 추천 스타일리스트
               </button>
             )}
-            {demanders?.length > 0 && (
+            {userType !== 'D' && (
               <button
                 className={cn(styles.title, isSelected('demander') && styles.active)}
                 type="button"
                 style={{ cursor: hasOption() ? 'pointer' : 'text' }}
                 onClick={() => select('demander')}
               >
-                쇼퍼
+                코디가 필요한 쇼퍼
               </button>
             )}
           </>
