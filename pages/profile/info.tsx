@@ -1,19 +1,25 @@
 import Layout from 'layouts/default'
-import Information from 'templates/information/index'
-import OnboardingProvider from 'providers/onboarding'
 import { GetServerSideProps } from 'next'
-import { ACCESS_TOKEN } from 'providers/auth'
+import { ACCESS_TOKEN, useAuth } from 'providers/auth'
 import parseJwt from 'lib/util/jwt'
-import DrawerAppBar from 'components/app-bar/drawer'
+import AppBar from 'components/app-bar'
+import ProfileInfo from 'templates/profile/info'
+import ProfileProvider from 'providers/profile'
 
-export default function Page() {
+interface Props {
+  userId: string
+}
+
+export default function Page({ userId } : Props) {
+  const { user } = useAuth()
+
   return (
     <Layout
-      header={<DrawerAppBar title="내정보" isLogined />}
+      header={<AppBar title="개인정보" back />}
     >
-      <OnboardingProvider>
-        <Information />
-      </OnboardingProvider>
+      <ProfileProvider editable user={user}>
+        <ProfileInfo />
+      </ProfileProvider>
     </Layout>
   )
 }
@@ -29,7 +35,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
-  const { userType } = parseJwt(token)
+  const { userType, userId } = parseJwt(token)
 
   if (userType === 'N') {
     return {
@@ -41,6 +47,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   return {
-    props: {},
+    props: {
+      userId,
+    },
   }
 }

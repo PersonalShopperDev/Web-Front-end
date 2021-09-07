@@ -12,9 +12,11 @@ import { useInfinityScroll } from 'providers/infinity-scroll'
 export default function Review({
   id,
   reviewId,
+  isProfile,
 }: {
   id: number,
   reviewId?: number,
+  isProfile?: boolean,
 }) {
   const [slides, setSlids] = useState([])
   const [imageIndex, setImageIndex] = useState(1)
@@ -61,10 +63,18 @@ export default function Review({
     setId(id)
     if (reviewId) setTargetId(reviewId)
   }, [])
+
   return (
     <>
+      {isProfile && review && review.totalCount === 0
+      && (
+      <div className={styles.noreviewContainer}>
+        <Icon src="profileReview.png" size={72} />
+        <span>아직 등록된 리뷰가 없어요.</span>
+      </div>
+      )}
       <div className={styles.reviewContainer}>
-        {review?.rating
+        {review?.rating && !isProfile
         && (
         <div className={styles.reviewBox}>
           <div className={styles.leftItem}>
@@ -179,4 +189,5 @@ export default function Review({
 
 Review.defaultProps = {
   reviewId: null,
+  isProfile: false,
 }

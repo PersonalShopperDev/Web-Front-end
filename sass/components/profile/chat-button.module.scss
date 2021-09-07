@@ -1,0 +1,59 @@
+@use '../../lib/colors.scss' as colors;
+
+.container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 0 17px 17px 17px;
+}
+
+.button {
+    padding: 12px;
+
+    width: 100%;
+
+    border-radius: 7px;
+
+    color: white;
+    background-color: colors.$accent;
+}
+
+.recommend {
+    position: absolute;
+    bottom: calc(100% + 12px);
+
+    font-size: 12px;
+    
+    padding: 7px 10px;
+
+    color: white;
+    background-color: colors.$accent;
+
+    width: fit-content;
+
+    border-radius: 4px;
+    p {
+        position: relative;
+        z-index: 99;
+
+    }
+
+    &::before {
+        content : '';
+        z-index: 98;
+        position: absolute;
+
+        left: 50%;
+        top: 100%;
+        
+        width: 11px;
+        height: 11px;
+        background-color: colors.$accent;
+
+        transform-origin: center;
+
+        transform: rotate(45deg) translateX(-100%);
+    }
+}

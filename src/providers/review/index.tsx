@@ -62,11 +62,11 @@ export default function ReviewProvider({
     const page = ReviewRef.current.value.length / pageNum
     if (Math.floor(ReviewRef.current.value.length / pageNum) !== page) return
     const res = await communicate({ url: `/profile/${ReviewRef.current.id}/review?page=${page}` })
-    
+
     if (res.status !== 200) {
       return
     }
-    
+
     const newReview = await res.json()
     ReviewRef.current.value = ReviewRef.current.value.concat(newReview.list)
     if (targetId) {

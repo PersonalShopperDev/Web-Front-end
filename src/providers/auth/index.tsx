@@ -28,12 +28,23 @@ export interface BodyStat {
   }
 }
 
+export interface Style {
+  id: number,
+  value: string,
+}
+
 export interface User {
   userType: UserType
   userId: number
   name: string
+  phone: string
+  email: string
+  gender: 'M' | 'F'
   introduction: string
-  styles: string[]
+  styles: {
+    male: Style[],
+    female: Style[],
+  }
   img: string
   closet: {id: number, img: string}[]
   careerList: { value: string, type: number }[]
@@ -158,7 +169,7 @@ export default function AuthProvider({
     if (res.status === 200) {
       const data = await res.json()
       const { userId } = parseJwt(getCookie(ACCESS_TOKEN))
-      setUser({ ...data, userId: parseInt(userId, 10) })
+      setUser({ ...data, userId })
       return true
     }
     return false

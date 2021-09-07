@@ -1,14 +1,21 @@
 /* eslint-disable no-nested-ternary */
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styles from 'sass/components/size.module.scss'
 import { useOnboarding } from 'providers/onboarding'
+import communicate from 'lib/api'
 
 export default function Size({
   isOnboarding,
+  isEdit,
 }: {
   isOnboarding?: boolean
+  isEdit?: boolean
 }) {
-  const { information, setData, setEdit } = useOnboarding()
+  const {
+    information, setOnEdit, fetchInformationData, setData,
+  } = useOnboarding()
+  const [size, setSize] = useState({})
+  const sizeRef = useRef({})
   const femaleTopLists = ['44사이즈', '55사이즈', '66사이즈', '77사이즈']
   const maleTopLists = ['S사이즈', 'M사이즈', 'L사이즈', 'XL사이즈']
   const femaleBottomLists = ['S사이즈', 'M사이즈', 'L사이즈']
@@ -43,10 +50,29 @@ export default function Size({
     sizeLists: hipLists,
     key: 'hipSize',
   }]
-  const onClick = (key, value) => {
-    setData(key, value)
-    if (!isOnboarding) setEdit('size')
+
+  const onEditSize = async () => {
+    await communicate({ url: '/profile', payload: { clothSize: sizeRef.current }, method: 'PATCH' })
+    fetchInformationData()
   }
+
+  const onClick = (key: string, value: number) => {
+    setSize((prev) => ({ ...prev, [key]: value }))
+    setData(key, value)
+    sizeRef.current[key] = value
+  }
+
+  useEffect(() => {
+    if (information.clothSize) {
+      setSize(information.clothSize)
+      sizeRef.current = information.clothSize
+    }
+  }, [])
+
+  useEffect(() => {
+    if (isEdit) setOnEdit(onEditSize)
+  }, [isEdit])
+
   return (
     <>
       {sizeLists.map((value) => (
@@ -57,14 +83,26 @@ export default function Size({
           <div className={styles.container}>
             {value.sizeLists.map((item, index) => (
               <div key={Math.random()}>
-                <button
-                  type="button"
-                  className={index === information[value.key]
-                    ? isOnboarding ? styles.editSize : styles.selectedSize : styles.notSelectedSize}
-                  onClick={() => onClick(value.key, index)}
-                >
-                  <span>{item}</span>
-                </button>
+                {isEdit
+                  ? (
+                    <button
+                      type="button"
+                      className={index === size[value.key]
+                        ? styles.editSize : styles.notSelectedSize}
+                      onClick={() => onClick(value.key, index)}
+                    >
+                      <span>{item}</span>
+                    </button>
+                  )
+                  : (
+                    <div
+                      className={index === size[value.key]
+                        ? isOnboarding ? styles.editSize
+                          : styles.selectedSize : styles.notSelectedSize}
+                    >
+                      <span>{item}</span>
+                    </div>
+                  ) }
               </div>
             ))}
           </div>
@@ -76,4 +114,5 @@ export default function Size({
 
 Size.defaultProps = {
   isOnboarding: false,
+  isEdit: true,
 }

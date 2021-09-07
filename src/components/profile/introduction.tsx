@@ -1,13 +1,17 @@
-import { useAuth } from 'providers/auth'
+import { useProfile } from 'providers/profile'
 import TextareaField from './textarea-field'
 
-interface IntroductionData {
-    introduction: string
-}
+export default function Introduction() {
+  const { user } = useProfile()
+  const { introduction } = user
 
-export default function Introduction({ data } : { data: IntroductionData}) {
-  const { user } = useAuth()
-  const { introduction } = user || data || {}
-
-  return <TextareaField head="자기소개" name="introduction" content={introduction} maxLength={100} />
+  return (
+    <TextareaField
+      head="자기소개"
+      name="introduction"
+      content={introduction}
+      maxLength={100}
+      placeholder="나의 패션에 대해서 소개해 주세요:)"
+    />
+  )
 }

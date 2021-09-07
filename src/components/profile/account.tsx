@@ -1,40 +1,68 @@
-import Link from 'next/link'
-import { useAuth } from 'providers/auth'
+import { useProfile } from 'providers/profile'
+import { useEffect, useRef } from 'react'
 import styles from 'sass/components/profile/account.module.scss'
-import Icon from 'widgets/icon'
-import Section from './section'
+import StatefulSection, { useStatefulSection } from './stateful-section'
 
-interface AccountData {
-  account: string,
-  bank: string,
-  accountUser: string,
+export default function Account() {
+  return (
+    <StatefulSection head="안전거래 계좌">
+      <Inner />
+    </StatefulSection>
+  )
 }
 
-export default function Account({ data } : { data: AccountData }) {
-  const { user } = useAuth()
-  const { account, bank } = user || data || {}
+function Inner() {
+  const { state, setState, setOnEdit } = useStatefulSection()
+
+  const { user } = useProfile()
+  const { account, bank, accountUser } = user
+
+  const accountUserRef = useRef<HTMLInputElement>()
+  const accountRef = useRef<HTMLInputElement>()
+  const bankRef = useRef<HTMLInputElement>()
+
+  const onEdit = async () => {
+    setState('default')
+  }
+
+  useEffect(() => {
+    setOnEdit(onEdit)
+    if (state !== 'edit') {
+      return
+    }
+    accountUserRef.current.value = accountUser
+    bankRef.current.value = bank
+    accountRef.current.value = account
+  }, [state])
 
   return (
-    <Section
-      head="계좌 정보"
-      action={(
-        <Link href="/profile/account">
-          <a href="/profile/account">
-            <Icon src="edit.png" size={17} />
-          </a>
-        </Link>
+    <div className={styles.container}>
+      {state === 'edit' ? (
+        <>
+          <div className={styles.inputContainer}>
+            <div className={styles.label}>
+              예금주
+            </div>
+            <input ref={accountUserRef} className={styles.input} type="text" placeholder="예금주" autoComplete="off" />
+          </div>
+          <div className={styles.inputContainer}>
+            <div className={styles.label}>
+              은행이름
+            </div>
+            <input ref={bankRef} className={styles.input} type="text" placeholder="은행이름" autoComplete="off" />
+          </div>
+          <div className={styles.inputContainer}>
+            <div className={styles.label}>
+              계좌번호
+            </div>
+            <input ref={accountRef} className={styles.input} type="text" placeholder="계좌번호" autoComplete="off" />
+          </div>
+        </>
+      ) : (
+        <div className={styles.text}>
+          {`${accountUser} ${bank} ${account}`}
+        </div>
       )}
-    >
-      <div className={styles.container}>
-        <div className={styles.row}>
-          <span className={styles.label}>은행</span>
-          <span className={styles.value}>{bank}</span>
-        </div>
-        <div className={styles.row}>
-          <span className={styles.label}>계좌 번호</span>
-          <span className={styles.value}>{account}</span>
-        </div>
-      </div>
-    </Section>
+    </div>
   )
 }
