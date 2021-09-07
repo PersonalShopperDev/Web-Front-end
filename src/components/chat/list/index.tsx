@@ -44,11 +44,12 @@ export default function ChatList() {
       {rooms?.map(({
         id, other, lastChat, lastChatTime, unreadCount,
       }) => {
-        const { profileImg, name } = other
+        const { profileImg, name, id: otherId } = other
         return (
           <Room
             key={id}
             id={id}
+            otherId={otherId}
             img={profileImg}
             unreadCount={unreadCount}
             name={name}
