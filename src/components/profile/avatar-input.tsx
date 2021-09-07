@@ -16,7 +16,7 @@ export default function AvatarInput() {
   const { fetchUser } = useAuth()
   const { createAlert } = useAlert()
 
-  const { img } = user
+  const { profileImg: img } = user
 
   const upload = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files[0]) {

@@ -45,7 +45,7 @@ export interface User {
     male: Style[],
     female: Style[],
   }
-  img: string
+  profileImg: string
   closet: {id: number, img: string}[]
   careerList: { value: string, type: number }[]
   reviewList: ReviewListData[]

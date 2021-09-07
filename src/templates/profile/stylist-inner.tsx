@@ -6,6 +6,7 @@ import Divider from 'widgets/divider'
 import styles from 'sass/templates/profile/inner.module.scss'
 import { useProfile } from 'providers/profile'
 import Price from 'components/profile/price'
+import Phonenumber from 'components/profile/phonenumber'
 
 export default function ProfileStylistInner() {
   const { editable } = useProfile()
@@ -25,6 +26,12 @@ export default function ProfileStylistInner() {
       )}
       <Divider />
       <Price />
+      {editable && (
+        <>
+          <Divider />
+          <Phonenumber />
+        </>
+      )}
     </section>
   )
 }
