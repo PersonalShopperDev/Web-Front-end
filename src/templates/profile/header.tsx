@@ -38,7 +38,7 @@ export default function ProfileHeader() {
             {user.userType === 'S' ? '스타일리스트' : '일반쇼퍼'}
           </div>
           <div className={styles.email}>
-            {email || 'sdasd@asdas.dcom'}
+            {email || ''}
           </div>
         </div>
       </div>
@@ -46,15 +46,15 @@ export default function ProfileHeader() {
         <div className={styles.stylistCounter}>
           <div className={styles.cell}>
             <div className={styles.property}>평점</div>
-            <div>{rating}</div>
+            <div>{rating || 0}</div>
           </div>
           <div className={styles.cell}>
             <div className={styles.property}>리뷰</div>
-            <div>{reviewCount}</div>
+            <div>{reviewCount || 0}</div>
           </div>
           <div className={styles.cell}>
             <div className={styles.property}>코디</div>
-            <div>{hireCount}</div>
+            <div>{hireCount || 0}</div>
           </div>
         </div>
       )}

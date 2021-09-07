@@ -7,8 +7,9 @@ import communicate from 'lib/api'
 import { useAlert } from 'providers/dialog/alert/inner'
 import ERROR_MESSAGE from 'lib/constants/error'
 import resizeImageFile from 'lib/util/image'
-import { useProfile } from 'providers/profile'
+
 import { useAuth } from 'providers/auth'
+import { useProfile } from 'providers/profile'
 
 export default function AvatarInput() {
   const { user, editable } = useProfile()
