@@ -8,6 +8,7 @@ import Profile from 'templates/profile'
 import AppBar from 'components/app-bar'
 import { LookBookData } from 'templates/profile/look-book'
 import ProfileChatButton from 'components/profile/chat-button'
+import OnboardingProvider from 'providers/onboarding'
 
 interface Props {
   userId: number
@@ -19,22 +20,24 @@ export default function Page({ userId, user, lookbookData } : Props) {
   const { user: myUser } = useAuth()
 
   return (
-    <Layout
-      header={<AppBar title="프로필" back />}
-      bottom={(myUser.userId !== userId) && (
-        <ProfileChatButton userId={userId} />
-      )}
-    >
-      <ProfileProvider
-        editable={false}
-        user={{
-          ...user,
-          userId,
-        }}
+    <OnboardingProvider userId={userId}>
+      <Layout
+        header={<AppBar title="프로필" back />}
+        bottom={(myUser.userId !== userId) && (
+          <ProfileChatButton userId={userId} />
+        )}
       >
-        <Profile userId={userId} lookbookData={lookbookData} />
-      </ProfileProvider>
-    </Layout>
+        <ProfileProvider
+          editable={false}
+          user={{
+            ...user,
+            userId,
+          }}
+        >
+          <Profile userId={userId} lookbookData={lookbookData} />
+        </ProfileProvider>
+      </Layout>
+    </OnboardingProvider>
   )
 }
 

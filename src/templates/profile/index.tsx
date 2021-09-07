@@ -39,6 +39,7 @@ export default function Profile({
             <ProfileReview key="2" userId={userId} />,
           ]}
       </ProfileTabBar>
+      <div className={styles.elbowroom} />
     </section>
   )
 }

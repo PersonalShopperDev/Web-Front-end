@@ -114,6 +114,12 @@ export default function Price({
         : (
           <>
             {priceLists.map((item) => {
+              const price = information.clothPrice[item.key]
+
+              if (!price) {
+                return null
+              }
+
               const { min, max } = information.clothPrice[item.key]
               return (
                 <div key={item.title} className={styles.itemContainer}>

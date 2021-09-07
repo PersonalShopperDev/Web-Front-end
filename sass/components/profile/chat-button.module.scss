@@ -1,16 +1,12 @@
 @use '../../lib/colors.scss' as colors;
 
 .container {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    padding: 17px;
+    padding: 0 17px 17px 17px;
 }
 
 .button {
@@ -26,7 +22,7 @@
 
 .recommend {
     position: absolute;
-    bottom: 100%;
+    bottom: calc(100% + 12px);
 
     font-size: 12px;
     
@@ -36,9 +32,12 @@
     background-color: colors.$accent;
 
     width: fit-content;
+
+    border-radius: 4px;
     p {
         position: relative;
         z-index: 99;
+
     }
 
     &::before {
@@ -49,8 +48,8 @@
         left: 50%;
         top: 100%;
         
-        width: 18px;
-        height: 18px;
+        width: 11px;
+        height: 11px;
         background-color: colors.$accent;
 
         transform-origin: center;

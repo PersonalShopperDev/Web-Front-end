@@ -81,8 +81,10 @@ export const useOnboarding = () => useContext(OnboardingContext)
 
 export default function OnboardingProvider({
   children,
+  userId,
 }: {
   children: React.ReactNode
+  userId? : number
 }) {
   const [information, setInformation] = useState<Information>({
     userType: 'N',
@@ -152,7 +154,7 @@ export default function OnboardingProvider({
 
   const fetchInformationData = async () : Promise<void> => {
     const res = await communicate({
-      url: '/profile',
+      url: `/profile${userId ? `/${userId}` : ''}`,
     })
     if (res.status === 200) {
       const data = await res.json()
@@ -191,4 +193,8 @@ export default function OnboardingProvider({
   }
 
   return <OnboardingContext.Provider value={value}>{children}</OnboardingContext.Provider>
+}
+
+OnboardingProvider.defaultProps = {
+  userId: null,
 }

@@ -11,7 +11,8 @@ type State = 'default' | 'edit'
 
 export default function ProfileWardrobe() {
   const [state, setState] = useState<State>('default')
-  const { userId } = useProfile().user
+  const { user, editable } = useProfile()
+  const { userId } = user
   const { createAlert } = useAlert()
 
   const [closet, setCloset] = useState<{id: number, img: string}[]>([])
@@ -80,6 +81,7 @@ export default function ProfileWardrobe() {
 
   return (
     <section className={styles.container}>
+      {editable && (
       <div className={styles.header}>
         <h4>내 옷장</h4>
         <button
@@ -90,6 +92,7 @@ export default function ProfileWardrobe() {
           {state === 'edit' ? '확인' : '수정'}
         </button>
       </div>
+      )}
       <div className={styles.grid}>
         {state === 'edit' && (
           <div className={styles.figure}>
