@@ -3,32 +3,26 @@ import ERROR_MESSAGE from 'lib/constants/error'
 import { cn } from 'lib/util'
 import { useAuth } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
+import { useProfile } from 'providers/profile'
 import { useEffect, useState, useRef } from 'react'
 import styles from 'sass/components/profile/height-weight.module.scss'
 import StatefulSection, { useStatefulSection } from './stateful-section'
 
-interface HeightWeightData {
-  bodyStat: {
-    isPublic: boolean
-    height: number
-    weight: number
-  }
-}
-
-export default function HeightWeight({ data } : { data: HeightWeightData }) {
+export default function HeightWeight() {
   return (
     <StatefulSection head="내 체형">
-      <Inner data={data} />
+      <Inner />
     </StatefulSection>
   )
 }
 
-function Inner({ data } : { data: HeightWeightData}) {
-  const { user, fetchUser } = useAuth()
+function Inner() {
+  const { user } = useProfile()
+  const { fetchUser } = useAuth()
   const { state, setOnEdit, setState } = useStatefulSection()
   const { createAlert } = useAlert()
 
-  const { bodyStat } = user || data || {}
+  const { bodyStat } = user
 
   const bodyStatRef = useRef(bodyStat)
 

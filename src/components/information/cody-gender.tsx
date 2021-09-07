@@ -8,7 +8,7 @@ export default function CodyGender({
 }: {
   isOnboarding?: boolean
 }) {
-  const { information, setData, setEdit } = useOnboarding()
+  const { information, setData } = useOnboarding()
   const genderLists: genderType[] = [{
     gender: 'supplyFemale',
     selectedPath: '/icons/selectedFemaleCareer.png',
@@ -22,7 +22,6 @@ export default function CodyGender({
   }]
   const onClickEach = (gender) => {
     setData(gender, !information[gender])
-    if (!isOnboarding) setEdit('codyGender')
   }
   return (
     <div className={isOnboarding ? styles.container : styles.infoContainer}>

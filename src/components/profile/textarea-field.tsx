@@ -1,3 +1,5 @@
+import { cn } from 'lib/util'
+import { useProfile } from 'providers/profile'
 import { useEffect, useRef } from 'react'
 import styles from 'sass/components/profile/textarea-field.module.scss'
 import Field, { useField } from './field'
@@ -8,11 +10,13 @@ export default function TextareaField({
   name,
   content,
   maxLength,
+  placeholder,
 } : {
   head: string
   name: string,
   content?: string,
   maxLength?: number
+  placeholder? : string,
 }) {
   return (
     <Field
@@ -21,7 +25,7 @@ export default function TextareaField({
       content={content}
       maxLength={maxLength}
     >
-      <Inner content={content} maxLength={maxLength} />
+      <Inner content={content} maxLength={maxLength} placeholder={placeholder} />
     </Field>
   )
 }
@@ -29,18 +33,21 @@ export default function TextareaField({
 TextareaField.defaultProps = {
   content: null,
   maxLength: null,
+  placeholder: null,
 }
 
 function Inner({
   content,
   maxLength,
+  placeholder,
 } : {
   content: string,
   maxLength: number,
+  placeholder: string,
 }) {
+  const { editable } = useProfile()
   const { state } = useStatefulSection()
   const { text, setText, onChange } = useField()
-  const defaultValue = '내용을 입력해주세요.'
   const textareaRef = useRef<HTMLTextAreaElement>()
 
   useEffect(() => {
@@ -56,14 +63,18 @@ function Inner({
   return (
     <>
       {state === 'default'
-        ? <p className={styles.content}>{content || defaultValue}</p>
-        : (
+        ? (
+          <p className={cn(styles.content, content || styles.placeholder)}>
+            {content || (editable && placeholder)}
+          </p>
+        ) : (
           <div className={styles.inputWrapper}>
             <textarea
               ref={textareaRef}
               className={styles.input}
               maxLength={maxLength}
               onChange={onChange}
+              placeholder={placeholder}
             />
             {maxLength && (
               <div className={styles.limit}>

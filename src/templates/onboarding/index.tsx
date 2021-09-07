@@ -17,26 +17,32 @@ export default function Onboarding() {
   const { information, putOnboardingInfo } = useOnboarding()
   const [stepIndex, setStepIndex] = useState(1)
   const [nextStep, setNextStep] = useState(false)
+  const [stepTwoNext, setStepTwoNext] = useState(false)
   const [indexNum, setIndexNum] = useState(6)
   const router = useRouter()
   const step3 = 3
+  const step2 = 2
 
   const stepComponents = [<Step1 />,
-    <Step2 />,
+    <Step2 nextStep={stepTwoNext} />,
     <Step3
       nextStep={nextStep}
     />,
     <Step4 />, <Step5 />, <Step6 />]
   const onPrevButtonClick = () => {
-    if (stepIndex > 1 && !nextStep) {
-      setStepIndex(+stepIndex - 1)
-    } else if (nextStep) {
+    if (nextStep && stepIndex === step3) {
       setNextStep(!nextStep)
+    } else if (stepTwoNext && stepIndex === step2) {
+      setStepTwoNext(!stepTwoNext)
+    } else {
+      setStepIndex(+stepIndex - 1)
     }
   }
   const onNextButtonClick = async () => {
     if (stepIndex < indexNum) {
-      if (stepIndex === step3 && !nextStep && information.userType === 'D' && information.gender === 'F') {
+      if (stepIndex === step2 && !stepTwoNext) {
+        setStepTwoNext(true)
+      } else if (stepIndex === step3 && !nextStep && information.userType === 'D' && information.gender === 'F') {
         setNextStep(true)
       } else {
         setStepIndex(+stepIndex + 1)
@@ -47,6 +53,7 @@ export default function Onboarding() {
       router.push('/profile')
     }
   }
+
   useEffect(() => {
     if (information !== null && information.userType === 'S') {
       setIndexNum(5)

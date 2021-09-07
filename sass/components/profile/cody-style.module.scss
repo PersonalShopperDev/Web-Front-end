@@ -1,22 +1,71 @@
 @use '../../lib/colors.scss' as colors;
 
 .container {
-    margin-top: 9px;
+    margin-top: 13px;
     display: flex;
+}
+
+.row {
+    margin-top: 13px;
+    display: flex;
+    align-items: center;
+
+    color: colors.$primary-300;
+
+    font-size: 14px;
+
+    span {
+        margin-left: 7px;
+    }
+
+    &.active {
+        color: colors.$primary-700;
+    }
+}
+
+.maximum {
+    margin-top: 9px;
+    margin-bottom: 11px;
+
+    color: colors.$primary-500;
+    font-size: 12px;
+}
+
+.selection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.selectionView {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
 }
 
 .style {
     white-space: nowrap;
-    padding: 0 11px;
+    padding: 3px 11px 4px 11px;
     color: colors.$primary-600;
     font-size: 10px;
-    height: 22px;
     border-radius: 11px;
     border: 1px solid colors.$primary-300;
     display: flex;
     justify-content: center;
     align-items: center;
-    & + & {
-        margin-left: 6px;
+
+    &.active {
+        border: 1px solid colors.$accent;
+        color: white;
+        background-color: colors.$accent;
     }
+}
+
+.label {
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1.8;
+    
+    white-space: nowrap;
+    margin-right: 8px;
 }

@@ -4,21 +4,18 @@ import styles from 'sass/components/profile/avatar-input.module.scss'
 import Avatar from 'widgets/avatar'
 import Icon from 'widgets/icon'
 import communicate from 'lib/api'
-import { useAuth } from 'providers/auth'
 import { useAlert } from 'providers/dialog/alert/inner'
 import ERROR_MESSAGE from 'lib/constants/error'
 import resizeImageFile from 'lib/util/image'
+import { useProfile } from 'providers/profile'
+import { useAuth } from 'providers/auth'
 
-interface AvatarInputData {
-  name: string
-  img: string
-}
-
-export default function AvatarInput({ data } : { data: AvatarInputData}) {
-  const { user, fetchUser } = useAuth()
+export default function AvatarInput() {
+  const { user, editable } = useProfile()
+  const { fetchUser } = useAuth()
   const { createAlert } = useAlert()
 
-  const { name, img } = user || data || {}
+  const { img } = user
 
   const upload = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files[0]) {
@@ -51,6 +48,7 @@ export default function AvatarInput({ data } : { data: AvatarInputData}) {
     <section className={styles.container}>
       <div className={styles.avatarContainer}>
         <Avatar src={img} size={96} />
+        {editable && (
         <label className={styles.input} htmlFor="profilePicker">
           <Icon src="camera.png" size={17} />
           <input
@@ -61,8 +59,8 @@ export default function AvatarInput({ data } : { data: AvatarInputData}) {
             style={{ display: 'none' }}
           />
         </label>
+        )}
       </div>
-      <h2 className={styles.name}>{name}</h2>
     </section>
   )
 }

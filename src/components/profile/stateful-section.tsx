@@ -1,8 +1,8 @@
+import { useProfile } from 'providers/profile'
 import React, {
   useState, useRef, createContext, useContext, SetStateAction, Dispatch, ReactNode,
 } from 'react'
 import styles from 'sass/components/profile/field.module.scss'
-import Icon from 'widgets/icon'
 import Section from './section'
 
 type State = 'default' | 'edit' | 'pending'
@@ -26,6 +26,7 @@ export default function StatefulSection({
   head: ReactNode
   children: React.ReactNode
 }) {
+  const { editable } = useProfile()
   const [state, setState] = useState<State>('default')
   const onEdit = useRef<OnEditCallback>()
 
@@ -33,13 +34,13 @@ export default function StatefulSection({
     onEdit.current = callback
   }
 
-  const onClick = () => {
+  const onClick = async () => {
     if (state === 'default') {
       setState('edit')
       return
     }
     if (state === 'edit') {
-      onEdit.current?.call(null)
+      await onEdit.current()
     }
   }
 
@@ -52,14 +53,14 @@ export default function StatefulSection({
   return (
     <Section
       head={head}
-      action={(
+      action={editable && (
         <button
           type="button"
           className={styles.button}
           onClick={onClick}
         >
           {state === 'default'
-            ? <Icon src="edit.png" size={17} />
+            ? '수정'
             : '완료'}
         </button>
       )}

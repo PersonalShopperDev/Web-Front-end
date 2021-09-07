@@ -39,8 +39,8 @@ export default function Page({ data } : Props) {
     >
       { !userType ? <LoginBanner /> : <Banner data={banners} />}
       <AreYouNoob />
-      <BeforeAfter data={reviews} />
       <StylistGridView suppliers={suppliers} demanders={userType !== 'D' && demanders} />
+      <BeforeAfter data={reviews} />
     </Layout>
   )
 }

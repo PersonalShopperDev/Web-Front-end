@@ -2,31 +2,39 @@ import React, { useEffect, useState, useRef } from 'react'
 import styles from 'sass/components/input-range.module.scss'
 import { PriceLists } from 'components/onboarding/demand-step5'
 import { useOnboarding } from 'providers/onboarding'
+import communicate from 'lib/api'
 
 export default function InputRange({
   priceLists,
   isOnboarding,
+  isEdit,
 }: {
   priceLists: PriceLists
   isOnboarding?: boolean,
+  isEdit?: boolean,
 }) {
-  const { information, setData, setEdit } = useOnboarding()
+  const {
+    information, setData, setOnEdit, fetchInformationData,
+  } = useOnboarding()
   const priceStep = 5000
   const rangeLeftRef = useRef<HTMLInputElement>()
   const rangeRightRef = useRef<HTMLInputElement>()
   const thumbLeftRef = useRef<HTMLDivElement>()
   const thumbRightRef = useRef<HTMLDivElement>()
   const rangeRef = useRef<HTMLDivElement>()
-  const [minPrice, setMinPrice] = useState(information[priceLists.key] === undefined
-    ? priceLists.minPrice : information[priceLists.key].min)
-  const [maxPrice, setMaxPrice] = useState(information[priceLists.key] === undefined
-    ? priceLists.maxPrice : information[priceLists.key].max)
+  const priceRef = useRef(null)
+  const [minPrice, setMinPrice] = useState(information.clothPrice === undefined
+    ? priceLists.minPrice : information.clothPrice[priceLists.key].min)
+  const [maxPrice, setMaxPrice] = useState(information.clothPrice === undefined
+    ? priceLists.maxPrice : information.clothPrice[priceLists.key].max)
 
   const setLeftValue = () => {
     rangeLeftRef.current.value = Math.min(parseInt(rangeLeftRef.current.value, 10),
       parseInt(rangeRightRef.current.value, 10) - priceStep).toString()
     setData(priceLists.key, parseInt(rangeLeftRef.current.value, 10), true)
-    if (!isOnboarding) setEdit('price')
+    if (information.clothPrice) {
+      priceRef.current[priceLists.key].min = parseInt(rangeLeftRef.current.value, 10)
+    }
     setMinPrice(parseInt(rangeLeftRef.current.value, 10))
     const percent = ((parseInt(rangeLeftRef.current.value, 10) - priceLists.minPrice)
     / (priceLists.maxPrice - priceLists.minPrice)) * 100
@@ -37,7 +45,9 @@ export default function InputRange({
     rangeRightRef.current.value = Math.max(parseInt(rangeRightRef.current.value, 10),
       parseInt(rangeLeftRef.current.value, 10) + priceStep).toString()
     setData(priceLists.key, parseInt(rangeRightRef.current.value, 10), false, true)
-    if (!isOnboarding) setEdit('price')
+    if (information.clothPrice) {
+      priceRef.current[priceLists.key].max = parseInt(rangeRightRef.current.value, 10)
+    }
     setMaxPrice(parseInt(rangeRightRef.current.value, 10))
     const percent = ((parseInt(rangeRightRef.current.value, 10) - priceLists.minPrice)
     / (priceLists.maxPrice - priceLists.minPrice)) * 100
@@ -56,12 +66,10 @@ export default function InputRange({
     if (rangeLeftRef !== null) {
       rangeLeftRef.current.addEventListener('input', setLeftValue)
       setData(priceLists.key, parseInt(rangeLeftRef.current.value, 10), true)
-      if (!isOnboarding) setEdit('price')
     }
     if (rangeRightRef !== null) {
       rangeRightRef.current.addEventListener('input', setRightValue)
       setData(priceLists.key, parseInt(rangeRightRef.current.value, 10), false, true)
-      if (!isOnboarding) setEdit('price')
     }
     thumbLeftRef.current.style.left = `${((parseInt(rangeLeftRef.current.value, 10) - priceLists.minPrice)
       / (priceLists.maxPrice - priceLists.minPrice)) * 100}%`
@@ -75,6 +83,7 @@ export default function InputRange({
   useEffect(() => {
     rangeLeftRef.current.addEventListener('input', setLeftValue)
     rangeRightRef.current.addEventListener('input', setRightValue)
+    if (information.clothPrice) priceRef.current = information.clothPrice
     if (isOnboarding) {
       document.getElementById('stepContainer').addEventListener('scroll', scrollEventListner)
     } else {
@@ -86,6 +95,29 @@ export default function InputRange({
       if (rangeRightRef.current !== null) rangeRightRef.current.removeEventListener('input', setRightValue)
     }
   }, [])
+
+  const onEditPrice = async () => {
+    const payload: any = {
+      topPrice: priceRef.current.topPrice,
+      bottomPrice: priceRef.current.bottomPrice,
+      shoesPrice: priceRef.current.shoesPrice,
+      bagPrice: priceRef.current.bagPrice,
+    }
+
+    if (information.gender === 'M') {
+      payload.hatPrice = priceRef.current.hatPrice
+    } else {
+      payload.dressPrice = priceRef.current.dressPrice
+      payload.accessoryPrice = priceRef.current.accessoryPrice
+    }
+    await communicate({ url: '/profile', payload: { clothPrice: payload }, method: 'PATCH' })
+    fetchInformationData()
+  }
+
+  useEffect(() => {
+    if (isEdit) setOnEdit(onEditPrice)
+  }, [isEdit])
+
   return (
     <div className={styles.container}>
       <input
@@ -93,8 +125,8 @@ export default function InputRange({
         min={priceLists.minPrice}
         max={priceLists.maxPrice}
         step={priceStep}
-        defaultValue={information[priceLists.key] === undefined
-          ? priceLists.minPrice : information[priceLists.key].min}
+        defaultValue={information.clothPrice === undefined
+          ? priceLists.minPrice : information.clothPrice[priceLists.key].min}
         className={styles.rangeLeft}
         ref={rangeLeftRef}
       />
@@ -103,9 +135,9 @@ export default function InputRange({
         min={priceLists.minPrice}
         max={priceLists.maxPrice}
         step={priceStep}
-        defaultValue={information[priceLists.key] === undefined
-          ? priceLists.maxPrice : information[priceLists.key].max}
-        className={styles.rangeRight}
+        defaultValue={information.clothPrice === undefined
+          ? priceLists.maxPrice : information.clothPrice[priceLists.key].max}
+        className={!isEdit ? styles.rangeRight : styles.profileRight}
         ref={rangeRightRef}
       />
       <div className={styles.slider}>
@@ -138,4 +170,5 @@ export default function InputRange({
 
 InputRange.defaultProps = {
   isOnboarding: false,
+  isEdit: false,
 }

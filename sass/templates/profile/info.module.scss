@@ -1,0 +1,43 @@
+@use '../../lib/colors.scss' as colors;
+
+.container {
+    padding: 23px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    font-weight: bold;
+
+    & + & {
+        margin-top: 20px;
+    }
+}
+
+.label {
+    padding-left: 8px;
+}
+
+.input {
+    font-size: 12px;
+    padding: 11px;
+    margin-top: 12px;
+
+    color: colors.$primary-500;
+
+    border-radius: 5px;
+    border: 1px solid colors.$primary-200;
+}
+
+.submit {
+    color:white;
+    padding: 14px;
+    margin-bottom: 8px;
+    border-radius: 5px;
+    background-color: colors.$accent;
+}

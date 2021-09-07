@@ -1,13 +1,9 @@
-import { useAuth } from 'providers/auth'
+import { useProfile } from 'providers/profile'
 import TextareaField from './textarea-field'
 
-interface HopeData {
-  hopeToSupplier: string
-}
-
-export default function Hope({ data }: { data: HopeData}) {
-  const { user } = useAuth()
-  const { hopeToSupplier } = user || data || {}
+export default function Hope() {
+  const { user } = useProfile()
+  const { hopeToSupplier } = user
 
   return (
     <TextareaField
@@ -15,6 +11,7 @@ export default function Hope({ data }: { data: HopeData}) {
       name="hopeToSupplier"
       content={hopeToSupplier}
       maxLength={500}
+      placeholder="스타일리스트에게 원하는 바를 적어주세요."
     />
   )
 }

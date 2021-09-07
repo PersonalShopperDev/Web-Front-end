@@ -6,6 +6,7 @@ import { cn } from 'lib/util'
 
 export default function Room({
   id,
+  otherId,
   img,
   name,
   unreadCount,
@@ -13,6 +14,7 @@ export default function Room({
   lastChatTime,
 } : {
   id: number,
+  otherId: number,
   img: string,
   name: string,
   unreadCount: number,
@@ -23,7 +25,7 @@ export default function Room({
     <Link href={`/chat/${id}`}>
       <a className={styles.container} href={`/chat/${id}`}>
         <div className={styles.avatarWrapper}>
-          <Avatar src={img} size={64} />
+          <Avatar src={img} size={64} href={`/profile/${otherId}`} />
         </div>
         <div className={styles.body}>
           <div className={styles.header}>
