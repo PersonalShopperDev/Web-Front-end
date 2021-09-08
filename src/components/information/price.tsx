@@ -79,7 +79,9 @@ export default function Price({
       setPriceLists(malePriceLists)
     }
   }, [])
-
+  useEffect(() => {
+    setSelectedItem([])
+  }, [isEdit])
   return (
     <>
       {isEdit
@@ -100,13 +102,13 @@ export default function Price({
                   </span>
                 </div>
                 {selectedItem.includes(index)
-            && (
-            <InputRange
-              priceLists={item}
-              isOnboarding={isOnboarding}
-              isEdit={isEdit}
-            />
-            )}
+                && (
+                <InputRange
+                  priceLists={item}
+                  isOnboarding={isOnboarding}
+                  isEdit={isEdit}
+                />
+                )}
               </div>
             ))}
           </div>

@@ -21,7 +21,8 @@ export default function StyleText({
 
   useEffect(() => {
     async function fetchData() {
-      const res = await communicate({ url: '/style' })
+      const query = information.gender === 'F' ? '?female=true' : '?male=true'
+      const res = await communicate({ url: `/style${query}` })
       const data = await res.json()
       setStyleLists(information.gender === 'F' ? data.female : data.male)
     }
@@ -34,8 +35,8 @@ export default function StyleText({
 
   useEffect(() => {
     if (styleLists.length !== 0) {
-      setStyleText(information.styles.map(({ id }) => id))
-      styleRef.current = information.styles.map(({ id }) => id)
+      setStyleText(information.styles?.map(({ id }) => id))
+      styleRef.current = information.styles?.map(({ id }) => id)
     }
   }, [styleLists])
 
@@ -81,7 +82,7 @@ export default function StyleText({
         )
         : (
           <>
-            {information.styles.map(({ value }) => (
+            {information.styles && information.styles.map(({ value }) => (
               <div
                 key={Math.random()}
                 className={styles.notSelectedBox}
