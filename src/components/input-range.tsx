@@ -38,7 +38,7 @@ export default function InputRange({
     setMinPrice(parseInt(rangeLeftRef.current.value, 10))
     const percent = ((parseInt(rangeLeftRef.current.value, 10) - priceLists.minPrice)
     / (priceLists.maxPrice - priceLists.minPrice)) * 100
-    thumbLeftRef.current.style.left = `${percent}%`
+    thumbLeftRef.current.style.left = `${rangeLeftRef.current.getBoundingClientRect().left}px`
     rangeRef.current.style.left = `${percent}%`
   }
   const setRightValue = () => {
@@ -51,7 +51,7 @@ export default function InputRange({
     setMaxPrice(parseInt(rangeRightRef.current.value, 10))
     const percent = ((parseInt(rangeRightRef.current.value, 10) - priceLists.minPrice)
     / (priceLists.maxPrice - priceLists.minPrice)) * 100
-    thumbRightRef.current.style.right = `${100 - percent}%`
+    thumbRightRef.current.style.right = `${rangeRightRef.current.getBoundingClientRect().right}px`
     rangeRef.current.style.right = `${100 - percent}%`
   }
 
@@ -61,8 +61,6 @@ export default function InputRange({
   }
 
   useEffect(() => {
-    rangeLeftRef.current.style.top = `${rangeRef.current.getBoundingClientRect().top}px`
-    rangeRightRef.current.style.top = `${rangeRef.current.getBoundingClientRect().top}px`
     if (rangeLeftRef !== null) {
       rangeLeftRef.current.addEventListener('input', setLeftValue)
       setData(priceLists.key, parseInt(rangeLeftRef.current.value, 10), true)
@@ -71,14 +69,14 @@ export default function InputRange({
       rangeRightRef.current.addEventListener('input', setRightValue)
       setData(priceLists.key, parseInt(rangeRightRef.current.value, 10), false, true)
     }
-    thumbLeftRef.current.style.left = `${((parseInt(rangeLeftRef.current.value, 10) - priceLists.minPrice)
-      / (priceLists.maxPrice - priceLists.minPrice)) * 100}%`
+
     rangeRef.current.style.left = `${((parseInt(rangeLeftRef.current.value, 10) - priceLists.minPrice)
       / (priceLists.maxPrice - priceLists.minPrice)) * 100}%`
-    thumbRightRef.current.style.right = `${100 - ((parseInt(rangeRightRef.current.value, 10) - priceLists.minPrice)
-      / (priceLists.maxPrice - priceLists.minPrice)) * 100}%`
+    thumbLeftRef.current.style.left = `${rangeLeftRef.current.getBoundingClientRect().left}px`
+
     rangeRef.current.style.right = `${100 - ((parseInt(rangeRightRef.current.value, 10) - priceLists.minPrice)
       / (priceLists.maxPrice - priceLists.minPrice)) * 100}%`
+    thumbRightRef.current.style.right = `${rangeRightRef.current.getBoundingClientRect().right}px`
   }, [rangeLeftRef, rangeRightRef])
   useEffect(() => {
     rangeLeftRef.current.addEventListener('input', setLeftValue)
@@ -86,8 +84,6 @@ export default function InputRange({
     if (information.clothPrice) priceRef.current = information.clothPrice
     if (isOnboarding) {
       document.getElementById('stepContainer').addEventListener('scroll', scrollEventListner)
-    } else {
-      document.getElementById('main').addEventListener('scroll', scrollEventListner)
     }
     return () => {
       document.removeEventListener('scroll', scrollEventListner)
@@ -117,7 +113,6 @@ export default function InputRange({
   useEffect(() => {
     if (isEdit) setOnEdit(onEditPrice)
   }, [isEdit])
-
   return (
     <div className={styles.container}>
       <input
@@ -137,7 +132,7 @@ export default function InputRange({
         step={priceStep}
         defaultValue={information.clothPrice === undefined
           ? priceLists.maxPrice : information.clothPrice[priceLists.key].max}
-        className={!isEdit ? styles.rangeRight : styles.profileRight}
+        className={styles.rangeRight}
         ref={rangeRightRef}
       />
       <div className={styles.slider}>
