@@ -44,7 +44,7 @@ export default function ChatList() {
       {rooms?.map(({
         id, other, lastChat, lastChatTime, unreadCount, messages,
       }) => {
-        if (messages.length === 0) {
+        if (!lastChat) {
           return <></>
         }
         const { profileImg, name, id: otherId } = other
