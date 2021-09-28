@@ -11,8 +11,8 @@ export interface SupplierData {
   id: number
   img: string
   name: string
-  hire: number
-  review: number
+  hireCount: number
+  reviewCount: number
 }
 
 export interface DemanderData {
@@ -102,7 +102,7 @@ export default function StylistGridView({
       />
       <section className={styles.grid}>
         {!isStylist && suppliers.map(({
-          id, img, name, hire = 0, review = 0,
+          id, img, name, hireCount = 0, reviewCount = 0,
         }) => (
           <LinkWrapper key={id} id={id}>
             <div className={styles.imageWrapper}>
@@ -113,7 +113,7 @@ export default function StylistGridView({
               <span
                 className={styles.info}
               >
-                {`고용 ${hire}회 | 리뷰 ${review}`}
+                {`고용 ${hireCount}회 | 리뷰 ${reviewCount}`}
               </span>
             </figcaption>
           </LinkWrapper>
