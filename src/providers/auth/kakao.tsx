@@ -1,4 +1,4 @@
-import { useRouter } from 'next/dist/client/router'
+import { NextRouter, useRouter } from 'next/dist/client/router'
 import React, { createContext, useContext } from 'react'
 import KakaoLoginButton from 'widgets/kakao-login-button'
 import { useAuth } from '.'
