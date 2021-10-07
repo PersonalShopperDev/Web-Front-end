@@ -1,4 +1,4 @@
-import { useRouter } from 'next/dist/client/router'
+import { NextRouter, useRouter } from 'next/dist/client/router'
 import React, { createContext, useContext } from 'react'
 import KakaoLoginButton from 'widgets/kakao-login-button'
 import { useAuth } from '.'
@@ -48,4 +48,12 @@ export default function KaKaoAuthProvider({
       {children}
     </KakaoAuthContext.Provider>
   )
+}
+
+export const processToken = (router: NextRouter): string => {
+  try {
+    return router.asPath.split('=')[1].split('&')[0]
+  } catch {
+    return null
+  }
 }

@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import Layout from 'layouts/default'
 import { useAuth } from 'providers/auth'
 import { processToken as processNaverToken } from 'providers/auth/naver'
+import { processToken as processKakaoToken } from 'providers/auth/kakao'
 import { GetServerSideProps } from 'next'
 import providers from 'lib/config/provider'
 
@@ -14,6 +15,8 @@ export default function Page() {
     switch (router.query.provider) {
       case 'naver':
         return processNaverToken(router)
+      case 'kakao':
+        return processKakaoToken(router)
       default:
         return null
     }
