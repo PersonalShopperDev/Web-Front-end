@@ -49,3 +49,11 @@ export default function KaKaoAuthProvider({
     </KakaoAuthContext.Provider>
   )
 }
+
+export const processToken = (router: NextRouter): string => {
+  try {
+    return router.asPath.split('=')[1].split('&')[0]
+  } catch {
+    return null
+  }
+}
