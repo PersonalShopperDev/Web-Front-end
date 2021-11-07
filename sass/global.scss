@@ -34,6 +34,7 @@ footer, header, hgroup, menu, nav, section {
 a {
   text-decoration: none;
   cursor: pointer;
+  color: colors.$primary-700;
 }
 
 a:hover {

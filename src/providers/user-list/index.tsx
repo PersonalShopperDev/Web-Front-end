@@ -1,4 +1,5 @@
 import communicate from 'lib/api'
+import { useRouter } from 'next/router'
 import React, {
   useContext, createContext, useState, useEffect, useRef,
 } from 'react'
@@ -28,9 +29,12 @@ export default function UserListProvider({
 }: {
   children: React.ReactNode
 }) {
+  const { query } = useRouter()
+  const sortTypeInit = typeof query.sort === 'string' && ['recommend', 'hireCount', 'priceLow', 'professional'].includes(query.sort) ? query.sort : undefined
+
   const [userLists, setUserLists] = useState([])
   const [styleType, setStyleType] = useState('')
-  const [sortType, setSortType] = useState('recommend')
+  const [sortType, setSortType] = useState(sortTypeInit || 'recommend')
   const [genderType, setGenderType] = useState('M')
   const [userType, setUserType] = useState(null)
   const userListsRef = useRef<userListsRefProps>({

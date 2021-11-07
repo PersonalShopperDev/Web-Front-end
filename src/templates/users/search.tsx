@@ -49,7 +49,9 @@ export default function Search() {
         styleClick={styleClick}
       />
       <Link href={{ pathname: '/users/stylist', query: { type: clickedStyleList.join('|') } }}>
-        <BottomButton text="검색하기" />
+        <a href={`/users/stylist?type=${clickedStyleList.join('|')}`}>
+          <BottomButton text="검색하기" />
+        </a>
       </Link>
     </div>
   )
