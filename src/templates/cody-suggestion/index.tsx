@@ -240,9 +240,11 @@ export default function CodySuggetsion({ id }: { id: string }) {
 
     if (window?.ReactNativeWebView) {
       document.addEventListener('message', listener)
+      window.addEventListener('message', listener)
     }
     return () => {
       document.removeEventListener('message', listener)
+      window.removeEventListener('message', listener)
     }
   }, [])
 

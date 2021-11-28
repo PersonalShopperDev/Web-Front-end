@@ -29,8 +29,6 @@ export default function RoomAppBar({ title }: { title: string }) {
   const sendCoordEnabled =
     status === 2 && (!latestCoordId || requestEditCoordId)
 
-  const isApp = Boolean(window?.ReactNativeWebView)
-
   const requestPayment = async () => {
     const hasAccount = bank && account && accountUser
 
@@ -71,7 +69,7 @@ export default function RoomAppBar({ title }: { title: string }) {
   }
 
   const sendCoord = () => {
-    if (isApp) {
+    if (window?.ReactNativeWebView) {
       callApplication({
         action: 'navigate',
         data: `/suggestion/new?uid=${room.other.id}`,
@@ -129,9 +127,11 @@ export default function RoomAppBar({ title }: { title: string }) {
 
     if (window?.ReactNativeWebView) {
       document.addEventListener('message', listener)
+      window.addEventListener('message', listener)
     }
     return () => {
       document.removeEventListener('message', listener)
+      window.removeEventListener('message', listener)
     }
   }, [])
 
