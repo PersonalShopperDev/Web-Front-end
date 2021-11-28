@@ -37,7 +37,7 @@ export default function RoomAppBar({ title }: { title: string }) {
         hasAccount ? '코디 가격을' : '코디 가격과 계좌 정보를'
       } 입력하신 다음 다시 시도해 주세요.`
       await createAlert({ text })
-      if (isApp) {
+      if (window?.ReactNativeWebView) {
         callApplication({ action: 'navigate', data: '/profile' })
       } else {
         router.push('/profile')
@@ -49,7 +49,7 @@ export default function RoomAppBar({ title }: { title: string }) {
       await createAlert({
         text: '계좌 정보를 입력하신 다음 다시 시도해 주세요.',
       })
-      if (isApp) {
+      if (window?.ReactNativeWebView) {
         callApplication({ action: 'navigate', data: '/profile/account' })
       } else {
         router.push('/profile/account')
