@@ -117,7 +117,8 @@ export default function RoomAppBar({ title }: { title: string }) {
   ]
 
   useEffect(() => {
-    const listener = async (action: string) => {
+    const listener = async (event: Event & { data: string }) => {
+      const action = event?.data
       if (action === 'requestPayment') {
         requestPayment()
       } else if (action === 'sendCoord') {

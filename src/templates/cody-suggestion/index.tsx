@@ -230,7 +230,8 @@ export default function CodySuggetsion({ id }: { id: string }) {
   }
 
   useEffect(() => {
-    const listener = async (action: string) => {
+    const listener = async (event: Event & { data: string }) => {
+      const action = event.data
       if (action === 'setStep(1)') {
         setStep(1)
       } else if (action === 'onClickStorage') {
