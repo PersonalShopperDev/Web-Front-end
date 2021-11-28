@@ -1,9 +1,14 @@
 import communicate from 'lib/api'
+import callApplication from 'lib/util/application'
 import { deleteCookie, getCookie, setCookie } from 'lib/util/cookie'
 import parseJwt from 'lib/util/jwt'
 import { useRouter } from 'next/dist/client/router'
 import React, {
-  createContext, useContext, useEffect, useState, useRef,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useRef,
 } from 'react'
 
 export const ACCESS_TOKEN = 'personalshopper_accessToken'
@@ -29,8 +34,8 @@ export interface BodyStat {
 }
 
 export interface Style {
-  id: number,
-  value: string,
+  id: number
+  value: string
 }
 
 export interface User {
@@ -42,23 +47,23 @@ export interface User {
   gender: 'M' | 'F'
   introduction: string
   styles: {
-    male: Style[],
-    female: Style[],
+    male: Style[]
+    female: Style[]
   }
   profileImg: string
-  closet: {id: number, img: string}[]
-  careerList: { value: string, type: number }[]
+  closet: { id: number; img: string }[]
+  careerList: { value: string; type: number }[]
   reviewList: ReviewListData[]
-  reviewCount: number,
-  hireCount: number,
-  rating: number,
+  reviewCount: number
+  hireCount: number
+  rating: number
   price: number
-  coord: {id: number, img: string}[]
+  coord: { id: number; img: string }[]
   hopeToSupplier: string
   bodyStat: BodyStat
-  account: string,
-  bank: string,
-  accountUser: string,
+  account: string
+  bank: string
+  accountUser: string
 }
 
 interface AuthProps {
@@ -90,7 +95,10 @@ export default function AuthProvider({
   const refreshTokenExpiration = 1000 * 60 * 60 * 24 * 7
   const silentRefreshInterval = 1000 * 60 * 29
 
-  const authenticate = async (provider: string, token: string) : Promise<void> => {
+  const authenticate = async (
+    provider: string,
+    token: string,
+  ): Promise<void> => {
     const payload: any = {
       resource: provider,
       token,
@@ -111,9 +119,10 @@ export default function AuthProvider({
     router.push('/')
   }
 
-  const isValidToken = (token : string) : boolean => token !== null && typeof token !== 'undefined' && token !== 'undefined'
+  const isValidToken = (token: string): boolean =>
+    token !== null && typeof token !== 'undefined' && token !== 'undefined'
 
-  const requestAccessToken = async () : Promise<void> => {
+  const requestAccessToken = async (): Promise<void> => {
     const refreshToken = getCookie(REFRESH_TOKEN)
 
     if (!isValidToken(refreshToken)) {
@@ -141,7 +150,7 @@ export default function AuthProvider({
     await onResponse(res)
   }
 
-  const onResponse = async (res: Response) : Promise<void> => {
+  const onResponse = async (res: Response): Promise<void> => {
     const { accessToken, refreshToken } = await res.json()
     setAccessToken(accessToken)
     setRefreshToken(refreshToken)
@@ -161,7 +170,7 @@ export default function AuthProvider({
     }
   }
 
-  const fetchUser = async () : Promise<boolean> => {
+  const fetchUser = async (): Promise<boolean> => {
     const res = await communicate({
       url: '/profile',
     })
@@ -175,7 +184,8 @@ export default function AuthProvider({
     return false
   }
 
-  const signOut = async (redirect?: string) : Promise<void> => {
+  const signOut = async (redirect?: string): Promise<void> => {
+    callApplication({ action: 'logOut', data: null })
     deleteCookie(ACCESS_TOKEN)
     deleteCookie(REFRESH_TOKEN)
     setUser(null)
