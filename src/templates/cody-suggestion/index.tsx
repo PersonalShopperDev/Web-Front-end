@@ -10,16 +10,17 @@ import { useCodySuggestion } from 'providers/cody-suggestion'
 import Step1 from 'components/cody-suggestion/step1'
 import Step2 from 'components/cody-suggestion/step2'
 import convertDataURLToBlob from 'lib/util/file'
+import callApplication from 'lib/util/application'
 
 interface ProductInformation {
-  img: string,
-  price: string,
-  purchaseUrl: string,
+  img: string
+  price: string
+  purchaseUrl: string
 }
 
 interface ProductDescription {
-  title: string,
-  content: string,
+  title: string
+  content: string
 }
 
 interface ProductCoord {
@@ -27,26 +28,27 @@ interface ProductCoord {
 }
 
 interface TempData {
-  products: ProductInformation[],
-  description: ProductDescription,
+  products: ProductInformation[]
+  description: ProductDescription
   coord: ProductCoord[]
 }
 
 interface CodySuggestion {
-  roomId: number,
-  title: string,
-  comment: string,
-  clothes: ProductInformation[],
-  referenceImgList: Array<string>,
+  roomId: number
+  title: string
+  comment: string
+  clothes: ProductInformation[]
+  referenceImgList: Array<string>
 }
 
-export default function CodySuggetsion({
-  id,
-}: {
-  id: string
-}) {
+export default function CodySuggetsion({ id }: { id: string }) {
   const {
-    descriptionRef, productRef, coordRef, step, setStep, filterEmptyProducts,
+    descriptionRef,
+    productRef,
+    coordRef,
+    step,
+    setStep,
+    filterEmptyProducts,
   } = useCodySuggestion()
   const { createAlert } = useAlert()
   const router = useRouter()
@@ -59,7 +61,14 @@ export default function CodySuggetsion({
     }
     const productsCookie: ProductInformation[] = productRef.current
     const coordCookie = coordRef.current
-    localStorage.setItem(`cody${id}`, JSON.stringify({ products: productsCookie, description: descriptionCookie, coord: coordCookie }))
+    localStorage.setItem(
+      `cody${id}`,
+      JSON.stringify({
+        products: productsCookie,
+        description: descriptionCookie,
+        coord: coordCookie,
+      }),
+    )
   }
 
   useEffect(() => {
@@ -70,9 +79,13 @@ export default function CodySuggetsion({
       productRef.current = parsedData.products
       coordRef.current = parsedData.coord
     }
-    document.getElementById('storage').addEventListener('click', ClickEventListener)
+    document
+      .getElementById('storage')
+      .addEventListener('click', ClickEventListener)
     return () => {
-      document.getElementById('storage')?.removeEventListener('click', ClickEventListener)
+      document
+        .getElementById('storage')
+        ?.removeEventListener('click', ClickEventListener)
     }
   }, [])
 
@@ -96,7 +109,11 @@ export default function CodySuggetsion({
 
   const redirect = async () => {
     const roomId = await getRoomId()
-    router.push(`/chat/${roomId}`)
+    if (window?.ReactNativeWebView) {
+      callApplication({ action: 'navigate', data: `/chat/${roomId}` })
+    } else {
+      router.push(`/chat/${roomId}`)
+    }
   }
 
   const onClickSend = async () => {
@@ -109,7 +126,10 @@ export default function CodySuggetsion({
         return
       }
     }
-    if (descriptionRef.current.title === '' || descriptionRef.current.content === '') {
+    if (
+      descriptionRef.current.title === '' ||
+      descriptionRef.current.content === ''
+    ) {
       await createAlert({ text: '항목을 전부 채워주세요' })
       return
     }
@@ -136,14 +156,16 @@ export default function CodySuggetsion({
           body: refForm,
         },
         method: 'POST',
-      }).then(async (res) => {
-        if (res.status !== 200) {
-          throw new Error()
-        }
-        return await res.json()
-      }).catch(async () => {
-        await createAlert({ text: ERROR_MESSAGE })
       })
+        .then(async (res) => {
+          if (res.status !== 200) {
+            throw new Error()
+          }
+          return await res.json()
+        })
+        .catch(async () => {
+          await createAlert({ text: ERROR_MESSAGE })
+        })
     })
     const clothPromise = productRef.current.map((item, index) => {
       const { img } = item
@@ -156,16 +178,21 @@ export default function CodySuggetsion({
           body: clothForm,
         },
         method: 'POST',
-      }).then(async (res) => {
-        if (res.status !== 200) {
-          throw new Error()
-        }
-        return await res.json()
-      }).catch(async () => {
-        await createAlert({ text: ERROR_MESSAGE })
       })
+        .then(async (res) => {
+          if (res.status !== 200) {
+            throw new Error()
+          }
+          return await res.json()
+        })
+        .catch(async () => {
+          await createAlert({ text: ERROR_MESSAGE })
+        })
     })
-    await Promise.all([Promise.all(coordPromise), Promise.all(clothPromise)]).then((value) => {
+    await Promise.all([
+      Promise.all(coordPromise),
+      Promise.all(clothPromise),
+    ]).then((value) => {
       const coord = value[0]
       const cloth = value[1]
       coord.forEach(({ path }) => {
@@ -181,15 +208,17 @@ export default function CodySuggetsion({
       url: '/coord',
       payload,
       method: 'POST',
-    }).then(async (res) => {
-      if (res.status !== 200) {
-        throw new Error()
-      }
-      localStorage.removeItem(`cody${id}`)
-      await redirect()
-    }).catch(async () => {
-      await createAlert({ text: ERROR_MESSAGE })
     })
+      .then(async (res) => {
+        if (res.status !== 200) {
+          throw new Error()
+        }
+        localStorage.removeItem(`cody${id}`)
+        await redirect()
+      })
+      .catch(async () => {
+        await createAlert({ text: ERROR_MESSAGE })
+      })
   }
 
   const onClickBottomBtn = () => {
@@ -200,19 +229,38 @@ export default function CodySuggetsion({
     }
   }
 
+  useEffect(() => {
+    const listener = async (action: string) => {
+      if (action === 'setStep(1)') {
+        setStep(1)
+      } else if (action === 'onClickStorage') {
+        ClickEventListener()
+      }
+    }
+
+    if (window?.ReactNativeWebView) {
+      document.addEventListener('message', listener)
+    }
+    return () => {
+      document.removeEventListener('message', listener)
+    }
+  }, [])
+
   return (
     <>
       <div className={styles.container}>
-        {step === 1 ? <Step1 /> : <Step2 /> }
+        {step === 1 ? <Step1 /> : <Step2 />}
       </div>
-      {modal
-      && (
-      <div className={styles.modalContainer}>
-        <div className={styles.box}>코디 보내는중</div>
-      </div>
+      {modal && (
+        <div className={styles.modalContainer}>
+          <div className={styles.box}>코디 보내는중</div>
+        </div>
       )}
       <div className={styles.gradient}>
-        <BottomButton text={step === 1 ? '다음' : '보내기'} onClick={onClickBottomBtn} />
+        <BottomButton
+          text={step === 1 ? '다음' : '보내기'}
+          onClick={onClickBottomBtn}
+        />
       </div>
     </>
   )

@@ -4,7 +4,7 @@ declare global {
   }
 }
 
-export type callApplicationAction = 'logOut'
+export type callApplicationAction = 'logOut' | 'navigate' | 'setStep'
 const callApplication = ({
   action,
   data,
